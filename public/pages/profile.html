@@ -24,101 +24,107 @@
       <span class="absolute top-0 left-0 w-full h-full bg-blue-500 opacity-60"></span>
     </div>
 
-    <aside class="fixed inset-y-0 flex-wrap items-center justify-between block w-full p-0 my-4 overflow-y-auto antialiased transition-transform duration-200 -translate-x-full bg-white border-0 shadow-xl dark:shadow-none dark:bg-slate-850 xl:ml-6 max-w-64 ease-nav-brand z-990 rounded-2xl xl:left-0 xl:translate-x-0" aria-expanded="false">
-      <div class="h-19">
-        <i class="absolute top-0 right-0 p-4 opacity-50 cursor-pointer fas fa-times text-slate-400 xl:hidden" sidenav-close></i>
-        <a class="block px-8 py-6 m-0 text-sm whitespace-nowrap text-slate-700" href="https://demos.creative-tim.com/argon-dashboard-tailwind/pages/dashboard.html" target="_blank">
-          <img src="../assets/img/logo-ct-dark.png" class="inline h-full max-w-full transition-all duration-200 dark:hidden ease-nav-brand max-h-8" alt="main_logo" />
-          <img src="../assets/img/logo-ct.png" class="hidden h-full max-w-full transition-all duration-200 dark:inline ease-nav-brand max-h-8" alt="main_logo" />
-          <span class="ml-1 font-semibold transition-all duration-200 dark:text-white ease-nav-brand">Profil Pengguna</span>
-        </a>
-      </div>
+        <!-- sidenav  -->
+    <aside class="fixed inset-y-0 flex-wrap items-center justify-between block w-full p-0 my-4 overflow-y-auto antialiased transition-transform duration-200 -translate-x-full bg-white border-0 shadow-xl dark:shadow-none dark:bg-slate-850 max-w-64 ease-nav-brand z-990 xl:ml-6 rounded-2xl xl:left-0 xl:translate-x-0" aria-expanded="false">
+      
+      <div class="sticky top-0 z-50 bg-white h-19 px-4 flex items-center justify-between shadow-sm">
+  <a class="flex items-center py-4 text-sm whitespace-nowrap dark:text-white text-slate-700" href="https://demos.creative-tim.com/argon-dashboard-tailwind/pages/dashboard.html" target="_blank">
+    <img src="../assets/img/logo-esdm.svg" class="h-8 w-8 max-w-full transition-all duration-200 ease-nav-brand" alt="main_logo" />
+    <span class="ml-2 font-semibold leading-tight transition-all duration-200 ease-nav-brand">
+      Energi dan Sumber Daya <br>Mineral
+    </span>
+  </a>
+</div>
+
+  <!-- tombol close -->
+  <i class="xl:hidden fas fa-times absolute top-4 right-4 p-2 text-slate-400 dark:text-white opacity-70 cursor-pointer" sidenav-close></i>
+</div>
+
 
       <hr class="h-px mt-0 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent" />
-
-      <div class="items-center block w-auto max-h-screen overflow-auto h-sidenav grow basis-full">
+     <!-- menu fitur -->
+      <div class="items-center block h-auto w-auto max-h-screen overflow-auto h-sidenav grow basis-full">
         <ul class="flex flex-col pl-0 mb-0">
-
+          
           <li class="mt-0.5 w-full">
-            <a class="py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors dark:text-white dark:opacity-80" href="../pages/dashboard.html">
-              <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-                <i class="relative top-0 leading-normal text-blue-500 ni ni-tv-2 text-sm"></i>
+            <a class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" href="../pages/dashboard.html">
+           
+              <div class="mr-2 flex h-1 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
+                <i class="relative top-0 text-sm leading-normal text-blue-500 ni ni-tv-2"></i>
               </div>
               <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Dashboard</span>
             </a>
           </li>
-          
+
           <li class="mt-0.5 w-full">
-            <a class="py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors dark:text-white dark:opacity-80" href="../pages/tables.html">
+            <a class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" href="../pages/tables.html">
               <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-                <i class="relative top-0 leading-normal text-orange-500 ni ni-calendar-grid-58 text-sm"></i>
+                <i class="relative top-0 text-sm leading-normal text-orange-500 ni ni-calendar-grid-58"></i>
               </div>
-              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Tables</span>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Daftar Pengajuan</span>
             </a>
           </li>
 
+  
+
           <li class="mt-0.5 w-full">
-            <a class="py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors dark:text-white dark:opacity-80" href="../pages/billing.html">
+            <a class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" href="../pages/billing.html">
               <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center fill-current stroke-0 text-center xl:p-2.5">
-                <i class="relative top-0 leading-normal text-emerald-500 text-sm ni ni-credit-card"></i>
+                <i class="relative top-0 text-sm leading-normal text-emerald-500 ni ni-credit-card"></i>
               </div>
-              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Billing</span>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">?????</span>
             </a>
           </li>
 
           <li class="mt-0.5 w-full">
-            <a class="py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors dark:text-white dark:opacity-80" href="../pages/virtual-reality.html">
+            <a class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" href="../pages/pengajuansurat.html">
               <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-                <i class="relative top-0 leading-normal text-cyan-500 text-sm ni ni-app"></i>
+                <i class="relative top-0 text-sm leading-normal text-cyan-500 ni ni-app"></i>
               </div>
-              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Virtual Reality</span>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Buat Pengajuan</span>
             </a>
           </li>
 
-          <li class="mt-0.5 w-full">
-            <a class="py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors dark:text-white dark:opacity-80" href="../pages/rtl.html">
-              <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-                <i class="relative top-0 leading-normal text-red-600 text-sm ni ni-world-2"></i>
-              </div>
-              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">RTL</span>
-            </a>
-          </li>
-
+  
           <li class="w-full mt-4">
-            <h6 class="pl-6 ml-2 font-bold leading-tight uppercase dark:text-white text-xs opacity-60">Account pages</h6>
+            <h6 class="pl-6 ml-2 text-xs font-bold leading-tight uppercase dark:text-white opacity-60">Pengaturan Akun</h6>
           </li>
 
           <li class="mt-0.5 w-full">
-            <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80  text-sm ease-nav-brand my-0 mx-2 flex items-center rounded-lg whitespace-nowrap px-4 font-semibold text-slate-700 transition-colors" href="../pages/profile.html">
+            <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors" href="../pages/profile.html">
               <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-                <i class="relative top-0 leading-normal text-slate-700 text-sm ni ni-single-02"></i>
+                <i class="relative top-0 text-sm leading-normal text-slate-700 ni ni-single-02"></i>
               </div>
-              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Profile</span>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Profil</span>
+            </a>
+          </li>
+        <!-- disini logout -->
+          <li class="mt-0.5 w-full">
+            <a class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" href="../pages/sign-in.html">
+              <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
+                <i class="relative top-0 text-sm leading-normal text-orange-500 ni ni-single-copy-04"></i>
+              </div>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Masuk</span>
             </a>
           </li>
 
           <li class="mt-0.5 w-full">
-            <a class="py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors dark:text-white dark:opacity-80" href="../pages/sign-in.html">
+            <a class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" href="../pages/sign-up.html">
               <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-                <i class="relative top-0 leading-normal text-orange-500 text-sm ni ni-single-copy-04"></i>
+                <i class="relative top-0 text-sm leading-normal text-cyan-500 ni ni-collection"></i>
               </div>
-              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Sign In</span>
-            </a>
-          </li>
-
-          <li class="mt-0.5 w-full">
-            <a class="py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors dark:text-white dark:opacity-80" href="../pages/sign-up.html">
-              <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-                <i class="relative top-0 leading-normal text-cyan-500 text-sm ni ni-collection"></i>
-              </div>
-              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Sign Up</span>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Daftar</span>
             </a>
           </li>
         </ul>
       </div>
 
-     
-    </aside>
+  
+    </aside> 
+
+    <!-- end sidenav -->
+
+    
 
     <div class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68">
       <nav class="absolute z-20 flex flex-wrap items-center justify-between w-full px-6 py-2 -mt-56 text-white transition-all ease-in shadow-none duration-250 lg:flex-nowrap lg:justify-start" navbar-profile navbar-scroll="true">
@@ -127,11 +133,11 @@
             <!-- breadcrumb -->
             <ol class="flex flex-wrap pt-1 pl-2 pr-4 mr-12 bg-transparent rounded-lg sm:mr-16">
               <li class="leading-normal text-sm">
-                <a class="opacity-50" href="javascript:;">Pages</a>
+                <a class="opacity-50" href="javascript:;">Halaman</a>
               </li>
-              <li class="text-sm pl-2 capitalize leading-normal before:float-left before:pr-2 before:content-['/']" aria-current="page">Profile</li>
+              <li class="text-sm pl-2 capitalize leading-normal before:float-left before:pr-2 before:content-['/']" aria-current="page">Profil</li>
             </ol>
-            <h6 class="mb-2 ml-2 font-bold text-white capitalize dark:text-white">Profile</h6>
+            <h6 class="mb-2 ml-2 font-bold text-white capitalize dark:text-white">Profil</h6>
           </nav>
 
           <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
@@ -288,6 +294,7 @@
           </div>
         </div>
       </div>
+      
       <div class="w-full p-6 mx-auto">
         <div class="flex flex-wrap -mx-3">
           <div class="w-full max-w-full px-3 shrink-0 md:w-8/12 md:flex-0">
@@ -456,10 +463,6 @@
         </footer>
       </div>
     </div>
-    <div fixed-plugin>
-      <a fixed-plugin-button class="fixed px-4 py-2 bg-white shadow-lg cursor-pointer bottom-8 right-8 text-xl z-990 rounded-circle text-slate-700">
-        <i class="py-2 pointer-events-none fa fa-cog"> </i>
-      </a>
       <!-- -right-90 in loc de 0-->
       <div fixed-plugin-card class="z-sticky backdrop-blur-2xl backdrop-saturate-200 dark:bg-slate-850/80 shadow-3xl w-90 ease -right-90 fixed top-0 left-auto flex h-full min-w-0 flex-col break-words rounded-none border-0 bg-white/80 bg-clip-border px-2.5 duration-200">
         <div class="px-6 pt-4 pb-0 mb-0 border-b-0 rounded-t-2xl">
