@@ -1,40 +1,25 @@
-<!--
-
-=========================================================
-* Argon Dashboard 2 Tailwind - v1.0.1
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-tailwind
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-* Coded by www.creative-tim.com
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png" />
-    <link rel="icon" type="image/png" href="../assets/img/favicon.png" />
-    <title>Daftar Pengajuan</title>
+    <link rel="icon" type="image/png" href=" {{ asset('assets/img/logo-esdm.svg') }} " />
+    <title>Verifikasi Pengajuan</title>
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
     <!-- Font Awesome Icons -->
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
     <!-- Nucleo Icons -->
-    <link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
-    <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
+    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
+    <!-- Popper -->
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
     <!-- Main Styling -->
-    <link href="../assets/css/argon-dashboard-tailwind.css?v=1.0.1" rel="stylesheet" />
+    <link href="{{ asset('assets/css/argon-dashboard-tailwind.css?v=1.0.1') }}" rel="stylesheet" />
   </head>
 
   <body class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">
-    <div class="absolute w-full bg-blue-500 dark:hidden min-h-75"></div>
+    <div class="absolute w-full bg-blue-500 dark:hidden min-h-75" style="background-color: #FFD700"></div>
 
 
         <!-- sidenav  -->
@@ -73,7 +58,7 @@
               <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
                 <i class="relative top-0 text-sm leading-normal text-orange-500 ni ni-calendar-grid-58"></i>
               </div>
-              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Daftar Pengajuan</span>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Verifikasi Pengajuan</span>
             </a>
           </li>
 
@@ -144,9 +129,9 @@
               <li class="text-sm leading-normal">
                 <a class="text-white opacity-50" href="javascript:;">Halaman</a>
               </li>
-              <li class="text-sm pl-2 capitalize leading-normal text-white before:float-left before:pr-2 before:text-white before:content-['/']" aria-current="page">Daftar Pengajuan</li>
+              <li class="text-sm pl-2 capitalize leading-normal text-white before:float-left before:pr-2 before:text-white before:content-['/']" aria-current="page">Verifikasi Pengajuan</li>
             </ol>
-            <h6 class="mb-0 font-bold text-white capitalize">Daftar Pengajuan</h6>
+            <h6 class="mb-0 font-bold text-white capitalize">Verifikasi Pengajuan</h6>
           </nav>
 
           <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
@@ -162,7 +147,7 @@
               <!-- online builder btn  -->
               <!-- <li class="flex items-center">
                 <a class="inline-block px-8 py-2 mb-0 mr-4 text-xs font-bold text-center text-blue-500 uppercase align-middle transition-all ease-in bg-transparent border border-blue-500 border-solid rounded-lg shadow-none cursor-pointer leading-pro hover:-translate-y-px active:shadow-xs hover:border-blue-500 active:bg-blue-500 active:hover:text-blue-500 hover:text-blue-500 tracking-tight-rem hover:bg-transparent hover:opacity-75 hover:shadow-none active:text-white active:hover:bg-transparent" target="_blank" href="https://www.creative-tim.com/builder/soft-ui?ref=navbar-dashboard&amp;_ga=2.76518741.1192788655.1647724933-1242940210.1644448053">Online Builder</a>
-              </li> -->
+              </li> 
 
               <li class="flex items-center">
   <a href="../pages/pengajuansurat.html" 
@@ -173,6 +158,7 @@
   </a>
 </li>
 
+                -->
           
              
               <li class="flex items-center pl-4 xl:hidden">
@@ -277,9 +263,10 @@
           <div class="flex-none w-full max-w-full px-3">
             <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
               <div class="p-6 pb-0 mb-0 border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
-                <h6 class="dark:text-white">Daftar Pengajuan</h6>
+                <h6 class="dark:text-white">Daftar Pengajuan Masuk</h6>
               </div>
               <div class="flex-auto px-0 pt-0 pb-2">
+                
                 <div class="p-0 overflow-x-auto">
                   <table class="items-center w-full mb-0 align-top border-collapse dark:border-white/40 text-slate-500">
                     <thead class="align-bottom">
@@ -287,7 +274,7 @@
                         <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Nama Perusahaan</th>
                         <th class="px-6 py-3 pl-2 font-bold text-left uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Keterangan</th>
                         <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Status</th>
-                        <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Tanggal Pengajuan</th>
+                        <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Tanggal Pengajuan Masuk</th>
                         <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Aksi</th>
                       </tr>
                     </thead>
@@ -308,13 +295,13 @@
                           <p class="mb-0 text-xs leading-tight dark:text-white dark:opacity-80 text-slate-400">Perbaikan pada lampiran</p>
                         </td>
                         <td class="p-2 text-sm leading-normal text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                          <span class="bg-gradient-to-tl from-emerald-500 to-teal-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Disetujui</span>
+                          <span class="bg-gradient-to-tl px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white" style="background-color:#3BB9FF;">Menunggu persetujuan</span>
                         </td>
                         <td class="p-2 text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
                           <span class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400">23/04/18</span>
                         </td>
                         <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                          <a href="javascript:;" class="block text-center text-xs font-semibold leading-tight text-slate-400 dark:text-white dark:opacity-80 mt-1">Edit</a>
+                          <a href="javascript:;" class="block text-center text-xs font-semibold leading-tight text-slate-400 dark:text-white dark:opacity-80 mt-1">Lihat</a>
                         </td>
                       </tr>
                       <tr>
@@ -333,13 +320,13 @@
                           <p class="mb-0 text-xs leading-tight dark:text-white dark:opacity-80 text-slate-400">Kapasitas total tidak sesuai dengan data</p>
                         </td>
                         <td class="p-2 text-sm leading-normal text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                          <span class="bg-gradient-to-tl from-slate-600 to-slate-300 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Ditolak</span>
+                          <span class="bg-gradient-to-tl from-slate-600 to-slate-300 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white" >Ditolak</span>
                         </td>
                         <td class="p-2 text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
                           <span class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400">11/01/19</span>
                         </td>
                         <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                          <a href="javascript:;" class="block text-center text-xs font-semibold leading-tight text-slate-400 dark:text-white dark:opacity-80 mt-1">Edit</a>
+                          <a href="javascript:;" class="block text-center text-xs font-semibold leading-tight text-slate-400 dark:text-white dark:opacity-80 mt-1">Lihat</a>
                         </td>
                       </tr>
                       <tr>
@@ -364,7 +351,7 @@
                           <span class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400">19/09/17</span>
                         </td>
                         <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                          <a href="javascript:;" class="block text-center text-xs font-semibold leading-tight text-slate-400 dark:text-white dark:opacity-80 mt-1">Edit</a>
+                          <a href="javascript:;" class="block text-center text-xs font-semibold leading-tight text-slate-400 dark:text-white dark:opacity-80 mt-1">Lihat</a>
                         </td>
                       </tr>
                       <tr>
@@ -389,7 +376,7 @@
                           <span class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400">24/12/08</span>
                         </td>
                         <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                          <a href="javascript:;" class="block text-center text-xs font-semibold leading-tight text-slate-400 dark:text-white dark:opacity-80 mt-1">Edit</a>
+                          <a href="javascript:;" class="block text-center text-xs font-semibold leading-tight text-slate-400 dark:text-white dark:opacity-80 mt-1">Lihat</a>
                         </td>
                       </tr>
                       <tr>
@@ -408,13 +395,13 @@
                           <p class="mb-0 text-xs leading-tight dark:text-white dark:opacity-80 text-slate-400">Executive</p>
                         </td>
                         <td class="p-2 text-sm leading-normal text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                          <span class="bg-gradient-to-tl from-slate-600 to-slate-300 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Ditolak</span>
+                          <span class="bg-gradient-to-tl px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white" style="background-color: #B83C08;">Ditolak</span>
                         </td>
                         <td class="p-2 text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
                           <span class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400">04/10/21</span>
                         </td>
                         <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                          <a href="javascript:;" class="block text-center text-xs font-semibold leading-tight text-slate-400 dark:text-white dark:opacity-80 mt-1">Edit</a>
+                          <a href="javascript:;" class="block text-center text-xs font-semibold leading-tight text-slate-400 dark:text-white dark:opacity-80 mt-1">Lihat</a>
                         </td>
                       </tr>
                       <tr>
@@ -440,7 +427,7 @@
                           <span class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400">14/09/20</span>
                         </td>
                         <td class="p-2 align-middle bg-transparent border-b-0 whitespace-nowrap shadow-transparent">
-                          <a href="javascript:;" class="block text-center text-xs font-semibold leading-tight text-slate-400 dark:text-white dark:opacity-80 mt-1">Edit</a>
+                          <a href="javascript:;" class="block text-center text-xs font-semibold leading-tight text-slate-400 dark:text-white dark:opacity-80 mt-1">Lihat</a>
                         </td>
                       </tr>
                     </tbody>
@@ -450,7 +437,7 @@
             </div>
           </div>
         </div>
-
+    
         <!-- card 2 -->
 
         <!-- <div class="flex flex-wrap -mx-3">

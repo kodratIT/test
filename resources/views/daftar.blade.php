@@ -4,18 +4,18 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png" />
-    <link rel="icon" type="image/png" href="../assets/img/favicon.png" />
+
+    <link rel="icon" type="image/png" href="{{ asset('assets/img/logo-esdm.svg') }}" />
     <title>Daftar Akun</title>
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
     <!-- Font Awesome Icons -->
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
     <!-- Nucleo Icons -->
-    <link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
-    <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
+    <link href="{{ asset('assets/css/nucleo-icons.css') }} " rel="stylesheet" />
+    <link href=" {{ asset('assets/css/nucleo-svg.css ') }}" rel="stylesheet" />
     <!-- Main Styling -->
-    <link href="../assets/css/argon-dashboard-tailwind.css?v=1.0.1" rel="stylesheet" />
+    <link href="{{ asset('assets/css/argon-dashboard-tailwind.css?v=1.0.1') }}" rel="stylesheet" />
   </head>
 
   <body class="m-0 font-sans antialiased font-normal bg-white text-start text-base leading-default text-slate-500">
@@ -55,7 +55,7 @@
 
     <main class="mt-0 transition-all duration-200 ease-in-out">
       <section class="min-h-screen">
-        <div class="bg-top relative flex items-start pt-12 pb-56 m-4 overflow-hidden bg-cover min-h-50-screen rounded-xl bg-[url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signup-cover.jpg')]">
+        <div class="bg-top relative flex items-start pt-12 pb-56 m-4 overflow-hidden bg-cover min-h-50-screen rounded-xl "  style="background-image: url('{{ asset('assets/img/listrik.jpg') }}')">
           <span class="absolute top-0 left-0 w-full h-full bg-center bg-cover bg-gradient-to-tl from-zinc-800 to-zinc-700 opacity-60"></span>
           <div class="container z-10">
             <div class="flex flex-wrap justify-center -mx-3">
@@ -116,7 +116,7 @@
                     <div class="text-center">
                       <button type="button" class="inline-block w-full px-5 py-2.5 mt-6 mb-2 font-bold text-center text-white align-middle transition-all bg-transparent border-0 rounded-lg cursor-pointer active:opacity-85 hover:-translate-y-px hover:shadow-xs leading-normal text-sm ease-in tracking-tight-rem shadow-md bg-150 bg-x-25 bg-gradient-to-tl from-zinc-800 to-zinc-700 hover:border-slate-700 hover:bg-slate-700 hover:text-white">Daftarkan Akun</button>
                     </div>
-                    <p class="mt-4 mb-0 leading-normal text-sm">Anda sudah ada akun? <a href="../pages/sign-in.html" class="font-bold text-slate-700">Masuk</a></p>
+                    <p class="mt-4 mb-0 leading-normal text-sm">Anda sudah ada akun? <a href="{{ route('masuk') }}" class="font-bold text-slate-700">Masuk</a></p>
                   </form>
                 </div>
               </div>
