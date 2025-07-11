@@ -246,11 +246,11 @@
 
       <!-- end Navbar -->
 
-      <!-- cards -->
+    
       <div class="w-full px-6 py-6 mx-auto">
-        <!-- row 1 -->
+      <!-- row 1
         <div class="flex flex-wrap -mx-3">
-          <!-- card1 -->
+          card1
           <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
             <div class="relative flex flex-col min-w-0 break-words bg-white shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
               <div class="flex-auto p-4">
@@ -275,7 +275,7 @@
             </div>
           </div>
 
-          <!-- card2 -->
+         card2
           <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
             <div class="relative flex flex-col min-w-0 break-words bg-white shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
               <div class="flex-auto p-4">
@@ -300,7 +300,7 @@
             </div>
           </div>
 
-          <!-- card3 -->
+           card3
           <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
             <div class="relative flex flex-col min-w-0 break-words bg-white shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
               <div class="flex-auto p-4">
@@ -325,7 +325,7 @@
             </div>
           </div>
 
-          <!-- card4 -->
+          card4 
           <div class="w-full max-w-full px-3 sm:w-1/2 sm:flex-none xl:w-1/4">
             <div class="relative flex flex-col min-w-0 break-words bg-white shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
               <div class="flex-auto p-4">
@@ -351,24 +351,111 @@
           </div>
         </div>
 
-        <!-- cards row 2 -->
-        <div class="flex flex-wrap mt-6 -mx-3">
-          <div class="w-full max-w-full px-3 mt-0 lg:w-full lg:flex-none">
-            <div class="border-black/12.5 dark:bg-slate-850 dark:shadow-dark-xl shadow-xl relative z-20 flex min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border">
-              <div class="border-black/12.5 mb-0 rounded-t-2xl border-b-0 border-solid p-6 pt-4 pb-0">
-                <h6 class="capitalize dark:text-white">Ringkasan Jumlah surat</h6>
-                <p class="mb-0 text-sm leading-normal dark:text-white dark:opacity-60">
-                  <i class="fa fa-arrow-up text-emerald-500"></i>
-                  <span class="font-semibold"></span> 2025
-                </p>
-              </div>
-              <div class="flex-auto p-4">
-                <div>
-                  <canvas id="chart-line" height="300"></canvas>
-                </div>
-              </div>
-            </div>
-          </div>
+         cards row 2 -->
+        <!-- Tempatkan dalam halaman Laravel kamu -->
+
+<div class="flex flex-wrap mt-6 -mx-3">
+  <div class="w-full max-w-full px-3 mt-0 lg:w-full lg:flex-none">
+    <div class="border-black/12.5 dark:bg-slate-850 dark:shadow-dark-xl shadow-xl relative z-20 flex min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border">
+
+      <!-- Header -->
+      <div class="border-black/12.5 mb-0 rounded-t-2xl border-b-0 border-solid p-6 pt-4 pb-0">
+        <h6 class="capitalize dark:text-white">Progress Pengajuan</h6>
+        <p class="mb-0 text-sm leading-normal dark:text-white dark:opacity-60">
+          <i class="fa fa-arrow-up text-emerald-500"></i>
+        <!--  <span class="font-semibold">2025</span> -->
+        </p>
+      </div>
+
+      <!-- Body -->
+      <div class="flex-auto p-4">
+
+        <!-- STEP PROGRESS -->
+        <div class="w-full px-4 py-3">
+          <div class="flex items-center justify-between text-center text-sm font-medium text-gray-600">
+
+          <div class="flex-1 cursor-pointer" onclick="showStep(1)">
+  <div class="relative w-10 h-10 mx-auto bg-green-500 text-white rounded-full flex items-center justify-center" > 
+    1
+    <span class="absolute -top-2 -right-2 bg-white text-green-600 border border-green-500 rounded-full text-[10px] px-1 font-bold" style="color:white; background-color:green;">
+      1
+    </span>
+  </div>
+  <div class="text-xs text-green-600 font-semibold mt-1">Telah Diajukan</div>
+</div>
+
+ <div class="flex-1 cursor-pointer" onclick="showStep(2)">
+  <div class="relative w-10 h-10 mx-auto bg-green-500 text-white rounded-full flex items-center justify-center" > 
+    1
+    <span class="absolute -top-2 -right-2 bg-white text-green-600 border border-green-500 rounded-full text-[10px] px-1 font-bold" style="color:white; background-color:green;">
+      1
+    </span>
+  </div>
+  <div class="text-xs text-green-600 font-semibold mt-1">Diverifikasi</div>
+</div>
+
+ <div class="flex-1 cursor-pointer" onclick="showStep(3)">
+  <div class="relative w-10 h-10 mx-auto bg-green-500 text-white rounded-full flex items-center justify-center" > 
+    1
+    <span class="absolute -top-2 -right-2 bg-white text-green-600 border border-green-500 rounded-full text-[10px] px-1 font-bold" style="color:white; background-color:green;">
+      0
+    </span>
+  </div>
+  <div class="text-xs text-green-600 font-semibold mt-1">Diverifikasi</div>
+</div>
+
+ <div class="flex-1 cursor-pointer" onclick="showStep(4)">
+  <div class="relative w-10 h-10 mx-auto bg-green-500 text-white rounded-full flex items-center justify-center" > 
+    1
+    <span class="absolute -top-2 -right-2 bg-white text-green-600 border border-green-500 rounded-full text-[10px] px-1 font-bold" style="color:white; background-color:green;">
+      0
+    </span>
+  </div>
+  <div class="text-xs text-green-600 font-semibold mt-1">Surat Diterbitkan</div>
+</div>
+
+            <!-- Step 4 -->
+         
+        </div>
+
+        <!-- Konten Surat -->
+        <div id="suratContent" class="mt-6 p-4 bg-gray-100 rounded-xl border border-gray-300 text-sm text-gray-700">
+         showStep(step)
+        </div>
+
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showStep(step) {
+    
+    const content = document.getElementById('suratContent');
+
+    switch (step) {
+      case 1:
+        content.innerHTML = `<strong>Telah Diajukan:</strong> Surat telah diajukan oleh pemohon. Menunggu verifikasi.`;
+        break;
+      case 2:
+        content.innerHTML = `<strong>Diverifikasi:</strong> Surat sedang diverifikasi oleh petugas verifikator.`;
+        break;
+      case 3:
+        content.innerHTML = `<strong>Divalidasi:</strong> Surat sudah diverifikasi dan sedang divalidasi oleh pejabat terkait.`;
+        break;
+      case 4:
+        content.innerHTML = `<strong>Surat Diterbitkan:</strong> Surat resmi telah diterbitkan dan siap diambil atau diunduh.`;
+        break;
+      default:
+        content.innerHTML = `Klik salah satu langkah untuk melihat informasi surat.`;
+    }
+  }
+
+    document.addEventListener("DOMContentLoaded", function() {
+    showStep(1);
+  });
+</script>
 
           <div class="w-full max-w-full px-3 lg:w-5/12 lg:flex-none">
             <div slider class="relative w-full h-full overflow-hidden rounded-2xl">
@@ -419,7 +506,7 @@
         </div>
         
 
-        <!-- cards row 3 -->
+        <!-- cards row 3 
 
         <div class="flex flex-wrap mt-6 -mx-3">
           <div class="w-full max-w-full px-3 mt-0 mb-6 lg:mb-0 lg:w-7/12 lg:flex-none">
@@ -648,8 +735,27 @@
           </div>
         </footer>
       </div>
-      <!-- end cards -->
-    </main>
+    
+    </main>  -->
+
+<footer class="pt-4">
+          <div class="w-full px-6 mx-auto">
+            <div class="flex flex-wrap items-center -mx-3 lg:justify-between">
+              <div class="w-full max-w-full px-3 mt-0 mb-6 shrink-0 lg:mb-0 lg:w-1/2 lg:flex-none">
+                <div class="text-sm leading-normal text-center text-slate-500 lg:text-left">
+                  ©
+                  <script>
+                    document.write(new Date().getFullYear() + ",");
+                  </script>
+                  made with <i class="fa fa-heart"></i> by
+                  <a href="https://www.creative-tim.com" class="font-semibold text-slate-700 dark:text-white" target="_blank">Creative Tim</a>
+                  for a better web.
+                </div>
+              </div>
+            </div>
+          </div>
+        </footer>
+
       <!-- -right-90 in loc de 0-->
       <div fixed-plugin-card class="z-sticky backdrop-blur-2xl backdrop-saturate-200 dark:bg-slate-850/80 shadow-3xl w-90 ease -right-90 fixed top-0 left-auto flex h-full min-w-0 flex-col break-words rounded-none border-0 bg-white/80 bg-clip-border px-2.5 duration-200">
         <div class="px-6 pt-4 pb-0 mb-0 border-b-0 rounded-t-2xl">
