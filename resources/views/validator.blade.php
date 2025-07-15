@@ -11,13 +11,12 @@
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
   <!-- Font Awesome Icons -->
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!-- Nucleo Icons -->
   <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
   <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
   <!-- Popper -->
-  <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
   <!-- Main Styling -->
   <link href="{{ asset('assets/css/argon-dashboard-tailwind.css?v=1.0.1') }}" rel="stylesheet" />
 </head>
@@ -63,14 +62,11 @@
 
 <body
   class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">
-  <div class="absolute w-full dark:hidden min-h-75" style="background-color: #08A04B;"></div>
+  <div class="absolute w-full bg-blue-500 dark:hidden min-h-75"></div>
 
+  <!-- sidenav  -->
   <aside
-    class="fixed inset-y-0 flex-wrap items-center 
-    justify-between block w-full p-0 my-4 overflow-y-auto 
-    antialiased transition-transform duration-200 -translate-x-full 
-    bg-white border-0 shadow-xl dark:shadow-none dark:bg-slate-850 
-    max-w-64 ease-nav-brand z-990 xl:ml-6 rounded-2xl xl:left-0 xl:translate-x-0"
+    class="fixed inset-y-0 flex-wrap items-center justify-between block w-full p-0 my-4 overflow-y-auto antialiased transition-transform duration-200 -translate-x-full bg-white border-0 shadow-xl dark:shadow-none dark:bg-slate-850 max-w-64 ease-nav-brand z-990 xl:ml-6 rounded-2xl xl:left-0 xl:translate-x-0"
     aria-expanded="false">
 
     <div class="sticky top-0 z-50 bg-white h-19 px-4 flex items-center justify-between shadow-sm">
@@ -97,29 +93,18 @@
 
         <li class="mt-0.5 w-full">
           <a class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
-            href="/dashboarduser">
+            href="">
             <div
               class="mr-2 flex h-1 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
               <i class="relative top-0 text-sm leading-normal text-blue-500 ni ni-tv-2"></i>
             </div>
-            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Beranda</span>
+            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Dashboard</span>
           </a>
         </li>
 
         <li class="mt-0.5 w-full">
           <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
-            href="/pengajuansurat">
-            <div
-              class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-              <i class="relative top-0 text-sm leading-normal text-cyan-500 ni ni-app"></i>
-            </div>
-            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Ajukan Permohonan</span>
-          </a>
-        </li>
-
-        <li class="mt-0.5 w-full">
-          <a class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
-            href="/daftarpengajuanpengguna">
+            href="">
             <div
               class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
               <i class="relative top-0 text-sm leading-normal text-orange-500 ni ni-calendar-grid-58"></i>
@@ -128,20 +113,6 @@
           </a>
         </li>
 
-
-        <li class="mt-0.5 w-full">
-          <a class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
-            href="/daftarpengajuanpengguna">
-            <div
-              class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center fill-current stroke-0 text-center xl:p-2.5">
-              <i class="relative top-0 text-sm leading-normal text-emerald-500 ni ni-credit-card"></i>
-            </div>
-            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Surat Keterangan</span>
-          </a>
-        </li>
-
-
-
         <li class="w-full mt-4">
           <h6 class="pl-6 ml-2 text-xs font-bold leading-tight uppercase dark:text-white opacity-60">Pengaturan Akun
           </h6>
@@ -149,7 +120,7 @@
 
         <li class="mt-0.5 w-full">
           <a class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
-            href="/profile">
+            href="">
             <div
               class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
               <i class="relative top-0 text-sm leading-normal text-slate-700 ni ni-single-02"></i>
@@ -157,29 +128,7 @@
             <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Profil</span>
           </a>
         </li>
-        <!-- disini logout 
-        <li class="mt-0.5 w-full">
-          <a class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
-            href="../pages/sign-in.html">
-            <div
-              class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-              <i class="relative top-0 text-sm leading-normal text-orange-500 ni ni-single-copy-04"></i>
-            </div>
-            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Masuk</span>
-          </a>
-        </li>
 
-        <li class="mt-0.5 w-full">
-          <a class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
-            href="../pages/sign-up.html">
-            <div
-              class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-              <i class="relative top-0 text-sm leading-normal text-cyan-500 ni ni-collection"></i>
-            </div>
-            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Daftar</span>
-          </a>
-        </li>
-        -->
       </ul>
     </div>
 
@@ -347,10 +296,11 @@
           <div class="flex-auto p-4">
             <div class="flex flex-col -mx-3">
               <div class="w-full max-w-full px-3">
-                <h4 class="text-lg font-bold mb-4 text-gray-700 dark:text-white text-center uppercase">DATA TEKNIS</h4>
+                <h4 class="text-lg font-bold mb-4 text-gray-700 dark:text-white text-center uppercase">Form Pengajuan
+                  Surat</h4>
 
                 <form id="suratpengajuan" method="POST" action="/submit-url" onsubmit="return validateForm()">
-                  <p class="leading-normal  dark:text-white dark:opacity-60 text-base font-bold">Data Pembangkit Tenaga Listrik
+                  <p class="leading-normal  dark:text-white dark:opacity-60 text-base font-bold">Data Teknis
                   </p>
                   <div class="flex flex-wrap -mx-3">
                     <div class="w-full max-w-full px-3 shrink-0 md:w-full md:flex-0">
@@ -358,93 +308,128 @@
                       <label class="block text-sm font-medium text-gray-700 mb-2">
                         Jenis Pembangkit Tenaga Listrik
                       </label>
-                      <select id="pembangkitSelect" class="w-full border px-4 py-2 rounded mb-4"
-                        onchange="showForm(this.value)" data-required>
-                        <option value="" disabled selected hidden>- Pilih Jenis Pembangkit -</option>
-                        <option value="nonSurya">Pembangkit Listrik Selain Tenaga Surya</option>
-                        <option value="surya">Pembangkit Listrik Tenaga Surya</option>
-                      </select>
+                      <p class="w-full border px-4 py-2 rounded mb-4 bg-gray-100">
+                        Pembangkit Listrik Selain Tenaga Surya
+                      </p>
                       <!-- FORM NON SURYA -->
-                      <div id="form-nonSurya" class="hidden">
+                      <div id="form-nonSurya" class="">
                         <h3 class="font-semibold mb-2"></h3>
-                        <div class="mb-4 flex flex-wrap gap-2">
-
-                          <button type="button" onclick="tambahKolom('nonSurya')"
-                            class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded">
-                            Tambah Unit
-                          </button>
-                          <button type="button" onclick="kurangiKolom('nonSurya')"
-                            class="bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded ">
-                            Kurangi Unit
-                          </button>
-                        </div>
-
-
                         <div class="overflow-scroll">
                           <table id="table-nonSurya">
                             <thead>
                               <tr id="header-nonSurya">
-                                <th>SPESIFIKASI</th>
-                                <th>UNIT 1</th>
+                                <th>Spesifikasi</th>
+                                <th>Unit 1</th>
+                                <th>Unit 2</th>
                               </tr>
                             </thead>
+
                             <tbody id="body-nonSurya">
                               <tr>
-                                <td>Jenis Penggerak</td>
-                                <td><input placeholder="Contoh: Air / Diesel / Gas dsb" name="jenis_1" data-required></td>
+                                <td class="text-middle align-middle">Jenis Penggerak</td>
+                                <td class="text-middle align-middle">
+                                  Turbin Uap
+                                  <input type="hidden" name="jenis_1" value="nonSurya" readonly>
+                                </td>
+                                <td class="text-middle align-middle">
+                                  Mesin Diesel
+                                  <input type="hidden" name="jenis_2" value="nonSurya" readonly>
+                                </td>
                               </tr>
                               <tr>
                                 <td>Merek</td>
-                                <td><input name="merek_1" data-required></td>
+                                <td class="text-center align-middle">
+                                  Elliott
+                                  <input type="hidden" name="merek_1" value="nonSurya" readonly>
+                                </td>
+                                <td class="text-center align-middle">
+                                  FG WILSON
+                                  <input type="hidden" name="merek_2" value="nonSurya" readonly>
+                                </td>
                               </tr>
                               <tr>
                                 <td>Tipe</td>
-                                <td><input name="tipe_1" data-required></td>
+                                <td class="text-center align-middle">
+                                  DYRUG III
+                                  <input type="hidden" name="tipe_1" value="nonSurya" readonly>
+                                </td>
+                                <td class="text-center align-middle">
+                                  D2840LE201
+                                  <input type="hidden" name="tipe_2" value="nonSurya" readonly>
+                                </td>
                               </tr>
                               <tr>
                                 <td>Negara Pembuat</td>
-                                <td><input name="negara_1" data-required></td>
+                                <td class="text-center align-middle">
+                                  USA
+                                  <input type="hidden" name="negara_1" value="nonSurya" readonly>
+                                </td>
+                                <td class="text-center align-middle">
+                                  GERMANY
+                                  <input type="hidden" name="negara_2" value="nonSurya" readonly>
+                                </td>
                               </tr>
                               <tr>
                                 <td>Tahun Pembuatan</td>
-                                <td><input name="tahun_1" data-required></td>
+                                <td class="text-center align-middle">
+                                  2010
+                                  <input type="hidden" name="tahun_1" value="nonSurya" readonly>
+                                </td>
+                                <td class="text-center align-middle">
+                                  2009
+                                  <input type="hidden" name="tahun_2" value="nonSurya" readonly>
+                                </td>
                               </tr>
                               <tr>
                                 <td>Kapasitas (kW)</td>
-                                <td><input placeholder="Satuan Dalam kilo Watt (kW) " name="kapasitas_1" data-required></td>
+                                <td class="text-center align-middle">
+                                  1488
+                                  <input type="hidden" name="kapasitas_1" value="nonSurya" readonly>
+                                </td>
+                                <td class="text-center align-middle">
+                                  496
+                                  <input type="hidden" name="kapasitas_2" value="nonSurya" readonly>
+                                </td>
                               </tr>
                               <tr>
                                 <td>Energi Primer</td>
-                                <td><input placeholder="Contoh: Air / Biosolar / Dexlite / Pertamax / LPG / Biogas dsb" name="primer_1" data-required></td>
+                                <td class="text-center align-middle">
+                                  <input type="hidden" name="primer_1" value="nonSurya" readonly>
+                                </td>
+                                <td class="text-center align-middle">
+                                  <input type="hidden" name="primer_2" value="nonSurya" readonly>
+                                </td>
                               </tr>
                               <tr>
-                                <td>Titik Koordinat (Latitude) </td>
-                                <td><input name="titikkordinat_1" data-required></td>
-                              </tr>
-                              <tr>
-                                <td>Titik Koordinat (Longitude) </td>
-                                <td><input name="titikkordinat_1" data-required></td>
+                                <td>Titik Kordinat</td>
+                                <td class="text-center align-middle">
+                                  S 01°54.00'22.90" E 103°00.00'46.10"
+                                  <input type="hidden" name="titikkoordinat_1" value="nonSurya" readonly>
+                                </td>
+                                <td class="text-center align-middle">
+                                  S 01°54.00'23.20" E 103°00.00'46.70"
+                                  <input type="hidden" name="titikkoordinat_2" value="nonSurya" readonly>
+                                </td>
                               </tr>
                               <tr>
                                 <td>Sifat Penggunaan</td>
-                                <td>
-                                  <select name="sifat_1" data-required>
-                                    <option value="" disabled selected hidden>- Pilih -</option>
-                                    <option value="Darurat">Utama</option>
-                                    <option value="Permanen">Cadangan</option>
-                                    <option value="Sementara">Darurat</option>
-                                    <option value="Musiman">Sementara</option>
-                                  </select>
+                                <td class="text-center align-middle">
+                                  Darurat
+                                  <input type="hidden" name="sifatpenggunaan_1" value="nonSurya" readonly>
+                                </td>
+                                <td class="text-center align-middle">
+                                  Sementara
+                                  <input type="hidden" name="sifatpenggunaan_2" value="nonSurya" readonly>
                                 </td>
                               </tr>
                             </tbody>
+
                           </table>
                         </div>
                       </div>
 
-                      <!-- FORM TENAGA SURYA -->
+                      <!-- FORM TENAGA SURYA 
                       <div id="form-surya" class="hidden">
-
                         <h3 class="font-semibold mb-2"></h3>
                         <div class="mb-4 flex flex-wrap gap-2">
                           <button type="button" onclick="tambahKolom('surya')"
@@ -456,204 +441,84 @@
                             Kurangi Unit
                           </button>
                         </div>
-
                         <div class="overflow-scroll">
                           <table id="table-surya">
                             <thead>
                               <tr id="header-surya">
-                                <th>SPESIFIKASI</th>
-                                <th>UNIT 1</th>
+                                <th>Spesifikasi</th>
+                                <th>Unit 1</th>
+                                <th>Unit 2</th>
                               </tr>
                             </thead>
                             <tbody id="body-surya">
                               <tr>
                                 <td>Merek</td>
-                                <td><input name="smerek_1" data-required></td>
+                                <td><label name="smerek_1" readonly></td>
                               </tr>
                               <tr>
                                 <td>Tipe</td>
-                                <td><input name="stipe_1" data-required></td>
+                                <td><label name="stipe_1" readonly></td>
                               </tr>
                               <tr>
                                 <td>Negara Pembuat</td>
-                                <td><input name="snegara_1" data-required></td>
+                                <td><label name="snegara_1" readonly></td>
                               </tr>
                               <tr>
                                 <td>Tahun Pembuatan</td>
-                                <td><input name="stahun_1" data-required></td>
+                                <td><label name="stahun_1" readonly></td>
                               </tr>
                               <tr>
-                                <td>Kapasitas (kilo Watt-peak)</td>
-                                <td><input placeholder="Satuan Dalam kilo Watt peak (kWp) " name="skapasitas_1" data-required></td>
+                                <td>Kapasitas (watt-peak)</td>
+                                <td><label name="skapasitas_1" readonly></td>
                               </tr>
                               <tr>
-                                <td>Titik Koordinat (Latitude)</td>
-                                <td><input name="titikkordinat_1" data-required></td>
-                              </tr>
-                              <tr>
-                                <td>Titik Koordinat (Longitude) </td>
-                                <td><input name="titikkordinat_1" data-required></td>
+                                <td>Titik Kordinat</td>
+                                <td><label name="stitikkordinat_1" readonly></td>
                               </tr>
                               <tr>
                                 <td>Sifat Penggunaan</td>
                                 <td>
-                                  <select name="sifat_1" data-required>
+                                  <select name="sifat_1" readonly>
                                     <option value="" disabled selected hidden>-- Pilih --</option>
-                                    <option value="Darurat">Utama</option>
-                                    <option value="Permanen">Cadangan</option>
-                                    <option value="Sementara">Darurat</option>
-                                    <option value="Musiman">Sementara</option>
+                                    <option value="Darurat">Darurat</option>
+                                    <option value="Permanen">Permanen</option>
+                                    <option value="Sementara">Sementara</option>
+                                    <option value="Musiman">Musiman</option>
                                   </select>
                                 </td>
                               </tr>
                             </tbody>
                           </table>
-                          <br>
                         </div>
                       </div>
-                      <script>
-                        function showForm(val) {
-                          // Sembunyikan semua form terlebih dahulu
-                          document.getElementById('form-nonSurya').classList.add('hidden');
-                          document.getElementById('form-surya').classList.add('hidden');
-                          document.getElementById('alamatForm1').classList.add('hidden');
-
-                          // Tampilkan form sesuai jenis pembangkit
-                          if (val === 'nonSurya') {
-                            document.getElementById('form-nonSurya').classList.remove('hidden');
-                            document.getElementById('alamatForm1').classList.remove('hidden');
-                            tampilkanLampiran('nonSurya');
-                          } else if (val === 'surya') {
-                            document.getElementById('form-surya').classList.remove('hidden');
-                            document.getElementById('alamatForm1').classList.remove('hidden');
-                            tampilkanLampiran('surya');
-                          }
-                        }
-
-                        function tampilkanLampiran(tipe) {
-                          const labelGenerator = document.querySelector('label[for="foto_generator"]');
-                          const labelMesin = document.querySelector('label[for="foto_mesin"]');
-                          const inputGenerator = document.getElementById('foto_generator');
-                          const inputMesin = document.getElementById('foto_mesin');
-
-                          if (!labelGenerator || !labelMesin || !inputGenerator || !inputMesin) return;
-
-                          if (tipe === 'nonSurya') {
-                            labelGenerator.innerText = "Foto Papan Nama (Name Plate) Generator";
-                            labelMesin.innerText = "Foto Papan Nama (Name Plate) Mesin Penggerak";
-
-                            inputGenerator.setAttribute("name", "foto_generator");
-                            inputMesin.setAttribute("name", "foto_mesin");
-                          } else if (tipe === 'surya') {
-                            labelGenerator.innerText = "Foto Papan Nama (Name Plate) Modul PLTS";
-                            labelMesin.innerText = "Foto Papan Nama (Name Plate) Inverter PLTS";
-
-                            inputGenerator.setAttribute("name", "foto_modul");
-                            inputMesin.setAttribute("name", "foto_inverter");
-                          }
-
-                          inputGenerator.required = true;
-                          inputMesin.required = true;
-                        }
-
-                        function tambahKolom(tipe) {
-                          const prefix = tipe === 'surya' ? 's' : '';
-                          const header = document.getElementById('header-' + tipe);
-                          const tbody = document.getElementById('body-' + tipe);
-                          const kolomBaru = header.children.length;
-
-                          const th = document.createElement('th');
-                          th.innerText = 'UNIT ' + kolomBaru;
-
-
-                          header.appendChild(th);
-
-                          const rows = tbody.getElementsByTagName('tr');
-                          for (let i = 0; i < rows.length; i++) {
-                            const td = document.createElement('td');
-                            const specName = rows[i].children[0].innerText.trim().toLowerCase().replace(/\s+/g, '');
-
-                            if (specName === 'sifatpenggunaan') {
-                              const select = document.createElement('select');
-                              select.name = prefix + 'sifat_' + kolomBaru;
-                              select.required = true;
-
-                              const options = ['-- Pilih --', 'Darurat', 'Permanen', 'Sementara', 'Musiman'];
-                              options.forEach((opt, index) => {
-                                const option = document.createElement('option');
-                                option.value = index === 0 ? '' : opt;
-                                option.text = opt;
-                                if (index === 0) {
-                                  option.disabled = true;
-                                  option.selected = true;
-                                  option.hidden = true;
-                                }
-                                select.appendChild(option);
-                              });
-
-                              td.appendChild(select);
-                            } else {
-                              const input = document.createElement('input');
-                              input.name = prefix + specName + '_' + kolomBaru;
-                              input.required = true;
-                              td.appendChild(input);
-                            }
-
-                            rows[i].appendChild(td);
-                          }
-                        }
-
-                        function kurangiKolom(tipe) {
-                          const header = document.getElementById('header-' + tipe);
-                          const tbody = document.getElementById('body-' + tipe);
-
-                          if (header.children.length > 2) {
-                            header.removeChild(header.lastElementChild);
-                            const rows = tbody.getElementsByTagName('tr');
-                            for (let i = 0; i < rows.length; i++) {
-                              rows[i].removeChild(rows[i].lastElementChild);
-                            }
-                          }
-                        }
-                      </script>
-
+                      -->
 
                       <!-- Bagian 2: Jaringan Distribusi -->
-                      <div class="mb-10">
+                      <div class="mb-4">
                         <p class="leading-normal dark:text-white dark:opacity-60 text-base font-bold">Jaringan
                           Distribusi</p>
 
-                        <label for="jaringanDistribusi" class="block text-sm font-medium text-gray-700 mb-2">Apakah Ada
-                          Jaringan Distribusi?</label>
-                        <select id="jaringanDistribusi"
-                          class="w-full px-4 py-2 border rounded-lg dark:bg-slate-700 dark:text-white"
-                          onchange="toggleJaringanDistribusi()" data-required>
-                          <option value="" disabled selected hidden>- Pilih -</option>
-                          <option value="ada">Ada</option>
-                          <option value="tidak">Tidak Ada</option>
-                        </select>
-
                         <!-- Form Tambahan Jaringan Distribusi -->
 
-                        <div id="form-jaringan" class="hidden mt-4">
+                        <div id="form-jaringan" class="">
                           <div class="mb-4">
                             <label for="panjangSaluran" class="block text-sm font-medium text-gray-700">Panjang Saluran (Kms)</label>
                             <input type="text" id="panjangSaluran" name="panjang_saluran"
                               class="mt-1 w-full p-2 border rounded dark:bg-slate-700 dark:text-white"
-                              placeholder="Contoh: 13,00"
+                              placeholder="13,00"
                               pattern="^\d+(,\d{1,2})?$"
                               title="Gunakan angka bulat atau dengan koma maksimal dua angka desimal, misal: 220, 220,5 atau 220,50"
-                              data-required>
+                              readonly>
                           </div>
 
                           <div class="mb-4">
                             <label for="tegangan" class="block text-sm font-medium text-gray-700">Tegangan (Volt)</label>
                             <input type="text" id="tegangan" name="tegangan"
                               class="mt-1 w-full p-2 border rounded dark:bg-slate-700 dark:text-white"
-                              placeholder="Contoh: 220,00"
+                              placeholder="220,00"
                               pattern="^\d+(,\d{1,2})?$"
                               title="Gunakan angka bulat atau dengan koma maksimal dua angka desimal, misal: 220, 220,5 atau 220,50"
-                              data-required>
+                              readonly>
                           </div>
                         </div>
 
@@ -687,27 +552,20 @@
 
 
                         <!-- Bagian 3: Sambungan Listrik dari Pihak Lain -->
-                        <div class="mb-6">
+                        <div class="mb-4">
                           <p class="eading-normal dark:text-white dark:opacity-60 text-base font-bold">Sambungan
                             Listrik dari Pihak Lain</p>
-                          <label for="sambunganListrik" class="block text-sm font-medium text-gray-700 mb-2">Apakah Ada
-                            Sambungan Listrik dari Pihak Lain?</label>
-                          <select id="sambunganListrik"
-                            class="w-full px-4 py-2 border rounded-lg dark:bg-slate-700 dark:text-white"
-                            onchange="toggleSambunganForm()" data-required>
-                            <option value="" disabled selected hidden>- Pilih -</option>
-                            <option value="ada">Ada</option>
-                            <option value="tidak">Tidak Ada</option>
-                          </select>
+
+
 
                           <!-- Form Tambahan Jika "Ada" -->
-                          <div id="form-sambungan" class="hidden mt-4">
+                          <div id="form-sambungan" class="">
                             <div class="mb-4">
                               <label for="pihakLain" class="block text-sm font-medium text-gray-700">Dari Pihak
                                 Lain</label>
                               <input type="text" id="pihakLain" name="pihak_lain"
                                 class="mt-1 w-full p-2 border rounded dark:bg-slate-700 dark:text-white"
-                                placeholder="Contoh: PT. PLN" data-required>
+                                placeholder="PT. PLN" readonly>
                             </div>
 
                             <div class="mb-4">
@@ -715,10 +573,10 @@
                                 (kVA)</label>
                               <input type="text" id="dayaTersambung" name="daya_tersambung"
                                 class="mt-1 w-full p-2 border rounded dark:bg-slate-700 dark:text-white"
-                                placeholder="Contoh: 50,00"
+                                placeholder="50,00"
                                 pattern="^\d+(,\d{1,2})?$"
                                 title="Gunakan angka bulat atau dengan koma maksimal dua angka desimal, misal: 50, 50,5 atau 50,00"
-                                data-required>
+                                readonly>
 
                             </div>
                           </div>
@@ -763,56 +621,58 @@
 
                         <!--Lokasi Instalasi Penyedia Tenaga Listrik-->
 
-
+                        <hr class="h-px mx-0 my-4 bg-transparent border-0 opacity-25 bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent" />
 
                         <p id="toggleAlamat" class="leading-normal dark:text-white dark:opacity-60 text-base font-bold cursor-pointer">
-                          Lokasi Instalasi Penyediaan Tenaga Listrik
-
+                          Lokasi instalasi penyedia tenaga listrik
+                          <svg class="w-4 h-4 ml-2 inline" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                          </svg>
                         </p>
 
                         <div class="flex flex-wrap -mx-3">
                           <div class="w-full max-w-full px-3 shrink-0 md:w-full md:flex-0">
-                            <div id="alamatForm" class=" mb-4">
-                              <div class="mb-4">
-                                <label for="keterangan" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">Nama Jalan</label>
-                                <textarea name="keterangan" rows="2" id="keterangan" class="w-full px-4 py-2 border rounded-lg dark:bg-slate-700 dark:text-white" data-required></textarea>
-                              </div>
+                            <div id="alamatForm" class="hidden">
 
-                              <div class="mb-4">
-                                <label for="addressdes" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">Desa / Kelurahan</label>
-                                <input type="text" name="addressdes" id="addressdes" class="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm block w-full rounded-lg border border-gray-300 bg-white px-3 py-2" data-required>
-                              </div>
-
-                              <div class="mb-4">
-                                <label for="addresskec" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">Kecamatan</label>
-                                <input type="text" name="addresskec" id="addresskec" class="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm block w-full rounded-lg border border-gray-300 bg-white px-3 py-2" data-required>
-                              </div>
-
-                              <div class="mb-4">
-                                <label for="addresskab" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">
-                                  Kabupaten / Kota
-                                </label>
-                                <select name="addresskab" id="addresskab"
+                              <div class="mb-2">
+                                <label for="addressjl" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">Nama Jalan</label>
+                                <input type="text" name="addressjl" id="addressjl"
+                                  value="JL. Tanah Tumbuh"
                                   class="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm block w-full rounded-lg border border-gray-300 bg-white px-3 py-2"
-                                  data-required>
-                                  <option value="" disabled selected>- Pilih Kabupaten/Kota -</option>
-                                  <option value="Batang Hari">Batang Hari</option>
-                                  <option value="Bungo">Bungo</option>
-                                  <option value="Kerinci">Kerinci</option>
-                                  <option value="Merangin">Merangin</option>
-                                  <option value="Muaro Jambi">Muaro Jambi</option>
-                                  <option value="Sarolangun">Sarolangun</option>
-                                  <option value="Tanjung Jabung Barat">Tanjung Jabung Barat</option>
-                                  <option value="Tanjung Jabung Timur">Tanjung Jabung Timur</option>
-                                  <option value="Tebo">Tebo</option>
-                                  <option value="Kota Jambi">Kota Jambi</option>
-                                  <option value="Kota Sungai Penuh">Kota Sungai Penuh</option>
-                                </select>
+                                  readonly>
+                              </div>
+
+                              <div class="mb-2">
+                                <label for="addressdes" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">Desa / Kelurahan</label>
+                                <input type="text" name="addressdes" id="addressdes"
+                                  value="Sungai Gambir"
+                                  class="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm block w-full rounded-lg border border-gray-300 bg-white px-3 py-2"
+                                  readonly>
+                              </div>
+
+                              <div class="mb-2">
+                                <label for="addresskec" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">Kecamatan</label>
+                                <input type="text" name="addresskec" id="addresskec"
+                                  value="Tanah Sepenggal"
+                                  class="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm block w-full rounded-lg border border-gray-300 bg-white px-3 py-2"
+                                  readonly>
                               </div>
 
 
 
-                              <div class="mb-4">
+                              <div class="mb-2">
+                                <label for="addresskab" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">
+                                  Kota / Kabupaten
+                                </label>
+                                <input type="text" name="addresskab" id="addresskab"
+                                  value="Bungo"
+                                  class="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm block w-full rounded-lg border border-gray-300 bg-white px-3 py-2"
+                                  readonly>
+                              </div>
+
+
+
+                              <div class="mb-2">
                                 <label for="addressprov" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">
                                   Provinsi
                                 </label>
@@ -825,7 +685,7 @@
                           </div>
                         </div>
 
-                        <!-- Toggle Script -->
+                        <!-- Toggle Script  -->
                         <script>
                           document.addEventListener("DOMContentLoaded", function() {
                             const toggleAlamat = document.getElementById("toggleAlamat");
@@ -840,47 +700,60 @@
                         </script>
 
 
-                        <p onclick="document.getElementById('alamatForm1').classList.toggle('hidden')" class="leading-normal  dark:text-white dark:opacity-60 text-base font-bold">
-                          Lampiran Dokumen
 
-                        </p>
+                        <hr
+                          class="h-px mx-0 my-4 bg-transparent border-0 opacity-25 bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent " />
+                        <!-- Toggle Script -->
+                        <p onclick="document.getElementById('alamatForm1').classList.toggle('hidden')" class="leading-normal  dark:text-white dark:opacity-60 text-base font-bold">Lampiran Dokumen <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                          </svg></p>
 
-                        <div id="alamatForm1" class="mb-4">
+                        <div id="alamatForm1" class="">
                           <div class="mt-8 space-y-4">
 
                             <!-- NIB -->
                             <div>
-                              <label class="block text-sm font-medium text-gray-700 dark:text-white mb-1">Print Out NIB via OSS RBA (Untuk Badan Usaha)</label>
-                              <input type="file" name="nib" id="nib" onchange="previewFile(this, 'preview_nib')" class="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer bg-white focus:outline-none dark:bg-slate-700 dark:text-white dark:border-gray-600" data-required>
-                              <img id="preview_nib" class="mt-2 w-40 hidden border rounded" />
+                              <label class="block text-sm font-medium text-gray-700 dark:text-white mb-1">
+                                Print Out NIB via OSS RBA (Untuk Badan Usaha)
+                              </label>
+                              <label for="nib" class="cursor-pointer inline-block">
+                                <img id="preview-nib" src="../assets/img/NIB.jpg" class="mt-2 max-h-64 border rounded" />
+                              </label>
                             </div>
 
                             <!-- KTP -->
                             <div>
-                              <label class="block text-sm font-medium text-gray-700 dark:text-white mb-1">KTP Penanggung Jawab</label>
-                              <input type="file" name="ktp" id="ktp" onchange="previewFile(this, 'preview_ktp')" class="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer bg-white focus:outline-none dark:bg-slate-700 dark:text-white dark:border-gray-600" data-required>
-                              <img id="preview_ktp" class="mt-2 w-40 hidden border rounded" />
+                              <label class="block text-sm font-medium text-gray-700 dark:text-white mb-1">
+                                KTP Penanggung Jawab
+                              </label>
+                              <label for="ktp" class="cursor-pointer inline-block">
+                                <img id="preview-ktp" src="../assets/img/KTP.jpg" class="mt-2 max-h-64 border rounded" />
+                              </label>
                             </div>
 
                             <!-- NPWP -->
                             <div>
                               <label class="block text-sm font-medium text-gray-700 dark:text-white mb-1">NPWP</label>
-                              <input type="file" name="npwp" id="npwp" onchange="previewFile(this, 'preview_npwp')" class="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer bg-white focus:outline-none dark:bg-slate-700 dark:text-white dark:border-gray-600" data-required>
-                              <img id="preview_npwp" class="mt-2 w-40 hidden border rounded" />
+                              <label for="npwp" class="cursor-pointer inline-block">
+                                <img id="preview-npwp" src="../assets/img/NPWP.jpg" class="mt-2 max-h-64 border rounded" />
+                              </label>
                             </div>
 
                             <!-- Gambar Situasi -->
                             <div>
                               <label class="block text-sm font-medium text-gray-700 dark:text-white mb-1">Gambar Situasi / Tata Letak</label>
-                              <input type="file" name="gambar_situasi" id="gambar_situasi" onchange="previewFile(this, 'preview_situasi')" class="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer bg-white focus:outline-none dark:bg-slate-700 dark:text-white dark:border-gray-600" data-required>
-                              <img id="preview_situasi" class="mt-2 w-40 hidden border rounded" />
+                              <label for="gambar_situasi" class="cursor-pointer inline-block">
+                                <img id="preview-gambar_situasi" src="../assets/img/situasi.png" class="mt-2 max-h-64 border rounded" />
+                              </label>
                             </div>
 
                             <!-- Bukti Tagihan -->
                             <div>
                               <label class="block text-sm font-medium text-gray-700 dark:text-white mb-1">Bukti Pembayaran Tagihan Listrik Bulan Terakhir</label>
-                              <input type="file" name="bukti_tagihan" id="bukti_tagihan" onchange="previewFile(this, 'preview_tagihan')" class="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer bg-white focus:outline-none dark:bg-slate-700 dark:text-white dark:border-gray-600" data-required>
-                              <img id="preview_tagihan" class="mt-2 w-40 hidden border rounded" />
+                              <label for="bukti_tagihan" class="cursor-pointer inline-block">
+                                <img id="preview-bukti_tagihan" src="../assets/img/tagihan.jpg" class="mt-2 max-h-64 border rounded" />
+                              </label>
                             </div>
 
                             <!-- Foto Generator -->
@@ -888,65 +761,46 @@
                               <label for="foto_generator" id="label_generator" class="block text-sm font-medium text-gray-700 dark:text-white mb-1">
                                 Foto Papan Nama (Name Plate) Generator
                               </label>
-                              <input type="file" name="foto_generator" id="foto_generator" onchange="previewFile(this, 'preview_generator')" class="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer bg-white focus:outline-none dark:bg-slate-700 dark:text-white dark:border-gray-600" data-required>
-                              <img id="preview_generator" class="mt-2 w-40 hidden border rounded" />
+                              <label for="foto_generator" class="cursor-pointer inline-block">
+                                <img id="preview-foto_generator" src="../assets/img/generator.jpg" class="mt-2 max-h-64 border rounded" />
+                              </label>
                             </div>
 
-                            <!-- Foto Mesin Penggerak -->
+                            <!-- Foto Mesin -->
                             <div>
                               <label for="foto_mesin" id="label_mesin" class="block text-sm font-medium text-gray-700 dark:text-white mb-1">
                                 Foto Papan Nama (Name Plate) Mesin Penggerak
                               </label>
-                              <input type="file" name="foto_mesin" id="foto_mesin" onchange="previewFile(this, 'preview_mesin')" class="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer bg-white focus:outline-none dark:bg-slate-700 dark:text-white dark:border-gray-600" data-required>
-                              <img id="preview_mesin" class="mt-2 w-40 hidden border rounded" />
+                              <label for="foto_mesin" class="cursor-pointer inline-block">
+                                <img id="preview-foto_mesin" src="../assets/img/mesin.jpg" class="mt-2 max-h-64 border rounded" />
+                              </label>
                             </div>
-
                           </div>
-                        </div>
 
-                        <!-- Persetujuan -->
+                        </div>
                         <div class="mt-4 flex items-start">
-                          <input type="checkbox" id="persetujuan" class="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500" data-required>
+
                           <label for="persetujuan" class="ml-2 text-sm text-gray-700 dark:text-white leading-relaxed">
-                            Dengan ini menyatakan bahwa saya bertanggung jawab sepenuhnya atas data yang telah disampaikan.
-                            Apabila dikemudian hari ditemukan bahwa data tersebut tidak benar dan mengakibatkan konsekuensi hukum,
-                            maka saya atau Badan Usaha / Instansi yang saya wakili bersedia menerima segala bentuk sanksi sesuai dengan ketentuan peraturan perundang-undangan yang berlaku.
+                            Dengan ini menyatakan bahwa saya bertanggung jawab sepenuhnya atas data yang telah saya sampaikan.
+                            Apabila di kemudian hari ditemukan bahwa data tersebut tidak benar dan mengakibatkan konsekuensi hukum,
+                            maka saya atau Badan Usaha/Instansi yang saya wakili bersedia menerima segala bentuk sanksi sesuai dengan
+                            ketentuan peraturan perundang-undangan yang berlaku.
                           </label>
                         </div>
-
-                        <!-- JavaScript untuk Preview -->
-                        <script>
-                          function previewFile(input, previewId) {
-                            const file = input.files[0];
-                            const preview = document.getElementById(previewId);
-
-                            if (file && file.type.startsWith("image/")) {
-                              const reader = new FileReader();
-                              reader.onload = function(e) {
-                                preview.src = e.target.result;
-                                preview.style.display = "block";
-                              };
-                              reader.readAsDataURL(file);
-                            } else {
-                              preview.src = "";
-                              preview.style.display = "none";
-                            }
-                          }
-                        </script>
 
                         <hr
                           class="h-px mx-0 my-4 bg-transparent border-0 opacity-25 bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent " />
                       </div>
-
-                      <div class="w-full flex justify-center my-4 ">
-                        <button type="submit" id="submitkirim"
-                          class=" bg-blue-400 from-blue-500 to-violet-500 text-white px-6 py-2 rounded-full shadow hover:opacity-90">
-                          Kirim
-                        </button>
+                      <div class="w-full flex justify-center gap-x-6 my-6">
+                        <a href="/daftarpengajuanvalidator"
+                          class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-full shadow transition">
+                          Validasi
+                        </a>
+                        <a href=""
+                          class="bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-2 rounded-full shadow transition">
+                          Tolak
+                        </a>
                       </div>
-
-
-
 
                 </form>
 
@@ -986,37 +840,8 @@
   </div>
   </div>
   <script>
-    document.getElementById("suratpengajuan").addEventListener("submit", function(e) {
-      e.preventDefault();
-
-      const alamatForm1 = document.getElementById("alamatForm1");
-      const form = e.target;
-
-      if (alamatForm1 && alamatForm1.classList.contains("hidden")) {
-        const requiredInputs = alamatForm1.querySelectorAll("[data-required]");
-
-        if (requiredInputs.length > 0) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Data Belum Lengkap!',
-            text: 'Silakan lengkapi semua data yang wajib diisi.',
-            confirmButtonColor: '#e3342f'
-          });
-          return false;
-        }
-      }
-
-
-      const isValid = validateForm();
-
-      if (isValid) {
-        form.submit();
-      }
-    });
-
     function validateForm() {
       const form = document.getElementById("suratpengajuan");
-      const checkbox = document.getElementById("persetujuan");
       const requiredFields = form.querySelectorAll("input[required], select[required], textarea[required]");
       let isValid = true;
 
@@ -1024,39 +849,26 @@
         if (!field.value.trim()) {
           isValid = false;
 
-          field.classList.add("border-red-500", "ring", "ring-red-300");
+          // Tambahkan efek visual kolom kosong
+          field.classList.add("border-red-500");
+          field.classList.add("ring");
+          field.classList.add("ring-red-300");
         } else {
-          field.classList.remove("border-red-500", "ring", "ring-red-300");
+          field.classList.remove("border-red-500");
+          field.classList.remove("ring");
+          field.classList.remove("ring-red-300");
         }
       });
 
       if (!isValid) {
-        Swal.fire({
-          icon: 'warning',
-          title: 'Formulir Belum Lengkap',
-          text: 'Harap isi semua kolom wajib yang kosong.',
-          confirmButtonColor: '#f59e0b'
-        });
+        alert("⚠️ Formulir belum lengkap. Silakan isi semua kolom yang wajib diisi.");
         return false;
       }
-      if (!checkbox.checked) {
-        Swal.fire({
-          icon: 'warning',
-          title: 'Persetujuan Belum Dicentang',
-          text: 'Anda harus menyetujui pernyataan tanggung jawab sebelum melanjutkan.',
-          confirmButtonColor: '#f97316'
-        });
-        checkbox.classList.add("ring", "ring-red-500");
-        return false;
-      } else {
-        checkbox.classList.remove("ring", "ring-red-500");
-      }
 
-
-      return true;
+      const confirmSubmit = confirm("✅ Semua data sudah lengkap. Apakah Anda yakin ingin mengirim formulir?");
+      return confirmSubmit;
     }
   </script>
-
 
 </body>
 <!-- plugin for charts  -->

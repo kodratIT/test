@@ -22,10 +22,19 @@
 
 <body
   class="m-0 font-sans antialiased font-normal dark:bg-slate-900 text-base leading-default bg-gray-50 text-slate-500">
-  <div
-    class="absolute bg-y-50 w-full top-0 bg-[url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/profile-layout-header.jpg')] min-h-75">
-    <span class="absolute top-0 left-0 w-full h-full" style="background-color: #08A04B; opacity:0.8;"></span>
+  <!-- Background dengan overlay -->
+  <div class="relative w-full min-h-72 bg-cover bg-center"
+    style="background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/profile-layout-header.jpg');">
+
+    <!-- Lapisan biru semi-transparan -->
+    <div class="absolute inset-0 bg-blue-600 bg-opacity-50"></div>
+
+    <!-- Konten judul (di atas overlay) -->
+    <div class="relative z-10 flex items-center justify-start h-full px-6 py-10">
+      <h1 class="text-white text-3xl font-semibold">Profil</h1>
+    </div>
   </div>
+
 
   <!-- sidenav  -->
   <aside
@@ -56,7 +65,7 @@
 
         <li class="mt-0.5 w-full">
           <a class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
-            href="/dashboarduser">
+            href="/dashboardadmin">
             <div
               class="mr-2 flex h-1 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
               <i class="relative top-0 text-sm leading-normal text-blue-500 ni ni-tv-2"></i>
@@ -65,22 +74,9 @@
           </a>
         </li>
 
-
-
         <li class="mt-0.5 w-full">
           <a class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
-            href="/pengajuansurat">
-            <div
-              class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-              <i class="relative top-0 text-sm leading-normal text-cyan-500 ni ni-app"></i>
-            </div>
-            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Buat Pengajuan</span>
-          </a>
-        </li>
-
-        <li class="mt-0.5 w-full">
-          <a class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
-            href="/daftarpengajuanpengguna">
+            href="/daftarpengajuanvalidator">
             <div
               class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
               <i class="relative top-0 text-sm leading-normal text-orange-500 ni ni-calendar-grid-58"></i>
@@ -89,22 +85,8 @@
           </a>
         </li>
 
-
-        <li class="mt-0.5 w-full">
-          <a class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
-            href="/suratterbituser">
-            <div
-              class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center fill-current stroke-0 text-center xl:p-2.5">
-              <i class="relative top-0 text-sm leading-normal text-emerald-500 ni ni-credit-card"></i>
-            </div>
-            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Surat Keterangan</span>
-          </a>
-        </li>
-
-
-
         <li class="w-full mt-4">
-          <h6 class="pl-6 ml-2 text-m font-bold leading-tight uppercase dark:text-white opacity-60">Pengaturan Akun
+          <h6 class="pl-6 ml-2 text-xs font-bold leading-tight uppercase dark:text-white opacity-60">Pengaturan Akun
           </h6>
         </li>
 
@@ -119,28 +101,6 @@
           </a>
         </li>
 
-        <!-- disini logout
-        <li class="mt-0.5 w-full">
-          <a class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
-            href="../pages/sign-in.html">
-            <div
-              class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-              <i class="relative top-0 text-sm leading-normal text-orange-500 ni ni-single-copy-04"></i>
-            </div>
-            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Masuk</span>
-          </a>
-        </li>
-
-        <li class="mt-0.5 w-full">
-          <a class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
-            href="../pages/sign-up.html">
-            <div
-              class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-              <i class="relative top-0 text-sm leading-normal text-cyan-500 ni ni-collection"></i>
-            </div>
-            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Daftar</span>
-          </a>
-        </li>-->
       </ul>
     </div>
   </aside>
@@ -166,133 +126,16 @@
 
         <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
           <div class="flex items-center md:ml-auto md:pr-4">
-            <div class="relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease">
-              <span
+            <div class="relative z-20 flex flex-col min-w-0 break-words bg-white border-0 shadow-2xl shadow-black/20 dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border"> <span
                 class="text-sm ease leading-5.6 absolute z-50 -ml-px flex h-full items-center whitespace-nowrap rounded-lg rounded-tr-none rounded-br-none border border-r-0 border-transparent bg-transparent py-2 px-2.5 text-center font-normal text-slate-500 transition-all">
                 <i class="fas fa-search" aria-hidden="true"></i>
               </span>
 
             </div>
           </div>
-          <ul class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full">
-            <!-- online builder btn  -->
-            <!-- <li class="flex items-center">
-                <a class="inline-block px-8 py-2 mb-0 mr-4 font-bold text-center text-white uppercase align-middle transition-all ease-in border border-solid rounded-lg shadow-none cursor-pointer leading-pro border-white/75 bg-white/10 text-m hover:-translate-y-px active:shadow-m tracking-tight-rem hover:border-white hover:bg-transparent hover:text-white hover:opacity-75 hover:shadow-none active:bg-white active:text-black active:hover:bg-transparent active:hover:text-white" target="_blank" href="https://www.creative-tim.com/builder/soft-ui?ref=navbar-dashboard&amp;_ga=2.76518741.1192788655.1647724933-1242940210.1644448053">Online Builder</a>
-              </li> -->
-            <li class="flex items-center">
-
-            </li>
-            <li class="flex items-center pl-4 xl:hidden">
-              <a href="javascript:;" class="block p-0 text-white transition-all ease-in-out text-sm" sidenav-trigger>
-                <div class="w-4.5 overflow-hidden">
-                  <i class="ease mb-0.75 relative block h-0.5 rounded-sm bg-white transition-all"></i>
-                  <i class="ease mb-0.75 relative block h-0.5 rounded-sm bg-white transition-all"></i>
-                  <i class="ease relative block h-0.5 rounded-sm bg-white transition-all"></i>
-                </div>
-              </a>
-            </li>
-            <li class="flex items-center px-4">
-              <a href="javascript:;" class="p-0 text-white transition-all ease-in-out text-sm">
-                <i fixed-plugin-button-nav class="cursor-pointer fa fa-cog" aria-hidden="true"></i>
-                <!-- fixed-plugin-button-nav  -->
-              </a>
-            </li>
-
-            <!-- notifications -->
-
-            <li class="relative flex items-center pr-2">
-              <p class="hidden dark:text-white dark:opacity-60 transform-dropdown-show"></p>
-              <a dropdown-trigger href="javascript:;" class="block p-0 text-white transition-all text-sm ease-nav-brand"
-                aria-expanded="false">
-                <i class="cursor-pointer fa fa-bell" aria-hidden="true"></i>
-              </a>
-
-              <ul dropdown-menu
-                class="text-sm transform-dropdown before:font-awesome before:leading-default before:duration-350 before:ease lg:shadow-3xl duration-250 min-w-44 before:sm:right-8 before:text-5.5 pointer-events-none absolute right-0 top-0 z-50 origin-top list-none rounded-lg border-0 border-solid border-transparent bg-white bg-clip-padding px-2 py-4 text-left text-slate-500 opacity-0 transition-all before:absolute before:right-2 before:left-auto before:top-0 before:z-50 before:inline-block before:font-normal before:text-white before:antialiased before:transition-all before:content-['\f0d8'] sm:-mr-6 lg:absolute lg:right-0 lg:left-auto lg:mt-2 lg:block lg:cursor-pointer">
-                <!-- add show class on dropdown open js -->
-                <li class="relative mb-2">
-                  <a class="ease py-1.2 clear-both block w-full whitespace-nowrap rounded-lg bg-transparent px-4 duration-300 lg:transition-colors"
-                    href="javascript:;">
-                    <div class="flex py-1">
-                      <div class="my-auto">
-                        <img src="../assets/img/team-2.jpg"
-                          class="inline-flex items-center justify-center mr-4 text-white text-sm h-9 w-9 max-w-none rounded-xl" />
-                      </div>
-                      <div class="flex flex-col justify-center">
-                        <h6 class="mb-1 font-normal leading-normal dark:text-white text-sm"><span
-                            class="font-semibold">New message</span> from Laur</h6>
-                        <p class="mb-0 leading-tight dark:text-white dark:opacity-60 text-m text-slate-400">
-                          <i class="mr-1 fa fa-clock" aria-hidden="true"></i>
-                          13 minutes ago
-                        </p>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-
-                <li class="relative mb-2">
-                  <a class="ease py-1.2 clear-both block w-full whitespace-nowrap rounded-lg px-4 duration-300 lg:transition-colors"
-                    href="javascript:;">
-                    <div class="flex py-1">
-                      <div class="my-auto">
-                        <img src="../assets/img/small-logos/logo-spotify.svg"
-                          class="inline-flex items-center justify-center mr-4 text-white text-sm bg-gradient-to-tl from-zinc-800 to-zinc-700 dark:bg-gradient-to-tl dark:from-slate-750 dark:to-gray-850 h-9 w-9 max-w-none rounded-xl" />
-                      </div>
-                      <div class="flex flex-col justify-center">
-                        <h6 class="mb-1 font-normal leading-normal dark:text-white text-sm"><span
-                            class="font-semibold">New album</span> by Travis Scott</h6>
-                        <p class="mb-0 leading-tight dark:text-white dark:opacity-60 text-m text-slate-400">
-                          <i class="mr-1 fa fa-clock" aria-hidden="true"></i>
-                          1 day
-                        </p>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-
-                <li class="relative">
-                  <a class="ease py-1.2 clear-both block w-full whitespace-nowrap rounded-lg px-4 duration-300 lg:transition-colors"
-                    href="javascript:;">
-                    <div class="flex py-1">
-                      <div
-                        class="inline-flex items-center justify-center my-auto mr-4 text-white transition-all duration-200 ease-in-out text-sm bg-gradient-to-tl from-slate-600 to-slate-300 h-9 w-9 rounded-xl">
-                        <svg width="12px" height="12px" viewBox="0 0 43 36" version="1.1"
-                          xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                          <title>credit-card</title>
-                          <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                            <g transform="translate(-2169.000000, -745.000000)" fill="#FFFFFF" fill-rule="nonzero">
-                              <g transform="translate(1716.000000, 291.000000)">
-                                <g transform="translate(453.000000, 454.000000)">
-                                  <path class="color-background"
-                                    d="M43,10.7482083 L43,3.58333333 C43,1.60354167 41.3964583,0 39.4166667,0 L3.58333333,0 C1.60354167,0 0,1.60354167 0,3.58333333 L0,10.7482083 L43,10.7482083 Z"
-                                    opacity="0.593633743"></path>
-                                  <path class="color-background"
-                                    d="M0,16.125 L0,32.25 C0,34.2297917 1.60354167,35.8333333 3.58333333,35.8333333 L39.4166667,35.8333333 C41.3964583,35.8333333 43,34.2297917 43,32.25 L43,16.125 L0,16.125 Z M19.7083333,26.875 L7.16666667,26.875 L7.16666667,23.2916667 L19.7083333,23.2916667 L19.7083333,26.875 Z M35.8333333,26.875 L28.6666667,26.875 L28.6666667,23.2916667 L35.8333333,23.2916667 L35.8333333,26.875 Z">
-                                  </path>
-                                </g>
-                              </g>
-                            </g>
-                          </g>
-                        </svg>
-                      </div>
-                      <div class="flex flex-col justify-center">
-                        <h6 class="mb-1 font-normal leading-normal dark:text-white text-sm">Payment successfully
-                          completed</h6>
-                        <p class="mb-0 leading-tight dark:text-white dark:opacity-60 text-m text-slate-400">
-                          <i class="mr-1 fa fa-clock" aria-hidden="true"></i>
-                          2 days
-                        </p>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-              </ul>
-            </li>
-          </ul>
         </div>
       </div>
     </nav>
-
     <div class="relative w-full mx-auto mt-60 ">
       <div
         class="relative flex flex-col flex-auto min-w-0 p-4 mx-6 overflow-hidden break-words bg-white border-0 dark:bg-slate-850 dark:shadow-dark-xl shadow-3xl rounded-2xl bg-clip-border">
@@ -305,7 +148,7 @@
           </div>
           <div class="flex-none w-auto max-w-full px-3 my-auto">
             <div class="h-full">
-              <h5 class="mb-1 dark:text-white">PT.BANK DANAMON INDONESIA, Tbk</h5>
+              <h1 class="mb-1 font-bold dark:text-white" style="font-size: medium;">Nama</h1>
               <!--<p class="mb-0 font-semibold leading-normal dark:text-white dark:opacity-60 text-sm">Public Relations</p>-->
             </div>
           </div>
@@ -318,113 +161,225 @@
       </div>
     </div>
 
-    <div class="w-full p-6 mx-auto">
-      <div class="flex flex-wrap -mx-3">
-        <div class="w-full px-4 md:w-full">
-          <div
-            class="relative z-20 flex flex-col min-w-0 break-words bg-white border-0 shadow-2xl shadow-black/20 dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
-            <div class="border-black/12.5 rounded-t-2xl border-b-0 border-solid p-6 pb-0">
-              <div class="flex items-center">
-                <!--  <p class="mb-0 dark:text-white/80">Edit Profil</p>-->
-                <button type="button"
-                  class="inline-block px-8 py-2 mb-4 ml-auto font-bold leading-normal text-center text-white align-middle transition-all ease-in bg-blue-500 border-0 rounded-lg shadow-md cursor-pointer text-m tracking-tight-rem hover:shadow-m hover:-translate-y-px active:opacity-85">Edit Profil</button>
+    <div class="mt-10 px-6">
+      <div class="bg-white dark:bg-slate-800 rounded-xl border border-gray-300 dark:border-slate-600 shadow-md p-6">
+        <div class="flex items-center">
+          <button type="button"
+            class="inline-block px-8 py-2 mb-4 ml-auto font-bold leading-normal text-center text-white align-middle transition-all ease-in bg-blue-500 border-0 rounded-lg shadow-md cursor-pointer text-xs tracking-tight-rem hover:shadow-xs hover:-translate-y-px active:opacity-85">
+            Edit Profil
+          </button>
+        </div>
+
+
+        <p class="text-base font-bold uppercase dark:text-white dark:opacity-60 mb-4">DATA AKUN</p>
+        <hr
+          class="h-px mx-0 my-4 bg-transparent border-0 opacity-25 bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent " />
+
+        <form action="/submit" method="POST">
+          <div class="flex flex-wrap -mx-3">
+            <!-- Nama -->
+            <div class="w-full max-w-full px-3 md:w-6/12">
+              <div class="mb-4">
+                <label for="usernamevalidator" class="block text-sm font-bold text-gray-700 dark:text-white/80 mb-2">Nama</label>
+                <input type="text" name="username" id="usernamevalidator" required
+                  class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-850 dark:text-white" />
               </div>
             </div>
-            <form action="/submit" method="POST" class="w-full px-4 py-6 bg-white rounded-xl shadow-md  dark:bg-slate-800">
-              <div class="max-w-6xl mx-auto">
-                <!-- Bagian: Data Akun -->
-                <div class="mb-6">
-                  <p class="text-lg font-bold uppercase dark:text-white dark:opacity-60 mb-4">DATA AKUN</p>
-                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label for="username" class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">Nama Pengguna</label>
-                      <input type="text" name="username" id="username" required
-                        class="w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg placeholder:text-gray-500 focus:outline-none focus:border-blue-500 dark:bg-slate-850 dark:text-white" />
-                    </div>
-                    <div>
-                      <label for="email" class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">Email Pengguna</label>
-                      <input type="email" name="email" id="email" required
-                        class="w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg placeholder:text-gray-500 focus:outline-none focus:border-blue-500 dark:bg-slate-850 dark:text-white" />
-                    </div>
-                  </div>
-                </div>
 
-                <!-- Separator -->
-                <hr class="my-4 border-t border-gray-300 dark:border-white/30" />
-
-                <hr class="h-px mx-0 my-4 bg-transparent border-0 opacity-25 bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent" />
-
-
-                <!-- Bagian: Profil Perusahaan -->
-                <div class="mb-6">
-                  <p class="text-lg font-bold uppercase dark:text-white dark:opacity-60 mb-4">DATA ADMINISTRASI</p>
-                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label for="namabadanusaha" class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">Nama Badan Usaha / Instansi / Perseorangan</label>
-                      <input type="text" name="namabadanusaha" id="namabadanusaha" required
-                        class="w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg placeholder:text-gray-500 focus:outline-none focus:border-blue-500 dark:bg-slate-850 dark:text-white" />
-                    </div>
-                    <div>
-                      <label for="jenisbidang" class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">Nama Penanggung Jawab</label>
-                      <input type="text" name="jenisbidang" id="jenisbidang" required
-                        class="w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg placeholder:text-gray-500 focus:outline-none focus:border-blue-500 dark:bg-slate-850 dark:text-white" />
-                    </div>
-                    <div>
-                      <label for="penanggungjawab" class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">Kode KBLI</label>
-                      <input type="text" name="penanggungjawab" id="penanggungjawab" required
-                        class="w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg placeholder:text-gray-500 focus:outline-none focus:border-blue-500 dark:bg-slate-850 dark:text-white" />
-                    </div>
-                    <div>
-                      <label for="nomorhp" class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">Judul KBLI</label>
-                      <input type="text" name="nomorhp" id="nomorhp" required
-                        class="w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg placeholder:text-gray-500 focus:outline-none focus:border-blue-500 dark:bg-slate-850 dark:text-white" />
-                    </div>
-                    <div>
-                      <label for="nomorhp" class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">No Tlp./HP</label>
-                      <input type="text" name="nomorhp" id="nomorhp" required
-                        class="w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg placeholder:text-gray-500 focus:outline-none focus:border-blue-500 dark:bg-slate-850 dark:text-white" />
-                    </div>
-                    <div>
-                      <label for="nomorhp" class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">Email Perusahaan</label>
-                      <input type="text" name="nomorhp" id="nomorhp" required
-                        class="w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg placeholder:text-gray-500 focus:outline-none focus:border-blue-500 dark:bg-slate-850 dark:text-white" />
-                    </div>
-                  </div>
-                
-
-                <!-- Alamat Perusahaan (Optional Toggle) -->
-                
-                <div id="alamatForm" class=" mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div class="col-span-2">
-                    <label for="address" class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">Alamat Badan Usaha</label>
-                    <input type="text" name="address" id="address" required
-                      class="w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg placeholder:text-gray-500 focus:outline-none focus:border-blue-500 dark:bg-slate-850 dark:text-white" />
-                  </div>
-                  
-                  <div class="col-span-2">
-                    <label for="nib" class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">Nomor Induk Berusaha (NIB)</label>
-                    <input type="text" name="nib" id="nib" required
-                      class="w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg placeholder:text-gray-500 focus:outline-none focus:border-blue-500 dark:bg-slate-850 dark:text-white" />
-                    <p class="text-m mt-1 text-slate-500">Note: Sesuai NIB Jika Badan Usaha / Sesuai KTP jika Instansi/Perseorangan</p>
-                  </div>
-                  <div class="col-span-2">
-                    <label for="npwp" class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">Nomor Pokok Wajib Pajak (NPWP)</label>
-                    <input type="text" name="npwp" id="npwp" required
-                      class="w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg placeholder:text-gray-500 focus:outline-none focus:border-blue-500 dark:bg-slate-850 dark:text-white" />
-                  </div>
-                </div>
+            <!-- Email -->
+            <div class="w-full max-w-full px-3 md:w-6/12">
+              <div class="mb-4">
+                <label for="emailvalidator" class="block text-sm font-bold text-gray-700 dark:text-white/80 mb-2">Email</label>
+                <input type="email" name="email" id="emailvalidator" required
+                  class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-850 dark:text-white" />
               </div>
-                <!-- Submit Button -->
-                <div class="mt-6">
-                  <button type="submit"
-                    class="w-full md:w-auto px-6 py-3 text-sm font-bold text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition-all">
-                    Simpan
-                  </button>
-                </div>
-              </div>
-            </form>
+            </div>
 
-            <!--
+            <!-- Baris tambahan -->
+            <div class="w-full max-w-full px-3 md:w-6/12">
+              <div class="mb-4">
+                <label class="block text-sm font-bold text-gray-700 dark:text-white/80 mb-2">NIP</label>
+                <input type="text" name="username2" id="username2" required
+                  class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-850 dark:text-white" />
+              </div>
+            </div>
+
+            <div class="w-full max-w-full px-3 md:w-6/12">
+              <div class="mb-4">
+                <label class="block text-sm font-bold text-gray-700 dark:text-white/80 mb-2">Pangkat / Golongan</label>
+                <input type="email" name="email2" id="email2" required
+                  class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-850 dark:text-white" />
+              </div>
+            </div>
+          </div>
+
+          <hr
+            class="h-px mx-0 my-4 bg-transparent border-0 opacity-25 bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent " />
+
+          <!-- Tombol Simpan -->
+          <div class="mt-4">
+            <button type="submit"
+              class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-5 py-2 rounded-lg shadow-md transition-all">
+              Simpan
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+
+    <div class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68">
+      <nav
+        class="absolute z-20 flex flex-wrap items-center justify-between w-full px-6 py-2 -mt-56 text-white transition-all ease-in shadow-none duration-250 lg:flex-nowrap lg:justify-start"
+        navbar-profile navbar-scroll="true">
+        <div class="flex items-center justify-between w-full px-6 py-1 mx-auto flex-wrap-inherit">
+          <nav>
+            <!-- breadcrumb -->
+            <ol class="flex flex-wrap pt-1 pl-2 pr-4 mr-12 bg-transparent rounded-lg sm:mr-16">
+              <li class="leading-normal text-sm">
+                <a class="opacity-50" href="javascript:;">Halaman</a>
+              </li>
+              <li
+                class="text-sm pl-2 capitalize leading-normal before:float-left before:pr-2 before:content-['/']"
+                aria-current="page">Profil</li>
+            </ol>
+            <h6 class="mb-2 ml-2 font-bold text-white capitalize dark:text-white">Profil</h6>
+          </nav>
+
+          <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
+            <div class="flex items-center md:ml-auto md:pr-4">
+              <div class="relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease">
+                <span
+                  class="text-sm ease leading-5.6 absolute z-50 -ml-px flex h-full items-center whitespace-nowrap rounded-lg rounded-tr-none rounded-br-none border border-r-0 border-transparent bg-transparent py-2 px-2.5 text-center font-normal text-slate-500 transition-all">
+                  <i class="fas fa-search" aria-hidden="true"></i>
+                </span>
+
+              </div>
+            </div>
+            <ul class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full">
+              <!-- online builder btn  -->
+              <!-- <li class="flex items-center">
+                <a class="inline-block px-8 py-2 mb-0 mr-4 font-bold text-center text-white uppercase align-middle transition-all ease-in border border-solid rounded-lg shadow-none cursor-pointer leading-pro border-white/75 bg-white/10 text-xs hover:-translate-y-px active:shadow-xs tracking-tight-rem hover:border-white hover:bg-transparent hover:text-white hover:opacity-75 hover:shadow-none active:bg-white active:text-black active:hover:bg-transparent active:hover:text-white" target="_blank" href="https://www.creative-tim.com/builder/soft-ui?ref=navbar-dashboard&amp;_ga=2.76518741.1192788655.1647724933-1242940210.1644448053">Online Builder</a>
+              </li> -->
+              <li class="flex items-center">
+
+              </li>
+              <li class="flex items-center pl-4 xl:hidden">
+                <a href="javascript:;" class="block p-0 text-white transition-all ease-in-out text-sm"
+                  sidenav-trigger>
+                  <div class="w-4.5 overflow-hidden">
+                    <i class="ease mb-0.75 relative block h-0.5 rounded-sm bg-white transition-all"></i>
+                    <i class="ease mb-0.75 relative block h-0.5 rounded-sm bg-white transition-all"></i>
+                    <i class="ease relative block h-0.5 rounded-sm bg-white transition-all"></i>
+                  </div>
+                </a>
+              </li>
+              <li class="flex items-center px-4">
+                <a href="javascript:;" class="p-0 text-white transition-all ease-in-out text-sm">
+                  <i fixed-plugin-button-nav class="cursor-pointer fa fa-cog" aria-hidden="true"></i>
+                  <!-- fixed-plugin-button-nav  -->
+                </a>
+              </li>
+
+              <!-- notifications -->
+
+              <li class="relative flex items-center pr-2">
+                <p class="hidden dark:text-white dark:opacity-60 transform-dropdown-show"></p>
+                <a dropdown-trigger href="javascript:;"
+                  class="block p-0 text-white transition-all text-sm ease-nav-brand" aria-expanded="false">
+                  <i class="cursor-pointer fa fa-bell" aria-hidden="true"></i>
+                </a>
+
+                <ul dropdown-menu
+                  class="text-sm transform-dropdown before:font-awesome before:leading-default before:duration-350 before:ease lg:shadow-3xl duration-250 min-w-44 before:sm:right-8 before:text-5.5 pointer-events-none absolute right-0 top-0 z-50 origin-top list-none rounded-lg border-0 border-solid border-transparent bg-white bg-clip-padding px-2 py-4 text-left text-slate-500 opacity-0 transition-all before:absolute before:right-2 before:left-auto before:top-0 before:z-50 before:inline-block before:font-normal before:text-white before:antialiased before:transition-all before:content-['\f0d8'] sm:-mr-6 lg:absolute lg:right-0 lg:left-auto lg:mt-2 lg:block lg:cursor-pointer">
+                  <!-- add show class on dropdown open js -->
+                  <li class="relative mb-2">
+                    <a class="ease py-1.2 clear-both block w-full whitespace-nowrap rounded-lg bg-transparent px-4 duration-300 lg:transition-colors"
+                      href="javascript:;">
+                      <div class="flex py-1">
+                        <div class="my-auto">
+                          <img src="../assets/img/team-2.jpg"
+                            class="inline-flex items-center justify-center mr-4 text-white text-sm h-9 w-9 max-w-none rounded-xl" />
+                        </div>
+                        <div class="flex flex-col justify-center">
+                          <h6 class="mb-1 font-normal leading-normal dark:text-white text-sm"><span
+                              class="font-semibold">New message</span> from Laur</h6>
+                          <p
+                            class="mb-0 leading-tight dark:text-white dark:opacity-60 text-xs text-slate-400">
+                            <i class="mr-1 fa fa-clock" aria-hidden="true"></i>
+                            13 minutes ago
+                          </p>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+
+                  <li class="relative mb-2">
+                    <a class="ease py-1.2 clear-both block w-full whitespace-nowrap rounded-lg px-4 duration-300 lg:transition-colors"
+                      href="javascript:;">
+                      <div class="flex py-1">
+                        <div class="my-auto">
+                          <img src="../assets/img/small-logos/logo-spotify.svg"
+                            class="inline-flex items-center justify-center mr-4 text-white text-sm bg-gradient-to-tl from-zinc-800 to-zinc-700 dark:bg-gradient-to-tl dark:from-slate-750 dark:to-gray-850 h-9 w-9 max-w-none rounded-xl" />
+                        </div>
+                        <div class="flex flex-col justify-center">
+                          <h6 class="mb-1 font-normal leading-normal dark:text-white text-sm"><span
+                              class="font-semibold">New album</span> by Travis Scott</h6>
+                          <p
+                            class="mb-0 leading-tight dark:text-white dark:opacity-60 text-xs text-slate-400">
+                            <i class="mr-1 fa fa-clock" aria-hidden="true"></i>
+                            1 day
+                          </p>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+
+                  <li class="relative">
+                    <a class="ease py-1.2 clear-both block w-full whitespace-nowrap rounded-lg px-4 duration-300 lg:transition-colors"
+                      href="javascript:;">
+                      <div class="flex py-1">
+                        <div
+                          class="inline-flex items-center justify-center my-auto mr-4 text-white transition-all duration-200 ease-in-out text-sm bg-gradient-to-tl from-slate-600 to-slate-300 h-9 w-9 rounded-xl">
+                          <svg width="12px" height="12px" viewBox="0 0 43 36" version="1.1"
+                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <title>credit-card</title>
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                              <g transform="translate(-2169.000000, -745.000000)" fill="#FFFFFF"
+                                fill-rule="nonzero">
+                                <g transform="translate(1716.000000, 291.000000)">
+                                  <g transform="translate(453.000000, 454.000000)">
+                                    <path class="color-background"
+                                      d="M43,10.7482083 L43,3.58333333 C43,1.60354167 41.3964583,0 39.4166667,0 L3.58333333,0 C1.60354167,0 0,1.60354167 0,3.58333333 L0,10.7482083 L43,10.7482083 Z"
+                                      opacity="0.593633743"></path>
+                                    <path class="color-background"
+                                      d="M0,16.125 L0,32.25 C0,34.2297917 1.60354167,35.8333333 3.58333333,35.8333333 L39.4166667,35.8333333 C41.3964583,35.8333333 43,34.2297917 43,32.25 L43,16.125 L0,16.125 Z M19.7083333,26.875 L7.16666667,26.875 L7.16666667,23.2916667 L19.7083333,23.2916667 L19.7083333,26.875 Z M35.8333333,26.875 L28.6666667,26.875 L28.6666667,23.2916667 L35.8333333,23.2916667 L35.8333333,26.875 Z">
+                                    </path>
+                                  </g>
+                                </g>
+                              </g>
+                            </g>
+                          </svg>
+                        </div>
+                        <div class="flex flex-col justify-center">
+                          <h6 class="mb-1 font-normal leading-normal dark:text-white text-sm">Payment
+                            successfully completed</h6>
+                          <p
+                            class="mb-0 leading-tight dark:text-white dark:opacity-60 text-xs text-slate-400">
+                            <i class="mr-1 fa fa-clock" aria-hidden="true"></i>
+                            2 days
+                          </p>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <!--
                   <div class="relative w-full mx-auto mt-60 ">
 
                     <div
@@ -486,7 +441,7 @@
                             <div class="flex items-center">
                               <p class="mb-0 dark:text-white/80">Edit Profile</p>
                               <button type="button"
-                                class="inline-block px-8 py-2 mb-4 ml-auto font-bold leading-normal text-center text-white align-middle transition-all ease-in bg-blue-500 border-0 rounded-lg shadow-md cursor-pointer text-m tracking-tight-rem hover:shadow-m hover:-translate-y-px active:opacity-85">Settings</button>
+                                class="inline-block px-8 py-2 mb-4 ml-auto font-bold leading-normal text-center text-white align-middle transition-all ease-in bg-blue-500 border-0 rounded-lg shadow-md cursor-pointer text-xs tracking-tight-rem hover:shadow-xs hover:-translate-y-px active:opacity-85">Settings</button>
                             </div>
                           </div>
                           <div class="flex-auto p-6">
@@ -496,7 +451,7 @@
                               <div class="w-full max-w-full px-3 shrink-0 md:w-6/12 md:flex-0">
                                 <div class="mb-4">
                                   <label for="username"
-                                    class="inline-block mb-2 ml-1 font-bold text-m text-slate-700 dark:text-white/80">Username</label>
+                                    class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">Username</label>
                                   <input type="text" name="username" value="lucky.jesse"
                                     class="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
                                 </div>
@@ -504,7 +459,7 @@
                               <div class="w-full max-w-full px-3 shrink-0 md:w-6/12 md:flex-0">
                                 <div class="mb-4">
                                   <label for="email"
-                                    class="inline-block mb-2 ml-1 font-bold text-m text-slate-700 dark:text-white/80">Email
+                                    class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">Email
                                     address</label>
                                   <input type="email" name="email" value="jesse@example.com"
                                     class="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
@@ -513,7 +468,7 @@
                               <div class="w-full max-w-full px-3 shrink-0 md:w-6/12 md:flex-0">
                                 <div class="mb-4">
                                   <label for="first name"
-                                    class="inline-block mb-2 ml-1 font-bold text-m text-slate-700 dark:text-white/80">First
+                                    class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">First
                                     name</label>
                                   <input type="text" name="first name" value="Jesse"
                                     class="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
@@ -522,7 +477,7 @@
                               <div class="w-full max-w-full px-3 shrink-0 md:w-6/12 md:flex-0">
                                 <div class="mb-4">
                                   <label for="last name"
-                                    class="inline-block mb-2 ml-1 font-bold text-m text-slate-700 dark:text-white/80">Last
+                                    class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">Last
                                     name</label>
                                   <input type="text" name="last name" value="Lucky"
                                     class="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
@@ -538,7 +493,7 @@
                               <div class="w-full max-w-full px-3 shrink-0 md:w-full md:flex-0">
                                 <div class="mb-4">
                                   <label for="address"
-                                    class="inline-block mb-2 ml-1 font-bold text-m text-slate-700 dark:text-white/80">Address</label>
+                                    class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">Address</label>
                                   <input type="text" name="address"
                                     value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
                                     class="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
@@ -547,7 +502,7 @@
                               <div class="w-full max-w-full px-3 shrink-0 md:w-4/12 md:flex-0">
                                 <div class="mb-4">
                                   <label for="city"
-                                    class="inline-block mb-2 ml-1 font-bold text-m text-slate-700 dark:text-white/80">City</label>
+                                    class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">City</label>
                                   <input type="text" name="city" value="New York"
                                     class="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
                                 </div>
@@ -555,7 +510,7 @@
                               <div class="w-full max-w-full px-3 shrink-0 md:w-4/12 md:flex-0">
                                 <div class="mb-4">
                                   <label for="country"
-                                    class="inline-block mb-2 ml-1 font-bold text-m text-slate-700 dark:text-white/80">Country</label>
+                                    class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">Country</label>
                                   <input type="text" name="country" value="United States"
                                     class="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
                                 </div>
@@ -563,7 +518,7 @@
                               <div class="w-full max-w-full px-3 shrink-0 md:w-4/12 md:flex-0">
                                 <div class="mb-4">
                                   <label for="postal code"
-                                    class="inline-block mb-2 ml-1 font-bold text-m text-slate-700 dark:text-white/80">Postal
+                                    class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">Postal
                                     code</label>
                                   <input type="text" name="postal code" value="437300"
                                     class="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" />
@@ -578,7 +533,7 @@
                               <div class="w-full max-w-full px-3 shrink-0 md:w-full md:flex-0">
                                 <div class="mb-4">
                                   <label for="about me"
-                                    class="inline-block mb-2 ml-1 font-bold text-m text-slate-700 dark:text-white/80">About
+                                    class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">About
                                     me</label>
                                   <input type="text" name="about me"
                                     value="A beautiful Dashboard for Bootstrap 5. It is Free and Open Source."
@@ -608,15 +563,15 @@
                           <div class="border-black/12.5 rounded-t-2xl p-6 text-center pt-0 pb-6 lg:pt-2 lg:pb-4">
                             <div class="flex justify-between">
                               <button type="button"
-                                class="hidden px-8 py-2 font-bold leading-normal text-center text-white align-middle transition-all ease-in border-0 rounded-lg shadow-md cursor-pointer text-m bg-cyan-500 lg:block tracking-tight-rem hover:shadow-m hover:-translate-y-px active:opacity-85">Connect</button>
+                                class="hidden px-8 py-2 font-bold leading-normal text-center text-white align-middle transition-all ease-in border-0 rounded-lg shadow-md cursor-pointer text-xs bg-cyan-500 lg:block tracking-tight-rem hover:shadow-xs hover:-translate-y-px active:opacity-85">Connect</button>
                               <button type="button"
-                                class="block px-8 py-2 font-bold leading-normal text-center text-white align-middle transition-all ease-in border-0 rounded-lg shadow-md cursor-pointer text-m bg-cyan-500 lg:hidden tracking-tight-rem hover:shadow-m hover:-translate-y-px active:opacity-85">
+                                class="block px-8 py-2 font-bold leading-normal text-center text-white align-middle transition-all ease-in border-0 rounded-lg shadow-md cursor-pointer text-xs bg-cyan-500 lg:hidden tracking-tight-rem hover:shadow-xs hover:-translate-y-px active:opacity-85">
                                 <i class="ni ni-collection text-2.8"></i>
                               </button>
                               <button type="button"
-                                class="hidden px-8 py-2 font-bold leading-normal text-center text-white align-middle transition-all ease-in border-0 rounded-lg shadow-md cursor-pointer text-m bg-slate-700 lg:block tracking-tight-rem hover:shadow-m hover:-translate-y-px active:opacity-85">Message</button>
+                                class="hidden px-8 py-2 font-bold leading-normal text-center text-white align-middle transition-all ease-in border-0 rounded-lg shadow-md cursor-pointer text-xs bg-slate-700 lg:block tracking-tight-rem hover:shadow-xs hover:-translate-y-px active:opacity-85">Message</button>
                               <button type="button"
-                                class="block px-8 py-2 font-bold leading-normal text-center text-white align-middle transition-all ease-in border-0 rounded-lg shadow-md cursor-pointer text-m bg-slate-700 lg:hidden tracking-tight-rem hover:shadow-m hover:-translate-y-px active:opacity-85">
+                                class="block px-8 py-2 font-bold leading-normal text-center text-white align-middle transition-all ease-in border-0 rounded-lg shadow-md cursor-pointer text-xs bg-slate-700 lg:hidden tracking-tight-rem hover:shadow-xs hover:-translate-y-px active:opacity-85">
                                 <i class="ni ni-email-83 text-2.8"></i>
                               </button>
                             </div>
@@ -716,22 +671,22 @@
                     <a href="javascript:void(0)">
                       <div class="my-2 text-left" sidenav-colors>
                         <span
-                          class="py-2.2 text-m rounded-circle h-5.6 mr-1.25 w-5.6 ease-in-out bg-gradient-to-tl from-blue-500 to-violet-500 relative inline-block cursor-pointer whitespace-nowrap border border-solid border-slate-700 text-center align-baseline font-bold uppercase leading-none text-white transition-all duration-200 hover:border-slate-700"
+                          class="py-2.2 text-xs rounded-circle h-5.6 mr-1.25 w-5.6 ease-in-out bg-gradient-to-tl from-blue-500 to-violet-500 relative inline-block cursor-pointer whitespace-nowrap border border-solid border-slate-700 text-center align-baseline font-bold uppercase leading-none text-white transition-all duration-200 hover:border-slate-700"
                           active-color data-color="blue" onclick="sidebarColor(this)"></span>
                         <span
-                          class="py-2.2 text-m rounded-circle h-5.6 mr-1.25 w-5.6 ease-in-out bg-gradient-to-tl from-zinc-800 to-zinc-700 dark:bg-gradient-to-tl dark:from-slate-750 dark:to-gray-850 relative inline-block cursor-pointer whitespace-nowrap border border-solid border-white text-center align-baseline font-bold uppercase leading-none text-white transition-all duration-200 hover:border-slate-700"
+                          class="py-2.2 text-xs rounded-circle h-5.6 mr-1.25 w-5.6 ease-in-out bg-gradient-to-tl from-zinc-800 to-zinc-700 dark:bg-gradient-to-tl dark:from-slate-750 dark:to-gray-850 relative inline-block cursor-pointer whitespace-nowrap border border-solid border-white text-center align-baseline font-bold uppercase leading-none text-white transition-all duration-200 hover:border-slate-700"
                           data-color="gray" onclick="sidebarColor(this)"></span>
                         <span
-                          class="py-2.2 text-m rounded-circle h-5.6 mr-1.25 w-5.6 ease-in-out bg-gradient-to-tl from-blue-700 to-cyan-500 relative inline-block cursor-pointer whitespace-nowrap border border-solid border-white text-center align-baseline font-bold uppercase leading-none text-white transition-all duration-200 hover:border-slate-700"
+                          class="py-2.2 text-xs rounded-circle h-5.6 mr-1.25 w-5.6 ease-in-out bg-gradient-to-tl from-blue-700 to-cyan-500 relative inline-block cursor-pointer whitespace-nowrap border border-solid border-white text-center align-baseline font-bold uppercase leading-none text-white transition-all duration-200 hover:border-slate-700"
                           data-color="cyan" onclick="sidebarColor(this)"></span>
                         <span
-                          class="py-2.2 text-m rounded-circle h-5.6 mr-1.25 w-5.6 ease-in-out bg-gradient-to-tl from-emerald-500 to-teal-400 relative inline-block cursor-pointer whitespace-nowrap border border-solid border-white text-center align-baseline font-bold uppercase leading-none text-white transition-all duration-200 hover:border-slate-700"
+                          class="py-2.2 text-xs rounded-circle h-5.6 mr-1.25 w-5.6 ease-in-out bg-gradient-to-tl from-emerald-500 to-teal-400 relative inline-block cursor-pointer whitespace-nowrap border border-solid border-white text-center align-baseline font-bold uppercase leading-none text-white transition-all duration-200 hover:border-slate-700"
                           data-color="emerald" onclick="sidebarColor(this)"></span>
                         <span
-                          class="py-2.2 text-m rounded-circle h-5.6 mr-1.25 w-5.6 ease-in-out bg-gradient-to-tl from-orange-500 to-yellow-500 relative inline-block cursor-pointer whitespace-nowrap border border-solid border-white text-center align-baseline font-bold uppercase leading-none text-white transition-all duration-200 hover:border-slate-700"
+                          class="py-2.2 text-xs rounded-circle h-5.6 mr-1.25 w-5.6 ease-in-out bg-gradient-to-tl from-orange-500 to-yellow-500 relative inline-block cursor-pointer whitespace-nowrap border border-solid border-white text-center align-baseline font-bold uppercase leading-none text-white transition-all duration-200 hover:border-slate-700"
                           data-color="orange" onclick="sidebarColor(this)"></span>
                         <span
-                          class="py-2.2 text-m rounded-circle h-5.6 mr-1.25 w-5.6 ease-in-out bg-gradient-to-tl from-red-600 to-orange-600 relative inline-block cursor-pointer whitespace-nowrap border border-solid border-white text-center align-baseline font-bold uppercase leading-none text-white transition-all duration-200 hover:border-slate-700"
+                          class="py-2.2 text-xs rounded-circle h-5.6 mr-1.25 w-5.6 ease-in-out bg-gradient-to-tl from-red-600 to-orange-600 relative inline-block cursor-pointer whitespace-nowrap border border-solid border-white text-center align-baseline font-bold uppercase leading-none text-white transition-all duration-200 hover:border-slate-700"
                           data-color="red" onclick="sidebarColor(this)"></span>
                       </div>
                     </a>
@@ -743,10 +698,10 @@
                     </div>
                     <div class="flex">
                       <button transparent-style-btn
-                        class="inline-block w-full px-4 py-2.5 mb-2 font-bold leading-normal text-center text-white capitalize align-middle transition-all bg-blue-500 border border-transparent border-solid rounded-lg cursor-pointer text-sm xl-max:cursor-not-allowed xl-max:opacity-65 xl-max:pointer-events-none xl-max:bg-gradient-to-tl xl-max:from-blue-500 xl-max:to-violet-500 xl-max:text-white xl-max:border-0 hover:-translate-y-px dark:cursor-not-allowed dark:opacity-65 dark:pointer-events-none dark:bg-gradient-to-tl dark:from-blue-500 dark:to-violet-500 dark:text-white dark:border-0 hover:shadow-m active:opacity-85 ease-in tracking-tight-rem shadow-md bg-150 bg-x-25 bg-gradient-to-tl from-blue-500 to-violet-500 hover:border-blue-500"
+                        class="inline-block w-full px-4 py-2.5 mb-2 font-bold leading-normal text-center text-white capitalize align-middle transition-all bg-blue-500 border border-transparent border-solid rounded-lg cursor-pointer text-sm xl-max:cursor-not-allowed xl-max:opacity-65 xl-max:pointer-events-none xl-max:bg-gradient-to-tl xl-max:from-blue-500 xl-max:to-violet-500 xl-max:text-white xl-max:border-0 hover:-translate-y-px dark:cursor-not-allowed dark:opacity-65 dark:pointer-events-none dark:bg-gradient-to-tl dark:from-blue-500 dark:to-violet-500 dark:text-white dark:border-0 hover:shadow-xs active:opacity-85 ease-in tracking-tight-rem shadow-md bg-150 bg-x-25 bg-gradient-to-tl from-blue-500 to-violet-500 hover:border-blue-500"
                         data-class="bg-transparent" active-style>White</button>
                       <button white-style-btn
-                        class="inline-block w-full px-4 py-2.5 mb-2 ml-2 font-bold leading-normal text-center text-blue-500 capitalize align-middle transition-all bg-transparent border border-blue-500 border-solid rounded-lg cursor-pointer text-sm xl-max:cursor-not-allowed xl-max:opacity-65 xl-max:pointer-events-none xl-max:bg-gradient-to-tl xl-max:from-blue-500 xl-max:to-violet-500 xl-max:text-white xl-max:border-0 hover:-translate-y-px dark:cursor-not-allowed dark:opacity-65 dark:pointer-events-none dark:bg-gradient-to-tl dark:from-blue-500 dark:to-violet-500 dark:text-white dark:border-0 hover:shadow-m active:opacity-85 ease-in tracking-tight-rem shadow-md bg-150 bg-x-25 bg-none hover:border-blue-500"
+                        class="inline-block w-full px-4 py-2.5 mb-2 ml-2 font-bold leading-normal text-center text-blue-500 capitalize align-middle transition-all bg-transparent border border-blue-500 border-solid rounded-lg cursor-pointer text-sm xl-max:cursor-not-allowed xl-max:opacity-65 xl-max:pointer-events-none xl-max:bg-gradient-to-tl xl-max:from-blue-500 xl-max:to-violet-500 xl-max:text-white xl-max:border-0 hover:-translate-y-px dark:cursor-not-allowed dark:opacity-65 dark:pointer-events-none dark:bg-gradient-to-tl dark:from-blue-500 dark:to-violet-500 dark:text-white dark:border-0 hover:shadow-xs active:opacity-85 ease-in tracking-tight-rem shadow-md bg-150 bg-x-25 bg-none hover:border-blue-500"
                         data-class="bg-white">Dark</button>
                     </div>
                     <p class="block mt-2 leading-normal dark:text-white dark:opacity-80 text-sm xl:hidden">You can
@@ -771,10 +726,10 @@
                       </div>
                     </div>
                     <a target="_blank"
-                      class="dark:border dark:border-solid dark:border-white inline-block w-full px-6 py-2.5 mb-4 font-bold leading-normal text-center text-white align-middle transition-all bg-transparent border border-solid border-transparent rounded-lg cursor-pointer text-sm ease-in hover:shadow-m hover:-translate-y-px active:opacity-85 tracking-tight-rem shadow-md bg-150 bg-x-25 bg-gradient-to-tl from-zinc-800 to-zinc-700 dark:bg-gradient-to-tl dark:from-slate-750 dark:to-gray-850"
+                      class="dark:border dark:border-solid dark:border-white inline-block w-full px-6 py-2.5 mb-4 font-bold leading-normal text-center text-white align-middle transition-all bg-transparent border border-solid border-transparent rounded-lg cursor-pointer text-sm ease-in hover:shadow-xs hover:-translate-y-px active:opacity-85 tracking-tight-rem shadow-md bg-150 bg-x-25 bg-gradient-to-tl from-zinc-800 to-zinc-700 dark:bg-gradient-to-tl dark:from-slate-750 dark:to-gray-850"
                       href="https://www.creative-tim.com/product/argon-dashboard-tailwind">Free Download</a>
                     <a target="_blank"
-                      class="dark:border dark:border-solid dark:border-white dark:text-white inline-block w-full px-6 py-2.5 mb-4 font-bold leading-normal text-center align-middle transition-all bg-transparent border border-solid rounded-lg shadow-none cursor-pointer active:shadow-m hover:-translate-y-px active:opacity-85 text-sm ease-in tracking-tight-rem bg-150 bg-x-25 border-slate-700 text-slate-700 hover:bg-transparent hover:text-slate-700 hover:shadow-none active:bg-slate-700 active:text-white active:hover:bg-transparent active:hover:text-slate-700 active:hover:shadow-none"
+                      class="dark:border dark:border-solid dark:border-white dark:text-white inline-block w-full px-6 py-2.5 mb-4 font-bold leading-normal text-center align-middle transition-all bg-transparent border border-solid rounded-lg shadow-none cursor-pointer active:shadow-xs hover:-translate-y-px active:opacity-85 text-sm ease-in tracking-tight-rem bg-150 bg-x-25 border-slate-700 text-slate-700 hover:bg-transparent hover:text-slate-700 hover:shadow-none active:bg-slate-700 active:text-white active:hover:bg-transparent active:hover:text-slate-700 active:hover:shadow-none"
                       href="https://www.creative-tim.com/learning-lab/tailwind/html/quick-start/argon-dashboard/">View
                       documentation</a>
                     <div class="w-full text-center">
@@ -783,10 +738,10 @@
                         aria-label="Star creativetimofficial/argon-dashboard on GitHub">Star</a>
                       <h6 class="mt-4 dark:text-white">Thank you for sharing!</h6>
                       <a href="https://twitter.com/intent/tweet?text=Check%20Argon%20Dashboard%20made%20by%20%40CreativeTim%20%23webdesign%20%23dashboard%20%23tailwindcss&amp;url=https%3A%2F%2Fwww.creative-tim.com%2Fproduct%2Fargon-dashboard-tailwind"
-                        class="inline-block px-5 py-2.5 mb-0 mr-2 font-bold text-center text-white align-middle transition-all border-0  rounded-lg cursor-pointer hover:shadow-m hover:-translate-y-px active:opacity-85 leading-normal text-sm ease-in tracking-tight-rem shadow-md bg-150 bg-x-25 me-2 border-slate-700 bg-slate-700"
+                        class="inline-block px-5 py-2.5 mb-0 mr-2 font-bold text-center text-white align-middle transition-all border-0  rounded-lg cursor-pointer hover:shadow-xs hover:-translate-y-px active:opacity-85 leading-normal text-sm ease-in tracking-tight-rem shadow-md bg-150 bg-x-25 me-2 border-slate-700 bg-slate-700"
                         target="_blank"> <i class="mr-1 fab fa-twitter"></i> Tweet </a>
                       <a href="https://www.facebook.com/sharer/sharer.php?u=https://www.creative-tim.com/product/argon-dashboard-tailwind"
-                        class="inline-block px-5 py-2.5 mb-0 mr-2 font-bold text-center text-white align-middle transition-all border-0  rounded-lg cursor-pointer hover:shadow-m hover:-translate-y-px active:opacity-85 leading-normal text-sm ease-in tracking-tight-rem shadow-md bg-150 bg-x-25 me-2 border-slate-700 bg-slate-700"
+                        class="inline-block px-5 py-2.5 mb-0 mr-2 font-bold text-center text-white align-middle transition-all border-0  rounded-lg cursor-pointer hover:shadow-xs hover:-translate-y-px active:opacity-85 leading-normal text-sm ease-in tracking-tight-rem shadow-md bg-150 bg-x-25 me-2 border-slate-700 bg-slate-700"
                         target="_blank"> <i class="mr-1 fab fa-facebook-square"></i> Share </a>
                     </div>
                   </div>
