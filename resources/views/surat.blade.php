@@ -64,134 +64,7 @@
 <body
   class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">
   <div class="absolute w-full dark:hidden min-h-75" style="background-color: #08A04B;"></div>
-
-  <aside
-    class="fixed inset-y-0 flex-wrap items-center 
-    justify-between block w-full p-0 my-4 overflow-y-auto 
-    antialiased transition-transform duration-200 -translate-x-full 
-    bg-white border-0 shadow-xl dark:shadow-none dark:bg-slate-850 
-    max-w-64 ease-nav-brand z-990 xl:ml-6 rounded-2xl xl:left-0 xl:translate-x-0"
-    aria-expanded="false">
-
-    <div class="sticky top-0 z-50 bg-white h-19 px-4 flex items-center justify-between shadow-sm">
-      <a class="flex items-center py-4 text-sm whitespace-nowrap dark:text-white text-slate-700"
-        href="https://demos.creative-tim.com/argon-dashboard-tailwind/pages/dashboard.html" target="_blank">
-        <img src="../assets/img/logo-esdm.svg" class="h-8 w-8 max-w-full transition-all duration-200 ease-nav-brand"
-          alt="main_logo" />
-        <span class="ml-2 font-semibold leading-tight transition-all duration-200 ease-nav-brand">
-          Energi dan Sumber Daya <br>Mineral
-        </span>
-      </a>
-    </div>
-
-    <!-- tombol close -->
-    <i class="xl:hidden fas fa-times absolute top-4 right-4 p-2 text-slate-400 dark:text-white opacity-70 cursor-pointer"
-      sidenav-close></i>
-    </div>
-
-    <hr
-      class="h-px mt-0 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent" />
-    <!-- menu fitur -->
-    <div class="items-center block h-auto w-auto max-h-screen overflow-auto h-sidenav grow basis-full">
-      <ul class="flex flex-col pl-0 mb-0">
-
-        <li class="mt-0.5 w-full">
-          <a class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
-            href="/dashboarduser">
-            <div
-              class="mr-2 flex h-1 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-              <i class="relative top-0 text-sm leading-normal text-blue-500 ni ni-tv-2"></i>
-            </div>
-            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Beranda</span>
-          </a>
-        </li>
-
-        <li class="mt-0.5 w-full">
-          <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
-            href="/pengajuansurat">
-            <div
-              class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-              <i class="relative top-0 text-sm leading-normal text-cyan-500 ni ni-app"></i>
-            </div>
-            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Ajukan Permohonan</span>
-          </a>
-        </li>
-
-        <li class="mt-0.5 w-full">
-          <a class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
-            href="/daftarpengajuanpengguna">
-            <div
-              class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-              <i class="relative top-0 text-sm leading-normal text-orange-500 ni ni-calendar-grid-58"></i>
-            </div>
-            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Daftar Pengajuan</span>
-          </a>
-        </li>
-
-
-        <li class="mt-0.5 w-full">
-          <a class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
-            href="/daftarpengajuanpengguna">
-            <div
-              class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center fill-current stroke-0 text-center xl:p-2.5">
-              <i class="relative top-0 text-sm leading-normal text-emerald-500 ni ni-credit-card"></i>
-            </div>
-            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Surat Keterangan</span>
-          </a>
-        </li>
-
-
-
-        <li class="w-full mt-4">
-          <h6 class="pl-6 ml-2 text-xs font-bold leading-tight uppercase dark:text-white opacity-60">Pengaturan Akun
-          </h6>
-        </li>
-
-        <li class="mt-0.5 w-full">
-          <a class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
-            href="/profile">
-            <div
-              class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-              <i class="relative top-0 text-sm leading-normal text-slate-700 ni ni-single-02"></i>
-            </div>
-            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Profil</span>
-          </a>
-        </li>
-        <!-- disini logout 
-        <li class="mt-0.5 w-full">
-          <a class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
-            href="../pages/sign-in.html">
-            <div
-              class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-              <i class="relative top-0 text-sm leading-normal text-orange-500 ni ni-single-copy-04"></i>
-            </div>
-            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Masuk</span>
-          </a>
-        </li>
-
-        <li class="mt-0.5 w-full">
-          <a class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors"
-            href="../pages/sign-up.html">
-            <div
-              class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-              <i class="relative top-0 text-sm leading-normal text-cyan-500 ni ni-collection"></i>
-            </div>
-            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Daftar</span>
-          </a>
-        </li>
-        -->
-      </ul>
-    </div>
-
-  </aside>
-
-  <!-- end sidenav -->
-
-
-
-
-
-
+  @include('components.sidebar')
   <main class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl">
     <!-- Navbar -->
     <nav
@@ -208,7 +81,7 @@
               class="text-sm pl-2 capitalize leading-normal text-white before:float-left before:pr-2 before:text-white before:content-['/']"
               aria-current="page">Buat Pengajuan</li>
           </ol>
-          <h6 class="mb-0 font-bold text-white capitalize">Buat Pengajuan</h6>
+          <h6 class="mb-4 font-bold text-white capitalize">Buat Pengajuan</h6>
         </nav>
 
         <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">

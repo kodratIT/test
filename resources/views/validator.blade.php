@@ -704,7 +704,8 @@
                         <hr
                           class="h-px mx-0 my-4 bg-transparent border-0 opacity-25 bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent " />
                         <!-- Toggle Script -->
-                        <p onclick="document.getElementById('alamatForm1').classList.toggle('hidden')" class="leading-normal  dark:text-white dark:opacity-60 text-base font-bold">Lampiran Dokumen <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" stroke-width="2"
+                        <p onclick="document.getElementById('alamatForm1').classList.toggle('hidden')" class="leading-normal  dark:text-white dark:opacity-60 text-base font-bold">Lampiran Dokumen 
+                          <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" stroke-width="2"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                           </svg></p>
