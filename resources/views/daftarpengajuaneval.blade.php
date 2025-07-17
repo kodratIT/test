@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/png" href=" {{ asset('assets/img/logo-esdm.svg') }} " />
-  <title>Lihat Sertifikat</title>
+  <title>Verifikasi Pengajuan</title>
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
   <!-- Font Awesome Icons -->
@@ -22,7 +22,7 @@
 
 <body class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">
   <div class="absolute w-full bg-blue-500 dark:hidden min-h-75" style="background-color: #08A04B"></div>
-  @include('components.sidebar')
+  @include('components.sidebarevaluator')
   <main class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl">
     <!-- Navbar -->
     <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all ease-in shadow-none duration-250 rounded-2xl lg:flex-nowrap lg:justify-start" navbar-main navbar-scroll="false">
@@ -33,9 +33,9 @@
             <li class="text-sm leading-normal">
               <a class="text-white opacity-50" href="javascript:;">Halaman</a>
             </li>
-            <li class="text-sm pl-2 capitalize leading-normal text-white before:float-left before:pr-2 before:text-white before:content-['/']" aria-current="page">Surat Keterangan</li>
+            <li class="text-sm pl-2 capitalize leading-normal text-white before:float-left before:pr-2 before:text-white before:content-['/']" aria-current="page">Daftar Permohonan</li>
           </ol>
-          <h6 class="mb-0 font-bold text-white capitalize">Surat Keterangan</h6>
+          <h6 class="mb-0 font-bold text-white capitalize">Daftar Permohonan</h6>
         </nav>
 
         <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
@@ -49,6 +49,23 @@
             </div>
           </div>
           <ul class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full">
+            <!-- online builder btn  -->
+            <!-- <li class="flex items-center">
+                <a class="inline-block px-8 py-2 mb-0 mr-4 text-xs font-bold text-center text-blue-500 uppercase align-middle transition-all ease-in bg-transparent border border-blue-500 border-solid rounded-lg shadow-none cursor-pointer leading-pro hover:-translate-y-px active:shadow-xs hover:border-blue-500 active:bg-blue-500 active:hover:text-blue-500 hover:text-blue-500 tracking-tight-rem hover:bg-transparent hover:opacity-75 hover:shadow-none active:text-white active:hover:bg-transparent" target="_blank" href="https://www.creative-tim.com/builder/soft-ui?ref=navbar-dashboard&amp;_ga=2.76518741.1192788655.1647724933-1242940210.1644448053">Online Builder</a>
+              </li> 
+
+              <li class="flex items-center">
+  <a href="../pages/pengajuansurat.html" 
+     class="px-4 py-2 rounded-lg bg-blue-600 text-white font-semibold shadow-md 
+            transition-all duration-300 ease-in-out hover:bg-blue-700 hover:scale-100000 hover:Light">
+    <i class="fa fa-user mr-2"></i>
+    <span class="inline">Buat Pengajuan</span>
+  </a>
+</li>
+
+                -->
+
+
             <li class="flex items-center pl-4 xl:hidden">
               <a href="javascript:;" class="block p-0 text-sm text-white transition-all ease-nav-brand" sidenav-trigger>
                 <div class="w-4.5 overflow-hidden">
@@ -146,140 +163,96 @@
 
     <div class="w-full px-6 py-6 mx-auto">
       <!-- table 1 -->
+
       <div class="flex flex-wrap -mx-3">
         <div class="flex-none w-full max-w-full px-3">
-          <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
-            <div class="p-4 pb-0 mb-0 border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
-              <h6 class="leading-normal text-lg font-bold mb-4 text-gray-700 dark:text-white uppercase">SURAT KETERANGAN</h6>
+          <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl">
+            <div class="p-6 pb-0 mb-0 border-b border-b-transparent rounded-t-2xl">
+              <h6 class="dark:text-white text-lg font-semibold">Daftar Permohonan Surat Keterangan</h6>
             </div>
-            <div class="flex-auto px-0 pt-0 pb-2">
+            <div class="flex-auto pt-0 pb-2 overflow-x-auto">
+              <table class="min-w-full text-sm text-left text-slate-500 dark:text-slate-200">
+                <thead class="text-xs uppercase text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-700">
+                  <tr>
+                    <th class="px-4 py-3 text-slate-900 font-semibold whitespace-nowrap">No Laporan</th>
+                    <th class="px-4 py-3 text-slate-900 font-semibold text-center whitespace-nowrap">Nama Badan Usaha</th>
+                    <th class="px-4 py-3 text-slate-900 font-semibold text-center whitespace-nowrap">Tanggal Laporan</th>
+                    <th class="px-4 py-3 text-slate-900 font-semibold text-center whitespace-nowrap">Keterangan / Catatan Perbaikan</th>
+                    <th class="px-4 py-3 text-slate-900 font-semibold text-center whitespace-nowrap">Status</th>
+                    <th class="px-4 py-3 text-slate-900 font-semibold text-center whitespace-nowrap">Aksi</th>
+                    <th class="px-4 py-3 text-slate-900 font-semibold text-center whitespace-nowrap">Jadwal Evaluasi</th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white dark:bg-slate-800">
+                  <tr class="border-b dark:border-slate-700">
+                    <td class="px-4 py-3">
+                      <div class="flex flex-col">
+                        <span class="font-medium text-slate-900 dark:text-white">0001</span>
+                      </div>
+                    </td>
+                    <td class="px-4 py-3 text-center text-xs">Perseroan Terbatas (PT)</td>
+                    <td class="px-4 py-3 text-center text-xs">23/04/18</td>
+                    <td class="px-4 py-3 text-sm">Perbaikan pada lampiran</td>
+                    <td class="px-4 py-3 text-center">
+                      <span class="inline-flex items-center justify-center w-40 h-8 text-xs font-semibold text-white rounded-full bg-blue-400">
+                        PROSES EVALUASI
+                      </span>
+                    </td>
+                    <td class="px-4 py-3 text-center">
+                      <a href="/halamanevaluasi" class="text-blue-600 hover:underline text-xs">lihat </a>
+                    </td>
+                    <td class="px-4 py-3 text-center text-xs">25 juli 2025</td>
+                  </tr>
 
-              <!-- Tambahkan overflow-x-auto dan responsive wrapper -->
-              <div class="overflow-x-auto w-full">
-                <table class="min-w-full text-left border-collapse text-slate-500 dark:border-white/40">
-                  <thead>
-                    <tr>
-                      <th class="px-4 py-3 w-1/3 text-m text-slate-900 font-semibold whitespace-nowrap dark:text-white uppercase">No Laporan</th>
-                      <th class="px-4 py-3 w-1/3 text-m text-center text-slate-900 font-semibold whitespace-nowrap dark:text-white uppercase">Tanggal disetujui</th>
-                      <th class="px-4 py-3 w-1/3 text-m text-center text-slate-900 font-semibold whitespace-nowrap dark:text-white uppercase">Aksi</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <!-- Row 1 -->
-                    <tr>
-                      <td class="px-6 py-3 text-sm dark:text-white border-b dark:border-white/40">0001</td>
-                      <td class="px-6 py-3 text-sm text-center dark:text-white border-b dark:border-white/40">23/04/18</td>
-                      <td class="px-6 py-3 text-sm text-center dark:text-white border-b dark:border-white/40">
-                        <a href="javascript:;" class="inline-flex items-center justify-center w-20 h-8 text-xs font-semibold text-white rounded bg-green-600 hover:bg-green-700 transition-all">
-                          Lihat
-                        </a>
-                        <a href="javascript:;" class="inline-flex items-center justify-center w-20 h-8 text-xs font-semibold text-white bg-blue-500 rounded hover:bg-blue-600 transition-all">
-                          Unduh
-                        </a>
-                      </td>
-                    </tr>
+                  <tr class="border-b dark:border-slate-700">
+                    <td class="px-4 py-3">
+                      <div class="flex flex-col">
+                        <span class="font-medium text-slate-900 dark:text-white">0002</span>
+                      </div>
+                    </td>
+                    <td class="px-4 py-3 text-center text-xs">Perseroan Terbatas (PT)</td>
+                    <td class="px-4 py-3 text-center text-xs">11/01/19</td>
+                    <td class="px-4 py-3 text-sm">Kapasitas total tidak sesuai dengan data</td>
+                    <td class="px-4 py-3 text-center">
+                      <span class="inline-flex items-center justify-center w-40 h-8 text-xs font-semibold text-white rounded-full bg-orange-700" style="background-color:orange;">
+                        PERBAIKAN
+                      </span>
+                    </td>
+                    <td class="px-4 py-3 text-center">
+                      <a href="#" class="text-blue-600 hover:underline text-xs">lihat</a>
+                    </td>
+                    <td class="px-4 py-3 text-center text-xs">25 juli 2025</td>
+                  </tr>
 
-                    <!-- Row 2 -->
-                    <tr>
-                      <td class="px-6 py-3 text-sm dark:text-white border-b dark:border-white/40">0002</td>
-                      <td class="px-6 py-3 text-sm text-center dark:text-white border-b dark:border-white/40">11/01/19</td>
-                      <td class="px-6 py-3 text-sm text-center dark:text-white border-b dark:border-white/40">
-                        <a href="javascript:;" class="inline-flex items-center justify-center w-20 h-8 text-xs font-semibold text-white rounded bg-green-600 hover:bg-green-700 transition-all">
-                          Lihat
-                        </a>
-                        <a href="javascript:;" class="inline-flex items-center justify-center w-20 h-8 text-xs font-semibold text-white bg-blue-500 rounded hover:bg-blue-600 transition-all">
-                          Unduh
-                        </a>
-                      </td>
-
-                    </tr>
-
-                    <!-- Row 3 -->
-                    <tr>
-                      <td class="px-6 py-3 text-sm dark:text-white border-b dark:border-white/40">0003</td>
-                      <td class="px-6 py-3 text-sm text-center dark:text-white border-b dark:border-white/40">19/09/17</td>
-                      <td class="px-6 py-3 text-sm text-center dark:text-white border-b dark:border-white/40">
-                        <a href="javascript:;" class="inline-flex items-center justify-center w-20 h-8 text-xs font-semibold text-white rounded bg-green-600 hover:bg-green-700 transition-all">
-                          Lihat
-                        </a>
-                        <a href="javascript:;" class="inline-flex items-center justify-center w-20 h-8 text-xs font-semibold text-white bg-blue-500 rounded hover:bg-blue-600 transition-all">
-                          Unduh
-                        </a>
-                      </td>
-                    </tr>
-
-                    <!-- Row 3 -->
-                    <tr>
-                      <td class="px-6 py-3 text-sm dark:text-white border-b dark:border-white/40">0003</td>
-                      <td class="px-6 py-3 text-sm text-center dark:text-white border-b dark:border-white/40">19/09/17</td>
-                      <td class="px-6 py-3 text-sm text-center dark:text-white border-b dark:border-white/40">
-                        <a href="javascript:;" class="inline-flex items-center justify-center w-20 h-8 text-xs font-semibold text-white rounded bg-green-600 hover:bg-green-700 transition-all">
-                          Lihat
-                        </a>
-                        <a href="javascript:;" class="inline-flex items-center justify-center w-20 h-8 text-xs font-semibold text-white bg-blue-500 rounded hover:bg-blue-600 transition-all">
-                          Unduh
-                        </a>
-                      </td>
-                    </tr>
-
-                    <!-- Row 3 -->
-                    <tr>
-                      <td class="px-6 py-3 text-sm dark:text-white border-b dark:border-white/40">0003</td>
-                      <td class="px-6 py-3 text-sm text-center dark:text-white border-b dark:border-white/40">19/09/17</td>
-                      <td class="px-6 py-3 text-sm text-center dark:text-white border-b dark:border-white/40">
-                        <a href="javascript:;" class="inline-flex items-center justify-center w-20 h-8 text-xs font-semibold text-white rounded bg-green-600 hover:bg-green-700 transition-all">
-                          Lihat
-                        </a>
-                        <a href="javascript:;" class="inline-flex items-center justify-center w-20 h-8 text-xs font-semibold text-white bg-blue-500 rounded hover:bg-blue-600 transition-all">
-                          Unduh
-                        </a>
-                      </td>
-                    </tr>
-
-                    <!-- Row 3 -->
-                    <tr>
-                      <td class="px-6 py-3 text-sm dark:text-white border-b dark:border-white/40">0003</td>
-                      <td class="px-6 py-3 text-sm text-center dark:text-white border-b dark:border-white/40">19/09/17</td>
-                      <td class="px-6 py-3 text-sm text-center dark:text-white border-b dark:border-white/40">
-                        <a href="javascript:;" class="inline-flex items-center justify-center w-20 h-8 text-xs font-semibold text-white rounded bg-green-600 hover:bg-green-700 transition-all">
-                          Lihat
-                        </a>
-                        <a href="javascript:;" class="inline-flex items-center justify-center w-20 h-8 text-xs font-semibold text-white bg-blue-500 rounded hover:bg-blue-600 transition-all">
-                          Unduh
-                        </a>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <!-- End Table Wrapper -->
-
+                  <tr class="border-b dark:border-slate-700">
+                    <td class="px-4 py-3">
+                      <div class="flex flex-col">
+                        <span class="font-medium text-slate-900 dark:text-white">0003</span>
+                      </div>
+                    </td>
+                    <td class="px-4 py-3 text-center text-xs">Perseroan Terbatas (PT)</td>
+                    <td class="px-4 py-3 text-center text-xs">12/05/2025</td>
+                    <td class="px-4 py-3 text-sm">-</td>
+                    <td class="px-4 py-3 text-center">
+                      <span class="inline-flex items-center justify-center w-40 h-8 text-xs font-semibold text-white rounded-full bg-orange-700" style="background-color:green;">
+                        TELAH DIEVALUASI
+                      </span>
+                    </td>
+                    <td class="px-4 py-3 text-center">
+                      <a href="#" class="text-blue-600 hover:underline text-xs">Lihat</a>
+                    </td>
+                    <td class="px-4 py-3 text-center text-xs">25 juli 2025</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
       </div>
     </div>
-
-    <!--
-      <footer class="pt-4">
-        <div class="w-full px-6 mx-auto">
-          <div class="flex flex-wrap items-center -mx-3 lg:justify-between">
-            <div class="w-full max-w-full px-3 mt-0 mb-6 shrink-0 lg:mb-0 lg:w-1/2 lg:flex-none">
-              <div class="text-sm leading-normal text-center text-slate-500 lg:text-left">
-                ©
-                <script>
-                  document.write(new Date().getFullYear() + ",");
-                </script>
-                made with <i class="fa fa-heart"></i> by
-                <a href="https://www.creative-tim.com" class="font-semibold dark:text-white text-slate-700" target="_blank">Creative Tim</a>
-                .
-              </div>
-            </div>
-          </div>
-        </div>
+    </div>
     </div>
     </footer>
--->
     </div>
   </main>
 

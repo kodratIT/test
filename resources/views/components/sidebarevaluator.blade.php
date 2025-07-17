@@ -1,6 +1,5 @@
 <!-- resources/views/components/sidebar.blade.php -->
- 
-<aside id="sidebar" class="fixed inset-y-0 flex-wrap items-center justify-between block w-full p-0 my-4 overflow-y-auto antialiased transition-transform duration-200  lg:translate-x-0 -translate-x-full bg-white border-0 shadow-xl dark:shadow-none dark:bg-slate-850 max-w-64 ease-nav-brand z-990 lg:ml-6 rounded-2xl lg:left-0" aria-expanded="false">
+<aside class="fixed inset-y-0 flex-wrap items-center justify-between block w-full p-0 my-4 overflow-y-auto antialiased transition-transform duration-200 lg:translate-x-0 -translate-x-full bg-white border-0 shadow-xl dark:shadow-none dark:bg-slate-850 max-w-64 ease-nav-brand z-990 lg:ml-6 rounded-2xl lg:left-0" aria-expanded="false">
 
   <!-- Header Sidebar -->
   <div class="sticky top-0 z-50 bg-white h-19 px-4 flex items-center justify-between shadow-sm">
@@ -23,9 +22,9 @@
 
       {{-- Beranda --}}
       <li class="mt-0.5 w-full">
-        <a href="/dashboarduser"
-          class="py-2.7 text-lg ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors
-           {{ request()->is('dashboarduser') ? 'bg-blue-500/13 rounded-lg font-semibold text-slate-700' : 'dark:text-white dark:opacity-80' }}">
+        <a href="/berandaevaluator"
+           class="py-2.7 text-lg ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors
+           {{ request()->is('berandaevaluator') ? 'bg-blue-500/13 rounded-lg font-semibold text-slate-700' : 'dark:text-white dark:opacity-80' }}">
           <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
             <i class="relative top-0 text-lg leading-normal ni ni-tv-2 text-blue-500"></i>
           </div>
@@ -33,39 +32,15 @@
         </a>
       </li>
 
-      {{-- Buat Permohonan --}}
-      <li class="mt-0.5 w-full">
-        <a href="/pengajuansurat"
-          class="py-2.7 text-lg ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors
-           {{ request()->is('pengajuansurat') ? 'bg-blue-500/13 rounded-lg font-semibold text-slate-700' : 'dark:text-white dark:opacity-80' }}">
-          <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-            <i class="relative top-0 text-2xl leading-normal ni ni-fat-add text-cyan-500"></i>
-          </div>
-          <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Buat Permohonan</span>
-        </a>
-      </li>
-
       {{-- Daftar Permohonan --}}
       <li class="mt-0.5 w-full">
-        <a href="/daftarpengajuanpengguna"
-          class="py-2.7 text-lg ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors
-           {{ request()->is('daftarpengajuanpengguna') ? 'bg-blue-500/13 rounded-lg font-semibold text-slate-700' : 'dark:text-white dark:opacity-80' }}">
+        <a href="/daftarpengajuanevaluator"
+           class="py-2.7 text-lg ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors
+           {{ request()->is('daftarpengajuanevaluator') ? 'bg-blue-500/13 rounded-lg font-semibold text-slate-700' : 'dark:text-white dark:opacity-80' }}">
           <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
             <i class="relative top-0 text-lg leading-normal ni ni-bullet-list-67 text-orange-500"></i>
           </div>
           <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Daftar Permohonan</span>
-        </a>
-      </li>
-
-      {{-- Surat Keterangan --}}
-      <li class="mt-0.5 w-full">
-        <a href="/suratterbituser"
-          class="py-2.7 text-lg ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors
-           {{ request()->is('suratterbituser') ? 'bg-blue-500/13 rounded-lg font-semibold text-slate-700' : 'dark:text-white dark:opacity-80' }}">
-          <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center fill-current stroke-0 text-center xl:p-2.5">
-            <i class="relative top-0 text-lg leading-normal ni ni-single-copy-04 text-emerald-500"></i>
-          </div>
-          <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Surat Keterangan</span>
         </a>
       </li>
 
@@ -76,9 +51,9 @@
 
       {{-- Profil --}}
       <li class="mt-0.5 w-full">
-        <a href="/profile"
-          class="py-2.7 text-lg ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors
-           {{ request()->is('profile') ? 'bg-blue-500/13 rounded-lg font-semibold text-slate-700' : 'dark:text-white dark:opacity-80' }}">
+        <a href="/profileevaluator"
+           class="py-2.7 text-lg ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors
+           {{ request()->is('profileevaluator') ? 'bg-blue-500/13 rounded-lg font-semibold text-slate-700' : 'dark:text-white dark:opacity-80' }}">
           <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
             <i class="relative top-0 text-lg leading-normal ni ni-single-02 text-slate-700"></i>
           </div>
@@ -88,8 +63,8 @@
 
       {{-- Logout --}}
       <li class="mt-0.5 w-full">
-        <a href=""
-          class="py-2.7 text-lg ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors
+        <a href="#"
+           class="py-2.7 text-lg ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors
            dark:text-white dark:opacity-80">
           <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
             <i class="relative top-0 text-lg leading-normal ni ni-bold-left text-red-500"></i>
