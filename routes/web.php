@@ -26,6 +26,13 @@ Route::get('/dashboardver', function () {
     return view('basever');
 })->name('dashbordver');
 
+
+
+
+Route::get('/berandateknis', function () {
+    return view('berandateknis');
+})->name('berandateknis');
+
 Route::get('/berandaevaluator', function () {
     return view('berandaevaluator');
 })->name('berandaevaluator');
@@ -42,6 +49,10 @@ Route::get('/verbase', function () {
 Route::get('/profile', function () {
     return view('profile');
 })->name('profile');
+
+Route::get('/profileteknis', function () {
+    return view('profileteknis');
+})->name('profileteknis');
 
 Route::get('/profilevalidator', function () {
     return view('profilevalidator');
@@ -76,23 +87,25 @@ Route::get('/halamanevaluasi', function () {
     return view('halamanevaluasi');
 })->name('halamanevaluasi');
 
-Route::get('/daftarpengajuanvalidator', function () {
-    return view('daftarpengajuanvalidator');
-})->name('daftarpengajuanvalidator');
-
+Route::get('/halamantimteknis', function () {
+    return view('halamantimteknis');
+})->name('halamantimteknis');
 
 Route::get('/daftarpengajuanteknis', function () {
-    return view('pengajuantimteknis');
+    return view('daftarpengajuanteknis');
 })->name('daftarpengajuanteknis');
 
 Route::get('/daftarpengajuanval', function () {
     return view('daftarpengajuanval');
 })->name('daftarpengajuanval');
 
+Route::get('/suketteknis', function () {
+    return view('suketteknis');
+})->name('suketteknis');
+
 Route::get('/suketval', function () {
     return view('suketval');
 })->name('suketval');
-
 
 Route::get('/suratterbituser', function () {
     return view('suratterbituser');

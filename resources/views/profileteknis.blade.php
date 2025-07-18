@@ -22,10 +22,10 @@
 
 <div
   class="absolute bg-y-50 w-full top-0 bg-[url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/profile-layout-header.jpg')] bg-cover bg-center min-h-75">
-  <span class="absolute top-0 left-0 w-full h-full bg-orange-400 opacity-80"></span>
+  <span class="absolute top-0 left-0 w-full h-full bg-blue-500 opacity-80"></span>
 </div>
 
-  @include('components.sidebarvalidator')
+  @include('components.sidebartimteknis')
 
   <div class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68">
     <nav
@@ -41,7 +41,7 @@
             <li class="text-sm pl-2 capitalize leading-normal before:float-left before:pr-2 before:content-['/']"
               aria-current="page">Profil</li>
           </ol>
-          <h6 class="mb-2 ml-2 font-bold text-white capitalize dark:text-white">Profile Validator</h6>
+          <h6 class="mb-2 ml-2 font-bold text-white capitalize dark:text-white">Profile Teknis</h6>
         </nav>
 
         <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">

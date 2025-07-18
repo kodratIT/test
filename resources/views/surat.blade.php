@@ -262,21 +262,21 @@
                               <tr>
                                 <td>Foto Unit</td>
                                 <td>
-                                  <input type="file" name="foto_unit_1" accept="image/*" onchange="previewGambar(this, 'preview_unit_1')" required>
+                                  <input type="file" name="foto_unit_1" accept="image/*" onchange="previewGambar(this, 'preview_unit_1')" class="block" required>
                                   <img id="preview_unit_1" class="mt-2 w-24 hidden border rounded" />
                                 </td>
                               </tr>
                               <tr>
                                 <td>Foto Papan Nama (Name Plate) Generator</td>
                                 <td>
-                                  <input type="file" name="foto_generator_1" accept="image/*" onchange="previewGambar(this, 'preview_generator_1')" required>
+                                  <input type="file" name="foto_generator_1" accept="image/*" onchange="previewGambar(this, 'preview_generator_1')" class="block" required>
                                   <img id="preview_generator_1" class="mt-2 w-24 hidden border rounded" />
                                 </td>
                               </tr>
                               <tr>
                                 <td>Foto Papan Nama (Name Plate) Mesin Penggerak</td>
                                 <td>
-                                  <input type="file" name="foto_mesin_1" accept="image/*" onchange="previewGambar(this, 'preview_mesin_1')" required>
+                                  <input type="file" name="foto_mesin_1" accept="image/*" onchange="previewGambar(this, 'preview_mesin_1')" class="block" required>
                                   <img id="preview_mesin_1" class="mt-2 w-24 hidden border rounded" />
                                 </td>
                               </tr>
@@ -371,25 +371,24 @@
                               <tr>
                                 <td>Foto Unit</td>
                                 <td>
-                                  <input type="file" name="sfoto_unit_1" accept="image/*" onchange="previewGambar(this, 'spreview_unit_1')" required>
+                                  <input type="file" name="sfoto_unit_1" accept="image/*" onchange="previewGambar(this, 'spreview_unit_1')" data-data-required>
                                   <img id="spreview_unit_1" class="mt-2 w-24 hidden border rounded" />
                                 </td>
                               </tr>
                               <tr>
                                 <td>Foto Papan Nama (Name Plate) Modul PLTS</td>
                                 <td>
-                                  <input type="file" name="sfoto_modul_1" accept="image/*" onchange="previewGambar(this, 'spreview_modul_1')" required>
+                                  <input type="file" name="sfoto_modul_1" accept="image/*" onchange="previewGambar(this, 'spreview_modul_1')" data-required>
                                   <img id="spreview_modul_1" class="mt-2 w-24 hidden border rounded" />
                                 </td>
                               </tr>
                               <tr>
                                 <td>Foto Papan Nama (Name Plate) Inverter PLTS</td>
                                 <td>
-                                  <input type="file" name="sfoto_inverter_1" accept="image/*" onchange="previewGambar(this, 'spreview_inverter_1')" required>
+                                  <input type="file" name="sfoto_inverter_1" accept="image/*" onchange="previewGambar(this, 'spreview_inverter_1')" data-required>
                                   <img id="spreview_inverter_1" class="mt-2 w-24 hidden border rounded" />
                                 </td>
                               </tr>
-
 
 
                             </tbody>
@@ -578,61 +577,59 @@
 
 
                         function tampilkanModalGambar(src) {
-  const modal = document.getElementById('imageModal');
-  const modalImage = document.getElementById('modalImage');
-  const sidebar = document.getElementById('sidebar');
+                          const modal = document.getElementById('imageModal');
+                          const modalImage = document.getElementById('modalImage');
+                          const sidebar = document.getElementById('sidebar');
 
-  modalImage.src = src;
-  modal.classList.remove('hidden');
+                          modalImage.src = src;
+                          modal.classList.remove('hidden');
 
-  // Sembunyikan sidebar di semua ukuran
-  if (sidebar) {
-    sidebar.classList.remove('translate-x-0');
-    sidebar.classList.remove('lg:translate-x-0');
-    sidebar.classList.add('-translate-x-full');
-  }
-}
+                          // Sembunyikan sidebar di semua ukuran
+                          if (sidebar) {
+                            sidebar.classList.remove('translate-x-0');
+                            sidebar.classList.remove('lg:translate-x-0');
+                            sidebar.classList.add('-translate-x-full');
+                          }
+                        }
 
-function closeImageModal() {
-  const modal = document.getElementById('imageModal');
-  const sidebar = document.getElementById('sidebar');
+                        function closeImageModal() {
+                          const modal = document.getElementById('imageModal');
+                          const sidebar = document.getElementById('sidebar');
 
-  modal.classList.add('hidden');
+                          modal.classList.add('hidden');
 
-  // Tampilkan kembali sidebar di semua ukuran
-  if (sidebar) {
-    sidebar.classList.remove('-translate-x-full');
-    sidebar.classList.add('translate-x-0');
-    sidebar.classList.add('lg:translate-x-0');
-  }
-}
+                          // Tampilkan kembali sidebar di semua ukuran
+                          if (sidebar) {
+                            sidebar.classList.remove('-translate-x-full');
+                            sidebar.classList.add('translate-x-0');
+                            sidebar.classList.add('lg:translate-x-0');
+                          }
+                        }
 
-document.addEventListener('DOMContentLoaded', function () {
-  const closeBtn = document.getElementById('closeModalBtn');
-  if (closeBtn) {
-    closeBtn.addEventListener('click', closeImageModal);
-  }
-});
+                        document.addEventListener('DOMContentLoaded', function() {
+                          const closeBtn = document.getElementById('closeModalBtn');
+                          if (closeBtn) {
+                            closeBtn.addEventListener('click', closeImageModal);
+                          }
+                        });
 
-function previewGambar(input, previewId) {
-  const file = input.files[0];
-  if (!file) return;
+                        function previewGambar(input, previewId) {
+                          const file = input.files[0];
+                          if (!file) return;
 
-  const reader = new FileReader();
-  reader.onload = function (e) {
-    const img = document.getElementById(previewId);
-    img.src = e.target.result;
-    img.classList.remove('hidden');
-    img.classList.add('cursor-zoom-in');
+                          const reader = new FileReader();
+                          reader.onload = function(e) {
+                            const img = document.getElementById(previewId);
+                            img.src = e.target.result;
+                            img.classList.remove('hidden');
+                            img.classList.add('cursor-zoom-in');
 
-    img.onclick = function () {
-      tampilkanModalGambar(e.target.result);
-    };
-  };
-  reader.readAsDataURL(file);
-}
-
-
+                            img.onclick = function() {
+                              tampilkanModalGambar(e.target.result);
+                            };
+                          };
+                          reader.readAsDataURL(file);
+                        }
                       </script>
 
                       <!-- Bagian 2: Jaringan Distribusi -->
@@ -863,9 +860,9 @@ function previewGambar(input, previewId) {
                         <div id="alamatForm1" class="mb-1">
                           <div class="mt-3 space-y-4">
 
-              
 
-                
+
+
 
                             <!-- NIB -->
                             <div>
@@ -874,7 +871,7 @@ function previewGambar(input, previewId) {
                               </label>
                               <input type="file" name="nib" id="nib" onchange="previewGambar(this, 'preview_nib')"
                                 class="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer bg-white 
-                focus:outline-none dark:bg-slate-700 dark:text-white dark:border-gray-600" data-required>
+                focus:outline-none dark:bg-slate-700 dark:text-white dark:border-gray-600" class="block" data-required>
                               <img id="preview_nib" class="mt-2 w-40 hidden border rounded" />
                             </div>
 
@@ -883,7 +880,7 @@ function previewGambar(input, previewId) {
                               <label class="block text-m font-medium text-gray-700 dark:text-white mb-1">KTP Penanggung Jawab</label>
                               <input type="file" name="ktp" id="ktp" onchange="previewGambar(this, 'preview_ktp')"
                                 class="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer bg-white 
-                focus:outline-none dark:bg-slate-700 dark:text-white dark:border-gray-600" data-required>
+                focus:outline-none dark:bg-slate-700 dark:text-white dark:border-gray-600" class="block" data-required>
                               <img id="preview_ktp" class="mt-2 w-40 hidden border rounded" />
                             </div>
 
@@ -892,7 +889,7 @@ function previewGambar(input, previewId) {
                               <label class="block text-m font-medium text-gray-700 dark:text-white mb-1">NPWP</label>
                               <input type="file" name="npwp" id="npwp" onchange="previewGambar(this, 'preview_npwp')"
                                 class="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer bg-white 
-                focus:outline-none dark:bg-slate-700 dark:text-white dark:border-gray-600" data-required>
+                focus:outline-none dark:bg-slate-700 dark:text-white dark:border-gray-600" class="block" data-required>
                               <img id="preview_npwp" class="mt-2 w-40 hidden border rounded" />
                             </div>
 
@@ -901,7 +898,7 @@ function previewGambar(input, previewId) {
                               <label class="block text-m font-medium text-gray-700 dark:text-white mb-1">Gambar Situasi / Tata Letak</label>
                               <input type="file" name="gambar_situasi" id="gambar_situasi" onchange="previewGambar(this, 'preview_situasi')"
                                 class="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer bg-white 
-                focus:outline-none dark:bg-slate-700 dark:text-white dark:border-gray-600" data-required>
+                focus:outline-none dark:bg-slate-700 dark:text-white dark:border-gray-600" class="block" data-required>
                               <img id="preview_situasi" class="mt-2 w-40 hidden border rounded" />
                             </div>
 
@@ -912,7 +909,7 @@ function previewGambar(input, previewId) {
                               </label>
                               <input type="file" name="bukti_tagihan" id="bukti_tagihan" onchange="previewGambar(this, 'preview_tagihan')"
                                 class="block w-full text-m text-gray-700 border border-gray-300 rounded-lg cursor-pointer bg-white 
-                focus:outline-none dark:bg-slate-700 dark:text-white dark:border-gray-600" data-required>
+                focus:outline-none dark:bg-slate-700 dark:text-white dark:border-gray-600" class="block" data-required>
                               <img id="preview_tagihan" class="mt-2 w-40 hidden border rounded" />
                             </div>
 
@@ -955,27 +952,7 @@ function previewGambar(input, previewId) {
       </div>
     </div>
 
-    <!-- 
-    <footer class="pt-4">
-      <div class="w-full px-6 mx-auto">
-        <div class="flex flex-wrap items-center -mx-3 lg:justify-between">
-          <div class="w-full max-w-full px-3 mt-0 mb-6 shrink-0 lg:mb-0 lg:w-1/2 lg:flex-none">
-            <div class="text-sm leading-normal text-center text-slate-500 lg:text-left">
-              ©
-              <script>
-                document.write(new Date().getFullYear() + ",");
-              </script>
-              made with <i class="fa fa-heart"></i> by
-              <a href="https://www.creative-tim.com" class="font-semibold text-slate-700 dark:text-white"
-                target="_blank">Creative Tim</a>
-              for a better web.
-            </div>
-          </div>
-        </div>
-      </div>
-    </footer>
-    </div>
-    end cards -->
+
   </main>
   <!-- -right-90 in loc de 0-->
   <div fixed-plugin-card
@@ -1032,7 +1009,9 @@ function previewGambar(input, previewId) {
     function validateForm() {
       const form = document.getElementById("suratpengajuan");
       const checkbox = document.getElementById("persetujuan");
-      const requiredFields = form.querySelectorAll("input[required], select[required], textarea[required]");
+      const requiredFields = Array.from(form.querySelectorAll("input[required], select[required], textarea[required]"))
+        .filter(field => field.offsetParent !== null); // hanya ambil yang terlihat
+
       let isValid = true;
 
       requiredFields.forEach(field => {
@@ -1069,9 +1048,8 @@ function previewGambar(input, previewId) {
 
 
       return true;
-    }
 
-    
+    }
   </script>
 
 

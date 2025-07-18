@@ -22,9 +22,9 @@
 
       {{-- Beranda --}}
       <li class="mt-0.5 w-full">
-        <a href="/berandavalidator"
+        <a href="/berandateknis"
            class="py-2.7 text-lg ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors
-           {{ request()->is('berandavalidator') ? 'bg-blue-500/13 rounded-lg font-semibold text-slate-700' : 'dark:text-white dark:opacity-80' }}">
+           {{ request()->is('berandateknis') ? 'bg-blue-500/13 rounded-lg font-semibold text-slate-700' : 'dark:text-white dark:opacity-80' }}">
           <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
             <i class="relative top-0 text-lg leading-normal ni ni-tv-2 text-blue-500"></i>
           </div>
@@ -34,9 +34,9 @@
 
       {{-- Daftar Permohonan --}}
       <li class="mt-0.5 w-full">
-        <a href="/daftarpengajuanval"
+        <a href="/daftarpengajuanteknis"
            class="py-2.7 text-lg ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors
-           {{ request()->is('daftarpengajuanval') ? 'bg-blue-500/13 rounded-lg font-semibold text-slate-700' : 'dark:text-white dark:opacity-80' }}">
+           {{ request()->is('daftarpengajuanteknis') ? 'bg-blue-500/13 rounded-lg font-semibold text-slate-700' : 'dark:text-white dark:opacity-80' }}">
           <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
             <i class="relative top-0 text-lg leading-normal ni ni-bullet-list-67 text-orange-500"></i>
           </div>
@@ -46,9 +46,9 @@
 
       {{-- Surat Keterangan --}}
       <li class="mt-0.5 w-full">
-        <a href="/suketval"
+        <a href="/suketteknis"
            class="py-2.7 text-lg ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors
-           {{ request()->is('suketval') ? 'bg-blue-500/13 rounded-lg font-semibold text-slate-700' : 'dark:text-white dark:opacity-80' }}">
+           {{ request()->is('suketteknis') ? 'bg-blue-500/13 rounded-lg font-semibold text-slate-700' : 'dark:text-white dark:opacity-80' }}">
           <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center fill-current stroke-0 text-center xl:p-2.5">
             <i class="relative top-0 text-lg leading-normal ni ni-single-copy-04 text-emerald-500"></i>
           </div>
@@ -63,9 +63,9 @@
 
       {{-- Profil --}}
       <li class="mt-0.5 w-full">
-        <a href="/profilevalidator"
+        <a href="/profileteknis"
            class="py-2.7 text-lg ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors
-           {{ request()->is('profilevalidator') ? 'bg-blue-500/13 rounded-lg font-semibold text-slate-700' : 'dark:text-white dark:opacity-80' }}">
+           {{ request()->is('profileteknis') ? 'bg-blue-500/13 rounded-lg font-semibold text-slate-700' : 'dark:text-white dark:opacity-80' }}">
           <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
             <i class="relative top-0 text-lg leading-normal ni ni-single-02 text-slate-700"></i>
           </div>

@@ -21,8 +21,8 @@
 </head>
 
 <body class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">
-  <div class="absolute w-full bg-blue-500 dark:hidden min-h-75" style="background-color: #08A04B"></div>
-  @include('components.sidebarevaluator')
+    <div class="absolute w-full bg-yellow-500 dark:hidden min-h-75"></div>
+    @include('components.sidebarevaluator')
   <main class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl">
     <!-- Navbar -->
     <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all ease-in shadow-none duration-250 rounded-2xl lg:flex-nowrap lg:justify-start" navbar-main navbar-scroll="false">
@@ -167,20 +167,20 @@
       <div class="flex flex-wrap -mx-3">
         <div class="flex-none w-full max-w-full px-3">
           <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl">
-            <div class="p-6 pb-0 mb-0 border-b border-b-transparent rounded-t-2xl">
-              <h6 class="dark:text-white text-lg font-semibold">Daftar Permohonan Surat Keterangan</h6>
+            <div class="p-4 pb-0 mb-0 border-b border-b-transparent rounded-t-2xl">
+              <h6 class="leading-normal text-lg font-bold mb-4 text-gray-700 dark:text-white uppercase">Daftar Surat Permohonan Keterangan</h6>
             </div>
             <div class="flex-auto pt-0 pb-2 overflow-x-auto">
               <table class="min-w-full text-sm text-left text-slate-500 dark:text-slate-200">
                 <thead class="text-xs uppercase text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-700">
                   <tr>
-                    <th class="px-4 py-3 text-slate-900 font-semibold whitespace-nowrap">No Laporan</th>
-                    <th class="px-4 py-3 text-slate-900 font-semibold text-center whitespace-nowrap">Nama Badan Usaha</th>
-                    <th class="px-4 py-3 text-slate-900 font-semibold text-center whitespace-nowrap">Tanggal Laporan</th>
-                    <th class="px-4 py-3 text-slate-900 font-semibold text-center whitespace-nowrap">Keterangan / Catatan Perbaikan</th>
-                    <th class="px-4 py-3 text-slate-900 font-semibold text-center whitespace-nowrap">Status</th>
-                    <th class="px-4 py-3 text-slate-900 font-semibold text-center whitespace-nowrap">Aksi</th>
-                    <th class="px-4 py-3 text-slate-900 font-semibold text-center whitespace-nowrap">Jadwal Evaluasi</th>
+                    <th class="px-4 py-3  text-m text-slate-900 font-bold whitespace-nowrap dark:text-white uppercase">No Laporan</th>
+                    <th class="px-4 py-3  text-m text-slate-900 font-bold text-center whitespace-nowrap dark:text-white uppercase">Nama Badan Usaha</th>
+                    <th class="px-4 py-3  text-m text-slate-900 font-bold text-center whitespace-nowrap dark:text-white uppercase">Tanggal Laporan</th>
+                    <th class="px-4 py-3  text-m text-slate-900 font-bold text-center whitespace-nowrap dark:text-white uppercase">Keterangan / Catatan Perbaikan</th>
+                    <th class="px-4 py-3  text-m text-slate-900 font-bold text-center whitespace-nowrap dark:text-white uppercase">Status</th>
+                    <th class="px-4 py-3  text-m text-slate-900 font-bold text-center whitespace-nowrap dark:text-white uppercase">Aksi</th>
+                    <th class="px-4 py-3  text-m text-slate-900 font-bold text-center whitespace-nowrap dark:text-white uppercase">Jadwal Evaluasi</th>
                   </tr>
                 </thead>
                 <tbody class="bg-white dark:bg-slate-800">
@@ -190,8 +190,8 @@
                         <span class="font-medium text-slate-900 dark:text-white">0001</span>
                       </div>
                     </td>
-                    <td class="px-4 py-3 text-center text-xs">Perseroan Terbatas (PT)</td>
-                    <td class="px-4 py-3 text-center text-xs">23/04/18</td>
+                    <td class="px-4 py-3 text-center text-sm">Perseroan Terbatas (PT)</td>
+                    <td class="px-4 py-3 text-center text-sm">23/04/18</td>
                     <td class="px-4 py-3 text-sm">Perbaikan pada lampiran</td>
                     <td class="px-4 py-3 text-center">
                       <span class="inline-flex items-center justify-center w-40 h-8 text-xs font-semibold text-white rounded-full bg-blue-400">
@@ -199,9 +199,9 @@
                       </span>
                     </td>
                     <td class="px-4 py-3 text-center">
-                      <a href="/halamanevaluasi" class="text-blue-600 hover:underline text-xs">lihat </a>
+                      <a href="/halamanevaluasi" class="text-blue-600 hover:underline text-sm">lihat </a>
                     </td>
-                    <td class="px-4 py-3 text-center text-xs">25 juli 2025</td>
+                    <td class="px-4 py-3 text-center text-sm">25 juli 2025</td>
                   </tr>
 
                   <tr class="border-b dark:border-slate-700">
@@ -210,8 +210,8 @@
                         <span class="font-medium text-slate-900 dark:text-white">0002</span>
                       </div>
                     </td>
-                    <td class="px-4 py-3 text-center text-xs">Perseroan Terbatas (PT)</td>
-                    <td class="px-4 py-3 text-center text-xs">11/01/19</td>
+                    <td class="px-4 py-3 text-center text-sm">Perseroan Terbatas (PT)</td>
+                    <td class="px-4 py-3 text-center text-sm">11/01/19</td>
                     <td class="px-4 py-3 text-sm">Kapasitas total tidak sesuai dengan data</td>
                     <td class="px-4 py-3 text-center">
                       <span class="inline-flex items-center justify-center w-40 h-8 text-xs font-semibold text-white rounded-full bg-orange-700" style="background-color:orange;">
@@ -219,9 +219,9 @@
                       </span>
                     </td>
                     <td class="px-4 py-3 text-center">
-                      <a href="#" class="text-blue-600 hover:underline text-xs">lihat</a>
+                      <a href="#" class="text-blue-600 hover:underline text-sm">lihat</a>
                     </td>
-                    <td class="px-4 py-3 text-center text-xs">25 juli 2025</td>
+                    <td class="px-4 py-3 text-center text-sm">25 juli 2025</td>
                   </tr>
 
                   <tr class="border-b dark:border-slate-700">
@@ -230,8 +230,8 @@
                         <span class="font-medium text-slate-900 dark:text-white">0003</span>
                       </div>
                     </td>
-                    <td class="px-4 py-3 text-center text-xs">Perseroan Terbatas (PT)</td>
-                    <td class="px-4 py-3 text-center text-xs">12/05/2025</td>
+                    <td class="px-4 py-3 text-center text-sm">Perseroan Terbatas (PT)</td>
+                    <td class="px-4 py-3 text-center text-sm">12/05/2025</td>
                     <td class="px-4 py-3 text-sm">-</td>
                     <td class="px-4 py-3 text-center">
                       <span class="inline-flex items-center justify-center w-40 h-8 text-xs font-semibold text-white rounded-full bg-orange-700" style="background-color:green;">
@@ -239,9 +239,9 @@
                       </span>
                     </td>
                     <td class="px-4 py-3 text-center">
-                      <a href="#" class="text-blue-600 hover:underline text-xs">Lihat</a>
+                      <a href="#" class="text-blue-600 hover:underline text-sm">Lihat</a>
                     </td>
-                    <td class="px-4 py-3 text-center text-xs">25 juli 2025</td>
+                    <td class="px-4 py-3 text-center text-sm">25 juli 2025</td>
                   </tr>
                 </tbody>
               </table>

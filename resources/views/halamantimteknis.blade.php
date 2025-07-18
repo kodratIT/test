@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/png" href=" {{ asset('assets/img/logo-esdm.svg') }} " />
-  <title>Daftar Permohonan</title>
+  <title>Daftar Pengajuan</title>
   <!--     Fonts and icons     -->
 
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
@@ -61,7 +61,7 @@
 </style>
 
 <body class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">
-    <div class="absolute w-full bg-yellow-500 dark:hidden min-h-75"></div>
+    <div class="absolute w-full bg-blue-500 dark:hidden min-h-75"></div>
     
 
   <main class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-90 rounded-xl">
@@ -533,54 +533,52 @@
                           <div class="w-full max-w-full px-3 shrink-0 md:w-full md:flex-0">
                             <div id="alamatForm" class="mb-4">
 
-                              <div class="mb-2">
-                                <label for="addressjl" class="inline-block mb-2 ml-1 font-bold text-m text-slate-700 dark:text-white/80">Nama Jalan</label>
-                                <input type="text" name="addressjl" id="addressjl"
-                                  value="JL. Tanah Tumbuh"
-                                  class="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm block w-full rounded-lg border border-gray-300 bg-white px-3 py-2"
-                                  readonly>
-                              </div>
-                              <div class="mb-2">
-                                <label for="addressdes" class="inline-block mb-2 ml-1 font-bold text-m text-slate-700 dark:text-white/80">Desa / Kelurahan</label>
-                                <input type="text" name="addressdes" id="addressdes"
-                                  value="Sungai Gambir"
-                                  class="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm block w-full rounded-lg border border-gray-300 bg-white px-3 py-2"
-                                  readonly>
-                              </div>
+                              <div class="mb-4">
+                              <label for="addressjl" class="block text-sm font-medium text-gray-700 mb-1">Nama Jalan</label>
+                              <input type="text" id="addressjl" name="addressjl"
+                                value="JL. Tanah Tumbuh"
+                                class="mt-1 w-full px-3 py-2 border rounded text-sm dark:bg-slate-700 dark:text-white"
+                                readonly>
+                            </div>
 
-                              <div class="mb-2">
-                                <label for="addresskec" class="inline-block mb-2 ml-1 font-bold text-s text-slate-700 dark:text-white/80">Kecamatan</label>
-                                <input type="text" name="addresskec" id="addresskec"
-                                  value="Tanah Sepenggal"
-                                  class="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm block w-full rounded-lg border border-gray-300 bg-white px-3 py-2"
-                                  readonly>
-                              </div>
 
-                              <div class="mb-2">
-                                <label for="addresskab" class="inline-block mb-2 ml-1 font-bold text-m text-slate-700 dark:text-white/80">
-                                  Kota / Kabupaten
-                                </label>
-                                <input type="text" name="addresskab" id="addresskab"
-                                  value="Bungo"
-                                  class="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm block w-full rounded-lg border border-gray-300 bg-white px-3 py-2"
-                                  readonly>
-                              </div>
+                            <div class="mb-4">
+                              <label for="addressjl" class="block text-sm font-medium text-gray-700 mb-1">Desa / Kelurahan </label>
+                              <input type="text" id="addressjl" name="addressjl"
+                                value="Sungai Gambir"
+                                class="mt-1 w-full px-3 py-2 border rounded text-sm dark:bg-slate-700 dark:text-white"
+                                readonly>
+                            </div>
 
-                              <div class="mb-2">
-                                <label for="addressprov" class="inline-block mb-2 ml-1 font-bold text-m text-slate-700 dark:text-white/80">
-                                  Provinsi
-                                </label>
-                                <input type="text" name="addressprov" id="addressprov"
-                                  value="Jambi"
-                                  class="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm block w-full rounded-lg border border-gray-300 bg-white px-3 py-2"
-                                  readonly>
-                              </div>
+
+                            <div class="mb-4">
+                              <label for="addressjl" class="block text-sm font-medium text-gray-700 mb-1">Kecamatan</label>
+                              <input type="text" id="addressjl" name="addressjl"
+                                value="Tanah Sepenggal"
+                                class="mt-1 w-full px-3 py-2 border rounded text-sm dark:bg-slate-700 dark:text-white"
+                                readonly>
+                            </div>
+
+                            <div class="mb-4">
+                              <label for="addressjl" class="block text-sm font-medium text-gray-700 mb-1">Kota / Kabupatan </label>
+                              <input type="text" id="addressjl" name="addressjl"
+                                value="Bungo"
+                                class="mt-1 w-full px-3 py-2 border rounded text-sm dark:bg-slate-700 dark:text-white"
+                                readonly>
+                            </div>
+                            <div class="mb-4">
+                              <label for="addressjl" class="block text-sm font-medium text-gray-700 mb-1">Provinsi</label>
+                              <input type="text" id="addressjl" name="addressjl"
+                                value="Jambi"
+                                class="mt-1 w-full px-3 py-2 border rounded text-sm dark:bg-slate-700 dark:text-white"
+                                readonly>
+                            </div>
                               <div class="mt-6 flex justify-between">
                                 <button onclick="prevPage()" type="button" class="inline-block px-5 py-2 bg-green-400 text-white font-semibold rounded-lg hover:bg-green-500 transition">
                                     Kembali
                                 </button>
                                 <button type="button" onclick="nextToPage3()" class="inline-block px-5 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">
-                                    Next
+                                    Berikutnya
                                 </button>
                             </div>
                             </div>
@@ -640,7 +638,6 @@
                       <thead class="bg-gray-100 dark:bg-gray-800">
                         <tr>
                           <th class="border px-4 py-2 text-center text-lg font-semibold text-gray-700 dark:text-white">Dokumen Persyaratan</th>
-                          <th class="border px-4 py-2 text-center text-lg font-semibold text-gray-700 dark:text-white">Evaluasi</th>
                         </tr>
                       </thead>
                       <tbody class="text-sm text-gray-800 dark:text-white">
@@ -651,11 +648,6 @@
                             Print Out NIB via OSS RBA (Untuk Badan Usaha)<br>
                             <img src="../assets/img/NIB.jpg" class="max-h-32 rounded border mt-2" />
                           </td>
-                          <td class="border px-4 py-2 text-m text-center">
-                            <button onclick="openModal('Print Out NIB')" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-full shadow">
-                                📄 Evaluasi
-                            </button>
-                          </td>
                         </tr>
 
                         <!-- Dokumen 2 -->
@@ -663,11 +655,6 @@
                           <td class="border px-4 py-2 text-m text-left">
                             KTP Penanggung Jawab<br>
                             <img src="../assets/img/KTP.jpg" class="max-h-32 rounded border mt-2" />
-                          </td>
-                          <td class="border px-4 py-2 text-m text-center">
-                            <button onclick="openModal('KTP')" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-full shadow">
-                                📄 Evaluasi
-                            </button>
                           </td>
                         </tr>
 
@@ -677,11 +664,6 @@
                             NPWP<br>
                             <img src="../assets/img/NPWP.jpg" class="max-h-32 rounded border mt-2" />
                           </td>
-                          <td class="border px-4 py-2 text-m text-center">
-                            <button onclick="openModal('NPWP')" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-full shadow">
-                                📄 Evaluasi
-                            </button>
-                          </td>
                         </tr>
 
                         <!-- Dokumen 4 -->
@@ -689,11 +671,6 @@
                           <td class="border px-4 py-2 text-m text-left">
                             Gambar Situasi / Tata Letak<br>
                             <img src="../assets/img/situasi.png" class="max-h-32 rounded border mt-2" />
-                          </td>
-                          <td class="border px-4 py-2 text-m text-center">
-                            <button onclick="openModal('Gambar Situasi / Tata Letak')" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-full shadow">
-                                📄 Evaluasi
-                            </button>
                           </td>
                         </tr>
 
@@ -703,11 +680,6 @@
                             Bukti Pembayaran Tagihan Listrik Bulan Terakhir<br>
                             <img src="../assets/img/buktitagihan.png" class="max-h-32 rounded border mt-2" />
                             
-                          </td>
-                          <td class="border px-4 py-2 text-m text-center">
-                            <button onclick="openModal('Bukti Pembayaran Tagihan Listrik Bulan Terakhir')" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-full shadow">
-                                📄 Evaluasi
-                            </button>
                           </td>
                         </tr>
 
@@ -719,11 +691,6 @@
                             <img src="../assets/img/generator.jpg" class="max-h-32 rounded border mt-2" />
                             <img src="../assets/img/generator.jpg" class="max-h-32 rounded border mt-2" />
                           </td>
-                          <td class="border px-4 py-2 text-m text-center">
-                            <button onclick="openModal('Foto Papan Nama (Name Plate) Generator')" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-full shadow">
-                                📄 Evaluasi
-                            </button>
-                          </td>
                         </tr>
 
                         <!-- Dokumen 7 -->
@@ -732,62 +699,174 @@
                             Unit 2<br>
                             <img src="../assets/img/mesin.jpg" class="max-h-32 rounded border mt-2" />
                           </td>
-                          <td class="border px-4 py-2 text-m text-center">
-                            <button onclick="openModal('Foto Papan Nama (Name Plate) Mesin Penggerak')" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-full shadow">
-                                📄 Evaluasi
-                            </button>
-                          </td>
                         </tr>
                       </tbody>
                     </table>
                   </div>
+                  
 
-                  <!-- Modal Pop-up Evaluasi -->
-                  <div id="modal-evaluasi" 
-                      class="fixed inset-0 bg-black bg-opacity-50 hidden z-[1000] flex items-center justify-center">
-                    
-                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md z-[1001]">
-                      <h2 class="text-lg font-bold mb-4 text-gray-800 dark:text-white">Evaluasi Dokumen</h2>
-                      <p id="nama-dokumen" class="mb-2 text-sm text-gray-700 dark:text-gray-200"></p>
+                <!-- Tombol Navigasi -->
+                <div class="w-full flex justify-between mt-6 ">
+                <!-- Tombol Kembali -->
+                <div class="w-full flex justify-end gap-3 mt-6 flex-wrap">
+                <!-- Tombol Kembali -->
+                <button onclick="backToPage2()" type="button" class="px-5 py-2 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition">
+                    Kembali
+                </button>
 
-                      <label class="block text-m text-gray-600 dark:text-gray-300 mb-1">Catatan Perbaikan:</label>
-                      <textarea id="catatan-evaluasi"
-                        class="w-full border rounded p-2 mb-4 dark:bg-gray-700 dark:text-white"></textarea>
+                <!-- Tombol Ditolak -->
+                <button onclick="openModal('Nama Dokumen')" type="button" class="px-5 py-2 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600 transition">
+                    Ditolak
+                </button>
+
+                <!-- Tombol Kirim ke Evaluator -->
+                <button onclick="openEvaluatorModal()" type="button" class="px-5 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">
+                    Kirim ke Evaluator
+                </button>
+                </div>
+            </div>
 
 
-                      <label for="status-evaluasi" class="block text-m text-gray-700 mb-2">Status Evaluasi:</label>
-                        <select id="status-evaluasi"
-                          class="w-full px-4 py-2 my-2 border rounded-lg dark:bg-slate-700 dark:text-white"
-                          onchange="toggleStatusEvaluasi()" data-required>
-                          <option value="" disabled selected hidden>- Pilih -</option>
-                          <option value="ada">Setuju</option>
-                          <option value="tidak">Perlu Perbaikan</option>
-                        </select>
+            <!-- Modal Evaluasi Ditolak  -->
+                <div id="modal-evaluasi" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+                <div class="bg-white dark:bg-slate-800 rounded-xl p-6 w-full max-w-lg shadow-lg relative">
+                    <h2 id="nama-dokumen" class="text-xl font-bold mb-4 text-gray-800 dark:text-white">Dokumen: </h2>
 
-                      <div class="flex justify-end gap-2">
-                        <button onclick="closeModal()" class="px-6 py-2 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition">
-                          Batal
-                        </button>
-                        <button onclick="simpanEvaluasi()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded">
-                          Simpan
-                        </button>
-                      </div>
+                    <!-- Catatan -->
+                    <label for="catatan-evaluasi" class="block text-m text-gray-700 dark:text-gray-300 mb-1">Catatan Kenapa Ditolak:</label>
+                    <textarea id="catatan-evaluasi" class="w-full border rounded p-2 mb-4 dark:bg-gray-700 dark:text-white" rows="4" placeholder="Tulis alasan penolakan..."></textarea>
+
+                    <!-- Status -->
+                    <label for="status-evaluasi" class="block text-m text-gray-700 dark:text-gray-300 mb-2">Status Evaluasi:</label>
+                    <select id="status-evaluasi" class="w-full px-4 py-2 mb-4 border rounded-lg dark:bg-slate-700 dark:text-white">
+                    <option value="Setuju">Setuju</option>
+                    <option value="Perlu Perbaikan" selected>Perlu Perbaikan</option>
+                    </select>
+
+                    <!-- Tombol Aksi -->
+                    <div class="flex justify-end gap-3 mt-4">
+                    <button onclick="closeModal()" class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
+                        Batal
+                    </button>
+                    <button onclick="simpanEvaluasi()" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+                        Simpan
+                    </button>
                     </div>
-                  </div>
+                </div>
+                </div>
+                <script>
+                function openModal(docName) {
+                    document.getElementById('modal-evaluasi').classList.remove('hidden');
+                    document.body.classList.add('overflow-hidden');
+                    document.getElementById('nama-dokumen').textContent = `Dokumen: ${docName}`;
+                    document.getElementById('catatan-evaluasi').value = '';
+                    document.getElementById('status-evaluasi').value = 'Perlu Perbaikan';
+                }
+
+                function closeModal() {
+                    document.getElementById('modal-evaluasi').classList.add('hidden');
+                    document.body.classList.remove('overflow-hidden');
+                }
+
+                function simpanEvaluasi() {
+                    const doc = document.getElementById('nama-dokumen').textContent;
+                    const catatan = document.getElementById('catatan-evaluasi').value;
+                    const status = document.getElementById('status-evaluasi').value;
+
+                    if (!catatan.trim()) {
+                    alert("Catatan tidak boleh kosong.");
+                    return;
+                    }
+
+                    console.log(`Evaluasi disimpan untuk ${doc}: ${status}, Catatan: ${catatan}`);
+                    closeModal();
+                }
+                </script>
+
+                <!-- Modal Pilih Evaluator -->
+                <div id="modal-evaluator" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+                <div class="bg-white dark:bg-slate-800 rounded-xl p-6 w-full max-w-2xl shadow-lg relative max-h-[90vh] overflow-y-auto">
+                    <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-white">Pilih Evaluator</h2>
+
+                    <div class="space-y-4">
+                    <!-- Contoh Card Evaluator -->
+                    <label class="flex items-center gap-4 border p-3 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-700">
+                        <input type="radio" name="evaluator" value="evaluator1" class="hidden peer" />
+                        <img src="https://img.freepik.com/vektor-premium/ilustrasi-datar-vektor-dalam-skala-abu-abu-ikon-orang-profil-pengguna-avatar-gambar-profil-siluet-netral-gender-cocok-untuk-ikon-profil-media-sosial-screensaver-dan-sebagai-templatx9xa_719432-1096.jpg" alt="Foto Evaluator" class="w-12 h-12 rounded-full object-cover" />
+                        <div>
+                        <p class="font-semibold text-gray-800 dark:text-white">Ahmad Yusuf</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-300">NIP: 1987654321</p>
+                        </div>
+                        <div class="ml-auto peer-checked:block hidden text-blue-500 font-bold">✓</div>
+                    </label>
+
+                    <!-- Tambahkan lebih banyak evaluator -->
+                    <label class="flex items-center gap-4 border p-3 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-700">
+                        <input type="radio" name="evaluator" value="evaluator2" class="hidden peer" />
+                        <img src="https://img.freepik.com/vektor-premium/ilustrasi-datar-vektor-dalam-skala-abu-abu-ikon-orang-profil-pengguna-avatar-gambar-profil-siluet-netral-gender-cocok-untuk-ikon-profil-media-sosial-screensaver-dan-sebagai-templatx9xa_719432-1096.jpg" alt="Foto Evaluator" class="w-12 h-12 rounded-full object-cover" />
+                        <div>
+                        <p class="font-semibold text-gray-800 dark:text-white">Siti Rahmawati</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-300">NIP: 1990123456</p>
+                        </div>
+                        <div class="ml-auto peer-checked:block hidden text-blue-500 font-bold">✓</div>
+                    </label>
+                    </div>
+
+                    <!-- Tambahkan lebih banyak evaluator -->
+                    <label class="flex items-center gap-4 border p-3 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-700">
+                        <input type="radio" name="evaluator" value="evaluator2" class="hidden peer" />
+                        <img src="https://img.freepik.com/vektor-premium/ilustrasi-datar-vektor-dalam-skala-abu-abu-ikon-orang-profil-pengguna-avatar-gambar-profil-siluet-netral-gender-cocok-untuk-ikon-profil-media-sosial-screensaver-dan-sebagai-templatx9xa_719432-1096.jpg" alt="Foto Evaluator" class="w-12 h-12 rounded-full object-cover" />
+                        <div>
+                        <p class="font-semibold text-gray-800 dark:text-white">Rizki Monika</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-300">NIP: 19901234587</p>
+                        </div>
+                        <div class="ml-auto peer-checked:block hidden text-blue-500 font-bold">✓</div>
+                    </label>
+                    </div>
+
+                    <!-- Tombol Aksi -->
+                    <div class="mt-6 space-y-3">
+                    <button onclick="kirimKeEvaluator()" class="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                        Kirim
+                    </button>
+                    <button onclick="closeEvaluatorModal()" class="w-full px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
+                        Batal
+                    </button>
+                    </div>
+
+                </div>
+                </div>
+                <script>
+                function openEvaluatorModal() {
+                    document.getElementById('modal-evaluator').classList.remove('hidden');
+                    document.body.classList.add('overflow-hidden');
+                }
+
+                function closeEvaluatorModal() {
+                    document.getElementById('modal-evaluator').classList.add('hidden');
+                    document.body.classList.remove('overflow-hidden');
+                }
+
+                function kirimKeEvaluator() {
+                    const selected = document.querySelector('input[name="evaluator"]:checked');
+                    if (!selected) {
+                    alert("Pilih salah satu evaluator terlebih dahulu.");
+                    return;
+                    }
+
+                    const evaluatorID = selected.value;
+                    console.log("Evaluator yang dipilih:", evaluatorID);
+
+                    // Tambahkan AJAX / pengiriman data ke server di sini jika perlu
+
+                    closeEvaluatorModal();
+                    alert("Dokumen berhasil dikirim ke evaluator.");
+                }
+                </script>
 
 
-        <!-- Tombol Navigasi -->
-        <div class="w-full flex justify-between mt-6">
-          <button onclick="backToPage2()" type="button" class="px-5 py-2 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition">
-            Kembali
-          </button>
-          <a href="/daftarpengajuanevaluator"
-            class="px-5 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition">
-            Kirim Hasil Evaluasi
-          </a>
-        </div>
-      </div>
-      <script>
+
+      <!--<script>
         function showPage(hideId, showId) {
           const hidePage = document.getElementById(hideId);
           const showPage = document.getElementById(showId);

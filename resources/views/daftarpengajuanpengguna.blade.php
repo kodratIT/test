@@ -89,13 +89,13 @@
             </div>
             <div class="flex-auto pt-0 pb-2 overflow-x-auto">
               <table class="min-w-full text-sm text-left text-slate-500 dark:text-slate-200">
-                <thead class="uppercase text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-700">
+                <thead class="text-xs uppercase text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-700">
                   <tr>
-                    <th class="px-4 py-3  text-m text-slate-900 font-semibold whitespace-nowrap dark:text-white uppercase">No Laporan</th>
-                    <th class="px-4 py-3  text-m text-slate-900 font-semibold text-center whitespace-nowrap dark:text-white uppercase">Tanggal Laporan</th>
-                    <th class="px-4 py-3  text-m text-slate-900 font-semibold text-center whitespace-nowrap dark:text-white uppercase">Keterangan / Catatan Perbaikan</th>
-                    <th class="px-4 py-3  text-m text-slate-900 font-semibold text-center whitespace-nowrap dark:text-white uppercase">Status</th>
-                    <th class="px-4 py-3  text-m text-slate-900 font-semibold text-center whitespace-nowrap dark:text-white uppercase">Aksi</th>
+                    <th class="px-4 py-3  text-m text-slate-900 font-bold whitespace-nowrap dark:text-white uppercase">No Laporan</th>
+                    <th class="px-4 py-3  text-m text-slate-900 font-bold text-center whitespace-nowrap dark:text-white uppercase">Tanggal Laporan</th>
+                    <th class="px-4 py-3  text-m text-slate-900 font-bold whitespace-nowrap dark:text-white uppercase">Keterangan / Catatan Perbaikan</th>
+                    <th class="px-4 py-3 text-m text-slate-900 font-bold text-center whitespace-nowrap dark:text-white uppercase">Status</th>
+                    <th class="px-4 py-3 text-m text-slate-900 font-bold text-center whitespace-nowrap uppercase">Aksi</th>
                   </tr>
                 </thead>
 
@@ -107,7 +107,7 @@
                       </div>
                     </td>
                     <td class="px-4 py-3 text-center text-slate-900 text-bold text-sm">23/04/18</td>
-                    <td class="px-4 py-3 text-sm">Perbaikan pada lampiran</td>
+                    <td class="px-4 py-3 text-sm"></td>
                     <td class="px-4 py-3 text-center">
                       <span class="inline-flex items-center justify-center w-40 h-8 text-xs font-semibold text-white rounded-full bg-blue-400">
                         PROSES EVALUASI
@@ -121,18 +121,18 @@
                   <tr class="border-b dark:border-slate-700">
                     <td class="px-4 py-3">
                       <div class="flex flex-col">
-                        <span class="text-sm font-semibold text-slate-900 dark:text-white">0002</span>
+                        <span class="font-medium  text-slate-900 dark:text-white">0002</span>
                       </div>
                     </td>
-                    <td class="px-4 py-3 text-center text-sm font-semibold text-slate-900 dark:text-white">11/01/19</td>
-                    <td class="px-4 py-3 text-sm font-semibold text-slate-900 dark:text-white">Kapasitas total tidak sesuai dengan data</td>
+                    <td class="px-4 py-3 text-center text-bold text-slate-900 dark:text-white">11/01/19</td>
+                    <td class="px-4 py-3 text-sm text-slate-900 dark:text-white">Kapasitas total tidak sesuai dengan data</td>
                     <td class="px-4 py-3 text-center">
                       <span class="inline-flex items-center justify-center w-40 h-8 text-xs font-semibold text-white rounded-full bg-orange-700" style="background-color:orange;">
                         PERBAIKAN
                       </span>
                     </td>
                     <td class="px-4 py-3 text-center">
-                      <a href="#" class="text-blue-600 hover:underline text-sm font-semibold">Perbaiki</a>
+                      <a href="#" class="text-blue-600 hover:underline text-sm ">Lihat</a>
                     </td>
                   </tr>
 
@@ -142,15 +142,15 @@
                         <span class="font-medium text-slate-900 dark:text-white">0003</span>
                       </div>
                     </td>
-                    <td class="px-4 py-3 text-center text-xs">19/09/17</td>
-                    <td class="px-4 py-3 text-sm">-</td>
+                    <td class="px-4 py-3 text-center text-bold text-slate-900 dark:text-white">19/09/17</td>
+                    <td class="px-4 py-3 text-sm"></td>
                     <td class="px-4 py-3 text-center">
                       <span class="inline-flex items-center justify-center w-40 h-8 text-xs font-semibold text-white rounded-full bg-green-600">
                         DISETUJUI
                       </span>
                     </td>
                     <td class="px-4 py-3 text-center">
-                      <a href="/suratterbituser" class="text-blue-600 hover:underline text-xs">Lihat</a>
+                      <a href="/suratterbituser" class="text-blue-600 hover:underline text-sm">Lihat</a>
                     </td>
                   </tr>
 
