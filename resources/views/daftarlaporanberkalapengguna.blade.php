@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/png" href=" {{ asset('assets/img/logo-esdm.svg') }} " />
-  <title>Verifikasi Pengajuan</title>
+  <title>Daftar Laporan Berkala Pengguna</title>
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
   <!-- Font Awesome Icons -->
@@ -21,9 +21,8 @@
 </head>
 
 <body class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">
-  <div class="absolute w-full bg-blue-500 dark:hidden min-h-75"></div>
-
-  @include('components.sidebartimteknis')
+  <div class="absolute w-full bg-blue-500 dark:hidden min-h-75" style="background-color: #08A04B"></div>
+  @include('components.sidebar')
   <main class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl">
     <!-- Navbar -->
     <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all ease-in shadow-none duration-250 rounded-2xl lg:flex-nowrap lg:justify-start" navbar-main navbar-scroll="false">
@@ -34,39 +33,21 @@
             <li class="text-sm leading-normal">
               <a class="text-white opacity-50" href="javascript:;">Halaman</a>
             </li>
-            <li class="text-sm pl-2 capitalize leading-normal text-white before:float-left before:pr-2 before:text-white before:content-['/']" aria-current="page">Daftar Pengajuan</li>
+            <li class="text-sm pl-2 capitalize leading-normal text-white before:float-left before:pr-2 before:text-white before:content-['/']" aria-current="page">Daftar Laporan Berkala</li>
           </ol>
-          <h6 class="mb-0 font-bold text-white capitalize">Daftar pengajuan</h6>
+          <h6 class="mb-0 font-bold text-white capitalize">Daftar Laporan Berkala</h6>
         </nav>
 
         <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
           <div class="flex items-center md:ml-auto md:pr-4">
             <div class="relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease">
               <span class="text-sm ease leading-5.6 absolute z-50 -ml-px flex h-full items-center whitespace-nowrap rounded-lg rounded-tr-none rounded-br-none border border-r-0 border-transparent bg-transparent py-2 px-2.5 text-center font-normal text-slate-500 transition-all">
-                <i class="fas fa-search"></i>
               </span>
               <!--<input type="text" class="pl-9 text-sm focus:shadow-primary-outline ease w-1/100 leading-5.6 relative -ml-px block min-w-0 flex-auto rounded-lg border border-solid border-gray-300 dark:bg-slate-850 dark:text-white bg-white bg-clip-padding py-2 pr-3 text-gray-700 transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none focus:transition-shadow" placeholder="Type here..." />
               -->
             </div>
           </div>
           <ul class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full">
-            <!-- online builder btn  -->
-            <!-- <li class="flex items-center">
-                <a class="inline-block px-8 py-2 mb-0 mr-4 text-xs font-bold text-center text-blue-500 uppercase align-middle transition-all ease-in bg-transparent border border-blue-500 border-solid rounded-lg shadow-none cursor-pointer leading-pro hover:-translate-y-px active:shadow-xs hover:border-blue-500 active:bg-blue-500 active:hover:text-blue-500 hover:text-blue-500 tracking-tight-rem hover:bg-transparent hover:opacity-75 hover:shadow-none active:text-white active:hover:bg-transparent" target="_blank" href="https://www.creative-tim.com/builder/soft-ui?ref=navbar-dashboard&amp;_ga=2.76518741.1192788655.1647724933-1242940210.1644448053">Online Builder</a>
-              </li> 
-
-              <li class="flex items-center">
-  <a href="../pages/pengajuansurat.html" 
-     class="px-4 py-2 rounded-lg bg-blue-600 text-white font-semibold shadow-md 
-            transition-all duration-300 ease-in-out hover:bg-blue-700 hover:scale-100000 hover:Light">
-    <i class="fa fa-user mr-2"></i>
-    <span class="inline">Buat Pengajuan</span>
-  </a>
-</li>
-
-                -->
-
-
             <li class="flex items-center pl-4 xl:hidden">
               <a href="javascript:;" class="block p-0 text-sm text-white transition-all ease-nav-brand" sidenav-trigger>
                 <div class="w-4.5 overflow-hidden">
@@ -78,7 +59,6 @@
             </li>
             <li class="flex items-center px-4">
               <a href="javascript:;" class="p-0 text-sm text-white transition-all ease-nav-brand">
-                <i fixed-plugin-button-nav class="cursor-pointer fa fa-cog"></i>
                 <!-- fixed-plugin-button-nav  -->
               </a>
             </li>
@@ -88,74 +68,7 @@
             <li class="relative flex items-center pr-2">
               <p class="hidden transform-dropdown-show"></p>
               <a href="javascript:;" class="block p-0 text-sm text-white transition-all ease-nav-brand" dropdown-trigger aria-expanded="false">
-                <i class="cursor-pointer fa fa-bell"></i>
               </a>
-
-              <ul dropdown-menu class="text-sm transform-dropdown before:font-awesome before:leading-default dark:shadow-dark-xl before:duration-350 before:ease lg:shadow-3xl duration-250 min-w-44 before:sm:right-8 before:text-5.5 pointer-events-none absolute right-0 top-0 z-50 origin-top list-none rounded-lg border-0 border-solid border-transparent dark:bg-slate-850 bg-white bg-clip-padding px-2 py-4 text-left text-slate-500 opacity-0 transition-all before:absolute before:right-2 before:left-auto before:top-0 before:z-50 before:inline-block before:font-normal before:text-white before:antialiased before:transition-all before:content-['\f0d8'] sm:-mr-6 lg:absolute lg:right-0 lg:left-auto lg:mt-2 lg:block lg:cursor-pointer">
-                <!-- add show class on dropdown open js -->
-                <li class="relative mb-2">
-                  <a class="dark:hover:bg-slate-900 ease py-1.2 clear-both block w-full whitespace-nowrap rounded-lg bg-transparent px-4 duration-300 hover:bg-gray-200 hover:text-slate-700 lg:transition-colors" href="javascript:;">
-                    <div class="flex py-1">
-                      <div class="my-auto">
-                        <img src="../assets/img/team-2.jpg" class="inline-flex items-center justify-center mr-4 text-sm text-white h-9 w-9 max-w-none rounded-xl" />
-                      </div>
-                      <div class="flex flex-col justify-center">
-                        <h6 class="mb-1 text-sm font-normal leading-normal dark:text-white"><span class="font-semibold">New message</span> from Laur</h6>
-                        <p class="mb-0 text-xs leading-tight text-slate-400 dark:text-white/80">
-                          <i class="mr-1 fa fa-clock"></i>
-                          13 minutes ago
-                        </p>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-
-                <li class="relative mb-2">
-                  <a class="dark:hover:bg-slate-900 ease py-1.2 clear-both block w-full whitespace-nowrap rounded-lg px-4 transition-colors duration-300 hover:bg-gray-200 hover:text-slate-700" href="javascript:;">
-                    <div class="flex py-1">
-                      <div class="my-auto">
-                        <img src="../assets/img/small-logos/logo-spotify.svg" class="inline-flex items-center justify-center mr-4 text-sm text-white bg-gradient-to-tl from-zinc-800 to-zinc-700 dark:bg-gradient-to-tl dark:from-slate-750 dark:to-gray-850 h-9 w-9 max-w-none rounded-xl" />
-                      </div>
-                      <div class="flex flex-col justify-center">
-                        <h6 class="mb-1 text-sm font-normal leading-normal dark:text-white"><span class="font-semibold">New album</span> by Travis Scott</h6>
-                        <p class="mb-0 text-xs leading-tight text-slate-400 dark:text-white/80">
-                          <i class="mr-1 fa fa-clock"></i>
-                          1 day
-                        </p>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-
-                <li class="relative">
-                  <a class="dark:hover:bg-slate-900 ease py-1.2 clear-both block w-full whitespace-nowrap rounded-lg px-4 transition-colors duration-300 hover:bg-gray-200 hover:text-slate-700" href="javascript:;">
-                    <div class="flex py-1">
-                      <div class="inline-flex items-center justify-center my-auto mr-4 text-sm text-white transition-all duration-200 ease-nav-brand bg-gradient-to-tl from-slate-600 to-slate-300 h-9 w-9 rounded-xl">
-                        <svg width="12px" height="12px" viewBox="0 0 43 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                          <title>credit-card</title>
-                          <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                            <g transform="translate(-2169.000000, -745.000000)" fill="#FFFFFF" fill-rule="nonzero">
-                              <g transform="translate(1716.000000, 291.000000)">
-                                <g transform="translate(453.000000, 454.000000)">
-                                  <path class="color-background" d="M43,10.7482083 L43,3.58333333 C43,1.60354167 41.3964583,0 39.4166667,0 L3.58333333,0 C1.60354167,0 0,1.60354167 0,3.58333333 L0,10.7482083 L43,10.7482083 Z" opacity="0.593633743"></path>
-                                  <path class="color-background" d="M0,16.125 L0,32.25 C0,34.2297917 1.60354167,35.8333333 3.58333333,35.8333333 L39.4166667,35.8333333 C41.3964583,35.8333333 43,34.2297917 43,32.25 L43,16.125 L0,16.125 Z M19.7083333,26.875 L7.16666667,26.875 L7.16666667,23.2916667 L19.7083333,23.2916667 L19.7083333,26.875 Z M35.8333333,26.875 L28.6666667,26.875 L28.6666667,23.2916667 L35.8333333,23.2916667 L35.8333333,26.875 Z"></path>
-                                </g>
-                              </g>
-                            </g>
-                          </g>
-                        </svg>
-                      </div>
-                      <div class="flex flex-col justify-center">
-                        <h6 class="mb-1 text-sm font-normal leading-normal dark:text-white">Payment successfully completed</h6>
-                        <p class="mb-0 text-xs leading-tight text-slate-400 dark:text-white/80">
-                          <i class="mr-1 fa fa-clock"></i>
-                          2 days
-                        </p>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-              </ul>
             </li>
           </ul>
         </div>
@@ -166,130 +79,104 @@
       <!-- table 1 -->
 
       <div class="flex flex-wrap -mx-3">
-        <div class="flex-none w-full max-w-full px-3">
-          <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl">
-            <div class="p-4 pb-0 mb-0 border-b border-b-transparent rounded-t-2xl">
-              <h6 class="leading-normal text-lg font-bold mb-4 text-gray-700 dark:text-white uppercase">Daftar Surat Permohonan Keterangan</h6>
-            </div>
-            <div class="flex-auto pt-0 pb-2 overflow-x-auto">
-              <table class="min-w-full text-sm text-left text-slate-500 dark:text-slate-200">
-                <thead class="text-xs uppercase text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-700">
-                  <tr>
-                    <th class="px-4 py-3 text-slate-900 font-bold whitespace-nowrap">No Laporan</th>
-                    <th class="px-4 py-3 text-slate-900 font-bold text-center whitespace-nowrap">Nama Badan Usaha</th>
-                    <th class="px-4 py-3 text-slate-900 font-bold text-center whitespace-nowrap">Tanggal Laporan</th>
-                    <th class="px-4 py-3 text-slate-900 font-bold text-center whitespace-nowrap">Keterangan / Catatan Perbaikan</th>
-                    <th class="px-4 py-3 text-slate-900 font-bold text-center whitespace-nowrap">Status</th>
-                    <th class="px-4 py-3 text-slate-900 font-bold text-center whitespace-nowrap">Aksi</th>
-                    <th class="px-4 py-3 text-slate-900 font-bold text-center whitespace-nowrap">Jadwal Evaluasi</th>
-                  </tr>
-                </thead>
-                <tbody class="bg-white dark:bg-slate-800">
-                  <tr class="border-b dark:border-slate-700">
-                    <td class="px-4 py-3">
-                      <div class="flex flex-col">
-                        <span class="font-medium text-slate-900 dark:text-white">0001</span>
-                      </div>
-                    </td>
-                    <td class="px-4 py-3 text-center text-xs">Perseroan Terbatas (PT)</td>
-                    <td class="px-4 py-3 text-center text-xs">23/04/18</td>
-                    <td class="px-4 py-3 text-sm">Perbaikan pada lampiran</td>
-                    <td class="px-4 py-3 text-center">
-                      <span class="inline-flex items-center justify-center w-40 h-8 text-xs font-semibold text-white rounded-full bg-yellow-400">
-                        PROSES EVALUASI
-                      </span>
-                    </td>
-                    <td class="px-4 py-3 text-center">
-                      <a href="/halamantimteknis" class="text-blue-600 hover:underline text-xs">lihat </a>
-                    </td>
-                    <td class="px-4 py-3 text-center text-xs">25 juli 2025</td>
-                  </tr>
-
-                  <tr class="border-b dark:border-slate-700">
-                    <td class="px-4 py-3">
-                      <div class="flex flex-col">
-                        <span class="font-medium text-slate-900 dark:text-white">0002</span>
-                      </div>
-                    </td>
-                    <td class="px-4 py-3 text-center text-xs">Perseroan Terbatas (PT)</td>
-                    <td class="px-4 py-3 text-center text-xs">11/01/19</td>
-                    <td class="px-4 py-3 text-sm">Kapasitas total tidak sesuai dengan data</td>
-                    <td class="px-4 py-3 text-center">
-                      <span class="inline-flex items-center justify-center w-40 h-8 text-xs font-semibold text-white rounded-full bg-red-500">
-                        PERBAIKAN
-                      </span>
-                    </td>
-                    <td class="px-4 py-3 text-center">
-                      <a href="/halamantimteknis" class="text-blue-600 hover:underline text-xs">lihat</a>
-                    </td>
-                    <td class="px-4 py-3 text-center text-xs">25 juli 2025</td>
-                  </tr>
-
-                  <tr class="border-b dark:border-slate-700">
-                    <td class="px-4 py-3">
-                      <div class="flex flex-col">
-                        <span class="font-medium text-slate-900 dark:text-white">0003</span>
-                      </div>
-                    </td>
-                    <td class="px-4 py-3 text-center text-xs">Perseroan Terbatas (PT)</td>
-                    <td class="px-4 py-3 text-center text-xs">12/05/2025</td>
-                    <td class="px-4 py-3 text-sm">-</td>
-                    <td class="px-4 py-3 text-center">
-                      <span class="inline-flex items-center justify-center w-40 h-8 text-xs font-semibold text-white rounded-full bg-green-600" >
-                        TELAH DIEVALUASI
-                      </span>
-                    </td>
-                    <td class="px-4 py-3 text-center">
-                      <a href="/halamantimteknis" class="text-blue-600 hover:underline text-xs">Lihat</a>
-                    </td>
-                    <td class="px-4 py-3 text-center text-xs">25 juli 2025</td>
-                  </tr>
-
-                  <tr class="border-b dark:border-slate-700">
-                    <td class="px-4 py-3">
-                      <div class="flex flex-col">
-                        <span class="font-medium text-slate-900 dark:text-white">0004</span>
-                      </div>
-                    </td>
-                    <td class="px-4 py-3 text-center text-xs">Perseroan Terbatas (PT)</td>
-                    <td class="px-4 py-3 text-center text-xs">19/09/17</td>
-                    <td class="px-4 py-3 text-sm">-</td>
-                    <td class="px-4 py-3 text-center">
-                      <span class="inline-flex items-center justify-center w-40 h-8 text-xs font-semibold text-white rounded-full bg-green-600">
-                        DISETUJUI
-                      </span>
-                    </td>
-                    <td class="px-4 py-3 text-center">
-                      <a href="/suketteknis" class="text-blue-600 hover:underline text-xs">Lihat</a>
-                    </td>
-                    <td class="px-4 py-3 text-center text-xs">25 juli 2025</td>
-                  </tr>
-
-                  <tr class="border-b dark:border-slate-700">
-                    <td class="px-4 py-3">
-                      <div class="flex flex-col">
-                        <span class="font-medium text-slate-900 dark:text-white">0005</span>
-                      </div>
-                    </td>
-                    <td class="px-4 py-3 text-center text-xs">Perseroan Terbatas (PT)</td>
-                    <td class="px-4 py-3 text-center text-xs">19/09/17</td>
-                    <td class="px-4 py-3 text-sm">-</td>
-                    <td class="px-4 py-3 text-center">
-                      <span class="inline-flex items-center justify-center w-40 h-8 text-xs font-semibold text-white rounded-full bg-yellow-400">
-                        PROSES VALIDASI
-                      </span>
-                    </td>
-                    <td class="px-4 py-3 text-center">
-                      <a href="/halamantimteknis" class="text-blue-600 hover:underline text-xs">Lihat</a>
-                    </td>
-                    <td class="px-4 py-3 text-center text-xs">25 juli 2025</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+  <div class="flex-none w-full max-w-full px-3">
+    <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border border-gray-200 shadow-xl rounded-2xl">
+      
+      <!-- Header -->
+      <div class="p-4 pb-0 mb-0 border-b border-gray-200 rounded-t-2xl">
+        <h6 class="leading-normal text-lg font-bold mb-4 text-gray-700 uppercase">
+          Daftar Laporan Berkala
+        </h6>
       </div>
+
+      <!-- Table -->
+      <div class="flex-auto pt-0 pb-2 overflow-x-auto">
+        <table class="min-w-full text-sm text-left text-slate-600 border-separate border-spacing-0">
+          <thead class="bg-green-600 text-white uppercase text-xs tracking-wider">
+            <tr>
+              <th class="px-4 py-3 font-semibold">No</th>
+              <th class="px-4 py-3 font-semibold text-center">Tanggal</th>
+              <th class="px-4 py-3 font-semibold text-center">Catatan</th>
+              <th class="px-4 py-3 font-semibold text-center">Status</th>
+              <th class="px-4 py-3 font-semibold text-center">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="pengajuan-table" class="bg-white"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(function () {
+    function loadPengajuan() {
+      $.ajax({
+        url: "/daftar-pengajuan/list",
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+          let tbody = '';
+          $.each(data, function (index, item) {
+            const createdAt = new Date(item.created_at);
+            const tanggal =
+              createdAt.getDate().toString().padStart(2, '0') + "-" +
+              (createdAt.getMonth() + 1).toString().padStart(2, '0') + "-" +
+              createdAt.getFullYear();
+
+            // Normalisasi status
+            const status = (item.status || '').trim().toLowerCase();
+
+            // Map warna status
+            const statusMap = {
+              'proses evaluasi': 'bg-orange-400 text-white',
+              'perbaikan': 'bg-red-500 text-white',
+              'ditolak': 'bg-red-600 text-white',
+              'disetujui': 'bg-green-600 text-white'
+            };
+            const badgeClass = statusMap[status] || 'bg-gray-400 text-white';
+            const statusLabel = status.replace(/\b\w/g, c => c.toUpperCase());
+
+            // striped row
+            const rowClass = index % 2 === 0 ? "bg-white" : "bg-gray-50";
+
+            // Sudut bawah hanya di baris terakhir
+            const isLast = index === data.length - 1;
+            const firstTdRound = isLast ? ' rounded-bl-2xl' : '';
+            const lastTdRound  = isLast ? ' rounded-br-2xl' : '';
+
+            tbody += `
+              <tr class="${rowClass} hover:bg-gray-100 transition border-b last:border-b-0">
+                <td class="px-4 py-3 text-xs font-medium${firstTdRound}">${item.no_pengajuan}</td>
+                <td class="px-4 py-3 text-center text-">${tanggal}</td>
+                <td class="px-4 py-3 text-center text-xs">${item.catatan ?? '-'}</td>
+                <td class="px-4 py-3 text-center">
+                  <span class="inline-block px-3 py-1 text-xs font-semibold rounded-full ${badgeClass} whitespace-nowrap">
+                    ${statusLabel}
+                  </span>
+                </td>
+                <td class="px-4 py-3 text-center${lastTdRound}">
+                  ${
+                    item.action_text 
+                    ? `<a href="${item.action_link}" class="text-blue-600 hover:underline font-medium text-xs">${item.action_text}</a>` 
+                    : ''
+                  }
+                </td>
+              </tr>
+            `;
+          });
+          $('#pengajuan-table').html(tbody);
+        },
+        error: function (xhr) {
+          console.log(xhr.responseText);
+        }
+      });
+    }
+
+    loadPengajuan();
+  });
+</script>
 
 
 

@@ -34,14 +34,10 @@
 
     <!-- Form -->
     <form method="POST" action="#" class="flex w-full mt-4">
-      <input
-        type="text"
-        name="kode_verifikasi"
-        placeholder="Masukkan Kode Verifikasi"
-        maxlength="6"
-        class="flex-1 px-4 py-3 text-sm border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-teal-500 placeholder-gray-400"
-        required
-      />
+      <p>Halo {{ $user->name }},</p>
+<p>Kamu meminta untuk mengganti kata sandi. Klik link di bawah ini untuk mengatur ulang kata sandi. Link hanya bisa dipakai sekali dan berlaku 10 menit:</p>
+<p><a href="{{ $url }}">{{ $url }}</a></p>
+<p>Kalau kamu tidak meminta ini, abaikan saja.</p>
       <button
         type="submit"
         class="px-5 py-3 bg-yellow-500 text-white text-sm font-medium rounded-r-md hover:bg-teal-600 transition"

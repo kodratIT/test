@@ -20,50 +20,42 @@
   <link href="{{ asset('assets/css/argon-dashboard-tailwind.css?v=1.0.1') }}" rel="stylesheet" />
 </head>
 
-<div
-  class="absolute bg-y-50 w-full top-0 bg-[url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/profile-layout-header.jpg')] bg-cover bg-center min-h-75">
-  <span class="absolute top-0 left-0 w-full h-full bg-blue-500 opacity-80"></span>
-</div>
+<body
+  class="m-0 font-sans antialiased font-normal dark:bg-slate-900 text-base leading-default bg-gray-50 text-slate-500">
+  <div
+    class="absolute bg-y-50 w-full top-0 bg-[url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/profile-layout-header.jpg')] min-h-75">
+    <span class="absolute top-0 left-0 w-full h-full" style="background-color: #08A04B; opacity:0.8;"></span>
+  </div>
 
-  @include('components.sidebartimteknis')
+  @include('components.sidebar')
 
   <div class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68">
-    <nav
-      class="absolute z-20 flex flex-wrap items-center justify-between w-full px-6 py-2 -mt-56 text-white transition-all ease-in shadow-none duration-250 lg:flex-nowrap lg:justify-start"
-      navbar-profile navbar-scroll="true">
-      <div class="flex items-center justify-between w-full px-6 py-1 mx-auto flex-wrap-inherit">
+    <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all ease-in shadow-none duration-250 rounded-2xl lg:flex-nowrap lg:justify-start" navbar-main navbar-scroll="false">
+      <div class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit">
         <nav>
           <!-- breadcrumb -->
-          <ol class="flex flex-wrap pt-1 pl-2 pr-4 mr-12 bg-transparent rounded-lg sm:mr-16">
-            <li class="leading-normal text-sm">
-              <a class="opacity-50" href="javascript:;">Halaman</a>
+          <ol class="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">
+            <li class="text-sm leading-normal">
+              <a class="text-white opacity-50" href="javascript:;">Halaman</a>
             </li>
-            <li class="text-sm pl-2 capitalize leading-normal before:float-left before:pr-2 before:content-['/']"
-              aria-current="page">Profil</li>
+            <li class="text-sm pl-2 capitalize leading-normal text-white before:float-left before:pr-2 before:text-white before:content-['/']" aria-current="page">Profil Badan Usaha</li>
           </ol>
-          <h6 class="mb-2 ml-2 font-bold text-white capitalize dark:text-white">Profile Teknis</h6>
+          <h6 class="mb-0 font-bold text-white capitalize">Profil Badan Usaha</h6>
         </nav>
 
         <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
           <div class="flex items-center md:ml-auto md:pr-4">
             <div class="relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease">
-              <span
-                class="text-sm ease leading-5.6 absolute z-50 -ml-px flex h-full items-center whitespace-nowrap rounded-lg rounded-tr-none rounded-br-none border border-r-0 border-transparent bg-transparent py-2 px-2.5 text-center font-normal text-slate-500 transition-all">
-                <i class="fas fa-search" aria-hidden="true"></i>
+              <span class="text-sm ease leading-5.6 absolute z-50 -ml-px flex h-full items-center whitespace-nowrap rounded-lg rounded-tr-none rounded-br-none border border-r-0 border-transparent bg-transparent py-2 px-2.5 text-center font-normal text-slate-500 transition-all">
+                <i class="fas fa-search"></i>
               </span>
-
+              <!--<input type="text" class="pl-9 text-sm focus:shadow-primary-outline ease w-1/100 leading-5.6 relative -ml-px block min-w-0 flex-auto rounded-lg border border-solid border-gray-300 dark:bg-slate-850 dark:text-white bg-white bg-clip-padding py-2 pr-3 text-gray-700 transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none focus:transition-shadow" placeholder="Type here..." />
+              -->
             </div>
           </div>
           <ul class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full">
-            <!-- online builder btn  -->
-            <!-- <li class="flex items-center">
-                <a class="inline-block px-8 py-2 mb-0 mr-4 font-bold text-center text-white uppercase align-middle transition-all ease-in border border-solid rounded-lg shadow-none cursor-pointer leading-pro border-white/75 bg-white/10 text-m hover:-translate-y-px active:shadow-m tracking-tight-rem hover:border-white hover:bg-transparent hover:text-white hover:opacity-75 hover:shadow-none active:bg-white active:text-black active:hover:bg-transparent active:hover:text-white" target="_blank" href="https://www.creative-tim.com/builder/soft-ui?ref=navbar-dashboard&amp;_ga=2.76518741.1192788655.1647724933-1242940210.1644448053">Online Builder</a>
-              </li> -->
-            <li class="flex items-center">
-
-            </li>
             <li class="flex items-center pl-4 xl:hidden">
-              <a href="javascript:;" class="block p-0 text-white transition-all ease-in-out text-sm" sidenav-trigger>
+              <a href="javascript:;" class="block p-0 text-sm text-white transition-all ease-nav-brand" sidenav-trigger>
                 <div class="w-4.5 overflow-hidden">
                   <i class="ease mb-0.75 relative block h-0.5 rounded-sm bg-white transition-all"></i>
                   <i class="ease mb-0.75 relative block h-0.5 rounded-sm bg-white transition-all"></i>
@@ -72,8 +64,8 @@
               </a>
             </li>
             <li class="flex items-center px-4">
-              <a href="javascript:;" class="p-0 text-white transition-all ease-in-out text-sm">
-                <i fixed-plugin-button-nav class="cursor-pointer fa fa-cog" aria-hidden="true"></i>
+              <a href="javascript:;" class="p-0 text-sm text-white transition-all ease-nav-brand">
+                <i fixed-plugin-button-nav class="cursor-pointer fa fa-cog"></i>
                 <!-- fixed-plugin-button-nav  -->
               </a>
             </li>
@@ -81,130 +73,21 @@
             <!-- notifications -->
 
             <li class="relative flex items-center pr-2">
-              <p class="hidden dark:text-white dark:opacity-60 transform-dropdown-show"></p>
-              <a dropdown-trigger href="javascript:;" class="block p-0 text-white transition-all text-sm ease-nav-brand"
-                aria-expanded="false">
-                <i class="cursor-pointer fa fa-bell" aria-hidden="true"></i>
+              <p class="hidden transform-dropdown-show"></p>
+              <a href="javascript:;" class="block p-0 text-sm text-white transition-all ease-nav-brand" dropdown-trigger aria-expanded="false">
+                <i class="cursor-pointer fa fa-bell"></i>
               </a>
-
-              <ul dropdown-menu
-                class="text-sm transform-dropdown before:font-awesome before:leading-default before:duration-350 before:ease lg:shadow-3xl duration-250 min-w-44 before:sm:right-8 before:text-5.5 pointer-events-none absolute right-0 top-0 z-50 origin-top list-none rounded-lg border-0 border-solid border-transparent bg-white bg-clip-padding px-2 py-4 text-left text-slate-500 opacity-0 transition-all before:absolute before:right-2 before:left-auto before:top-0 before:z-50 before:inline-block before:font-normal before:text-white before:antialiased before:transition-all before:content-['\f0d8'] sm:-mr-6 lg:absolute lg:right-0 lg:left-auto lg:mt-2 lg:block lg:cursor-pointer">
-                <!-- add show class on dropdown open js -->
-                <li class="relative mb-2">
-                  <a class="ease py-1.2 clear-both block w-full whitespace-nowrap rounded-lg bg-transparent px-4 duration-300 lg:transition-colors"
-                    href="javascript:;">
-                    <div class="flex py-1">
-                      <div class="my-auto">
-                        <img src="../assets/img/team-2.jpg"
-                          class="inline-flex items-center justify-center mr-4 text-white text-sm h-9 w-9 max-w-none rounded-xl" />
-                      </div>
-                      <div class="flex flex-col justify-center">
-                        <h6 class="mb-1 font-normal leading-normal dark:text-white text-sm"><span
-                            class="font-semibold">New message</span> from Laur</h6>
-                        <p class="mb-0 leading-tight dark:text-white dark:opacity-60 text-m text-slate-400">
-                          <i class="mr-1 fa fa-clock" aria-hidden="true"></i>
-                          13 minutes ago
-                        </p>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-
-                <li class="relative mb-2">
-                  <a class="ease py-1.2 clear-both block w-full whitespace-nowrap rounded-lg px-4 duration-300 lg:transition-colors"
-                    href="javascript:;">
-                    <div class="flex py-1">
-                      <div class="my-auto">
-                        <img src="../assets/img/small-logos/logo-spotify.svg"
-                          class="inline-flex items-center justify-center mr-4 text-white text-sm bg-gradient-to-tl from-zinc-800 to-zinc-700 dark:bg-gradient-to-tl dark:from-slate-750 dark:to-gray-850 h-9 w-9 max-w-none rounded-xl" />
-                      </div>
-                      <div class="flex flex-col justify-center">
-                        <h6 class="mb-1 font-normal leading-normal dark:text-white text-sm"><span
-                            class="font-semibold">New album</span> by Travis Scott</h6>
-                        <p class="mb-0 leading-tight dark:text-white dark:opacity-60 text-m text-slate-400">
-                          <i class="mr-1 fa fa-clock" aria-hidden="true"></i>
-                          1 day
-                        </p>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-
-                <li class="relative">
-                  <a class="ease py-1.2 clear-both block w-full whitespace-nowrap rounded-lg px-4 duration-300 lg:transition-colors"
-                    href="javascript:;">
-                    <div class="flex py-1">
-                      <div
-                        class="inline-flex items-center justify-center my-auto mr-4 text-white transition-all duration-200 ease-in-out text-sm bg-gradient-to-tl from-slate-600 to-slate-300 h-9 w-9 rounded-xl">
-                        <svg width="12px" height="12px" viewBox="0 0 43 36" version="1.1"
-                          xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                          <title>credit-card</title>
-                          <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                            <g transform="translate(-2169.000000, -745.000000)" fill="#FFFFFF" fill-rule="nonzero">
-                              <g transform="translate(1716.000000, 291.000000)">
-                                <g transform="translate(453.000000, 454.000000)">
-                                  <path class="color-background"
-                                    d="M43,10.7482083 L43,3.58333333 C43,1.60354167 41.3964583,0 39.4166667,0 L3.58333333,0 C1.60354167,0 0,1.60354167 0,3.58333333 L0,10.7482083 L43,10.7482083 Z"
-                                    opacity="0.593633743"></path>
-                                  <path class="color-background"
-                                    d="M0,16.125 L0,32.25 C0,34.2297917 1.60354167,35.8333333 3.58333333,35.8333333 L39.4166667,35.8333333 C41.3964583,35.8333333 43,34.2297917 43,32.25 L43,16.125 L0,16.125 Z M19.7083333,26.875 L7.16666667,26.875 L7.16666667,23.2916667 L19.7083333,23.2916667 L19.7083333,26.875 Z M35.8333333,26.875 L28.6666667,26.875 L28.6666667,23.2916667 L35.8333333,23.2916667 L35.8333333,26.875 Z">
-                                  </path>
-                                </g>
-                              </g>
-                            </g>
-                          </g>
-                        </svg>
-                      </div>
-                      <div class="flex flex-col justify-center">
-                        <h6 class="mb-1 font-normal leading-normal dark:text-white text-sm">Payment successfully
-                          completed</h6>
-                        <p class="mb-0 leading-tight dark:text-white dark:opacity-60 text-m text-slate-400">
-                          <i class="mr-1 fa fa-clock" aria-hidden="true"></i>
-                          2 days
-                        </p>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-              </ul>
             </li>
           </ul>
         </div>
       </div>
     </nav>
 
-    <div class="relative w-full mx-auto mt-60 ">
-      <div
-        class="relative flex flex-col flex-auto min-w-0 p-4 mx-6 overflow-hidden break-words bg-white border-0 dark:bg-slate-850 dark:shadow-dark-xl shadow-3xl rounded-2xl bg-clip-border">
-        <div class="flex flex-wrap -mx-3">
-          <div class="flex-none w-auto max-w-full px-3">
-          </div>
-          <div class="flex items-center justify-end space-x-6 p-4 bg-transparent">
-            <!-- Foto Profil -->
-            <div class="relative w-32 h-32">
-              <img id="previewFoto" src="../assets/img/profil1.jpeg" alt=""
-                class="w-32 h-32 object-cover rounded-full border-2 border-gray-300 shadow-md" />
-              <!-- Tombol Upload -->
-              <label for="uploadFoto"
-                class="absolute bottom-1 right-1 bg-white p-2 rounded-full shadow-md cursor-pointer hover:bg-gray-100">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24"
-                  stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M3 7h4l2-3h6l2 3h4v13H3V7z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M12 11a3 3 0 110 6 3 3 0 010-6z" />
-                </svg>
-              </label>
-            </div>
-            <!-- Nama dan Jabatan -->
-            <div class="flex flex-col justify-center">
-              <h1 class="text-base font-bold dark:text-white">Nama</h1>
-              <p class="text-sm font-semibold leading-normal dark:text-white dark:opacity-60">Pangkat / Golongan</p>
-            </div>
-          </div>
-        </div>
-      </div>
+
+    <div class="relative w-full mx-auto pt-0 ">
+
     </div>
+
     <div class="w-full p-6 mx-auto">
       <div class="flex flex-wrap -mx-3">
         <div class="w-full px-4 md:w-full">
@@ -224,79 +107,143 @@
                   <p class="text-lg font-bold uppercase dark:text-white dark:opacity-60 mb-4">DATA AKUN</p>
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label for="username" class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">Nama Pengguna</label>
+                      <label for="username" class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">Nama Badan Usaha</label>
                       <input type="text" name="username" id="username" required
                         class="w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg placeholder:text-gray-500 focus:outline-none focus:border-blue-500 dark:bg-slate-850 dark:text-white" />
                     </div>
                     <div>
                       <label for="email" class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">Email Pengguna</label>
-                      <input type="email" name="email" id="email" required
+                      <input
+                        type="email"
+                        name="email"
+                        id="emailakun"
+                        required
                         pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-                        title="Masukkan email yang valid (misal: nama@example.com)"
-                        placeholder="nama@example.com"
-                        class="w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg placeholder:text-gray-500 focus:outline-none focus:border-blue-500 dark:bg-slate-850 dark:text-white" />
+                        title="Masukkan email yang valid, contoh: nama@email.com"
+                        class="w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg placeholder:text-gray-500 focus:outline-none focus:border-blue-500 dark:bg-slate-850 dark:text-white"
+                        placeholder="nama@email.com" />
                     </div>
-
                     <div>
-                      <label for="nip" class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">NIP</label>
-                      <input type="text" name="nip" id="nip" required maxlength="18" minlength="18" pattern="\d{18}"
-                        inputmode="numeric"
-                        placeholder="Masukkan 18 digit NIP"
+                      <label for="alamatkantorpusat" class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">Alamat Kaantor Pusat</label>
+                      <input type="text" name="username" id="username" required
                         class="w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg placeholder:text-gray-500 focus:outline-none focus:border-blue-500 dark:bg-slate-850 dark:text-white" />
-                    </div>
-
-                    <div>
-                      <label for="pangkat_golongan" class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">
-                        Pangkat / Golongan
-                      </label>
-                      <select name="pangkat_golongan" id="pangkat_golongan" required
-                        class="w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg placeholder:text-gray-500 focus:outline-none focus:border-blue-500 dark:bg-slate-850 dark:text-white">
-                        <option value="" disabled selected hidden>-- Pilih Pangkat / Golongan --</option>
-                        <!--Golongan 1-->
-                        <optgroup label="Golongan I">
-                          <option value="Juru Muda (I/a)">Juru Muda (I/a)</option>
-                          <option value="Juru Muda Tingkat I (I/b)">Juru Muda Tingkat I (I/b)</option>
-                          <option value="Juru (I/c)">Juru (I/c)</option>
-                          <option value="Juru Tingkat I (I/d)">Juru Tingkat I (I/d)</option>
-                        </optgroup>
-                        <!--Golongan II-->
-                        <optgroup label="Golongan II">
-                          <option value="Pengatur Muda (II/a)">Pengatur Muda (II/a)</option>
-                          <option value="Pengatur Muda Tingkat I (II/b)">Pengatur Muda Tingkat I (II/b)</option>
-                          <option value="Pengatur (II/c)">Pengatur (II/c)</option>
-                          <option value="Pengatur Tingkat I (II/d)">Pengatur Tingkat I (II/d)</option>
-                        </optgroup>
-                        <!--Golongan III-->
-                        <optgroup label="Golongan III">
-                          <option value="Penata Muda (III/a)">Penata Muda (III/a)</option>
-                          <option value="Penata Muda Tingkat I (III/b)">Penata Muda Tingkat I (III/b)</option>
-                          <option value="Penata (III/c)">Penata (III/c)</option>
-                          <option value="Penata Tingkat I (III/d)">Penata Tingkat I (III/d)</option>
-                        </optgroup>
-                        <!--Golongan IV-->
-                        <optgroup label="Golongan IV">
-                          <option value="Pembina (IV/a)">Pembina (IV/a)</option>
-                          <option value="Pembina Tingkat I (IV/b)">Pembina Tingkat I (IV/b)</option>
-                          <option value="Pembina Utama Muda (IV/c)">Pembina Utama Muda (IV/c)</option>
-                          <option value="Pembina Utama Madya (IV/d)">Pembina Utama Madya (IV/d)</option>
-                          <option value="Pembina Utama (IV/e)">Pembina Utama (IV/e)</option>
-                        </optgroup>
-                      </select>
                     </div>
                   </div>
-                  <!-- Tombol Reset & Simpan: sejajar di sebelah kiri -->
-                  <div class="mt-6 flex gap-4">
+                  <div class="mt-2">
                     <button type="button"
-                      class="px-6 py-3 text-sm font-bold text-white bg-red-400 rounded-lg hover:bg-red-500 transition-all">
+                      class="px-2 py-2 text-xs font-semibold text-white bg-red-400 rounded-lg hover:bg-red-500 transition-colors duration-200">
                       Reset Password
                     </button>
-                    <button type="submit"
-                      class="px-6 py-3 text-sm font-bold text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition-all">
-                      Simpan
-                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Separator -->
+
+
+              <hr class="h-px mb-2 bg-transparent border-0 opacity-25 bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent" />
+
+
+              <!-- Bagian: Profil Perusahaan -->
+              <div class="mb-6">
+                <p class="text-lg font-bold uppercase dark:text-white dark:opacity-60 mb-4">DATA ADMINISTRASI</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label for="namabadanusaha" class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">Nama Badan Usaha / Instansi / Perseorangan</label>
+                    <input type="text" name="namabadanusaha" id="namabadanusaha" required
+                      class="w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg placeholder:text-gray-500 focus:outline-none focus:border-blue-500 dark:bg-slate-850 dark:text-white" />
+                  </div>
+                  <div>
+                    <label for="jenisbidang" class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">Nama Penanggung Jawab</label>
+                    <input type="text" name="jenisbidang" id="jenisbidang" required
+                      class="w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg placeholder:text-gray-500 focus:outline-none focus:border-blue-500 dark:bg-slate-850 dark:text-white" />
+                  </div>
+                  <div>
+                    <label for="penanggungjawab" class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">Kode KBLI</label>
+                    <input
+                      type="text"
+                      name="penanggungjawab"
+                      id="penanggungjawab"
+                      required
+                      pattern="\d{5}"
+                      maxlength="5"
+                      inputmode="numeric"
+                      title="Masukkan 5 digit angka sesuai format KBLI"
+                      class="w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg placeholder:text-gray-500 focus:outline-none focus:border-blue-500 dark:bg-slate-850 dark:text-white"
+                      placeholder="contoh: 62011" />
+                  </div>
+
+                  <div>
+                    <label for="judulkbli" class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">Judul KBLI</label>
+                    <input type="text" name="judulkbli" id="judulkbli" required
+                      class="w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg placeholder:text-gray-500 focus:outline-none focus:border-blue-500 dark:bg-slate-850 dark:text-white" />
+                  </div>
+                  <div>
+                    <label for="nomorhp" class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">No Tlp./HP</label>
+                    <input type="numeric" name="nomorhp" id="nomorhp" required
+                      class="w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg placeholder:text-gray-500 focus:outline-none focus:border-blue-500 dark:bg-slate-850 dark:text-white" />
+                  </div>
+                  <div>
+                    <label for="email" class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">Email Perusahaan</label>
+                    <input
+                      type="email"
+                      name="emailpt"
+                      id="emailpt"
+                      required
+                      pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                      title="Masukkan email yang valid, contoh: nama@email.com"
+                      class="w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg placeholder:text-gray-500 focus:outline-none focus:border-blue-500 dark:bg-slate-850 dark:text-white"
+                      placeholder="nama@email.com" />
+                  </div>
+                </div>
+
+
+                <!-- Alamat Perusahaan (Optional Toggle) -->
+
+                <div id="alamatForm" class=" mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div class="col-span-2">
+                    <label for="address" class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">Alamat Badan Usaha</label>
+                    <input type="text" name="address" id="address" required
+                      class="w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg placeholder:text-gray-500 focus:outline-none focus:border-blue-500 dark:bg-slate-850 dark:text-white" />
+                  </div>
+
+                  <div class="col-span-2">
+                    <label for="nib" class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">
+                      Nomor Induk Berusaha (NIB)
+                    </label>
+                    <input type="text" name="nib" id="nib" required
+                      pattern="^\d{13,16}$"
+                      maxlength="16"
+                      inputmode="numeric"
+                      title="Masukkan NIB yang terdiri dari 13 hingga 16 digit angka"
+                      placeholder="Contoh: 1234567890123"
+                      class="w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg placeholder:text-gray-500 focus:outline-none focus:border-blue-500 dark:bg-slate-850 dark:text-white" />
+                    <p class="text-m mt-1 text-slate-500">
+                      Note: Sesuai NIB jika Badan Usaha / Sesuai KTP jika Instansi/Perseorangan
+                    </p>
+                  </div>
+                  <div class="col-span-2">
+                    <label for="npwp" class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">
+                      Nomor Pokok Wajib Pajak (NPWP)
+                    </label>
+                    <input type="text" name="npwp" id="npwp" required
+                      pattern="^\d{2}\.\d{3}\.\d{3}\.\d-\d{3}\.\d{3}$"
+                      maxlength="20"
+                      title="Masukkan NPWP sesuai format: 12.345.678.9-012.345"
+                      placeholder="Contoh: 12.345.678.9-012.345"
+                      class="w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg placeholder:text-gray-500 focus:outline-none focus:border-blue-500 dark:bg-slate-850 dark:text-white" />
                   </div>
 
                 </div>
+
+                <!-- Submit Button -->
+                <div class="mt-6">
+                  <button type="submit"
+                    class="w-full md:w-auto px-6 py-3 text-sm font-bold text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition-all">
+                    Simpan
+                  </button>
+                </div>
+              </div>
             </form>
 
             <!--

@@ -1,6 +1,9 @@
-<!-- resources/views/components/sidebar.blade.php -->
- 
-<aside id="sidebar" class="fixed inset-y-0 flex-wrap items-center justify-between block w-full p-0 my-4 overflow-y-auto antialiased transition-transform duration-200  lg:translate-x-0 -translate-x-full bg-white border-0 shadow-xl dark:shadow-none dark:bg-slate-850 max-w-64 ease-nav-brand z-990 lg:ml-6 rounded-2xl lg:left-0" aria-expanded="false">
+@php
+$user = auth()->user();
+$isProfileComplete = $user && $user->isProfileComplete();
+@endphp
+
+<aside id="sidebar" class="fixed inset-y-0 flex-wrap items-center justify-between block w-full p-0 my-4 overflow-y-auto antialiased transition-transform duration-200 lg:translate-x-0 -translate-x-full bg-white border-0 shadow-xl dark:shadow-none dark:bg-slate-850 max-w-64 ease-nav-brand z-990 lg:ml-6 rounded-2xl lg:left-0" aria-expanded="false">
 
   <!-- Header Sidebar -->
   <div class="sticky top-0 z-50 bg-white h-19 px-4 flex items-center justify-between shadow-sm">
@@ -11,6 +14,7 @@
       </span>
     </a>
   </div>
+
 
   <!-- Tombol close -->
   <i class="xl:hidden fas fa-times absolute top-4 right-4 p-2 text-slate-400 dark:text-white opacity-70 cursor-pointer" sidenav-close></i>
@@ -23,49 +27,40 @@
 
       {{-- Beranda --}}
       <li class="mt-0.5 w-full">
-        <a href="/dashboarduser"
+        <a href="{{ $isProfileComplete ? route('berandapengguna') : route('profileidentitas') }}"
           class="py-2.7 text-lg ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors
-           {{ request()->is('dashboarduser') ? 'bg-blue-500/13 rounded-lg font-semibold text-slate-700' : 'dark:text-white dark:opacity-80' }}">
+                  {{ request()->is('berandapengguna') ? 'bg-blue-500/13 rounded-lg font-semibold text-slate-700' : 'dark:text-white dark:opacity-80' }}
+                  {{ !$isProfileComplete ? 'pointer-events-none opacity-50 cursor-not-allowed' : '' }}">
           <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
             <i class="relative top-0 text-lg leading-normal ni ni-tv-2 text-blue-500"></i>
           </div>
-          <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Beranda</span>
+          <span class="ml-1">Beranda</span>
         </a>
       </li>
 
-      {{-- Buat Permohonan --}}
+      {{-- Buat Laporan Berkala --}}
       <li class="mt-0.5 w-full">
-        <a href="/pengajuansurat"
+        <a href="{{ $isProfileComplete ? route('laporanberkala') : route('profileidentitas') }}"
           class="py-2.7 text-lg ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors
-           {{ request()->is('pengajuansurat') ? 'bg-blue-500/13 rounded-lg font-semibold text-slate-700' : 'dark:text-white dark:opacity-80' }}">
+                  {{ request()->is('laporanberkala') ? 'bg-blue-500/13 rounded-lg font-semibold text-slate-700' : 'dark:text-white dark:opacity-80' }}
+                  {{ !$isProfileComplete ? 'pointer-events-none opacity-50 cursor-not-allowed' : '' }}">
           <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
             <i class="relative top-0 text-2xl leading-normal ni ni-fat-add text-cyan-500"></i>
           </div>
-          <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Buat Permohonan</span>
+          <span class="ml-1">Buat Laporan Berkala</span>
         </a>
       </li>
 
-      {{-- Daftar Permohonan --}}
+      {{-- Daftar Laporan Berkala --}}
       <li class="mt-0.5 w-full">
-        <a href="/daftarpengajuanpengguna"
+        <a href="{{ $isProfileComplete ? route('daftarpengajuanpengguna') : route('profileidentitas') }}"
           class="py-2.7 text-lg ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors
-           {{ request()->is('daftarpengajuanpengguna') ? 'bg-blue-500/13 rounded-lg font-semibold text-slate-700' : 'dark:text-white dark:opacity-80' }}">
+                  {{ request()->is('daftarpengajuanpengguna') ? 'bg-blue-500/13 rounded-lg font-semibold text-slate-700' : 'dark:text-white dark:opacity-80' }}
+                  {{ !$isProfileComplete ? 'pointer-events-none opacity-50 cursor-not-allowed' : '' }}">
           <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
             <i class="relative top-0 text-lg leading-normal ni ni-bullet-list-67 text-orange-500"></i>
           </div>
-          <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Daftar Permohonan</span>
-        </a>
-      </li>
-
-      {{-- Surat Keterangan --}}
-      <li class="mt-0.5 w-full">
-        <a href="/suratterbituser"
-          class="py-2.7 text-lg ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors
-           {{ request()->is('suratterbituser') ? 'bg-blue-500/13 rounded-lg font-semibold text-slate-700' : 'dark:text-white dark:opacity-80' }}">
-          <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center fill-current stroke-0 text-center xl:p-2.5">
-            <i class="relative top-0 text-lg leading-normal ni ni-single-copy-04 text-emerald-500"></i>
-          </div>
-          <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Surat Keterangan</span>
+          <span class="ml-1">Daftar Laporan Berkala</span>
         </a>
       </li>
 
@@ -76,29 +71,37 @@
 
       {{-- Profil --}}
       <li class="mt-0.5 w-full">
-        <a href="/profile"
+        <a href="{{ route('profileidentitas') }}"
           class="py-2.7 text-lg ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors
-           {{ request()->is('profile') ? 'bg-blue-500/13 rounded-lg font-semibold text-slate-700' : 'dark:text-white dark:opacity-80' }}">
+           {{ request()->is('profileidentitas') ? 'bg-blue-500/13 rounded-lg font-semibold text-slate-700' : 'dark:text-white dark:opacity-80'}}">
           <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-            <i class="relative top-0 text-lg leading-normal ni ni-single-02 text-slate-700"></i>
+            <i class="ni ni-single-02 text-sm opacity-75"></i>
           </div>
-          <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Profil</span>
+          <span class="ml-1">Profil</span>
         </a>
       </li>
 
       {{-- Logout --}}
       <li class="mt-0.5 w-full">
-        <a href=""
-          class="py-2.7 text-lg ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors
-           dark:text-white dark:opacity-80">
+        <a href="{{ route('logout') }}"
+          onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+          class="block w-full text-left py-2.5 text-lg ease-nav-brand flex items-center whitespace-nowrap px-4 transition-colors
+            dark:text-white dark:opacity-80 hover:bg-red-50 dark:hover:bg-red-600 rounded-lg">
           <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
             <i class="relative top-0 text-lg leading-normal ni ni-bold-left text-red-500"></i>
           </div>
-          <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Keluar</span>
+          <span class="ml-1">Keluar</span>
         </a>
       </li>
 
+      {{-- Form logout tersembunyi, letakkan di luar semua <form> lain (misalnya di paling bawah layout) --}}
+      <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+      </form>
+
+
+
+
     </ul>
   </div>
-
 </aside>

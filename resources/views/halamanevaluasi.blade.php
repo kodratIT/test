@@ -60,9 +60,18 @@
   }
 </style>
 
-<body class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">
-    <div class="absolute w-full bg-yellow-500 dark:hidden min-h-75"></div>
-    
+<body
+  class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">
+  <div class="absolute w-full dark:hidden min-h-75 bg-yellow-500"></div>
+
+
+
+  <!-- end sidenav -->
+
+
+
+
+
 
   <main class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-90 rounded-xl">
     <!-- Navbar -->
@@ -88,16 +97,11 @@
             <div class="relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease">
               <span
                 class="text-sm ease leading-5.6 absolute z-50 -ml-px flex h-full items-center whitespace-nowrap rounded-lg rounded-tr-none rounded-br-none border border-r-0 border-transparent bg-transparent py-2 px-2.5 text-center font-normal text-slate-500 transition-all">
-                <i class="fas fa-search"></i>
+
               </span>
             </div>
           </div>
           <ul class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full">
-            <!-- online builder btn  -->
-            <!-- <li class="flex items-center">
-                <a class="inline-block px-8 py-2 mb-0 mr-4 text-xs font-bold text-center text-blue-500 uppercase align-middle transition-all ease-in bg-transparent border border-blue-500 border-solid rounded-lg shadow-none cursor-pointer leading-pro hover:-translate-y-px active:shadow-xs hover:border-blue-500 active:bg-blue-500 active:hover:text-blue-500 hover:text-blue-500 tracking-tight-rem hover:bg-transparent hover:opacity-75 hover:shadow-none active:text-white active:hover:bg-transparent" target="_blank" href="https://www.creative-tim.com/builder/soft-ui?ref=navbar-dashboard&amp;_ga=2.76518741.1192788655.1647724933-1242940210.1644448053">Online Builder</a>
-              </li> -->
-
             <li class="flex items-center pl-4 xl:hidden">
               <a href="javascript:;" class="block p-0 text-sm text-white transition-all ease-nav-brand" sidenav-trigger>
                 <div class="w-4.5 overflow-hidden">
@@ -109,7 +113,7 @@
             </li>
             <li class="flex items-center px-4">
               <a href="javascript:;" class="p-0 text-sm text-white transition-all ease-nav-brand">
-                <i fixed-plugin-button-nav class="cursor-pointer fa fa-cog"></i>
+
                 <!-- fixed-plugin-button-nav  -->
               </a>
             </li>
@@ -120,7 +124,7 @@
               <p class="hidden transform-dropdown-show"></p>
               <a href="javascript:;" class="block p-0 text-sm text-white transition-all ease-nav-brand" dropdown-trigger
                 aria-expanded="false">
-                <i class="cursor-pointer fa fa-bell"></i>
+
               </a>
 
               <ul dropdown-menu
@@ -215,641 +219,1691 @@
     <div class="flex justify-center px-3 mb-6">
       <div class="w-full max-w-full px-3 mb-6 sm:w-full sm:flex-none xl:mb-0 xl:w-full">
         <div class="relative flex flex-col min-w-0 break-words bg-white shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
-        <div class="flex-auto p-4">
+          <div class="flex-auto p-4">
             <div class="flex flex-col -mx-3">
-            <div class="w-full max-w-full px-3">
-                <h4 class="text-lg font-bold mb-4 text-gray-700 dark:text-white text-center uppercase">Data Teknis</h4>
+              <div class="w-full max-w-full px-3">
 
-                <!-- Halaman 1: Data Administrasi -->
-                <div id="page1">
-                <p class="text-lg font-bold uppercase dark:text-white dark:opacity-90 mb-4">DATA ADMINISTRASI</p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                    <label class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">Nama Badan Usaha / Instansi / Perseorangan</label>
-                    <input type="text" value="Perseroan Terbatas (PT)" readonly class="w-full px-3 py-2 text-sm bg-white-100 border border-gray-300 rounded-lg text-gray-700 focus:outline-none dark:bg-slate-700 dark:text-white">
+                <!-- Halaman 0: Data Pemilik -->
+                <div id="page0">
+                  <h2 class="text-center font-bold text-lg bg-gray-100 p-3 rounded-t border-b border-gray-300">DATA PEMILIK</h2>
+
+                  <!-- Container 1: DATA PEMILIK | LAMPIRAN | EVALUASI -->
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border border-gray-200 rounded shadow-sm overflow-hidden p-4">
+                    <!-- KOLOM 1: DATA PEMILIK -->
+
+                    <div class="bg-white rounded shadow p-4 space-y-4 border-2 border-gray-300">
+                      <h2 class="text-lg font-bold text-center border-b pb-2 mb-2">Profil Badan Usaha</h2>
+                      <div class="overflow-x-auto">
+                        <table class="w-full table-auto border-collapse border border-gray-300 text-sm text-left">
+
+                          <tbody id="body-Data Pemilik">
+                            <tr>
+                              <td class="text-left align-middle font-bold min-w-[150px] max-w-[150px] w-[150px]">Nama Badan Usaha</td>
+
+                              <td class="text-left align-middle">{{ $pengajuan->pengguna->identitas->namabadanusaha ?? 'Tidak Ada' }}</td>
+                            </tr>
+
+                            <tr>
+                              <td class="text-left align-middle font-bold min-w-[150px] max-w-[150px] w-[150px]">NIB</td>
+
+                              <td class="text-left align-middle">{{ $pengajuan->pengguna->identitas->nib ?? 'Tidak Ada' }}</td>
+                            </tr>
+
+                            <tr>
+                              <td class="text-left align-middle font-bold">Alamat Kantor Pusat</td>
+
+                              <td class="text-left align-middle">{{ $pengajuan->pengguna->identitas->alamatkantorpusat ?? 'Tidak Ada' }}</td>
+                            </tr>
+                            <tr>
+                              <td class="text-left align-middle font-bold">Alamat Kantor Cabang</td>
+
+                              <td class="text-left align-middle">{{ $pengajuan->pengguna->identitas->alamatkantorcabang ?? 'Tidak Ada' }}</td>
+                            </tr>
+                            <tr>
+                              <td class="text-left align-middle font-bold">E-mail</td>
+
+                              <td class="text-left align-middle">{{ $pengajuan->pengguna->identitas->email_perusahaan ?? 'Tidak Ada' }}</td>
+                            </tr>
+
+                            <tr>
+                              <td class="text-left align-middle font-bold">Nama</td>
+
+                              <td class="text-left align-middle">{{ $pengajuan->pengguna->identitas->contact_person_nama ?? 'Tidak Ada' }} </td>
+
+                            </tr>
+                            <tr>
+                              <td class="text-left align-middle font-bold">Jabatan</td>
+
+                              <td class="text-left align-middle"> ({{ $pengajuan->pengguna->identitas->contact_person_jabatan ?? 'Tidak Ada' }})</td>
+                            </tr>
+                            <tr>
+                              <td class="text-left align-middle font-bold">E-mail</td>
+
+                              <td class="text-left align-middle">{{ $pengajuan->pengguna->identitas->contact_person_email ?? 'Tidak Ada' }}</td>
+                            </tr>
+                            <tr>
+                              <td class="text-left align-middle font-bold">No. Telp/HP</td>
+
+                              <td class="text-left align-middle">{{ $pengajuan->pengguna->identitas->contact_person_no_telp ?? 'Tidak Ada' }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
-                    <div>
-                    <label class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">Nama Pengguna</label>
-                    <input type="text" value="Fahrul Uron" readonly class="w-full px-3 py-2 text-sm bg-white-100 border border-gray-300 rounded-lg text-gray-700 focus:outline-none dark:bg-slate-700 dark:text-white">
+
+                    <!-- KOLOM 2: Evaluasi 1 -->
+                    <div class="bg-white rounded shadow p-4 space-y-4 border-2 border-gray-300">
+                      <h2 class="text-lg text-center font-bold border-b pb-2 mb-2">Evaluasi</h2>
+
+                      <label for="catatan-perbaikan-1" class="text-sm font-semibold">Catatan Perbaikan :</label>
+                      <textarea
+                        id="catatan-perbaikan-1"
+                        name="catatan_perbaikan_1"
+                        rows="8"
+                        class="w-full p-2 border rounded text-sm"
+                        placeholder="Tulis catatan perbaikan..."></textarea>
+
+                      <label for="status-permohonan-1" class="text-sm font-semibold">Status Permohonan :</label>
+                      <select
+                        id="status-permohonan-1"
+                        name="status_permohonan_1"
+                        class="w-full border p-2 rounded text-sm">
+                        <option value="" disabled selected hidden>-- Status --</option>
+                        <option value="Disetujui">Disetujui</option>
+                        <option value="Ditolak">Ditolak</option>
+                      </select>
+
+                      <!-- Tombol Simpan 3 -->
+                      <div class="pt-2 mt-6">
+                        <button onclick="tampilkanPopup2()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
+                          Simpan Evaluasi
+                        </button>
+                      </div>
+
+                      <!-- Modal Pop-up 3 -->
+                      <div id="popupBerhasil1" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+                        <div class="bg-white p-6 rounded-lg shadow-lg text-center w-80">
+                          <h2 class="text-lg font-semibold text-green-700 mb-2">Berhasil!</h2>
+                          <p class="text-gray-700 mb-4">Evaluasi berhasil disimpan.</p>
+                          <button onclick="tutupPopup1()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded">
+                            OK
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                    <div>
-                    <label class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">Kode KBLI</label>
-                    <input type="text" value="55311" readonly class="w-full px-3 py-2 text-sm bg-white-100 border border-gray-300 rounded-lg text-gray-700 focus:outline-none dark:bg-slate-700 dark:text-white">
-                    </div>
-                    <div>
-                    <label class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">Judul KBLI</label>
-                    <input type="text" value="Pertambangan dan Penggalian" readonly class="w-full px-3 py-2 text-sm bg-white-100 border border-gray-300 rounded-lg text-gray-700 focus:outline-none dark:bg-slate-700 dark:text-white">
-                    </div>
-                    <div>
-                    <label class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">No Tlp. / Hp</label>
-                    <input type="text" value="0812345678" readonly class="w-full px-3 py-2 text-sm bg-white-100 border border-gray-300 rounded-lg text-gray-700 focus:outline-none dark:bg-slate-700 dark:text-white">
-                    </div>
-                    <div>
-                    <label class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">Email Perusahaan</label>
-                    <input type="text" value="ptabcd@Ggmail.com" readonly class="w-full px-3 py-2 text-sm bg-white-100 border border-gray-300 rounded-lg text-gray-700 focus:outline-none dark:bg-slate-700 dark:text-white">
-                    </div>
+                  </div>
+                  <!-- Tombol navigasi: Keluar di kiri, Selanjutnya di kanan -->
+                  <div class="mt-6 flex justify-between">
+                    <!-- Tombol Keluar -->
+                    <a href="{{ route('laporan.evaluator.index') }}"
+                      class="inline-block px-5 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition">
+                      Keluar
+                    </a>
+
+                    <!-- Tombol Selanjutnya -->
+                    <button type="button" onclick="goToNextPage(0)" class="px-5 py-2 bg-blue-600 text-white rounded-lg">Selanjutnya</button>
+                  </div>
                 </div>
-                <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                    <label class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">Alamat Badan Usaha</label>
-                    <input type="text" value="Jl. Arid Rahman Hakim No.30 A, Simpang IV Sipin, Kec.Telanaipura, Kota Jambi" readonly class="w-full px-3 py-2 text-sm bg-white-100 border border-gray-300 rounded-lg text-gray-700 focus:outline-none dark:bg-slate-700 dark:text-white">
+
+                <!-- Halaman 1: Data Umum -->
+                <div id="page1" class="hidden">
+                  <h2 class="text-center font-bold text-lg bg-gray-100 p-3 rounded-t border-b border-gray-300">DATA UMUM</h2>
+
+                  <!-- Container 1: DATA UMUM | LAMPIRAN | EVALUASI -->
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 border border-gray-200 rounded shadow-sm overflow-hidden p-4">
+                    <!-- KOLOM 1: Izin Usaha Penyediaan Tenaga Listrik -->
+                    <div class="bg-white rounded shadow p-4 space-y-4 border-2 border-gray-300">
+                      <h2 class="text-lg font-bold text-center border-b pb-2 mb-2">Izin Usaha Penyediaan Tenaga Listrik</h2>
+                      <div class="overflow-x-auto">
+                        <table class="w-full table-auto border-collapse border border-gray-300 text-sm text-left">
+
+                          <tbody id="body-Data Umum">
+                            <tr>
+                              <td class="text-left align-middle font-bold min-w-[150px] max-w-[150px] w-[150px]">Nomor</td>
+                              <td class="text-left align-middle">
+                                {{ $pengajuan->nomor_izin_usaha ?? 'Tidak Ada' }}
+                                <input type="hidden" name="nomor" value="{{ $pengajuan->nomor_izin_usaha }}" readonly>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="text-left align-middle font-bold">Tanggal Terbit</td>
+
+                              <td class="text-left align-middle">
+                                {{ $pengajuan->tanggal_izin_usaha 
+                                                                    ? \Carbon\Carbon::parse($pengajuan->tanggal_izin_usaha)->translatedFormat('d F Y') 
+                                                                    : 'Tidak Ada' 
+                                                                }}
+                              </td>
+
+                            </tr>
+                            <tr>
+                              <td class="text-left align-middle font-bold"> Tanggal Masa Berlaku</td>
+
+                              <td class="text-left align-middle">
+                                {{ $pengajuan->masa_berlaku_izin_usaha 
+                                                                    ? \Carbon\Carbon::parse($pengajuan->masa_berlaku_izin_usaha)->translatedFormat('d F Y') 
+                                                                    : 'Tidak Ada' 
+                                                                }}
+                              </td>
+
+
+                            </tr>
+                            <tr>
+                              <td class="text-left align-middle font-bold">Kelebihan Tenaga Lsitrik dijual Kepada</td>
+
+                              <td class="text-left align-middle">
+                                {{ $pengajuan->kelebihan_listrik ?? 'Tidak Ada' }}
+                                <input type="hidden" name="nomor" value="{{ $pengajuan->kelebihan_listrik }}" readonly>
+                              </td>
+
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
-                    <div>
-                    <label class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">NIB</label>
-                    <input type="text" value="1234567890123" readonly class="w-full px-3 py-2 text-sm bg-white-100 border border-gray-300 rounded-lg text-gray-700 focus:outline-none dark:bg-slate-700 dark:text-white">
+
+                    <!-- KOLOM 2: LAMPIRAN -->
+                    <div class="bg-white rounded shadow p-4 space-y-4 border-2 border-gray-300">
+                      <h2 class="text-lg text-center font-bold border-b pb-2 mb-2">Lampiran</h2>
+                      <div>
+                        @if($pengajuan->lampiran_izin_usaha)
+                        <!-- Iframe dengan fitur zoom -->
+                        <div class="w-full h-[500px] rounded overflow-hidden border">
+                          <iframe
+                            src="{{ route('lampiran.show', basename($pengajuan->lampiran_izin_usaha)) }}"
+                            class="w-full h-full"
+                            allowfullscreen>
+                          </iframe>
+                        </div>
+                        <!-- Tombol Lihat di Tab Baru -->
+                        <div class="mt-2 text-right">
+                          <a href="{{ route('lampiran.show', basename($pengajuan->lampiran_izin_usaha)) }}"
+                            target="_blank"
+                            class="inline-block px-4 py-2 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition">
+                            Lihat di Tab Baru
+                          </a>
+                        </div>
+                        @else
+                        <p class="text-gray-500 text-center">Tidak ada lampiran</p>
+                        @endif
+                      </div>
                     </div>
-                    <div>
-                    <label class="block mb-2 text-m font-bold text-slate-700 dark:text-white/80">NPWP</label>
-                    <input type="text" value="61.318.029.8-723.000" readonly class="w-full px-3 py-2 text-sm bg-white-100 border border-gray-300 rounded-lg text-gray-700 focus:outline-none dark:bg-slate-700 dark:text-white">
+
+
+                    <!-- KOLOM 3: Evaluasi 2 -->
+                    <div class="bg-white rounded shadow p-4 space-y-4 border-2 border-gray-300">
+                      <h2 class="text-lg text-center font-bold border-b pb-2 mb-2">Evaluasi</h2>
+
+                      <label for="catatan-perbaikan-2" class="text-sm font-semibold">Catatan Perbaikan :</label>
+                      <textarea
+                        id="catatan-perbaikan-2"
+                        name="catatan_perbaikan_2"
+                        rows="8"
+                        class="w-full p-2 border rounded text-sm"
+                        placeholder="Tulis catatan perbaikan..."></textarea>
+
+                      <label for="status-permohonan-2" class="text-sm font-semibold">Status Permohonan :</label>
+                      <select
+                        id="status-permohonan-2"
+                        name="status_permohonan_2"
+                        class="w-full border p-2 rounded text-sm">
+                        <option value="" disabled selected hidden>-- Status --</option>
+                        <option value="Disetujui">Disetujui</option>
+                        <option value="Ditolak">Ditolak</option>
+                      </select>
+                      <!-- Tombol Simpan 3 -->
+                      <div class="pt-2 mt-6">
+                        <button onclick="tampilkanPopup2()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
+                          Simpan Evaluasi
+                        </button>
+                      </div>
+
+                      <!-- Modal Pop-up 3 -->
+                      <div id="popupBerhasil2" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+                        <div class="bg-white p-6 rounded-lg shadow-lg text-center w-80">
+                          <h2 class="text-lg font-semibold text-green-700 mb-2">Berhasil!</h2>
+                          <p class="text-gray-700 mb-4">Evaluasi berhasil disimpan.</p>
+                          <button onclick="tutupPopup2()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded">
+                            OK
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                </div>
-                <div class="mt-6 text-right">
-                    <button onclick="nextPage()" type="button" class="inline-block px-5 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">
-                    Next
+                  </div>
+
+                  <!-- Container 2: DATA UMUM | LAMPIRAN | EVALUASI -->
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 border border-gray-200 rounded shadow-sm overflow-hidden p-4">
+                    <!-- KOLOM 1: Data Izin Lingkungan -->
+                    <div class="bg-white rounded shadow p-4 space-y-4 border-2 border-gray-300">
+                      <h2 class="text-lg font-bold text-center border-b pb-2 mb-2">Izin Lingkungan</h2>
+                      <div class="overflow-x-auto">
+                        <table class="w-full table-auto border-collapse border border-gray-300 text-sm text-left">
+
+                          <tbody id="body-Data Izin Lingkungan">
+                            <tr>
+                              <td class="text-left align-middle font-bold min-w-[150px] max-w-[150px] w-[150px]">Jenis Izin</td>
+
+                              <td class="text-left align-middle">
+                                {{ $pengajuan->jenis_izin_lingkungan ?? 'Tidak Ada' }}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="text-left align-middle font-bold">Nomor</td>
+
+                              <td class="text-left align-middle">
+                                {{ $pengajuan->nomor_izin_lingkungan ?? 'Tidak Ada' }}
+
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="text-left align-middle font-bold">Tanggal Terbit</td>
+
+                              <td class="text-left align-middle">
+                                {{ $pengajuan->tanggal_izin_lingkungan
+                                                                    ? \Carbon\Carbon::parse($pengajuan->tanggal_izin_lingkungan)->translatedFormat('d F Y') 
+                                                                    : 'Tidak Ada' 
+                                                                }}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="text-left align-middle font-bold">Tanggal Masa Berlaku</td>
+
+                              <td class="text-left align-middle">
+                                {{ $pengajuan->masa_berlaku_izin_lingkungan
+                                                                    ? \Carbon\Carbon::parse($pengajuan->masa_berlaku_izin_lingkungan)->translatedFormat('d F Y') 
+                                                                    : 'Tidak Ada' 
+                                                                }}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    <!-- KOLOM 2: LAMPIRAN -->
+                    <div class="bg-white rounded shadow p-4 space-y-4 border-2 border-gray-300">
+                      <h2 class="text-lg text-center font-bold border-b pb-2 mb-2">Lampiran</h2>
+                      <div>
+                        @if($pengajuan->lampiran_izin_lingkungan)
+                        <!-- Iframe dengan fitur zoom -->
+                        <div class="w-full h-[500px] rounded overflow-hidden border">
+                          <iframe
+                            src="{{ route('lampiran.show', basename($pengajuan->lampiran_izin_lingkungan)) }}"
+                            class="w-full h-full"
+                            allowfullscreen>
+                          </iframe>
+                        </div>
+                        <!-- Tombol Lihat di Tab Baru -->
+                        <div class="mt-2 text-right">
+                          <a href="{{ route('lampiran.show', basename($pengajuan->lampiran_izin_lingkungan)) }}"
+                            target="_blank"
+                            class="inline-block px-4 py-2 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition">
+                            Lihat di Tab Baru
+                          </a>
+                        </div>
+                        @else
+                        <p class="text-gray-500 text-center">Tidak ada lampiran</p>
+                        @endif
+                      </div>
+                    </div>
+
+                    <!-- KOLOM 3: Evaluasi 3 -->
+                    <div class="bg-white rounded shadow p-4 space-y-4 border-2 border-gray-300">
+                      <h2 class="text-lg text-center font-bold border-b pb-2 mb-2">Evaluasi</h2>
+
+                      <label for="catatan-perbaikan-3" class="text-sm font-semibold">Catatan Perbaikan :</label>
+                      <textarea
+                        id="catatan-perbaikan-3"
+                        name="catatan_perbaikan_3"
+                        rows="8"
+                        class="w-full p-2 border rounded text-sm"
+                        placeholder="Tulis catatan perbaikan..."></textarea>
+
+                      <label for="status-permohonan-3" class="text-sm font-semibold">Status Permohonan :</label>
+                      <select
+                        id="status-permohonan-3"
+                        name="status_permohonan_3"
+                        class="w-full border p-2 rounded text-sm">
+                        <option value="" disabled selected hidden>-- Status --</option>
+                        <option value="Disetujui">Disetujui</option>
+                        <option value="Ditolak">Ditolak</option>
+                      </select>
+                      <!-- Tombol Simpan 3 -->
+                      <div class="pt-2 mt-6">
+                        <button onclick="tampilkanPopup3()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
+                          Simpan Evaluasi
+                        </button>
+                      </div>
+
+                      <!-- Modal Pop-up 3 -->
+                      <div id="popupBerhasil3" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+                        <div class="bg-white p-6 rounded-lg shadow-lg text-center w-80">
+                          <h2 class="text-lg font-semibold text-green-700 mb-2">Berhasil!</h2>
+                          <p class="text-gray-700 mb-4">Evaluasi berhasil disimpan.</p>
+                          <button onclick="tutupPopup3()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded">
+                            OK
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Container 3: DATA UMUM | LAMPIRAN | EVALUASI -->
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 border border-gray-200 rounded shadow-sm overflow-hidden p-4">
+                    <!-- KOLOM 1: SLO -->
+                    <div class="bg-white rounded shadow p-4 space-y-4 border-2 border-gray-300">
+                      <h2 class="text-lg font-bold text-center border-b pb-2 mb-2">Sertifikat Laik Operasi (SLO)</h2>
+                      <div class="overflow-x-auto">
+                        @php
+                        $listSlo = is_array($pengajuan->slo) ? $pengajuan->slo : [];
+                        @endphp
+
+                        <table class="w-full table-auto border-collapse border border-gray-300 text-sm">
+
+                          <thead class="bg-gray-100">
+                            <tr id="header-SLO">
+                              {{-- Kolom pertama (judul data) selalu rata kiri --}}
+                              <th class="border px-2 py-1 text-left min-w-[160px]"></th>
+
+                              {{-- Kolom berikutnya (#1, #2, dst) rata tengah --}}
+                              @foreach($listSlo as $i => $item)
+                              <th class="border px-2 py-1 text-center">SLO - {{ $loop->iteration }}</th>
+                              @endforeach
+                            </tr>
+                          </thead>
+
+                          <tbody id="body-SLO">
+                            <tr>
+                              <td class="font-bold border text-left px-2 py-1">Nomor Sertifikat</td>
+                              @foreach($listSlo as $item)
+                              <td class="border px-2 py-1 text-left">
+                                {{ $item['nomor_sertifikat_slo'] ?? 'Tidak ada' }}
+                                <input type="hidden" name="nomor_sertifikat_slo[]" value="{{ $item['nomor_sertifikat_slo'] ?? '' }}">
+                              </td>
+                              @endforeach
+                            </tr>
+
+                            <tr>
+                              <td class="font-bold border text-left px-2 py-1">Nomor Register</td>
+                              @foreach($listSlo as $item)
+                              <td class="border px-2 py-1 text-left">
+                                {{ $item['nomor_register_slo'] ?? 'Tidak ada' }}
+                                <input type="hidden" name="nomor_register_slo[]" value="{{ $item['nomor_register_slo'] ?? '' }}">
+                              </td>
+                              @endforeach
+                            </tr>
+
+                            <tr>
+                              <td class="font-bold border text-left px-2 py-1">Tanggal Terbit</td>
+                              @foreach($listSlo as $item)
+                              <td class="border px-2 py-1 text-left">
+                                {{ !empty($item['tanggal_terbit_slo'])
+                                                                    ? \Carbon\Carbon::parse($item['tanggal_terbit_slo'])->translatedFormat('d F Y')
+                                                                    : '-' }}
+                                <input type="hidden" name="tanggal_terbit_slo[]" value="{{ $item['tanggal_terbit_slo'] ?? '' }}">
+                              </td>
+                              @endforeach
+                            </tr>
+
+                            <tr>
+                              <td class="font-bold border text-left px-2 py-1">Tanggal Masa Berlaku</td>
+                              @foreach($listSlo as $item)
+                              <td class="border px-2 py-1 text-left">
+                                {{ !empty($item['tanggal_masa_berlaku_slo'])
+                                                                    ? \Carbon\Carbon::parse($item['tanggal_masa_berlaku_slo'])->translatedFormat('d F Y')
+                                                                    : '-' }}
+                                <input type="hidden" name="tanggal_masa_berlaku_slo[]" value="{{ $item['tanggal_masa_berlaku_slo'] ?? '' }}">
+                              </td>
+                              @endforeach
+                            </tr>
+
+                            <tr>
+                              <td class="font-bold border text-left px-2 py-1">Lembaga Inspeksi Teknik (LIT)</td>
+                              @foreach($listSlo as $item)
+                              <td class="border px-2 py-1 text-left">
+                                {{ $item['lit'] ?? 'Tidak ada' }}
+                                <input type="hidden" name="lit[]" value="{{ $item['lit'] ?? '' }}">
+                              </td>
+                              @endforeach
+                            </tr>
+                          </tbody>
+                        </table>
+
+                      </div>
+                    </div>
+
+                    <!-- KOLOM 2: LAMPIRAN -->
+                    <div class="bg-white rounded shadow p-4 space-y-4 border-2 border-gray-300">
+                      <h2 class="text-lg text-center font-bold border-b pb-2 mb-2">Lampiran</h2>
+                      <div>
+                        @if($pengajuan->lampiran_slo)
+                        <!-- Iframe dengan fitur zoom -->
+                        <div class="w-full h-[500px] rounded overflow-hidden border">
+                          <iframe
+                            src="{{ route('lampiran.show', basename($pengajuan->lampiran_slo)) }}"
+                            class="w-full h-full"
+                            allowfullscreen>
+                          </iframe>
+                        </div>
+                        <!-- Tombol Lihat di Tab Baru -->
+                        <div class="mt-2 text-right">
+                          <a href="{{ route('lampiran.show', basename($pengajuan->lampiran_slo)) }}"
+                            target="_blank"
+                            class="inline-block px-4 py-2 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition">
+                            Lihat di Tab Baru
+                          </a>
+                        </div>
+                        @else
+                        <p class="text-gray-500 text-center">Tidak ada lampiran</p>
+                        @endif
+                      </div>
+                    </div>
+
+
+                    <!-- KOLOM 3: Evaluasi 4 -->
+                    <div class="bg-white rounded shadow p-4 space-y-4 border-2 border-gray-300">
+                      <h2 class="text-lg text-center font-bold border-b pb-2 mb-2">Evaluasi</h2>
+
+                      <label for="catatan-perbaikan-4" class="text-sm font-semibold">Catatan Perbaikan :</label>
+                      <textarea
+                        id="catatan-perbaikan-4"
+                        name="catatan_perbaikan_4"
+                        rows="8"
+                        class="w-full p-2 border rounded text-sm"
+                        placeholder="Tulis catatan perbaikan..."></textarea>
+
+                      <label for="status-permohonan-4" class="text-sm font-semibold">Status Permohonan :</label>
+                      <select
+                        id="status-permohonan-4"
+                        name="status_permohonan_4"
+                        class="w-full border p-4 rounded text-sm">
+                        <option value="" disabled selected hidden>-- Status --</option>
+                        <option value="Disetujui">Disetujui</option>
+                        <option value="Ditolak">Ditolak</option>
+                      </select>
+                      <!-- Tombol Simpan 3 -->
+                      <div class="pt-2 mt-6">
+                        <button onclick="tampilkanPopup4()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
+                          Simpan Evaluasi
+                        </button>
+                      </div>
+
+                      <!-- Modal Pop-up 3 -->
+                      <div id="popupBerhasil4" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+                        <div class="bg-white p-6 rounded-lg shadow-lg text-center w-80">
+                          <h2 class="text-lg font-semibold text-green-700 mb-2">Berhasil!</h2>
+                          <p class="text-gray-700 mb-4">Evaluasi berhasil disimpan.</p>
+                          <button onclick="tutupPopup4()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded">
+                            OK
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Container 4: DATA UMUM | LAMPIRAN | EVALUASI -->
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 border border-gray-200 rounded shadow-sm overflow-hidden p-4">
+                    <!-- KOLOM 1: SLO -->
+                    <div class="bg-white rounded shadow p-4 space-y-4 border-2 border-gray-300">
+                      <h2 class="text-lg font-bold text-center border-b pb-2 mb-2">
+                        Sertifikat Kompetensi Tenaga Teknik Ketenagalistrikan (SKTTK)
+                      </h2>
+
+                      <div class="overflow-x-auto">
+                        @php
+                        $listSkttk = is_array($pengajuan->skttk) ? $pengajuan->skttk : [];
+                        @endphp
+
+                        <table class="w-full table-auto border-collapse border border-gray-300 text-sm">
+                          <thead class="bg-gray-100">
+                            <tr id="header-SKTTK">
+                              {{-- Kolom pertama judul data rata kiri --}}
+                              <th class="border px-2 py-1 text-left min-w-[180px]">Data SKTTK</th>
+
+                              {{-- Kolom berikutnya (#1, #2, dst) rata tengah --}}
+                              @foreach($listSkttk as $i => $item)
+                              <th class="border px-2 py-1 text-center">SKTTK - {{ $loop->iteration }}</th>
+                              @endforeach
+                            </tr>
+                          </thead>
+
+                          <tbody id="body-SKTTK">
+                            <tr>
+                              <td class="font-bold border text-left px-2 py-1">Nomor Sertifikat</td>
+                              @foreach($listSkttk as $item)
+                              <td class="border px-2 py-1 text-left">
+                                {{ $item['nomor_sertifikat_skttk'] ?? 'Tidak ada' }}
+                                <input type="hidden" name="nomor_sertifikat_skttk[]" value="{{ $item['nomor_sertifikat_skttk'] ?? '' }}">
+                              </td>
+                              @endforeach
+                            </tr>
+
+                            <tr>
+                              <td class="font-bold border text-left px-2 py-1">Nomor Register</td>
+                              @foreach($listSkttk as $item)
+                              <td class="border px-2 py-1 text-left">
+                                {{ $item['nomor_register_skttk'] ?? 'Tidak ada' }}
+                                <input type="hidden" name="nomor_register_skttk[]" value="{{ $item['nomor_register_skttk'] ?? '' }}">
+                              </td>
+                              @endforeach
+                            </tr>
+
+                            <tr>
+                              <td class="font-bold border text-left px-2 py-1">Nama</td>
+                              @foreach($listSkttk as $item)
+                              <td class="border px-2 py-1 text-left">
+                                {{ $item['nama_skttk'] ?? 'Tidak ada' }}
+                                <input type="hidden" name="nama_skttk[]" value="{{ $item['nama_skttk'] ?? '' }}">
+                              </td>
+                              @endforeach
+                            </tr>
+
+                            <tr>
+                              <td class="font-bold border text-left px-2 py-1">Jabatan</td>
+                              @foreach($listSkttk as $item)
+                              <td class="border px-2 py-1 text-left">
+                                {{ $item['jabatan_skttk'] ?? 'Tidak ada' }}
+                                <input type="hidden" name="jabatan_skttk[]" value="{{ $item['jabatan_skttk'] ?? '' }}">
+                              </td>
+                              @endforeach
+                            </tr>
+
+                            <tr>
+                              <td class="font-bold border text-left px-2 py-1">Kode Kualifikasi</td>
+                              @foreach($listSkttk as $item)
+                              <td class="border px-2 py-1 text-left">
+                                {{ $item['kode_kualifikasi_skttk'] ?? 'Tidak ada' }}
+                                <input type="hidden" name="kode_kualifikasi_skttk[]" value="{{ $item['kode_kualifikasi_skttk'] ?? '' }}">
+                              </td>
+                              @endforeach
+                            </tr>
+
+                            <tr>
+                              <td class="font-bold border text-left px-2 py-1">Kompetensi Inti 1</td>
+                              @foreach($listSkttk as $item)
+                              <td class="border px-2 py-1 text-left">
+                                {{ $item['kompetensi_inti1_skttk'] ?? 'Tidak ada' }}
+                                <input type="hidden" name="kompetensi_inti1_skttk[]" value="{{ $item['kompetensi_inti1_skttk'] ?? '' }}">
+                              </td>
+                              @endforeach
+                            </tr>
+
+                            <tr>
+                              <td class="font-bold border text-left px-2 py-1">Kompetensi Inti 2</td>
+                              @foreach($listSkttk as $item)
+                              <td class="border px-2 py-1 text-left">
+                                {{ $item['kompetensi_inti2_skttk'] ?? 'Tidak ada' }}
+                                <input type="hidden" name="kompetensi_inti2_skttk[]" value="{{ $item['kompetensi_inti2_skttk'] ?? '' }}">
+                              </td>
+                              @endforeach
+                            </tr>
+
+                            <tr>
+                              <td class="font-bold border text-left px-2 py-1">Kompetensi Pilihan 1</td>
+                              @foreach($listSkttk as $item)
+                              <td class="border px-2 py-1 text-left">
+                                {{ $item['kompetensi_pilihan1_skttk'] ?? 'Tidak ada' }}
+                                <input type="hidden" name="kompetensi_pilihan1_skttk[]" value="{{ $item['kompetensi_pilihan1_skttk'] ?? '' }}">
+                              </td>
+                              @endforeach
+                            </tr>
+
+                            <tr>
+                              <td class="font-bold border text-left px-2 py-1">Kompetensi Pilihan 2</td>
+                              @foreach($listSkttk as $item)
+                              <td class="border px-2 py-1 text-left">
+                                {{ $item['kompetensi_pilihan2_skttk'] ?? 'Tidak ada' }}
+                                <input type="hidden" name="kompetensi_pilihan2_skttk[]" value="{{ $item['kompetensi_pilihan2_skttk'] ?? '' }}">
+                              </td>
+                              @endforeach
+                            </tr>
+
+                            <tr>
+                              <td class="font-bold border text-left px-2 py-1">Tanggal Terbit</td>
+                              @foreach($listSkttk as $item)
+                              <td class="border px-2 py-1 text-left">
+                                {{ !empty($item['tanggal_terbit_skttk'])
+                                ? \Carbon\Carbon::parse($item['tanggal_terbit_skttk'])->translatedFormat('d F Y')
+                                : '-' }}
+                                <input type="hidden" name="tanggal_terbit_skttk[]" value="{{ $item['tanggal_terbit_skttk'] ?? '' }}">
+                              </td>
+                              @endforeach
+                            </tr>
+
+                            <tr>
+                              <td class="font-bold border text-left px-2 py-1">Tanggal Masa Berlaku</td>
+                              @foreach($listSkttk as $item)
+                              <td class="border px-2 py-1 text-left">
+                                {{ !empty($item['tanggal_masa_berlaku_skttk'])
+                                ? \Carbon\Carbon::parse($item['tanggal_masa_berlaku_skttk'])->translatedFormat('d F Y')
+                                : '-' }}
+                                <input type="hidden" name="tanggal_masa_berlaku_skttk[]" value="{{ $item['tanggal_masa_berlaku_skttk'] ?? '' }}">
+                              </td>
+                              @endforeach
+                            </tr>
+
+                            <tr>
+                              <td class="font-bold border text-left px-2 py-1">LSK</td>
+                              @foreach($listSkttk as $item)
+                              <td class="border px-2 py-1 text-left">
+                                {{ $item['lsk_skttk'] ?? 'Tidak ada' }}
+                                <input type="hidden" name="lsk_skttk[]" value="{{ $item['lsk_skttk'] ?? '' }}">
+                              </td>
+                              @endforeach
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+
+                    <!-- KOLOM 2: LAMPIRAN -->
+                    <div class="bg-white rounded shadow p-4 space-y-4 border-2 border-gray-300">
+                      <h2 class="text-lg text-center font-bold border-b pb-2 mb-2">Lampiran</h2>
+                      <div>
+                        @if($pengajuan->lampiran_skttk)
+                        <!-- Iframe dengan fitur zoom -->
+                        <div class="w-full h-[500px] rounded overflow-hidden border">
+                          <iframe
+                            src="{{ route('lampiran.show', basename($pengajuan->lampiran_skttk)) }}"
+                            class="w-full h-full"
+                            allowfullscreen>
+                          </iframe>
+                        </div>
+                        <!-- Tombol Lihat di Tab Baru -->
+                        <div class="mt-2 text-right">
+                          <a href="{{ route('lampiran.show', basename($pengajuan->lampiran_skttk)) }}"
+                            target="_blank"
+                            class="inline-block px-4 py-2 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition">
+                            Lihat di Tab Baru
+                          </a>
+                        </div>
+                        @else
+                        <p class="text-gray-500 text-center">Tidak ada lampiran</p>
+                        @endif
+                      </div>
+                    </div>                
+
+                    <!-- KOLOM 3: Evaluasi 5-->
+                    <div class="bg-white rounded shadow p-4 space-y-4 border-2 border-gray-300">
+                      <h2 class="text-lg text-center font-bold border-b pb-2 mb-2">Evaluasi</h2>
+
+                      <label for="catatan-perbaikan-4" class="text-sm font-semibold">Catatan Perbaikan :</label>
+                      <textarea
+                        id="catatan-perbaikan-4"
+                        name="catatan_perbaikan_4"
+                        rows="8"
+                        class="w-full p-2 border rounded text-sm"
+                        placeholder="Tulis catatan perbaikan..."></textarea>
+
+                      <label for="status-permohonan-4" class="text-sm font-semibold">Status Permohonan :</label>
+                      <select
+                        id="status-permohonan-4"
+                        name="status_permohonan_4"
+                        class="w-full border p-4 rounded text-sm">
+                        <option value="" disabled selected hidden>-- Status --</option>
+                        <option value="Disetujui">Disetujui</option>
+                        <option value="Ditolak">Ditolak</option>
+                      </select>
+                      <!-- Tombol Simpan 3 -->
+                      <div class="pt-2 mt-6">
+                        <button onclick="tampilkanPopup4()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
+                          Simpan Evaluasi
+                        </button>
+                      </div>
+
+                      <!-- Modal Pop-up 3 -->
+                      <div id="popupBerhasil4" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+                        <div class="bg-white p-6 rounded-lg shadow-lg text-center w-80">
+                          <h2 class="text-lg font-semibold text-green-700 mb-2">Berhasil!</h2>
+                          <p class="text-gray-700 mb-4">Evaluasi berhasil disimpan.</p>
+                          <button onclick="tutupPopup4()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded">
+                            OK
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <div class="mt-6 flex justify-between">
+                    <button onclick="goToPrevPage(1)" type="button" class="inline-block px-5 py-2 bg-green-400 text-white font-semibold rounded-lg hover:bg-green-500 transition">
+                      Kembali
                     </button>
-                </div>
+                    <button type="button" onclick="goToNextPage(1)" class="inline-block px-5 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">
+                      Selanjutnya
+                    </button>
+                  </div>
                 </div>
 
-        <!-- Halaman 2: Data Teknis -->
-        <div id="page2" class="hidden">
-          <!-- Anda bisa meletakkan isi dari HALAMAN DATA TEKNIS DI SINI sesuai yang sudah Anda sediakan -->
-          <p class="text-lg font-bold uppercase dark:text-white dark:opacity-60 mb-4">DATA TEKNIS</p>
-                  <div class="flex flex-wrap -mx-3">
-                    <div class="w-full max-w-full px-3 shrink-0 md:w-full md:flex-0">
+                <!-- Halaman 2: Data Instalasi -->
+                <div id="page2" class="hidden">
+                  <h2 class="text-center font-bold text-lg bg-gray-100 p-3 rounded-t border-b border-gray-300">DATA INSTALASI PENYEDIAAN TENAGA LISTRIK</h2>
+                  <!-- Container 1: DATA INSTALASI | LAMPIRAN | EVALUASI -->
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 border border-gray-200 rounded shadow-sm overflow-hidden p-4">
+                    <!-- KOLOM 1: DATA INSTALASI -->
+                    <div class="bg-white rounded shadow p-4 space-y-4 border-2 border-gray-300">
+                      <h2 class="text-lg font-bold text-center border-b pb-2 mb-2">Data Mesin</h2>
+                      <div class="overflow-x-auto">
+                        @php
+                        $mesinData = $pengajuan->mesin ?? [];
 
-                      <label class="block text-m font-medium text-gray-700 mb-2">
-                        Data Pembangkit Tenaga Listrik
-                      </label>
-                      <p class="w-full border px-4 py-2 rounded mb-4 bg-gray-100">
-                        Pembangkit Listrik Selain Tenaga Surya
-                      </p>
-                      <!-- FORM NON SURYA -->
-                      <div id="form-nonSurya" class="">
-                        <h3 class="font-semibold mb-2"></h3>
-                        <div class="overflow-scroll">
-                          <table id="table-nonSurya"  class="block text-m font-medium text-gray-700 mb-2">
-                            <thead>
-                              <tr id="header-nonSurya">
-                                <th>Spesifikasi</th>
-                                <th>Unit 1</th>
-                                <th>Unit 2</th>
+
+                        @endphp
+
+                        <table class="w-full table-auto border-collapse border border-gray-300 text-sm">
+                          <thead class="bg-gray-100">
+                            <tr>
+                              <th class="border px-2 py-1 text-left min-w-[160px]">Data Mesin</th>
+                              @foreach($mesinData as $i => $item)
+                              <th class="border px-2 py-1 text-center">Unit - {{ $loop->iteration }}</th>
+                              @endforeach
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td class="font-bold border px-2 py-1 text-left">Jenis Penggerak</td>
+                              @foreach($mesinData as $item)
+                              <td class="border px-2 py-1 text-left">{{ $item['jenis_penggerak'] ?? 'Tidak ada' }}</td>
+                              @endforeach
+                            </tr>
+                            <tr>
+                              <td class="font-bold border px-2 py-1 text-left">Jenis Pembangkit</td>
+                              @foreach($mesinData as $item)
+                              <td class="border px-2 py-1 text-left">{{ $item['jenis_pembangkit'] ?? 'Tidak ada' }}</td>
+                              @endforeach
+                            </tr>
+                            <tr>
+                              <td class="font-bold border px-2 py-1 text-left">Energi Primer</td>
+                              @foreach($mesinData as $item)
+                              <td class="border px-2 py-1 text-left">{{ $item['energi_primer'] ?? 'Tidak ada' }}</td>
+                              @endforeach
+                            </tr>
+                            <tr>
+                              <td class="font-bold border px-2 py-1 text-left">Merk & Tipe Mesin</td>
+                              @foreach($mesinData as $item)
+                              <td class="border px-2 py-1 text-left">{{ $item['mesin_merk_tipe'] ?? 'Tidak ada' }}</td>
+                              @endforeach
+                            </tr>
+                            <tr>
+                              <td class="font-bold border px-2 py-1 text-left">Pabrikan</td>
+                              @foreach($mesinData as $item)
+                              <td class="border px-2 py-1 text-left">{{ $item['mesin_pabrikan'] ?? 'Tidak ada' }}</td>
+                              @endforeach
+                            </tr>
+                            <tr>
+                              <td class="font-bold border px-2 py-1 text-left">Kapasitas</td>
+                              @foreach($mesinData as $item)
+                              <td class="border px-2 py-1 text-left">{{ $item['mesin_kapasitas'] ?? 'Tidak ada' }}</td>
+                              @endforeach
+                            </tr>
+                            <tr>
+                              <td class="font-bold border px-2 py-1 text-left">Putaran</td>
+                              @foreach($mesinData as $item)
+                              <td class="border px-2 py-1 text-left">{{ $item['mesin_putaran'] ?? 'Tidak ada' }}</td>
+                              @endforeach
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    <!-- KOLOM 2: LAMPIRAN -->
+                    <div class="bg-white rounded shadow p-4 space-y-4 border-2 border-gray-300">
+                      <h2 class="text-lg text-center font-bold border-b pb-2 mb-2">Lampiran</h2>
+                      <div>
+                        @if($pengajuan->lampiran_nameplate_mesin)
+                        <!-- Iframe dengan fitur zoom -->
+                        <div class="w-full h-[500px] rounded overflow-hidden border">
+                          <iframe
+                            src="{{ route('lampiran.show', basename($pengajuan->lampiran_nameplate_mesin)) }}"
+                            class="w-full h-full"
+                            allowfullscreen>
+                          </iframe>
+                        </div>
+                        <!-- Tombol Lihat di Tab Baru -->
+                        <div class="mt-2 text-right">
+                          <a href="{{ route('lampiran.show', basename($pengajuan->lampiran_nameplate_mesin)) }}"
+                            target="_blank"
+                            class="inline-block px-4 py-2 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition">
+                            Lihat di Tab Baru
+                          </a>
+                        </div>
+                        @else
+                        <p class="text-gray-500 text-center">Tidak ada lampiran</p>
+                        @endif
+                      </div>
+                    </div>
+
+                    <!-- KOLOM 3: EVALUASI 6 -->
+                    <div class="bg-white rounded shadow p-4 space-y-4 border-2 border-gray-300">
+                      <h2 class="text-lg text-center font-bold border-b pb-2 mb-2">Evaluasi</h2>
+
+                      <label for="catatan-perbaikan-6" class="text-sm font-semibold">Catatan Perbaikan :</label>
+                      <textarea
+                        id="catatan-perbaikan-6"
+                        name="catatan_perbaikan_6"
+                        rows="8"
+                        class="w-full p-2 border rounded text-sm"
+                        placeholder="Tulis catatan perbaikan..."></textarea>
+
+                      <label for="status-permohonan-6" class="text-sm font-semibold">Status Permohonan :</label>
+                      <select
+                        id="status-permohonan-6"
+                        name="status_permohonan_6"
+                        class="w-full border p-2 rounded text-sm">
+                        <option value="" disabled selected hidden>-- Status --</option>
+                        <option value="Disetujui">Disetujui</option>
+                        <option value="Ditolak">Ditolak</option>
+                      </select>
+                      <!-- Tombol Simpan 1 -->
+                      <div class="pt-2">
+                        <button onclick="tampilkanPopup6()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
+                          Simpan Evaluasi
+                        </button>
+                      </div>
+
+                      <!-- Modal Pop-up 1 -->
+                      <div id="popupBerhasil6" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+                        <div class="bg-white p-6 rounded-lg shadow-lg text-center w-80">
+                          <h2 class="text-lg font-semibold text-green-700 mb-2">Berhasil!</h2>
+                          <p class="text-gray-700 mb-4">Evaluasi berhasil disimpan.</p>
+                          <button onclick="tutupPopup6()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded">
+                            OK
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mt-6 text-left">
+
+                  </div>
+
+                  <!-- Container 2: DATA GENERATOR | LAMPIRAN | EVALUASI -->
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 border border-gray-200 rounded shadow-sm overflow-hidden p-4">
+                    <!-- KOLOM 1: DATA GENERATOR -->
+                    <div class="bg-white rounded shadow p-4 space-y-4 border-2 border-gray-300">
+                      <h2 class="text-lg font-bold text-center border-b pb-2 mb-2">Data Generator</h2>
+                      <div class="overflow-x-auto">
+                        @php
+                        $generatorData = $pengajuan->generator ?? [];
+
+
+                        @endphp
+
+                        <table class="w-full table-auto border-collapse border border-gray-300 text-sm">
+                          <thead class="bg-gray-100">
+                            <tr>
+                              <th class="border px-2 py-1 text-left min-w-[160px]"></th>
+                              @foreach($generatorData as $i => $item)
+                              <th class="border px-2 py-1 text-center">Unit - {{ $loop->iteration }}</th>
+                              @endforeach
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td class="font-bold border px-2 py-1 text-left">Merk & Tipe</td>
+                              @foreach($generatorData as $item)
+                              <td class="border px-2 py-1 text-left">{{ $item['generator_merk_tipe'] ?? 'Tidak ada' }}</td>
+                              @endforeach
+                            </tr>
+                            <tr>
+                              <td class="font-bold border px-2 py-1 text-left">Pabrikan</td>
+                              @foreach($generatorData as $item)
+                              <td class="border px-2 py-1 text-left">{{ $item['generator_pabrikan'] ?? 'Tidak ada' }}</td>
+                              @endforeach
+                            </tr>
+                            <tr>
+                              <td class="font-bold border px-2 py-1 text-left">Kapasitas</td>
+                              @foreach($generatorData as $item)
+                              <td class="border px-2 py-1 text-left">{{ $item['generator_kapasitas'] ?? 'Tidak ada' }}</td>
+                              @endforeach
+                            </tr>
+                            <tr>
+                              <td class="font-bold border px-2 py-1 text-left">Tegangan</td>
+                              @foreach($generatorData as $item)
+                              <td class="border px-2 py-1 text-left">{{ $item['generator_tegangan'] ?? 'Tidak ada' }}</td>
+                              @endforeach
+                            </tr>
+                            <tr>
+                              <td class="font-bold border px-2 py-1 text-left">Arus</td>
+                              @foreach($generatorData as $item)
+                              <td class="border px-2 py-1 text-left">{{ $item['generator_arus'] ?? 'Tidak ada' }}</td>
+                              @endforeach
+                            </tr>
+                            <tr>
+                              <td class="font-bold border px-2 py-1 text-left">Faktor Daya</td>
+                              @foreach($generatorData as $item)
+                              <td class="border px-2 py-1 text-left">{{ $item['generator_faktor_daya'] ?? 'Tidak ada' }}</td>
+                              @endforeach
+                            </tr>
+                            <tr>
+                              <td class="font-bold border px-2 py-1 text-left">Fasa</td>
+                              @foreach($generatorData as $item)
+                              <td class="border px-2 py-1 text-left">{{ $item['generator_fasa'] ?? 'Tidak ada' }}</td>
+                              @endforeach
+                            </tr>
+                            <tr>
+                              <td class="font-bold border px-2 py-1 text-left">Frekuensi</td>
+                              @foreach($generatorData as $item)
+                              <td class="border px-2 py-1 text-left">{{ $item['generator_frekuensi'] ?? 'Tidak ada' }}</td>
+                              @endforeach
+                            </tr>
+                            <tr>
+                              <td class="font-bold border px-2 py-1 text-left">Putaran</td>
+                              @foreach($generatorData as $item)
+                              <td class="border px-2 py-1 text-left">{{ $item['generator_putaran'] ?? 'Tidak ada' }}</td>
+                              @endforeach
+                            </tr>
+                            <tr>
+                              <td class="font-bold border px-2 py-1 text-left">Lokasi</td>
+                              @foreach($generatorData as $item)
+                              <td class="border px-2 py-1 text-left">{{ $item['generator_lokasi'] ?? 'Tidak ada' }}</td>
+                              @endforeach
+                            </tr>
+                            <tr>
+                              <td class="font-bold border px-2 py-1 text-left">Koordinat</td>
+                              @foreach($generatorData as $item)
+                              <td class="border px-2 py-1 text-left">
+                                {{ $item['generator_latitude'] ?? '-' }}, {{ $item['generator_longitude'] ?? 'Tidak ada' }}
+                              </td>
+                              @endforeach
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    <!-- KOLOM 2: LAMPIRAN -->
+                    <div class="bg-white rounded shadow p-4 space-y-4 border-2 border-gray-300">
+                      <h2 class="text-lg text-center font-bold border-b pb-2 mb-2">Lampiran</h2>
+                      <div>
+                        @if($pengajuan->lampiran_nameplate_generator)
+                        <!-- Iframe dengan fitur zoom -->
+                        <div class="w-full h-[500px] rounded overflow-hidden border">
+                          <iframe
+                            src="{{ route('lampiran.show', basename($pengajuan->lampiran_nameplate_generator)) }}"
+                            class="w-full h-full"
+                            allowfullscreen>
+                          </iframe>
+                        </div>
+                        <!-- Tombol Lihat di Tab Baru -->
+                        <div class="mt-2 text-right">
+                          <a href="{{ route('lampiran.show', basename($pengajuan->lampiran_nameplate_generator)) }}"
+                            target="_blank"
+                            class="inline-block px-4 py-2 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition">
+                            Lihat di Tab Baru
+                          </a>
+                        </div>
+                        @else
+                        <p class="text-gray-500 text-center">Tidak ada lampiran</p>
+                        @endif
+                      </div>
+                    </div>
+
+
+                    <!-- KOLOM 3: Evaluasi 7 -->
+                    <div class="bg-white rounded shadow p-4 space-y-4 border-2 border-gray-300">
+                      <h2 class="text-lg text-center font-bold border-b pb-2 mb-2">Evaluasi</h2>
+
+                      <label for="catatan-perbaikan-7" class="text-sm font-semibold">Catatan Perbaikan :</label>
+                      <textarea
+                        id="catatan-perbaikan-7"
+                        name="catatan_perbaikan_7"
+                        rows="8"
+                        class="w-full p-2 border rounded text-sm"
+                        placeholder="Tulis catatan perbaikan..."></textarea>
+
+                      <label for="status-permohonan-7" class="text-sm font-semibold">Status Permohonan :</label>
+                      <select
+                        id="status-permohonan-7"
+                        name="status_permohonan_7"
+                        class="w-full border p-2 rounded text-sm">
+                        <option value="" disabled selected hidden>-- Status --</option>
+                        <option value="Disetujui">Disetujui</option>
+                        <option value="Ditolak">Ditolak</option>
+                      </select>
+                      <!-- Tombol Simpan 2 -->
+                      <div class="pt-2 mt-6">
+                        <button onclick="tampilkanPopup7()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
+                          Simpan Evaluasi
+                        </button>
+                      </div>
+
+                      <!-- Modal Pop-up 2 -->
+                      <div id="popupBerhasil7" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+                        <div class="bg-white p-6 rounded-lg shadow-lg text-center w-80">
+                          <h2 class="text-lg font-semibold text-green-700 mb-2">Berhasil!</h2>
+                          <p class="text-gray-700 mb-4">Evaluasi berhasil disimpan.</p>
+                          <button onclick="tutupPopup7()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded">
+                            OK
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Container 3: SAMBUNGAN LISTRIK DARI PIHAK LAIN | LAMPIRAN | EVALUASI -->
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 border border-gray-200 rounded shadow-sm overflow-hidden p-4">
+                    <!-- KOLOM 1: SAMBUNGAN LISTRIK DARI PIHAK LAIN -->
+                    @php
+                    $jaringan = $pengajuan->distribusi['jaringan_distribusi'] ?? [];
+                    $trafo = $pengajuan->distribusi['trafo'] ?? [];
+                    @endphp
+                    {{-- Jaringan Distribusi --}}
+                    <div class="bg-white rounded shadow p-4 space-y-4 border-2 border-gray-300">
+                      <div class="bg-white rounded shadow p-4 mb-6 border-2 border-gray-300">
+                        <h2 class="text-lg font-bold text-center border-b pb-2 mb-2">Data Jaringan Distribusi</h2>
+                        <div class="overflow-x-auto">
+                          <table class="w-full table-auto border-collapse border border-gray-300 text-sm">
+                            <thead class="bg-gray-100">
+                              <tr>
+                                <th class="border px-2 py-1 text-left min-w-[160px]"></th>
+                                @foreach($jaringan as $i => $item)
+                                <th class="border px-2 py-1 text-center">{{ $loop->iteration }}</th>
+                                @endforeach
                               </tr>
                             </thead>
-
-                            <tbody id="body-nonSurya">
+                            <tbody class="text-left">
                               <tr>
-                                <td class="text-middle align-middle">Jenis Penggerak</td>
-                                <td class="text-middle align-middle">
-                                  Turbin Uap
-                                  <input type="hidden" name="jenis_1" value="nonSurya" readonly>
-                                </td>
-                                <td class="text-middle align-middle">
-                                  Mesin Diesel
-                                  <input type="hidden" name="jenis_2" value="nonSurya" readonly>
-                                </td>
+                                <td class="font-bold border px-2 py-1 text-left">Pemilik Instalasi</td>
+                                @foreach($jaringan as $item)
+                                <td class="border px-2 py-1 text-left">{{ $item['pemilik_instalasi_distribusi'] ?? 'Tidak ada' }}</td>
+                                @endforeach
                               </tr>
                               <tr>
-                                <td>Merek</td>
-                                <td class="text-center align-middle">
-                                  Elliott
-                                  <input type="hidden" name="merek_1" value="nonSurya" readonly>
-                                </td>
-                                <td class="text-center align-middle">
-                                  FG WILSON
-                                  <input type="hidden" name="merek_2" value="nonSurya" readonly>
-                                </td>
+                                <td class="font-bold border px-2 py-1 text-left">Tegangan</td>
+                                @foreach($jaringan as $item)
+                                <td class="border px-2 py-1 text-left">{{ $item['tegangan_distribusi'] ?? 'Tidak ada' }}</td>
+                                @endforeach
                               </tr>
                               <tr>
-                                <td>Tipe</td>
-                                <td class="text-center align-middle">
-                                  DYRUG III
-                                  <input type="hidden" name="tipe_1" value="nonSurya" readonly>
-                                </td>
-                                <td class="text-center align-middle">
-                                  D2840LE201
-                                  <input type="hidden" name="tipe_2" value="nonSurya" readonly>
-                                </td>
+                                <td class="font-bold border px-2 py-1 text-left">Kapasitas / Panjang</td>
+                                @foreach($jaringan as $item)
+                                <td class="border px-2 py-1 text-left">{{ $item['kapasitas_panjang_distribusi'] ?? 'Tidak ada' }}</td>
+                                @endforeach
                               </tr>
                               <tr>
-                                <td>Negara Pembuat</td>
-                                <td class="text-center align-middle">
-                                  USA
-                                  <input type="hidden" name="negara_1" value="nonSurya" readonly>
-                                </td>
-                                <td class="text-center align-middle">
-                                  GERMANY
-                                  <input type="hidden" name="negara_2" value="nonSurya" readonly>
-                                </td>
+                                <td class="font-bold border px-2 py-1 text-left">Kabupaten / Kota</td>
+                                @foreach($jaringan as $item)
+                                <td class="border px-2 py-1 text-left">{{ $item['kabupaten_kota_distribusi'] ?? 'Tidak ada' }}</td>
+                                @endforeach
                               </tr>
                               <tr>
-                                <td>Tahun Pembuatan</td>
-                                <td class="text-center align-middle">
-                                  2010
-                                  <input type="hidden" name="tahun_1" value="nonSurya" readonly>
-                                </td>
-                                <td class="text-center align-middle">
-                                  2009
-                                  <input type="hidden" name="tahun_2" value="nonSurya" readonly>
-                                </td>
+                                <td class="font-bold border px-2 py-1 text-left">Provinsi</td>
+                                @foreach($jaringan as $item)
+                                <td class="border px-2 py-1 text-left">{{ $item['provinsi_distribusi'] ?? 'Tidak ada' }}</td>
+                                @endforeach
                               </tr>
                               <tr>
-                                <td>Kapasitas (kW)</td>
-                                <td class="text-center align-middle">
-                                  1488
-                                  <input type="hidden" name="kapasitas_1" value="nonSurya" readonly>
-                                </td>
-                                <td class="text-center align-middle">
-                                  496
-                                  <input type="hidden" name="kapasitas_2" value="nonSurya" readonly>
-                                </td>
+                                <td class="font-bold border px-2 py-1 text-left">Latitude</td>
+                                @foreach($jaringan as $item)
+                                <td class="border px-2 py-1 text-left">{{ $item['latitude_distribusi'] ?? 'Tidak ada' }}</td>
+                                @endforeach
                               </tr>
                               <tr>
-                                <td>Energi Primer</td>
-                                <td class="text-center align-middle">
-                                  <input type="hidden" name="primer_1" value="nonSurya" readonly>
-                                </td>
-                                <td class="text-center align-middle">
-                                  <input type="hidden" name="primer_2" value="nonSurya" readonly>
-                                </td>
+                                <td class="font-bold border px-2 py-1 text-left">Longitude</td>
+                                @foreach($jaringan as $item)
+                                <td class="border px-2 py-1 text-left">{{ $item['longitude_distribusi'] ?? 'Tidak ada' }}</td>
+                                @endforeach
                               </tr>
                               <tr>
-                                <td>Titik Kordinat (Latitude)</td>
-                                <td class="text-center align-middle">
-                                  -1.234567
-                                  <input type="hidden" name="titikkoordinat_1" value="nonSurya" readonly>
-                                </td>
-                                <td class="text-center align-middle">
-                                  -1.234567
-                                  <input type="hidden" name="titikkoordinat_2" value="nonSurya" readonly>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>Titik Kordinat (Longitude)</td>
-                                <td class="text-center align-middle">
-                                  103.456789
-                                  <input type="hidden" name="titikkoordinat_1" value="nonSurya" readonly>
-                                </td>
-                                <td class="text-center align-middle">
-                                  103.456789
-                                  <input type="hidden" name="titikkoordinat_2" value="nonSurya" readonly>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>Sifat Penggunaan</td>
-                                <td class="text-center align-middle">
-                                  Darurat
-                                  <input type="hidden" name="sifatpenggunaan_1" value="nonSurya" readonly>
-                                </td>
-                                <td class="text-center align-middle">
-                                  Sementara
-                                  <input type="hidden" name="sifatpenggunaan_2" value="nonSurya" readonly>
-                                </td>
+                                <td class="font-bold border px-2 py-1 text-left">Tahun Operasi</td>
+                                @foreach($jaringan as $item)
+                                <td class="border px-2 py-1 text-left">{{ $item['tahun_operasi_distribusi'] ?? 'Tidak ada' }}</td>
+                                @endforeach
                               </tr>
                             </tbody>
-
                           </table>
                         </div>
                       </div>
 
-                      <!-- Bagian 2: Jaringan Distribusi -->
-                      <div class="mb-4">
-
-                        <!-- Form Tambahan Jaringan Distribusi -->
-
-                        <div id="form-jaringan" class="">
-                          <div class="mb-4">
-                            <label for="panjangSaluran" class="block text-m font-medium text-gray-700">Panjang Saluran (Kms)</label>
-                            <input type="text" id="panjangSaluran" name="panjang_saluran"
-                              class="mt-1 w-full p-2 border rounded dark:bg-slate-700 dark:text-white"
-                              placeholder="13,00"
-                              pattern="^\d+(,\d{1,2})?$"
-                              title="Gunakan angka bulat atau dengan koma maksimal dua angka desimal, misal: 220, 220,5 atau 220,50"
-                              readonly>
-                          </div>
-
-                          <div class="mb-4">
-                            <label for="tegangan" class="block text-m font-medium text-gray-700">Tegangan (Volt)</label>
-                            <input type="text" id="tegangan" name="tegangan"
-                              class="mt-1 w-full p-2 border rounded dark:bg-slate-700 dark:text-white"
-                              placeholder="220,00"
-                              pattern="^\d+(,\d{1,2})?$"
-                              title="Gunakan angka bulat atau dengan koma maksimal dua angka desimal, misal: 220, 220,5 atau 220,50"
-                              readonly>
-                          </div>
+                      {{-- Data Trafo --}}
+                      <div class="bg-white rounded shadow p-4 mb-6 border-2 border-gray-300">
+                        <h2 class="text-lg font-bold text-center border-b pb-2 mb-2">Data Trafo</h2>
+                        <div class="overflow-x-auto">
+                          <table class="w-full table-auto border-collapse border border-gray-300 text-sm">
+                            <tbody class="text-left">
+                              <tr>
+                                <td class="font-bold border px-2 py-1 w-1/3 text-left">Pemilik Trafo</td>
+                                <td class="border px-2 py-1 text-left">{{ $trafo['pemilik_trafo'] ?? 'Tidak ada' }}</td>
+                              </tr>
+                              <tr>
+                                <td class="font-bold border px-2 py-1 text-left">Tegangan Primer</td>
+                                <td class="border px-2 py-1 text-left">{{ $trafo['tegangan_primer_trafo'] ?? 'Tidak ada' }}</td>
+                              </tr>
+                              <tr>
+                                <td class="font-bold border px-2 py-1 text-left">Tegangan Sekunder</td>
+                                <td class="border px-2 py-1 text-left">{{ $trafo['tegangan_sekunder_trafo'] ?? 'Tidak ada' }}</td>
+                              </tr>
+                              <tr>
+                                <td class="font-bold border px-2 py-1 text-left">Kapasitas Daya</td>
+                                <td class="border px-2 py-1 text-left">{{ $trafo['kapasitas_daya_trafo'] ?? 'Tidak ada' }}</td>
+                              </tr>
+                              <tr>
+                                <td class="font-bold border px-2 py-1 text-left">Kabupaten / Kota</td>
+                                <td class="border px-2 py-1 text-left">{{ $trafo['kabupaten_kota_trafo'] ?? 'Tidak ada' }}</td>
+                              </tr>
+                              <tr>
+                                <td class="font-bold border px-2 py-1 text-left">Provinsi</td>
+                                <td class="border px-2 py-1 text-left">{{ $trafo['provinsi_trafo'] ?? 'Tidak ada' }}</td>
+                              </tr>
+                              <tr>
+                                <td class="font-bold border px-2 py-1 text-left">Latitude</td>
+                                <td class="border px-2 py-1 text-left">{{ $trafo['latitude_trafo'] ?? 'Tidak ada' }}</td>
+                              </tr>
+                              <tr>
+                                <td class="font-bold border px-2 py-1 text-left">Longitude</td>
+                                <td class="border px-2 py-1 text-left">{{ $trafo['longitude_trafo'] ?? 'Tidak ada' }}</td>
+                              </tr>
+                              <tr>
+                                <td class="font-bold border px-2 py-1 text-left">Tahun Operasi</td>
+                                <td class="border px-2 py-1 text-left">{{ $trafo['tahun_operasi_trafo'] ?? 'Tidak ada' }}</td>
+                              </tr>
+                            </tbody>
+                          </table>
                         </div>
-
-                        <script>
-                          function formatKomaOnly(event) {
-                            let input = event.target.value;
-
-                            // Hapus semua karakter kecuali angka dan koma
-                            input = input.replace(/[^0-9,]/g, '');
-
-                            // Izinkan hanya satu koma
-                            const parts = input.split(',');
-                            if (parts.length > 2) {
-                              input = parts[0] + ',' + parts[1]; // hapus koma tambahan
-                            }
-
-                            // Batasi 2 angka setelah koma jika ada
-                            if (parts.length === 2) {
-                              parts[1] = parts[1].substring(0, 2);
-                              input = parts[0] + ',' + parts[1];
-                            }
-
-                            event.target.value = input;
-                          }
-
-                          document.getElementById("panjangSaluran").addEventListener("input", formatKomaOnly);
-                          document.getElementById("tegangan").addEventListener("input", formatKomaOnly);
-                        </script>
-
-                        <!-- Bagian 3: Sambungan Listrik dari Pihak Lain -->
-                        <div class="mb-4">
-                          
-                          <!-- Form Tambahan Jika "Ada" -->
-                          <div id="form-sambungan" class="">
-                            <div class="mb-4">
-                              <label for="pihakLain" class="block text-m font-medium text-gray-700">Dari Pihak
-                                Lain</label>
-                              <input type="text" id="pihakLain" name="pihak_lain"
-                                class="mt-1 w-full p-2 border rounded dark:bg-slate-700 dark:text-white"
-                                placeholder="PT. PLN" readonly>
-                            </div>
-
-                            <div class="mb-4">
-                              <label for="dayaTersambung" class="block text-m font-medium text-gray-700">Daya Tersambung
-                                (kVA)</label>
-                              <input type="text" id="dayaTersambung" name="daya_tersambung"
-                                class="mt-1 w-full p-2 border rounded dark:bg-slate-700 dark:text-white"
-                                placeholder="50,00"
-                                pattern="^\d+(,\d{1,2})?$"
-                                title="Gunakan angka bulat atau dengan koma maksimal dua angka desimal, misal: 50, 50,5 atau 50,00"
-                                readonly>
-                            </div>
-                          </div>
-                        </div>
-
-                        <script>
-                          function toggleJaringanDistribusi() {
-                            const value = document.getElementById("jaringanDistribusi").value;
-                            const form = document.getElementById("form-jaringan");
-                            form.classList.toggle("hidden", value !== "ada");
-                          }
-
-                          function toggleSambunganForm() {
-                            const value = document.getElementById("sambunganListrik").value;
-                            const form = document.getElementById("form-sambungan");
-                            form.classList.toggle("hidden", value !== "ada");
-                          }
-
-                          function formatKomaOnly(event) {
-                            const input = event.target;
-                            // hanya izinkan angka dan koma
-                            let value = input.value.replace(/[^\d,]/g, '');
-
-                            // jika ada koma, potong hanya 2 digit setelahnya
-                            if (value.includes(',')) {
-                              const parts = value.split(',');
-                              const decimal = parts[1].slice(0, 2); // maksimal 2 angka di belakang koma
-                              value = parts[0] + ',' + decimal;
-                            }
-
-                            input.value = value;
-                          }
-
-                          // Daftar ID input yang butuh format angka + koma maksimal 2 angka
-                          const inputIds = ["panjangSaluran", "tegangan", "dayaTersambung"];
-                          inputIds.forEach(id => {
-                            const el = document.getElementById(id);
-                            if (el) el.addEventListener("input", formatKomaOnly);
-                          });
-                        </script>
-
-
-                        <!--Lokasi Instalasi Penyedia Tenaga Listrik-->
-
-                        <div class="flex flex-wrap -mx-3">
-                          <div class="w-full max-w-full px-3 shrink-0 md:w-full md:flex-0">
-                            <div id="alamatForm" class="mb-4">
-
-                              <div class="mb-2">
-                                <label for="addressjl" class="inline-block mb-2 ml-1 font-bold text-m text-slate-700 dark:text-white/80">Nama Jalan</label>
-                                <input type="text" name="addressjl" id="addressjl"
-                                  value="JL. Tanah Tumbuh"
-                                  class="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm block w-full rounded-lg border border-gray-300 bg-white px-3 py-2"
-                                  readonly>
-                              </div>
-                              <div class="mb-2">
-                                <label for="addressdes" class="inline-block mb-2 ml-1 font-bold text-m text-slate-700 dark:text-white/80">Desa / Kelurahan</label>
-                                <input type="text" name="addressdes" id="addressdes"
-                                  value="Sungai Gambir"
-                                  class="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm block w-full rounded-lg border border-gray-300 bg-white px-3 py-2"
-                                  readonly>
-                              </div>
-
-                              <div class="mb-2">
-                                <label for="addresskec" class="inline-block mb-2 ml-1 font-bold text-s text-slate-700 dark:text-white/80">Kecamatan</label>
-                                <input type="text" name="addresskec" id="addresskec"
-                                  value="Tanah Sepenggal"
-                                  class="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm block w-full rounded-lg border border-gray-300 bg-white px-3 py-2"
-                                  readonly>
-                              </div>
-
-                              <div class="mb-2">
-                                <label for="addresskab" class="inline-block mb-2 ml-1 font-bold text-m text-slate-700 dark:text-white/80">
-                                  Kota / Kabupaten
-                                </label>
-                                <input type="text" name="addresskab" id="addresskab"
-                                  value="Bungo"
-                                  class="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm block w-full rounded-lg border border-gray-300 bg-white px-3 py-2"
-                                  readonly>
-                              </div>
-
-                              <div class="mb-2">
-                                <label for="addressprov" class="inline-block mb-2 ml-1 font-bold text-m text-slate-700 dark:text-white/80">
-                                  Provinsi
-                                </label>
-                                <input type="text" name="addressprov" id="addressprov"
-                                  value="Jambi"
-                                  class="focus:shadow-primary-outline dark:bg-slate-850 dark:text-white text-sm block w-full rounded-lg border border-gray-300 bg-white px-3 py-2"
-                                  readonly>
-                              </div>
-                              <div class="mt-6 flex justify-between">
-                                <button onclick="prevPage()" type="button" class="inline-block px-5 py-2 bg-green-400 text-white font-semibold rounded-lg hover:bg-green-500 transition">
-                                    Kembali
-                                </button>
-                                <button type="button" onclick="nextToPage3()" class="inline-block px-5 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">
-                                    Next
-                                </button>
-                            </div>
-                            </div>
-                          </div>
-                        </div>
+                      </div>
                     </div>
-                </div>
-                </div>
-            </div>
-            </div>
-            <script>
-                function nextPage() {
-                    // Dari Halaman 1 ke Halaman 2
-                    document.getElementById("page1").classList.add("hidden");
-                    document.getElementById("page2").classList.remove("hidden");
-
-                    // Scroll ke atas halaman
-                    window.scrollTo({ top: 0, behavior: "auto" });
-                }
-
-                function prevPage() {
-                    // Dari Halaman 2 ke Halaman 1
-                    document.getElementById("page2").classList.add("hidden");
-                    document.getElementById("page1").classList.remove("hidden");
-
-                    // Scroll ke atas halaman
-                    requestAnimationFrame(() => {
-                        document.getElementById("page1").scrollIntoView({ behavior: "auto", block: "start" });
-                    });
-                }
-
-                function nextToPage3() {
-                    // Dari Halaman 2 ke Halaman 3
-                    document.getElementById("page2").classList.add("hidden");
-                    document.getElementById("page3").classList.remove("hidden");
-
-                    window.scrollTo({ top: 0, behavior: "auto" });
-                }
-
-                function backToPage2() {
-                    // Dari Halaman 3 ke Halaman 2
-                    document.getElementById("page3").classList.add("hidden");
-                    document.getElementById("page2").classList.remove("hidden");
-
-                    requestAnimationFrame(() => {
-                        document.getElementById("page2").scrollIntoView({ behavior: "auto", block: "start" });
-                    });
-                }
-            </script>
-
-                <!-- LAMPIRAN DOKUMEN -->
-                
-                <div id="page3" class="hidden px-6 py-8">
-                  <p class="text-lg font-bold uppercase dark:text-white dark:opacity-60 mb-4">LAPORAN DOKUMEN</p>
-                  <div class="overflow-x-auto">
-                    <table class="min-w-full table-auto border border-gray-300 dark:border-white">
-                      <thead class="bg-gray-100 dark:bg-gray-800">
-                        <tr>
-                          <th class="border px-4 py-2 text-center text-lg font-semibold text-gray-700 dark:text-white">Dokumen Persyaratan</th>
-                          <th class="border px-4 py-2 text-center text-lg font-semibold text-gray-700 dark:text-white">Evaluasi</th>
-                        </tr>
-                      </thead>
-                      <tbody class="text-sm text-gray-800 dark:text-white">
-
-                        <!-- Dokumen 1 -->
-                        <tr>
-                          <td class="border px-4 py-2 text-m text-left">
-                            Print Out NIB via OSS RBA (Untuk Badan Usaha)<br>
-                            <img src="../assets/img/NIB.jpg" class="max-h-32 rounded border mt-2" />
-                          </td>
-                          <td class="border px-4 py-2 text-m text-center">
-                            <button onclick="openModal('Print Out NIB')" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-full shadow">
-                                📄 Evaluasi
-                            </button>
-                          </td>
-                        </tr>
-
-                        <!-- Dokumen 2 -->
-                        <tr>
-                          <td class="border px-4 py-2 text-m text-left">
-                            KTP Penanggung Jawab<br>
-                            <img src="../assets/img/KTP.jpg" class="max-h-32 rounded border mt-2" />
-                          </td>
-                          <td class="border px-4 py-2 text-m text-center">
-                            <button onclick="openModal('KTP')" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-full shadow">
-                                📄 Evaluasi
-                            </button>
-                          </td>
-                        </tr>
-
-                        <!-- Dokumen 3 -->
-                        <tr>
-                          <td class="border px-4 py-2 text-m text-left">
-                            NPWP<br>
-                            <img src="../assets/img/NPWP.jpg" class="max-h-32 rounded border mt-2" />
-                          </td>
-                          <td class="border px-4 py-2 text-m text-center">
-                            <button onclick="openModal('NPWP')" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-full shadow">
-                                📄 Evaluasi
-                            </button>
-                          </td>
-                        </tr>
-
-                        <!-- Dokumen 4 -->
-                        <tr>
-                          <td class="border px-4 py-2 text-m text-left">
-                            Gambar Situasi / Tata Letak<br>
-                            <img src="../assets/img/situasi.png" class="max-h-32 rounded border mt-2" />
-                          </td>
-                          <td class="border px-4 py-2 text-m text-center">
-                            <button onclick="openModal('Gambar Situasi / Tata Letak')" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-full shadow">
-                                📄 Evaluasi
-                            </button>
-                          </td>
-                        </tr>
-
-                        <!-- Dokumen 5 -->
-                        <tr>
-                          <td class="border px-4 py-2 text-m text-left">
-                            Bukti Pembayaran Tagihan Listrik Bulan Terakhir<br>
-                            <img src="../assets/img/buktitagihan.png" class="max-h-32 rounded border mt-2" />
-                            
-                          </td>
-                          <td class="border px-4 py-2 text-m text-center">
-                            <button onclick="openModal('Bukti Pembayaran Tagihan Listrik Bulan Terakhir')" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-full shadow">
-                                📄 Evaluasi
-                            </button>
-                          </td>
-                        </tr>
-
-                        <!-- Dokumen 6 -->
-                        <tr>
-                          <td class="border px-4 py-2 text-m text-left">
-                            Unit 1<br>
-                            <img src="../assets/img/generator.jpg" class="max-h-32 rounded border mt-2" />
-                            <img src="../assets/img/generator.jpg" class="max-h-32 rounded border mt-2" />
-                            <img src="../assets/img/generator.jpg" class="max-h-32 rounded border mt-2" />
-                          </td>
-                          <td class="border px-4 py-2 text-m text-center">
-                            <button onclick="openModal('Foto Papan Nama (Name Plate) Generator')" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-full shadow">
-                                📄 Evaluasi
-                            </button>
-                          </td>
-                        </tr>
-
-                        <!-- Dokumen 7 -->
-                        <tr>
-                          <td class="border px-4 py-2 text-m text-left">
-                            Unit 2<br>
-                            <img src="../assets/img/mesin.jpg" class="max-h-32 rounded border mt-2" />
-                          </td>
-                          <td class="border px-4 py-2 text-m text-center">
-                            <button onclick="openModal('Foto Papan Nama (Name Plate) Mesin Penggerak')" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-full shadow">
-                                📄 Evaluasi
-                            </button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-
-                  <!-- Modal Pop-up Evaluasi -->
-                  <div id="modal-evaluasi" 
-                      class="fixed inset-0 bg-black bg-opacity-50 hidden z-[1000] flex items-center justify-center">
-                    
-                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md z-[1001]">
-                      <h2 class="text-lg font-bold mb-4 text-gray-800 dark:text-white">Evaluasi Dokumen</h2>
-                      <p id="nama-dokumen" class="mb-2 text-sm text-gray-700 dark:text-gray-200"></p>
-
-                      <label class="block text-m text-gray-600 dark:text-gray-300 mb-1">Catatan Perbaikan:</label>
-                      <textarea id="catatan-evaluasi"
-                        class="w-full border rounded p-2 mb-4 dark:bg-gray-700 dark:text-white"></textarea>
 
 
-                      <label for="status-evaluasi" class="block text-m text-gray-700 mb-2">Status Evaluasi:</label>
-                        <select id="status-evaluasi"
-                          class="w-full px-4 py-2 my-2 border rounded-lg dark:bg-slate-700 dark:text-white"
-                          onchange="toggleStatusEvaluasi()" data-required>
-                          <option value="" disabled selected hidden>- Pilih -</option>
-                          <option value="ada">Setuju</option>
-                          <option value="tidak">Perlu Perbaikan</option>
-                        </select>
+                    <!-- KOLOM 2: LAMPIRAN -->
+                    <div class="bg-white rounded shadow p-4 space-y-4 border-2 border-gray-300">
+                      <h2 class="text-lg text-center font-bold border-b pb-2 mb-2">Lampiran</h2>
+                      <div>
+                        @if($pengajuan->lampiran_tagihan_listrik)
+                        <!-- Iframe dengan fitur zoom -->
+                        <div class="w-full h-[500px] rounded overflow-hidden border">
+                          <iframe
+                            src="{{ route('lampiran.show', basename($pengajuan->lampiran_tagihan_listrik)) }}"
+                            class="w-full h-full"
+                            allowfullscreen>
+                          </iframe>
+                        </div>
+                        <!-- Tombol Lihat di Tab Baru -->
+                        <div class="mt-2 text-right">
+                          <a href="{{ route('lampiran.show', basename($pengajuan->lampiran_tagihan_listrik)) }}"
+                            target="_blank"
+                            class="inline-block px-4 py-2 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition">
+                            Lihat di Tab Baru
+                          </a>
+                        </div>
+                        @else
+                        <p class="text-gray-500 text-center">Tidak ada lampiran</p>
+                        @endif
+                      </div>
+                    </div>
 
-                      <div class="flex justify-end gap-2">
-                        <button onclick="closeModal()" class="px-6 py-2 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition">
-                          Batal
+                    <!-- KOLOM 3: Evaluasi 8 -->
+                    <div class="bg-white rounded shadow p-4 space-y-4 border-2 border-gray-300">
+                      <h2 class="text-lg text-center font-bold border-b pb-2 mb-2">Evaluasi</h2>
+
+                      <label for="catatan-perbaikan-8" class="text-sm font-semibold">Catatan Perbaikan :</label>
+                      <textarea
+                        id="catatan-perbaikan-8"
+                        name="catatan_perbaikan_8"
+                        rows="8"
+                        class="w-full p-2 border rounded text-sm"
+                        placeholder="Tulis catatan perbaikan..."></textarea>
+
+                      <label for="status-permohonan-8" class="text-sm font-semibold">Status Permohonan :</label>
+                      <select
+                        id="status-permohonan-8"
+                        name="status_permohonan_8"
+                        class="w-full border p-2 rounded text-sm">
+                        <option value="" disabled selected hidden>-- Status --</option>
+                        <option value="Disetujui">Disetujui</option>
+                        <option value="Ditolak">Ditolak</option>
+                      </select>
+                      <!-- Tombol Simpan 3 -->
+                      <div class="pt-2 mt-6">
+                        <button onclick="tampilkanPopup8()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
+                          Simpan Evaluasi
                         </button>
-                        <button onclick="simpanEvaluasi()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded">
-                          Simpan
-                        </button>
+                      </div>
+
+                      <!-- Modal Pop-up 3 -->
+                      <div id="popupBerhasil8" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+                        <div class="bg-white p-6 rounded-lg shadow-lg text-center w-80">
+                          <h2 class="text-lg font-semibold text-green-700 mb-2">Berhasil!</h2>
+                          <p class="text-gray-700 mb-4">Evaluasi berhasil disimpan.</p>
+                          <button onclick="tutupPopup8()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded">
+                            OK
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
 
 
-        <!-- Tombol Navigasi -->
-        <div class="w-full flex justify-between mt-6">
-          <button onclick="backToPage2()" type="button" class="px-5 py-2 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition">
-            Kembali
-          </button>
-          <a href="/daftarpengajuanevaluator"
-            class="px-5 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition">
-            Kirim Hasil Evaluasi
-          </a>
+                  <div class="mt-6 flex justify-between">
+                    <button onclick="goToPrevPage(2)" type="button" class="inline-block px-5 py-2 bg-green-400 text-white font-semibold rounded-lg hover:bg-green-500 transition">
+                      Kembali
+                    </button>
+                    <button type="button" onclick="goToNextPage(2)" class="inline-block px-5  py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">
+                      Selanjutnya
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- HALAMAN 3 : KAPASITAS PRODUKSI TENAGA LISTRIK -->
+            <div id="page3" class="hidden">
+              <h2 class="text-center font-bold text-lg bg-gray-100 p-3 rounded-t border-b border-gray-300">Kapasitas Produksi Tenaga Listrik</h2>
+
+              <!-- Container 4: KAPASITAS PRODUKSI TENAGA LISTRIK | EVALUASI -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border border-gray-200 rounded shadow-sm overflow-hidden p-4">
+                <!-- KOLOM 1: KAPASITAS PRODUKSI TENAGA LISTRIK -->
+                @php
+                $pemakaian = $pengajuan->pemakaian_sendiri ?? [];
+                @endphp
+
+                <div class="space-y-8">
+                  @foreach($pemakaian as $jenis => $dataBulan)
+                  <div class="bg-white rounded shadow p-4 border-2 border-gray-300">
+                    <h2 class="text-lg font-bold text-center border-b pb-2 mb-4">
+                      Data Pemakaian Sendiri - {{ $jenis }}
+                    </h2>
+                    <div class="overflow-x-auto">
+                      <table class="w-full table-auto border-collapse border border-gray-300 text-sm">
+                        <thead class="bg-gray-100 text-center">
+                          <tr>
+                            <th class="border px-3 py-2">Bulan</th>
+                            <th class="border px-3 py-2">Kapasitas (kVA)</th>
+                            <th class="border px-3 py-2">Faktor (Cos)</th>
+                            <th class="border px-3 py-2">Jam Nyala (Jam)</th>
+                            <th class="border px-3 py-2">Daya Terpakai (kWh)</th>
+                          </tr>
+                        </thead>
+                        <tbody class="text-left">
+                          @foreach($dataBulan as $bulan => $row)
+                          <tr>
+                            <td class="border px-3 py-1">{{ $bulan }}</td>
+                            <td class="border px-3 py-1">{{ $row['kapasitas'] ?? 'Tidak ada' }}</td>
+                            <td class="border px-3 py-1">{{ $row['faktor_daya'] ?? 'Tidak ada' }}</td>
+                            <td class="border px-3 py-1">{{ $row['jam_nyala'] ?? 'Tidak ada' }}</td>
+                            <td class="border px-3 py-1">{{ $row['daya_terpakai'] ?? 'Tidak ada' }}</td>
+                          </tr>
+                          @endforeach
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  @endforeach
+                </div>
+
+                <!-- KOLOM 2: Evaluasi 9 -->
+                <div class="bg-white rounded shadow p-4 space-y-4 border-2 border-gray-300">
+                  <h2 class="text-lg text-center font-bold border-b pb-2 mb-2">Evaluasi</h2>
+
+                  <label for="catatan-perbaikan-9" class="text-sm font-semibold">Catatan Perbaikan :</label>
+                  <textarea
+                    id="catatan-perbaikan-9"
+                    name="catatan_perbaikan_9"
+                    rows="8"
+                    class="w-full p-2 border rounded text-sm"
+                    placeholder="Tulis catatan perbaikan..."></textarea>
+
+                  <label for="status-permohonan-9" class="text-sm font-semibold">Status Permohonan :</label>
+                  <select
+                    id="status-permohonan-9"
+                    name="status_permohonan_9"
+                    class="w-full border p-2 rounded text-sm">
+                    <option value="" disabled selected hidden>-- Status --</option>
+                    <option value="Disetujui">Disetujui</option>
+                    <option value="Ditolak">Ditolak</option>
+                  </select>
+                  <!-- Tombol Simpan 4 -->
+                  <div class="pt-2 mt-6">
+                    <button onclick="tampilkanPopup9()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
+                      Simpan Evaluasi
+                    </button>
+                  </div>
+
+                  <!-- Modal Pop-up 4 -->
+                  <div id="popupBerhasil9" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+                    <div class="bg-white p-6 rounded-lg shadow-lg text-center w-80">
+                      <h2 class="text-lg font-semibold text-green-700 mb-2">Berhasil!</h2>
+                      <p class="text-gray-700 mb-4">Evaluasi berhasil disimpan.</p>
+                      <button onclick="tutupPopup9()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded">
+                        OK
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+
+
+                <!--Penjualan kelebihan tenaga listrik/Excess Power. -->
+                <div class="grid grid-cols-1 gap-4 border-gray-200 rounded shadow-sm">
+                  <!-- KOLOM 1: Penjualan kelebihan tenaga listrik -->
+                  @php
+                  $penjualan = $pengajuan->penjualan_listrik ?? null;
+                  $bulanList = [
+                  'Januari','Februari','Maret','April','Mei','Juni',
+                  'Juli','Agustus','September','Oktober','November','Desember'
+                  ];
+                  @endphp
+
+                  @if($penjualan && $penjualan['status'] === 'yes')
+                  <div class="bg-white rounded shadow p-4 border-2 border-gray-300 mt-6">
+                    <h2 class="text-lg font-bold text-center border-b pb-2 mb-4">
+                      Data Penjualan Listrik (Excess Power)
+                    </h2>
+                    <div class="overflow-x-auto">
+                      <table class="w-full table-auto border-collapse border border-gray-300 text-sm">
+                        <thead class="bg-gray-100 text-center">
+                          <tr>
+                            <th class="border px-3 py-2">Bulan</th>
+                            <th class="border px-3 py-2">DMN / NDC (MW)</th>
+                            <th class="border px-3 py-2">Beban Tertinggi (MW)</th>
+                            <th class="border px-3 py-2">Capacity Factor (CF)</th>
+                            <th class="border px-3 py-2">AFPM (%)</th>
+                            <th class="border px-3 py-2">AFA (%)</th>
+                            <th class="border px-3 py-2">Pembelian (kWh)</th>
+                            <th class="border px-3 py-2">Produksi Bruto (kWh)</th>
+                            <th class="border px-3 py-2">Pemakaian Sendiri (kWh)</th>
+                            <th class="border px-3 py-2">Produksi Netto (kWh)</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          @foreach($penjualan['excess_power'] as $i => $row)
+                          <tr>
+                            <td class="border px-3 py-1 text-center">{{ $bulanList[$i] ?? 'Tidak ada' }}</td>
+                            <td class="border px-3 py-1">{{ $row['dmn_ndc'] ?? 'Tidak ada' }}</td>
+                            <td class="border px-3 py-1">{{ $row['beban_tertinggi'] ?? 'Tidak ada' }}</td>
+                            <td class="border px-3 py-1">{{ $row['capacity_factor'] ?? 'Tidak ada' }}</td>
+                            <td class="border px-3 py-1">{{ $row['afpm'] ?? 'Tidak ada' }}</td>
+                            <td class="border px-3 py-1">{{ $row['afa'] ?? 'Tidak ada' }}</td>
+                            <td class="border px-3 py-1">{{ $row['pembelian'] ?? 'Tidak ada' }}</td>
+                            <td class="border px-3 py-1">{{ $row['produksi_bruto'] ?? 'Tidak ada' }}</td>
+                            <td class="border px-3 py-1">{{ $row['pemakaian_sendiri'] ?? 'Tidak ada' }}</td>
+                            <td class="border px-3 py-1">{{ $row['produksi_netto'] ?? 'Tidak ada' }}</td>
+                          </tr>
+                          @endforeach
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  @endif
+
+
+                </div>
+
+                <!-- KOLOM 2: Evaluasi (copy) -->
+                <div class="bg-white rounded shadow p-4 space-y-4 border-2 border-gray-300">
+                  <h2 class="text-lg text-center font-bold border-b pb-2 mb-2">Evaluasi</h2>
+                  <label class="text-sm font-semibold">Catatan Perbaikan :</label>
+                  <textarea rows="8" class="w-full p-2 border rounded text-sm" placeholder="Tulis catatan perbaikan..."></textarea>
+                  <label class="text-sm font-semibold">Status Permohonan :</label>
+                  <select class="w-full border p-2 rounded text-sm">
+                    <option value="" disabled selected hidden>-- Status --</option>
+                    <option>Disetujui</option>
+                    <option>Ditolak</option>
+                  </select>
+                  <!-- Tombol Simpan 6 -->
+                  <div class="pt-2 mt-6">
+                    <button onclick="tampilkanPopup11()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
+                      Simpan Evaluasi
+                    </button>
+                  </div>
+
+                  <!-- Modal Pop-up 6 -->
+                  <div id="popupBerhasil11" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+                    <div class="bg-white p-6 rounded-lg shadow-lg text-center w-80">
+                      <h2 class="text-lg font-semibold text-green-700 mb-2">Berhasil!</h2>
+                      <p class="text-gray-700 mb-4">Evaluasi berhasil disimpan.</p>
+                      <button onclick="tutupPopup11()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded">
+                        OK
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tombol Navigasi (Tengah secara vertikal dan tidak terlalu turun) -->
+              <div class="w-full flex justify-between items-center py-4">
+                <!-- Tombol Kembali di Kiri -->
+                <button
+                  onclick="goToPrevPage(3)"
+                  type="button"
+                  class="px-5 py-2  bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition">
+                  Kembali
+                </button>
+
+                <!-- Tombol Kirim Hasil Evaluasi di Kanan -->
+                <button
+                  type="button"
+                  onclick="showPopup()"
+                  class="px-5 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">
+                  Kirim Hasil Evaluasi
+                </button>
+              </div>
+            </div>
+            <!-- Card Pop-up Konfirmasi -->
+            <div id="popupCard" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+              <div class="bg-white rounded-2xl shadow-xl p-6 w-full max-w-md text-center">
+                <h2 class="text-lg font-bold text-gray-800 mb-3">Konfirmasi Pengiriman</h2>
+                <p class="text-sm text-gray-600 mb-6">Apakah Anda yakin ingin mengirim hasil evaluasi ini?</p>
+                <div class="flex justify-center gap-4">
+                  <button onclick="submitEvaluasi()" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">
+                    Iya
+                  </button>
+                  <button onclick="closePopup()" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition">
+                    Tidak
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Script JavaScript -->
+          <script>
+            function showPopup() {
+              document.getElementById('popupCard').classList.remove('hidden');
+            }
+
+            function closePopup() {
+              document.getElementById('popupCard').classList.add('hidden');
+            }
+
+            function submitEvaluasi() {
+              closePopup(); // tutup pop-up dulu
+            }
+          </script>
         </div>
-      </div>
-      <script>
-        function showPage(hideId, showId) {
-          const hidePage = document.getElementById(hideId);
-          const showPage = document.getElementById(showId);
 
-          if (!hidePage) {
-            console.error("Element not found to hide:", hideId);
-            return;
-          }
-          if (!showPage) {
-            console.error("Element not found to show:", showId);
-            return;
+        <script>
+          function tampilkanPopup1() {
+            document.getElementById('popupBerhasil1').classList.remove('hidden');
           }
 
-          hidePage.classList.add("hidden");
-          showPage.classList.remove("hidden");
+          function tutupPopup1() {
+            document.getElementById('popupBerhasil1').classList.add('hidden');
+          }
 
-          // Scroll ke atas halaman baru
-          requestAnimationFrame(() => {
-            showPage.scrollIntoView({ behavior: "auto", block: "start" });
-          });
+          function tampilkanPopup2() {
+            document.getElementById('popupBerhasil2').classList.remove('hidden');
+          }
+
+          function tutupPopup2() {
+            document.getElementById('popupBerhasil2').classList.add('hidden');
+          }
+
+          function tampilkanPopup3() {
+            document.getElementById('popupBerhasil3').classList.remove('hidden');
+          }
+
+          function tutupPopup3() {
+            document.getElementById('popupBerhasil3').classList.add('hidden');
+          }
+
+          function tampilkanPopup4() {
+            document.getElementById('popupBerhasil4').classList.remove('hidden');
+          }
+
+          function tutupPopup4() {
+            document.getElementById('popupBerhasil4').classList.add('hidden');
+          }
+
+          function tampilkanPopup5() {
+            document.getElementById('popupBerhasil5').classList.remove('hidden');
+          }
+
+          function tutupPopup5() {
+            document.getElementById('popupBerhasil5').classList.add('hidden');
+          }
+
+          function tampilkanPopup6() {
+            document.getElementById('popupBerhasil6').classList.remove('hidden');
+          }
+
+          function tutupPopup6() {
+            document.getElementById('popupBerhasil6').classList.add('hidden');
+          }
+
+          function tampilkanPopup7() {
+            document.getElementById('popupBerhasil7').classList.remove('hidden');
+          }
+
+          function tutupPopup7() {
+            document.getElementById('popupBerhasil7').classList.add('hidden');
+          }
+
+          function tampilkanPopup8() {
+            document.getElementById('popupBerhasil8').classList.remove('hidden');
+          }
+
+          function tutupPopup8() {
+            document.getElementById('popupBerhasil8').classList.add('hidden');
+          }
+
+          function tampilkanPopup9() {
+            document.getElementById('popupBerhasil9').classList.remove('hidden');
+          }
+
+          function tutupPopup9() {
+            document.getElementById('popupBerhasil9').classList.add('hidden');
+          }
+
+          function tampilkanPopup10() {
+            document.getElementById('popupBerhasil10').classList.remove('hidden');
+          }
+
+          function tutupPopup10() {
+            document.getElementById('popupBerhasil10').classList.add('hidden');
+          }
+
+          function tampilkanPopup11() {
+            document.getElementById('popupBerhasil11').classList.remove('hidden');
+          }
+
+          function tutupPopup11() {
+            document.getElementById('popupBerhasil11').classList.add('hidden');
+          }
+        </script>
+
+        <script>
+          // Menyembunyikan semua halaman, menampilkan satu berdasarkan id
+          function showOnlyPage(pageNumber) {
+            const totalPages = 4; // Ubah sesuai jumlah page (0–3)
+            for (let i = 0; i < totalPages; i++) {
+              const page = document.getElementById("page" + i);
+              if (page) {
+                page.classList.add("hidden");
+              }
+            }
+
+            const targetPage = document.getElementById("page" + pageNumber);
+            if (targetPage) {
+              targetPage.classList.remove("hidden");
+              requestAnimationFrame(() => {
+                targetPage.scrollIntoView({
+                  behavior: "auto",
+                  block: "start"
+                });
+              });
+            } else {
+              console.error("Halaman tidak ditemukan: page" + pageNumber);
+            }
+          }
+
+          // Fungsi untuk tombol "Selanjutnya"
+          function goToNextPage(current) {
+            const next = current + 1;
+            showOnlyPage(next);
+          }
+
+          // Fungsi untuk tombol "Kembali"
+          function goToPrevPage(current) {
+            const prev = current - 1;
+            showOnlyPage(prev);
+          }
+        </script>
+
+        <script>
+          function openModal(docName) {
+            document.getElementById('modal-evaluasi').classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+            document.getElementById('nama-dokumen').textContent = `Dokumen: ${docName}`;
+            document.getElementById('catatan-evaluasi').value = '';
+            document.getElementById('status-evaluasi').value = 'Setuju';
+          }
+
+          function closeModal() {
+            document.getElementById('modal-evaluasi').classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+          }
+
+          function simpanEvaluasi() {
+            const doc = document.getElementById('nama-dokumen').textContent;
+            const catatan = document.getElementById('catatan-evaluasi').value;
+            const status = document.getElementById('status-evaluasi').value;
+            console.log(`Evaluasi disimpan untuk ${doc}: ${status}, Catatan: ${catatan}`);
+            closeModal();
+          }
+        </script>
+
+  </main>
+  <!-- -right-90 in loc de 0-->
+  <div fixed-plugin-card
+    class="z-sticky backdrop-blur-2xl backdrop-saturate-200 dark:bg-slate-850/80 shadow-3xl w-90 ease -right-90 fixed top-0 left-auto flex h-full min-w-0 flex-col break-words rounded-none border-0 bg-white/80 bg-clip-border px-2.5 duration-200">
+  </div>
+  </div>
+  </div>
+  <script>
+    function validateForm() {
+      const form = document.getElementById("suratpengajuan");
+      const requiredFields = form.querySelectorAll("input[required], select[required], textarea[required]");
+      let isValid = true;
+
+      requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+          isValid = false;
+
+          // Tambahkan efek visual kolom kosong
+          field.classList.add("border-red-500");
+          field.classList.add("ring");
+          field.classList.add("ring-red-300");
+        } else {
+          field.classList.remove("border-red-500");
+          field.classList.remove("ring");
+          field.classList.remove("ring-red-300");
         }
+      });
 
-        function nextPage() {
-          showPage("page1", "page2");
-        }
+      if (!isValid) {
+        alert("⚠️ Formulir belum lengkap. Silakan isi semua kolom yang wajib diisi.");
+        return false;
+      }
 
-        function prevPage() {
-          showPage("page2", "page1");
-        }
+      const confirmSubmit = confirm("✅ Semua data sudah lengkap. Apakah Anda yakin ingin mengirim formulir?");
+      return confirmSubmit;
+    }
+  </script>
 
-        function nextToPage3() {
-          showPage("page2", "page3");
-        }
-
-        function backToPage2() {
-          showPage("page3", "page2");
-        }
-      </script>
-
-      <script>
-        function openModal(docName) {
-          document.getElementById('modal-evaluasi').classList.remove('hidden');
-          document.body.classList.add('overflow-hidden');
-          document.getElementById('nama-dokumen').textContent = `Dokumen: ${docName}`;
-          document.getElementById('catatan-evaluasi').value = '';
-          document.getElementById('status-evaluasi').value = 'Setuju';
-        }
-
-        function closeModal() {
-          document.getElementById('modal-evaluasi').classList.add('hidden');
-          document.body.classList.remove('overflow-hidden');
-        }
-
-
-        function simpanEvaluasi() {
-          const doc = document.getElementById('nama-dokumen').textContent;
-          const catatan = document.getElementById('catatan-evaluasi').value;
-          const status = document.getElementById('status-evaluasi').value;
-          console.log(`Evaluasi disimpan untuk ${doc}: ${status}, Catatan: ${catatan}`);
-          closeModal();
-        }
-      </script>
 
 </body>
 <!-- plugin for charts  -->

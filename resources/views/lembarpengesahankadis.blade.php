@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/png" href=" {{ asset('assets/img/logo-esdm.svg') }} " />
-  <title>Surat Keterangan</title>
+  <title>Lembar Pengesahan</title>
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
   <!-- Font Awesome Icons -->
@@ -22,7 +22,7 @@
 
 <body class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">
   <div class="absolute w-full bg-orange-400 dark:hidden min-h-75" ></div>
-  @include('components.sidebarvalidator')
+ @include('components.sidebarkadisberkala')
 
   <main class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl">
     <!-- Navbar -->
@@ -34,9 +34,9 @@
             <li class="text-sm leading-normal">
               <a class="text-white opacity-50" href="javascript:;">Halaman</a>
             </li>
-            <li class="text-sm pl-2 capitalize leading-normal text-white before:float-left before:pr-2 before:text-white before:content-['/']" aria-current="page">Surat Keterangan</li>
+            <li class="text-sm pl-2 capitalize leading-normal text-white before:float-left before:pr-2 before:text-white before:content-['/']" aria-current="page">Lembar Pengesahan</li>
           </ol>
-          <h6 class="mb-0 font-bold text-white capitalize">Surat Keterangan</h6>
+          <h6 class="mb-0 font-bold text-white capitalize">Lembar Pengesahan</h6>
         </nav>
 
         <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
@@ -151,28 +151,32 @@
         <div class="flex-none w-full max-w-full px-3">
           <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
             <div class="p-4 pb-0 mb-0 border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
-              <h6 class="leading-normal text-lg font-bold mb-4 text-gray-700 dark:text-white uppercase">Surat Keterangan</h6>
+              <h6 class="leading-normal text-lg font-bold mb-4 text-gray-700 dark:text-white uppercase">Lembar Pengesahan</h6>
             </div>
             <div class="flex-auto px-0 pt-0 pb-2">
 
               <!-- Tambahkan overflow-x-auto dan responsive wrapper -->
-              <div class="overflow-x-auto w-full">
-                <table class="min-w-full text-left border-collapse text-slate-500 dark:border-white/40">
-                  <thead>
-                    <tr>
-                      <th class="px-4 py-3  text-m text-slate-900 font-semibold whitespace-nowrap dark:text-white uppercase">No Laporan</th>
-                      <th class="px-4 py-3  text-m text-slate-900 font-semibold text-center whitespace-nowrap dark:text-white uppercase">Nama Badan Usaha</th>
-                      <th class="px-4 py-3  text-m text-slate-900 font-semibold text-center whitespace-nowrap dark:text-white uppercase">Tanggal disetujui</th>
-                      <th class="px-4 py-3  text-m text-slate-900 font-semibold text-center whitespace-nowrap dark:text-white uppercase">Aksi</th>
-                    </tr>
-                  </thead>
+              <div class="flex-auto pt-0 pb-2 overflow-x-auto">
+              <table class="min-w-full text-sm text-left text-slate-500 dark:text-slate-200">
+              <thead class="text-base uppercase text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-600">
+                  <tr>
+                    <th class="px-4 py-3  text-sm text-slate-900 font-bold whitespace-nowrap dark:text-white uppercase">No</th>
+                    <th class="px-4 py-3  text-center text-sm text-slate-900 font-bold whitespace-nowrap dark:text-white uppercase">Badan Usaha</th>
+                    <th class="px-4 py-3  text-center text-sm text-slate-900 font-bold whitespace-nowrap dark:text-white uppercase">Tanggal Disetujui</th>
+                    <th class="px-4 py-3  text-center text-sm text-slate-900 font-bold whitespace-nowrap dark:text-white uppercase">Aksi</th>
+                  </tr>
+                </thead>
                   <tbody>
                     <!-- Row 1 -->
-                    <tr>
-                      <td class="px-6 py-3 text-sm dark:text-white border-b dark:border-white/40">0001</td>
-                      <td class="px-6 py-3 text-sm text-center dark:text-white border-b dark:border-white/40">Perusahaan Persero</td>
-                      <td class="px-6 py-3 text-sm text-center dark:text-white border-b dark:border-white/40">23/04/18</td>
-                      <td class="px-6 py-3 text-sm text-center dark:text-white border-b dark:border-white/40">
+                    <tr class="border-b dark:border-slate-700">
+                    <td class="px-4 py-3">
+                      <div class="flex flex-col">
+                        <span class="font-medium text-xs text-slate-900 dark:text-white">0001</span>
+                      </div>
+                    </td>                      
+                    <td class="px-6 py-3 text-xs text-center dark:text-white border-b dark:border-white/40">Perusahaan Persero</td>
+                    <td class="px-6 py-3 text-xs text-center dark:text-white border-b dark:border-white/40">23/04/18</td>
+                    <td class="px-6 py-3 text-xs text-center dark:text-white border-b dark:border-white/40">
                         <div class="inline-flex space-x-2">
                           <a href="javascript:;" class="inline-flex items-center justify-center w-20 h-8 text-sm font-semibold text-white rounded bg-green-600 hover:bg-green-700 transition-all">
                             Lihat
@@ -185,11 +189,15 @@
                     </tr>
 
                     <!-- Row 2 -->
-                    <tr>
-                      <td class="px-6 py-3 text-sm dark:text-white border-b dark:border-white/40">0002</td>
-                      <td class="px-6 py-3 text-sm text-center dark:text-white border-b dark:border-white/40">Perusahaan Persero</td>
-                      <td class="px-6 py-3 text-sm text-center dark:text-white border-b dark:border-white/40">11/01/19</td>
-                      <td class="px-6 py-3 text-sm text-center dark:text-white border-b dark:border-white/40">
+                    <tr class="border-b dark:border-slate-700">                    
+                    <td class="px-4 py-3">
+                      <div class="flex flex-col">
+                        <span class="font-medium text-xs text-slate-900 dark:text-white">0002</span>
+                      </div>
+                    </td>
+                    <td class="px-6 py-3 text-xs text-center dark:text-white border-b dark:border-white/40">Perusahaan Persero</td>
+                    <td class="px-6 py-3 text-xs text-center dark:text-white border-b dark:border-white/40">11/01/19</td>
+                    <td class="px-6 py-3 text-xs text-center dark:text-white border-b dark:border-white/40">
                         <div class="inline-flex space-x-2">
                           <a href="javascript:;" class="inline-flex items-center justify-center w-20 h-8 text-sm font-semibold text-white rounded bg-green-600 hover:bg-green-700 transition-all">
                             Lihat
@@ -198,16 +206,20 @@
                             Unduh
                           </a>
                         </div>
-                      </td>
+                    </td>
 
                     </tr>
 
                     <!-- Row 3 -->
-                    <tr>
-                      <td class="px-6 py-3 text-sm dark:text-white border-b dark:border-white/40">0003</td>
-                      <td class="px-6 py-3 text-sm text-center dark:text-white border-b dark:border-white/40">Perusahaan Persero</td>
-                      <td class="px-6 py-3 text-sm text-center dark:text-white border-b dark:border-white/40">19/09/17</td>
-                      <td class="px-6 py-3 text-sm text-center dark:text-white border-b dark:border-white/40">
+                    <tr class="border-b dark:border-slate-700">                    
+                    <td class="px-4 py-3">
+                      <div class="flex flex-col">
+                        <span class="font-medium text-xs text-slate-900 dark:text-white">0003</span>
+                      </div>
+                    </td>                      
+                    <td class="px-6 py-3 text-xs text-center dark:text-white border-b dark:border-white/40">Perusahaan Persero</td>
+                    <td class="px-6 py-3 text-xs text-center dark:text-white border-b dark:border-white/40">19/09/17</td>
+                    <td class="px-6 py-3 text-xs text-center dark:text-white border-b dark:border-white/40">
                         <div class="inline-flex space-x-2">
                           <a href="javascript:;" class="inline-flex items-center justify-center w-20 h-8 text-sm font-semibold text-white rounded bg-green-600 hover:bg-green-700 transition-all">
                             Lihat
@@ -216,15 +228,19 @@
                             Unduh
                           </a>
                         </div>
-                      </td>
+                    </td>
                     </tr>
 
                     <!-- Row 3 -->
-                    <tr>
-                      <td class="px-6 py-3 text-sm dark:text-white border-b dark:border-white/40">0003</td>
-                      <td class="px-6 py-3 text-sm text-center dark:text-white border-b dark:border-white/40">Perusahaan Persero</td>
-                      <td class="px-6 py-3 text-sm text-center dark:text-white border-b dark:border-white/40">19/09/17</td>
-                      <td class="px-6 py-3 text-sm text-center dark:text-white border-b dark:border-white/40">
+                    <tr class="border-b dark:border-slate-700">                    
+                    <td class="px-4 py-3">
+                      <div class="flex flex-col">
+                        <span class="font-medium text-xs text-slate-900 dark:text-white">0004</span>
+                      </div>
+                    </td>                      
+                    <td class="px-6 py-3 text-xs text-center dark:text-white border-b dark:border-white/40">Perusahaan Persero</td>
+                    <td class="px-6 py-3 text-xs text-center dark:text-white border-b dark:border-white/40">19/09/17</td>
+                    <td class="px-6 py-3 text-xs text-center dark:text-white border-b dark:border-white/40">
                         <div class="inline-flex space-x-2">
                           <a href="javascript:;" class="inline-flex items-center justify-center w-20 h-8 text-sm font-semibold text-white rounded bg-green-600 hover:bg-green-700 transition-all">
                             Lihat
@@ -233,15 +249,19 @@
                             Unduh
                           </a>
                         </div>
-                      </td>
+                    </td>
                     </tr>
 
                     <!-- Row 3 -->
-                    <tr>
-                      <td class="px-6 py-3 text-sm dark:text-white border-b dark:border-white/40">0003</td>
-                      <td class="px-6 py-3 text-sm text-center dark:text-white border-b dark:border-white/40">Perusahaan Persero</td>
-                      <td class="px-6 py-3 text-sm text-center dark:text-white border-b dark:border-white/40">19/09/17</td>
-                      <td class="px-6 py-3 text-sm text-center dark:text-white border-b dark:border-white/40">
+                    <tr class="border-b dark:border-slate-700">                    
+                    <td class="px-4 py-3">
+                      <div class="flex flex-col">
+                        <span class="font-medium text-xs text-slate-900 dark:text-white">0005</span>
+                      </div>
+                    </td>
+                    <td class="px-6 py-3 text-xs text-center dark:text-white border-b dark:border-white/40">Perusahaan Persero</td>
+                    <td class="px-6 py-3 text-xs text-center dark:text-white border-b dark:border-white/40">19/09/17</td>
+                    <td class="px-6 py-3 text-xs text-center dark:text-white border-b dark:border-white/40">
                         <div class="inline-flex space-x-2">
                           <a href="javascript:;" class="inline-flex items-center justify-center w-20 h-8 text-sm font-semibold text-white rounded bg-green-600 hover:bg-green-700 transition-all">
                             Lihat
@@ -250,15 +270,19 @@
                             Unduh
                           </a>
                         </div>
-                      </td>
+                    </td>
                     </tr>
 
                     <!-- Row 3 -->
-                    <tr>
-                      <td class="px-6 py-3 text-sm dark:text-white border-b dark:border-white/40">0003</td>
-                      <td class="px-6 py-3 text-sm text-center dark:text-white border-b dark:border-white/40">Perusahaan Persero</td>
-                      <td class="px-6 py-3 text-sm text-center dark:text-white border-b dark:border-white/40">19/09/17</td>
-                      <td class="px-6 py-3 text-sm text-center dark:text-white border-b dark:border-white/40">
+                    <tr class="border-b dark:border-slate-700">                    
+                    <td class="px-4 py-3">
+                      <div class="flex flex-col">
+                        <span class="font-medium text-xs text-slate-900 dark:text-white">0006</span>
+                      </div>
+                    </td>
+                    <td class="px-6 py-3 text-xs text-center dark:text-white border-b dark:border-white/40">Perusahaan Persero</td>
+                    <td class="px-6 py-3 text-xs text-center dark:text-white border-b dark:border-white/40">19/09/17</td>
+                    <td class="px-6 py-3 text-xs text-center dark:text-white border-b dark:border-white/40">
                         <div class="inline-flex space-x-2">
                           <a href="javascript:;" class="inline-flex items-center justify-center w-20 h-8 text-sm font-semibold text-white rounded bg-green-600 hover:bg-green-700 transition-all">
                             Lihat

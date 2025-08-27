@@ -167,12 +167,12 @@
                       </label>
                       <select id="pembangkitSelect" class="w-full border px-4 py-2 rounded mb-4"
                         onchange="showForm(this.value)" data-required>
-                        <option value="" disabled selected hidden>- Pilih Jenis Pembangkit -</option>
-                        <option value="nonSurya">Pembangkit Listrik Selain Tenaga Surya</option>
+                        <option value="" disabled selected hidden>Pembangkit Listrik Selain Tenaga Surya</option>
+                        <option value="non surya">Pembangkit Listrik Selain Tenaga Surya</option>
                         <option value="surya">Pembangkit Listrik Tenaga Surya</option>
                       </select>
                       <!-- FORM NON SURYA -->
-                      <div id="form-nonSurya" class="hidden">
+                      <div id="form-nonSurya" class="">
                         <h3 class="font-semibold mb-2"></h3>
                         <div class="mb-4 flex flex-wrap gap-2">
 
@@ -228,23 +228,26 @@
                                 <td>
                                   <input
                                     type="text"
-                                    name="titikkordinatla_1"
-                                    data-required
-                                    pattern="^-?\d{1,2}\.\d+$"
-                                    placeholder="-1.234567"
-                                    title="Masukkan format desimal, contoh: -1.234567">
+                                    name="titikkordinatla_2"
+                                    inputmode="decimal"
+                                    pattern="^-?\d{1,2},\d+$"
+                                    placeholder="-1,234567"
+                                    title="Masukkan format desimal dengan koma, contoh: -1,234567"
+                                    required>
                                 </td>
                               </tr>
+
                               <tr>
                                 <td>Titik Koordinat (Longitude)</td>
                                 <td>
                                   <input
                                     type="text"
-                                    name="titikkordinatlo_1"
-                                    data-required
-                                    pattern="^-?\d{1,3}\.\d+$"
-                                    placeholder="103.456789"
-                                    title="Masukkan format desimal, contoh: 103.456789">
+                                    name="titikkordinatlo_2"
+                                    inputmode="decimal"
+                                    pattern="^-?\d{1,3},\d+$"
+                                    placeholder="103,456789"
+                                    title="Masukkan format desimal dengan koma, contoh: 103,456789"
+                                    required>
                                 </td>
                               </tr>
                               <tr>
@@ -262,148 +265,40 @@
                               <tr>
                                 <td>Foto Unit</td>
                                 <td>
-                                  <input type="file" name="foto_unit_1" accept="image/*" onchange="previewGambar(this, 'preview_unit_1')" class="block" required>
+                                  <input type="file" name="foto_unit_1" accept="application/pdf, image/jpeg, image/png/*" onchange="previewGambar(this, 'preview_unit_1')" class="block" required>
                                   <img id="preview_unit_1" class="mt-2 w-24 hidden border rounded" />
                                 </td>
                               </tr>
+
                               <tr>
                                 <td>Foto Papan Nama (Name Plate) Generator</td>
                                 <td>
-                                  <input type="file" name="foto_generator_1" accept="image/*" onchange="previewGambar(this, 'preview_generator_1')" class="block" required>
+                                  <input type="file" name="foto_generator_1" accept="application/pdf, image/jpeg, image/png/*" onchange="previewGambar(this, 'preview_generator_1')" class="block" required>
                                   <img id="preview_generator_1" class="mt-2 w-24 hidden border rounded" />
                                 </td>
                               </tr>
                               <tr>
                                 <td>Foto Papan Nama (Name Plate) Mesin Penggerak</td>
                                 <td>
-                                  <input type="file" name="foto_mesin_1" accept="image/*" onchange="previewGambar(this, 'preview_mesin_1')" class="block" required>
+                                  <input type="file" name="foto_mesin_1" accept="application/pdf, image/jpeg, image/png/*" onchange="previewGambar(this, 'preview_mesin_1')" class="block" required>
                                   <img id="preview_mesin_1" class="mt-2 w-24 hidden border rounded" />
                                 </td>
                               </tr>
 
-
                             </tbody>
                           </table>
                         </div>
                       </div>
 
-                      <!-- FORM TENAGA SURYA -->
-                      <div id="form-surya" class="hidden">
-
-                        <h3 class="font-semibold mb-2"></h3>
-                        <div class="mb-4 flex flex-wrap gap-2">
-                          <button type="button" onclick="tambahKolom('surya')"
-                            class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded">
-                            Tambah Unit
-                          </button>
-                          <button type="button" onclick="kurangiKolom('surya')"
-                            class="bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded ">
-                            Kurangi Unit
-                          </button>
-                        </div>
-                        <div class="overflow-scroll">
-                          <table id="table-surya">
-                            <thead>
-                              <tr id="header-surya">
-                                <th>SPESIFIKASI</th>
-                                <th>UNIT 1</th>
-                              </tr>
-                            </thead>
-                            <tbody id="body-surya">
-                              <tr>
-                                <td>Merek</td>
-                                <td><input name="smerek_1" data-required></td>
-                              </tr>
-                              <tr>
-                                <td>Tipe</td>
-                                <td><input name="stipe_1" data-required></td>
-                              </tr>
-                              <tr>
-                                <td>Negara Pembuat</td>
-                                <td><input name="snegara_1" data-required></td>
-                              </tr>
-                              <tr>
-                                <td>Tahun Pembuatan</td>
-                                <td><input name="stahun_1" data-required></td>
-                              </tr>
-                              <tr>
-                                <td>Kapasitas (kilo Watt-peak)</td>
-                                <td><input placeholder="Satuan Dalam kilo Watt peak (kWp) " name="skapasitas_1" data-required></td>
-                              </tr>
-                              <tr>
-                                <td>Titik Koordinat (Latitude)</td>
-                                <td>
-                                  <input
-                                    type="text"
-                                    name="titikkordinatla_2"
-                                    data-required
-                                    pattern="^-?\d{1,2}\.\d+$"
-                                    placeholder="-1.234567"
-                                    title="Masukkan format desimal, contoh: -1.234567">
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>Titik Koordinat (Longitude)</td>
-                                <td>
-                                  <input
-                                    type="text"
-                                    name="titikkordinatlo_2"
-                                    data-required
-                                    pattern="^-?\d{1,3}\.\d+$"
-                                    placeholder="103.456789"
-                                    title="Masukkan format desimal, contoh: 103.456789">
-                                </td>
-                              </tr>
-
-                              <tr>
-                                <td>Sifat Penggunaan</td>
-                                <td>
-                                  <select name="sifat_2" data-required>
-                                    <option value="" disabled selected hidden>-- Pilih --</option>
-                                    <option value="Darurat">Utama</option>
-                                    <option value="Permanen">Cadangan</option>
-                                    <option value="Sementara">Darurat</option>
-                                    <option value="Musiman">Sementara</option>
-                                  </select>
-                                </td>
-                              </tr>
-
-                              <tr>
-                                <td>Foto Unit</td>
-                                <td>
-                                  <input type="file" name="sfoto_unit_1" accept="image/*" onchange="previewGambar(this, 'spreview_unit_1')" data-data-required>
-                                  <img id="spreview_unit_1" class="mt-2 w-24 hidden border rounded" />
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>Foto Papan Nama (Name Plate) Modul PLTS</td>
-                                <td>
-                                  <input type="file" name="sfoto_modul_1" accept="image/*" onchange="previewGambar(this, 'spreview_modul_1')" data-required>
-                                  <img id="spreview_modul_1" class="mt-2 w-24 hidden border rounded" />
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>Foto Papan Nama (Name Plate) Inverter PLTS</td>
-                                <td>
-                                  <input type="file" name="sfoto_inverter_1" accept="image/*" onchange="previewGambar(this, 'spreview_inverter_1')" data-required>
-                                  <img id="spreview_inverter_1" class="mt-2 w-24 hidden border rounded" />
-                                </td>
-                              </tr>
-
-
-                            </tbody>
-                          </table>
-                          <br>
-                        </div>
-                      </div>
                       <script>
+                        const MAX_FILE_SIZE_MB = 5;
+                        const MAX_FILE_SIZE = MAX_FILE_SIZE_MB * 1024 * 1024;
+
                         function showForm(val) {
-                          // Sembunyikan semua form terlebih dahulu
                           document.getElementById('form-nonSurya').classList.add('hidden');
                           document.getElementById('form-surya').classList.add('hidden');
                           document.getElementById('alamatForm1').classList.add('hidden');
 
-                          // Tampilkan form sesuai jenis pembangkit
                           if (val === 'nonSurya') {
                             document.getElementById('form-nonSurya').classList.remove('hidden');
                             document.getElementById('alamatForm1').classList.remove('hidden');
@@ -426,19 +321,92 @@
                           if (tipe === 'nonSurya') {
                             labelGenerator.innerText = "Foto Papan Nama (Name Plate) Generator";
                             labelMesin.innerText = "Foto Papan Nama (Name Plate) Mesin Penggerak";
-
-                            inputGenerator.setAttribute("name", "foto_generator");
-                            inputMesin.setAttribute("name", "foto_mesin");
-                          } else if (tipe === 'surya') {
+                            inputGenerator.name = "foto_generator";
+                            inputMesin.name = "foto_mesin";
+                          } else {
                             labelGenerator.innerText = "Foto Papan Nama (Name Plate) Modul PLTS";
                             labelMesin.innerText = "Foto Papan Nama (Name Plate) Inverter PLTS";
-
-                            inputGenerator.setAttribute("name", "foto_modul");
-                            inputMesin.setAttribute("name", "foto_inverter");
+                            inputGenerator.name = "foto_modul";
+                            inputMesin.name = "foto_inverter";
                           }
 
                           inputGenerator.required = true;
                           inputMesin.required = true;
+                        }
+
+
+
+                        function previewGambar(input, previewId) {
+                          const file = input.files[0];
+                          if (!file) return;
+
+                          if (file.size > MAX_FILE_SIZE) {
+                            alert(`Ukuran file maksimal ${MAX_FILE_SIZE_MB}MB`);
+                            input.value = "";
+                            return;
+                          }
+
+                          const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+                          if (!allowedTypes.includes(file.type)) {
+                            alert("File harus berupa JPG, PNG, atau PDF");
+                            input.value = "";
+                            return;
+                          }
+
+                          const reader = new FileReader();
+                          reader.onload = function(e) {
+                            const img = document.getElementById(previewId);
+
+                            if (file.type === "application/pdf") {
+                              img.src = "/assets/img/iconpdf.jpg"; // Gambar ikon PDF
+                              img.setAttribute('data-pdf', e.target.result); // Simpan base64 PDF
+                              img.onclick = () => {
+                                const pdfWindow = window.open();
+                                pdfWindow.document.write(`
+          <html>
+            <head><title>Preview PDF</title></head>
+            <body style="margin:0">
+              <embed src="${e.target.result}" type="application/pdf" width="100%" height="100%"/>
+            </body>
+          </html>
+        `);
+                              };
+                            } else {
+                              img.src = e.target.result;
+                              img.onclick = () => tampilkanModalGambar(e.target.result);
+                            }
+
+                            img.classList.remove('hidden');
+                            img.classList.add('cursor-zoom-in');
+                          };
+                          reader.readAsDataURL(file);
+                        }
+
+
+
+                        function tampilkanModalGambar(src) {
+                          const modal = document.getElementById('imageModal');
+                          const modalImage = document.getElementById('modalImage');
+                          const sidebar = document.getElementById('sidebar');
+
+                          modalImage.src = src;
+                          modal.classList.remove('hidden');
+
+                          if (sidebar) {
+                            sidebar.classList.add('-translate-x-full');
+                            sidebar.classList.remove('translate-x-0', 'lg:translate-x-0');
+                          }
+                        }
+
+                        function closeImageModal() {
+                          const modal = document.getElementById('imageModal');
+                          const sidebar = document.getElementById('sidebar');
+
+                          modal.classList.add('hidden');
+                          if (sidebar) {
+                            sidebar.classList.remove('-translate-x-full');
+                            sidebar.classList.add('translate-x-0', 'lg:translate-x-0');
+                          }
                         }
 
                         function tambahKolom(tipe) {
@@ -447,108 +415,79 @@
                           const tbody = document.getElementById('body-' + tipe);
                           const kolomBaru = header.children.length;
 
-                          // Tambahkan header baru
                           const th = document.createElement('th');
                           th.innerText = 'UNIT ' + kolomBaru;
                           header.appendChild(th);
 
                           const rows = tbody.getElementsByTagName('tr');
-
                           for (let i = 0; i < rows.length; i++) {
                             const td = document.createElement('td');
                             const label = rows[i].children[0].innerText.trim().toLowerCase();
 
-                            // Sifat Penggunaan
+                            let input, preview;
+
                             if (label.includes('sifat penggunaan')) {
                               const select = document.createElement('select');
                               select.name = prefix + 'sifat_' + kolomBaru;
                               select.required = true;
 
-                              const options = ['-- Pilih --', 'Darurat', 'Permanen', 'Sementara', 'Musiman'];
-                              options.forEach((opt, index) => {
+                              ['-- Pilih --', 'Utama', 'Cadangan', 'Darurat', 'Sementara'].forEach((opt, idx) => {
                                 const option = document.createElement('option');
-                                option.value = index === 0 ? '' : opt;
+                                option.value = idx === 0 ? '' : opt;
                                 option.text = opt;
-                                if (index === 0) {
+                                if (idx === 0) {
                                   option.disabled = true;
                                   option.selected = true;
                                   option.hidden = true;
                                 }
                                 select.appendChild(option);
                               });
-
                               td.appendChild(select);
-                            }
 
-                            // Foto Unit
-                            else if (label.includes('foto unit')) {
-                              const input = document.createElement('input');
+                            } else if (label.includes('foto unit') || label.includes('modul') || label.includes('generator') || label.includes('inverter') || label.includes('mesin penggerak')) {
+                              input = document.createElement('input');
                               input.type = 'file';
-                              input.accept = 'image/*';
-                              input.name = prefix + 'foto_unit_' + kolomBaru;
+                              input.accept = 'application/pdf, image/jpeg, image/png';
+                              input.name = prefix + 'foto_' + kolomBaru + '_' + i;
                               input.required = true;
 
-                              const preview = document.createElement('img');
-                              preview.id = prefix + 'preview_unit_' + kolomBaru;
+                              preview = document.createElement('img');
+                              preview.id = prefix + 'preview_' + kolomBaru + '_' + i;
                               preview.className = 'mt-2 w-24 hidden border rounded';
 
-                              input.addEventListener('change', function() {
-                                previewGambar(this, preview.id);
-                              });
+                              input.addEventListener('change', () => previewGambar(input, preview.id));
 
                               td.appendChild(input);
                               td.appendChild(preview);
-                            }
 
-                            // Foto Nameplate 1: Generator (nonSurya) atau Modul PLTS (surya)
-                            else if (
-                              (tipe === 'nonSurya' && label.includes('generator')) ||
-                              (tipe === 'surya' && label.includes('modul'))
-                            ) {
-                              const input = document.createElement('input');
-                              input.type = 'file';
-                              input.accept = 'image/*';
-                              input.name = prefix + 'foto_nameplate1_' + kolomBaru;
+                            } else if (label.includes('titik koordinat (latitude)')) {
+                              input = document.createElement('input');
+                              input.type = 'text';
+                              input.name = prefix + 'titikkordinatla_' + kolomBaru;
+                              input.pattern = "^-?\\d{1,2},\\d+$";
+                              input.title = 'Masukkan format desimal, contoh: -1,234567';
+                              input.placeholder = '-1,234567';
                               input.required = true;
-
-                              const preview = document.createElement('img');
-                              preview.id = prefix + 'preview_nameplate1_' + kolomBaru;
-                              preview.className = 'mt-2 w-24 hidden border rounded';
-
-                              input.addEventListener('change', function() {
-                                previewGambar(this, preview.id);
+                              input.addEventListener('input', () => {
+                                input.value = input.value.replace(/\./g, ',');
                               });
-
                               td.appendChild(input);
-                              td.appendChild(preview);
-                            }
 
-                            // Foto Nameplate 2: Mesin Penggerak (nonSurya) atau Inverter (surya)
-                            else if (
-                              (tipe === 'nonSurya' && label.includes('mesin penggerak')) ||
-                              (tipe === 'surya' && label.includes('inverter'))
-                            ) {
-                              const input = document.createElement('input');
-                              input.type = 'file';
-                              input.accept = 'image/*';
-                              input.name = prefix + 'foto_nameplate2_' + kolomBaru;
+                            } else if (label.includes('titik koordinat (longitude)')) {
+                              input = document.createElement('input');
+                              input.type = 'text';
+                              input.name = prefix + 'titikkordinatlo_' + kolomBaru;
+                              input.pattern = "^-?\\d{1,3},\\d+$";
+                              input.title = 'Masukkan format desimal, contoh: 103,456789';
+                              input.placeholder = '103,456789';
                               input.required = true;
-
-                              const preview = document.createElement('img');
-                              preview.id = prefix + 'preview_nameplate2_' + kolomBaru;
-                              preview.className = 'mt-2 w-24 hidden border rounded';
-
-                              input.addEventListener('change', function() {
-                                previewGambar(this, preview.id);
+                              input.addEventListener('input', () => {
+                                input.value = input.value.replace(/\./g, ',');
                               });
-
                               td.appendChild(input);
-                              td.appendChild(preview);
-                            }
 
-                            // Input teks biasa
-                            else {
-                              const input = document.createElement('input');
+                            } else {
+                              input = document.createElement('input');
                               const nameBase = label.replace(/[()]/g, '').replace(/\s+/g, '').toLowerCase();
                               input.name = prefix + nameBase + '_' + kolomBaru;
                               input.required = true;
@@ -558,8 +497,6 @@
                             rows[i].appendChild(td);
                           }
                         }
-
-
 
                         function kurangiKolom(tipe) {
                           const header = document.getElementById('header-' + tipe);
@@ -574,63 +511,41 @@
                           }
                         }
 
+                        function formatKoordinatUnitAwal() {
+                          const latitudeInput = document.querySelector('input[name="titikkordinatla_1"]');
+                          const longitudeInput = document.querySelector('input[name="titikkordinatlo_1"]');
 
+                          if (latitudeInput) {
+                            latitudeInput.addEventListener('input', () => {
+                              latitudeInput.value = latitudeInput.value.replace(/\./g, ',');
+                            });
+                          }
 
-                        function tampilkanModalGambar(src) {
-                          const modal = document.getElementById('imageModal');
-                          const modalImage = document.getElementById('modalImage');
-                          const sidebar = document.getElementById('sidebar');
-
-                          modalImage.src = src;
-                          modal.classList.remove('hidden');
-
-                          // Sembunyikan sidebar di semua ukuran
-                          if (sidebar) {
-                            sidebar.classList.remove('translate-x-0');
-                            sidebar.classList.remove('lg:translate-x-0');
-                            sidebar.classList.add('-translate-x-full');
+                          if (longitudeInput) {
+                            longitudeInput.addEventListener('input', () => {
+                              longitudeInput.value = longitudeInput.value.replace(/\./g, ',');
+                            });
                           }
                         }
 
-                        function closeImageModal() {
-                          const modal = document.getElementById('imageModal');
-                          const sidebar = document.getElementById('sidebar');
-
-                          modal.classList.add('hidden');
-
-                          // Tampilkan kembali sidebar di semua ukuran
-                          if (sidebar) {
-                            sidebar.classList.remove('-translate-x-full');
-                            sidebar.classList.add('translate-x-0');
-                            sidebar.classList.add('lg:translate-x-0');
-                          }
-                        }
-
-                        document.addEventListener('DOMContentLoaded', function() {
+                        document.addEventListener('DOMContentLoaded', () => {
                           const closeBtn = document.getElementById('closeModalBtn');
                           if (closeBtn) {
                             closeBtn.addEventListener('click', closeImageModal);
                           }
+
+                          formatKoordinatUnitAwal();
                         });
-
-                        function previewGambar(input, previewId) {
-                          const file = input.files[0];
-                          if (!file) return;
-
-                          const reader = new FileReader();
-                          reader.onload = function(e) {
-                            const img = document.getElementById(previewId);
-                            img.src = e.target.result;
-                            img.classList.remove('hidden');
-                            img.classList.add('cursor-zoom-in');
-
-                            img.onclick = function() {
-                              tampilkanModalGambar(e.target.result);
-                            };
-                          };
-                          reader.readAsDataURL(file);
-                        }
                       </script>
+
+
+                      <div id="Catatan_data_teknis" class="my-4">
+                        <label class="w-full leading-normal text-red-500 italic text-sm text-gray-700 dark:text-white uppercase font-bold">*Catatan Perbaikan Data Teknis
+                        </label>
+                        <Label class="border px-4 py-2 border rounded-lg dark:bg-slate-700 dark:text-white leading-normal text-sm italic text-red-500 ">perbaiki lampiran unit 2
+                        </label>
+                        </label>
+                      </div>
 
                       <!-- Bagian 2: Jaringan Distribusi -->
                       <div class="mb-10">
@@ -642,14 +557,14 @@
                         <select id="jaringanDistribusi"
                           class="w-full px-4 py-2 border rounded-lg dark:bg-slate-700 dark:text-white"
                           onchange="toggleJaringanDistribusi()" data-required>
-                          <option value="" disabled selected hidden>- Pilih -</option>
+                          <option value="" disabled selected hidden>Ada</option>
                           <option value="ada">Ada</option>
                           <option value="tidak">Tidak Ada</option>
                         </select>
 
                         <!-- Form Tambahan Jaringan Distribusi -->
 
-                        <div id="form-jaringan" class="hidden mt-4">
+                        <div id="form-jaringan" class="mt-4">
                           <div class="mb-4">
                             <label for="panjangSaluran" class="block text-m my-2 font-medium text-gray-700">Panjang Saluran (Kms)</label>
                             <input type="text" id="panjangSaluran" name="panjang_saluran"
@@ -669,6 +584,13 @@
                               title="Gunakan angka bulat atau dengan koma maksimal dua angka desimal, misal: 220, 220,5 atau 220,50"
                               data-required>
                           </div>
+                        </div>
+
+                        <div id="Catatan_jaringan_distribusi " class="my-4">
+                          <label class="w-full leading-normal text-red-500 italic text-sm text-gray-700 dark:text-white uppercase font-bold">*Catatan Perbaikan Jaringan Distribusi
+                          </label>
+                          <Label class=" border px-4 py-2 border rounded-lg dark:bg-slate-700 dark:text-white leading-normal text-sm italic text-red-500">perbaiki lampiran unit 2
+                          </label>
                         </div>
 
                         <script>
@@ -697,6 +619,9 @@
                           document.getElementById("tegangan").addEventListener("input", formatKomaOnly);
                         </script>
 
+
+
+
                         <!-- Bagian 3: Sambungan Listrik dari Pihak Lain -->
                         <div class="mb-6">
                           <p class="leading-normal text-lg my-2 text-gray-700 dark:text-white uppercase font-bold">Sambungan
@@ -706,13 +631,13 @@
                           <select id="sambunganListrik"
                             class="w-full px-4 py-2 border rounded-lg dark:bg-slate-700 dark:text-white"
                             onchange="toggleSambunganForm()" data-required>
-                            <option value="" disabled selected hidden>- Pilih -</option>
+                            <option value="" disabled selected hidden>Ada</option>
                             <option value="ada">Ada</option>
                             <option value="tidak">Tidak Ada</option>
                           </select>
 
                           <!-- Form Tambahan Jika "Ada" -->
-                          <div id="form-sambungan" class="hidden mt-4">
+                          <div id="form-sambungan" class="mt-4">
                             <div class="mb-4">
                               <label for="pihakLain" class="block text-m my-2 font-medium text-gray-700">Dari Pihak
                                 Lain</label>
@@ -733,6 +658,13 @@
 
                             </div>
                           </div>
+                        </div>
+
+                        <div id="Catatan_sambungan_listrik" class="my-4">
+                          <label class="w-full leading-normal text-red-500 italic text-sm text-gray-700 dark:text-white uppercase font-bold">*Catatan Perbaikan Sambungan Listrik Dari Pihak Lain
+                          </label>
+                          <Label class="border px-4 py-2 border rounded-lg dark:bg-slate-700 dark:text-white leading-normal text-sm italic text-red-500 ">lampiran tidak jelas
+                          </label>
                         </div>
 
                         <script>
@@ -823,8 +755,6 @@
                                 </select>
                               </div>
 
-
-
                               <div class="mb-2">
                                 <label for="addressprov" class="inline-block mb-2 ml-1 font-bold text-m text-slate-700 dark:text-white/80">
                                   Provinsi
@@ -836,6 +766,14 @@
                               </div>
                             </div>
                           </div>
+                        </div>
+
+                        <div id="Catatan_lokasi_instalasi" class="mt-2 mb-4">
+                          <label class="w-full leading-normal text-red-500 italic text-sm text-gray-700 dark:text-white uppercase font-bold">*Catatan Perbaikan Lokasi Instalasi
+                          </label>
+                          <Label class="border px-4 py-2 border rounded-lg dark:bg-slate-700 dark:text-white leading-normal text-sm italic text-red-500 ">lampiran tidak sama
+                          </label>
+                          </label>
                         </div>
 
                         <!-- Toggle Script -->
@@ -853,6 +791,7 @@
                         </script>
 
 
+
                         <p class="leading-normal text-lg text-gray-700 dark:text-white uppercase font-bold">
                           Lampiran Dokumen
                         </p>
@@ -860,16 +799,12 @@
                         <div id="alamatForm1" class="mb-1">
                           <div class="mt-3 space-y-4">
 
-
-
-
-
                             <!-- NIB -->
                             <div>
                               <label class="block text-m font-medium text-gray-700 dark:text-white mb-1">
                                 Print Out NIB via OSS RBA (Untuk Badan Usaha)
                               </label>
-                              <input type="file" name="nib" id="nib" onchange="previewGambar(this, 'preview_nib')"
+                              <input type="file" name="nib" id="nib" accept=".jpg,.jpeg,.png,.pdf" onchange="previewGambar(this, 'preview_nib')"
                                 class="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer bg-white 
                 focus:outline-none dark:bg-slate-700 dark:text-white dark:border-gray-600" class="block" data-required>
                               <img id="preview_nib" class="mt-2 w-40 hidden border rounded" />
@@ -878,7 +813,7 @@
                             <!-- KTP -->
                             <div>
                               <label class="block text-m font-medium text-gray-700 dark:text-white mb-1">KTP Penanggung Jawab</label>
-                              <input type="file" name="ktp" id="ktp" onchange="previewGambar(this, 'preview_ktp')"
+                              <input type="file" name="ktp" id="ktp" accept=".jpg,.jpeg,.png,.pdf" onchange="previewGambar(this, 'preview_ktp')"
                                 class="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer bg-white 
                 focus:outline-none dark:bg-slate-700 dark:text-white dark:border-gray-600" class="block" data-required>
                               <img id="preview_ktp" class="mt-2 w-40 hidden border rounded" />
@@ -887,7 +822,7 @@
                             <!-- NPWP -->
                             <div>
                               <label class="block text-m font-medium text-gray-700 dark:text-white mb-1">NPWP</label>
-                              <input type="file" name="npwp" id="npwp" onchange="previewGambar(this, 'preview_npwp')"
+                              <input type="file" name="npwp" id="npwp" accept=".jpg,.jpeg,.png,.pdf" onchange="previewGambar(this, 'preview_npwp')"
                                 class="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer bg-white 
                 focus:outline-none dark:bg-slate-700 dark:text-white dark:border-gray-600" class="block" data-required>
                               <img id="preview_npwp" class="mt-2 w-40 hidden border rounded" />
@@ -896,7 +831,7 @@
                             <!-- Gambar Situasi -->
                             <div>
                               <label class="block text-m font-medium text-gray-700 dark:text-white mb-1">Gambar Situasi / Tata Letak</label>
-                              <input type="file" name="gambar_situasi" id="gambar_situasi" onchange="previewGambar(this, 'preview_situasi')"
+                              <input type="file" name="gambar_situasi" id="gambar_situasi" accept=".jpg,.jpeg,.png,.pdf" onchange="previewGambar(this, 'preview_situasi')"
                                 class="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer bg-white 
                 focus:outline-none dark:bg-slate-700 dark:text-white dark:border-gray-600" class="block" data-required>
                               <img id="preview_situasi" class="mt-2 w-40 hidden border rounded" />
@@ -907,13 +842,20 @@
                               <label class="block text-m font-medium text-gray-700 dark:text-white mb-1">
                                 Bukti Pembayaran Tagihan Listrik Bulan Terakhir
                               </label>
-                              <input type="file" name="bukti_tagihan" id="bukti_tagihan" onchange="previewGambar(this, 'preview_tagihan')"
+                              <input type="file" name="bukti_tagihan" id="bukti_tagihan" accept=".jpg,.jpeg,.png,.pdf" onchange="previewGambar(this, 'preview_tagihan')"
                                 class="block w-full text-m text-gray-700 border border-gray-300 rounded-lg cursor-pointer bg-white 
                 focus:outline-none dark:bg-slate-700 dark:text-white dark:border-gray-600" class="block" data-required>
                               <img id="preview_tagihan" class="mt-2 w-40 hidden border rounded" />
                             </div>
 
                           </div>
+                        </div>
+                        <div id="Catatan_data_administrasi" class="my-4">
+                          <label class="w-full leading-normal text-red-500 italic text-sm text-gray-700 dark:text-white uppercase font-bold">*Catatan Lampiran Data Administrasi
+                          </label>
+                          <Label class="border px-4 py-2 border rounded-lg dark:bg-slate-700 dark:text-white leading-normal text-sm italic text-red-500 ">npwp tidak tepat
+                          </label>
+                          </label>
                         </div>
 
                         <!-- Persetujuan -->
@@ -925,6 +867,8 @@
                             maka saya atau Badan Usaha / Instansi yang saya wakili bersedia menerima segala bentuk sanksi sesuai dengan ketentuan peraturan perundang-undangan yang berlaku.
                           </label>
                         </div>
+
+
 
                         <!-- JavaScript untuk Preview -->
 
@@ -939,10 +883,6 @@
                           Kirim
                         </button>
                       </div>
-
-
-
-
                 </form>
 
               </div>

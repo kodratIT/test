@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/png" href=" {{ asset('assets/img/logo-esdm.svg') }} " />
-  <title>Dashboard Tim Teknis</title>
+  <title>Beranda Kepala Dinas</title>
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
   <!-- Font Awesome Icons -->
@@ -16,13 +16,16 @@
   <!-- Popper -->
   <script src="https://unpkg.com/@popperjs/core@2"></script>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <!-- Main Styling -->
   <link href="{{ asset('assets/css/argon-dashboard-tailwind.css?v=1.0.1') }}" rel="stylesheet" />
+
 </head>
 
 <body class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">
-  <div class="absolute w-full bg-blue-500 dark:hidden min-h-75"></div>
-  @include('components.sidebartimteknis')
+  <div class="absolute w-full bg-orange-400 dark:hidden min-h-75"></div>
+  @include('components.sidebarkadisberkala')
 
   <main class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl">
     <!-- Navbar -->
@@ -36,14 +39,13 @@
             </li>
             <li class="text-sm pl-2 capitalize leading-normal text-white before:float-left before:pr-2 before:text-white before:content-['/']" aria-current="page">Beranda</li>
           </ol>
-          <h6 class="mb-0 font-bold text-white capitalize">Selamat Datang Tim Teknis</h6>
+          <h6 class="mb-0 font-bold text-white capitalize">Selamat Datang Kepala Dinas</h6>
         </nav>
 
         <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
           <div class="flex items-center md:ml-auto md:pr-4">
             <div class="relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease">
               <span class="text-sm ease leading-5.6 absolute z-50 -ml-px flex h-full items-center whitespace-nowrap rounded-lg rounded-tr-none rounded-br-none border border-r-0 border-transparent bg-transparent py-2 px-2.5 text-center font-normal text-slate-500 transition-all">
-                <i class="fas fa-search"></i>
               </span>
             </div>
           </div>
@@ -68,7 +70,6 @@
             <li class="relative flex items-center pr-2">
               <p class="hidden transform-dropdown-show"></p>
               <a href="javascript:;" class="block p-0 text-sm text-white transition-all ease-nav-brand" dropdown-trigger aria-expanded="false">
-                <i class="cursor-pointer fa fa-bell"></i>
               </a>
 
               <ul dropdown-menu class="text-sm transform-dropdown before:font-awesome before:leading-default before:duration-350 before:ease lg:shadow-3xl duration-250 min-w-44 before:sm:right-8 before:text-5.5 pointer-events-none absolute right-0 top-0 z-50 origin-top list-none rounded-lg border-0 border-solid border-transparent dark:shadow-dark-xl dark:bg-slate-850 bg-white bg-clip-padding px-2 py-4 text-left text-slate-500 opacity-0 transition-all before:absolute before:right-2 before:left-auto before:top-0 before:z-50 before:inline-block before:font-normal before:text-white before:antialiased before:transition-all before:content-['\f0d8'] sm:-mr-6 lg:absolute lg:right-0 lg:left-auto lg:mt-2 lg:block lg:cursor-pointer">
@@ -84,14 +85,13 @@
     <!-- Beranda - Semua Aktivitas -->
     <div class="w-full px-4 sm:px-6 lg:px-10 py-5 mx-auto">
       <!-- Grid Cards -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
         <!-- Card 1 -->
         <div class="bg-white rounded-3xl shadow-xl p-5 flex justify-between items-start">
           <div>
-            <p class="text-m font-semibold uppercase text-gray-600">Surat Permohonan</p>
+            <p class="text-m font-semibold uppercase text-gray-600">Permohonan</p>
             <h5 class="text-xl font-bold text-gray-900 mb-1">100</h5>
-            <p class="text-m text-gray-500">Juli 2025</p>
           </div>
           <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tl from-blue-500 to-violet-500">
             <i class="ni ni-money-coins text-white text-lg"></i>
@@ -103,7 +103,6 @@
           <div>
             <p class="text-m font-semibold uppercase text-gray-600">Surat Keterangan</p>
             <h5 class="text-xl font-bold text-gray-900 mb-1">30</h5>
-            <p class="text-m text-gray-500">Juli 2025</p>
           </div>
           <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tl from-red-600 to-orange-600">
             <i class="ni ni-world text-white text-lg"></i>
@@ -115,77 +114,139 @@
           <div>
             <p class="text-m font-semibold uppercase text-gray-600">Badan Usaha</p>
             <h5 class="text-xl font-bold text-gray-900 mb-1">56</h5>
-            <p class="text-m text-gray-500">Juli 2025</p>
           </div>
           <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tl from-emerald-500 to-teal-400">
             <i class="ni ni-paper-diploma text-white text-lg"></i>
           </div>
         </div>
-
-
-        <div class="bg-white rounded-3xl shadow-xl p-5 flex justify-between items-start">
-          <div>
-            <p class="text-m font-semibold uppercase text-gray-600">Untuk Dievaluasi</p>
-            <h5 class="text-xl font-bold text-gray-900 mb-1">23</h5>
-            <p class="text-m text-gray-500">Juli 2025</p>
-          </div>
-          <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tl from-orange-400 to-yellow-400">
-            <i class="ni ni-check-bold text-white text-lg"></i>
-          </div>
+        </div>
+        </div>
         </div>
 
-      </div>
-    </div>
-    <div class="w-full px-4 sm:px-6 lg:px-10  mx-auto">
-      <!-- Row 2: Grafik Ringkasan dan Daftar Evaluator -->
-      <div class="flex flex-wrap mt-6 -mx-3">
-        <!-- Ringkasan Jumlah Surat -->
-        <div class="w-full max-w-full px-3 mb-6 lg:w-5/12">
-          <div class="flex flex-col h-full bg-white dark:bg-slate-850 shadow-xl dark:shadow-dark-xl rounded-2xl">
-            <div class="p-6 pb-0">
-              <h6 class="text-lg font-bold mb-4 text-gray-800 dark:text-white uppercase">Ringkasan Jumlah Surat</h6>
-              <p class="text-m dark:text-white dark:opacity-60">2025</p>
-            </div>
-            <div class="p-4 grow flex items-center">
-              <canvas id="chart-line" height="300"></canvas>
-            </div>
+    <!-- Row 2: Grafik Ringkasan dan Daftar Evaluator -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6"></div>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Row 2: Grafik Ringkasan -->
+    <div class="grid grid-cols-1 gap-6">
+      <!-- Ringkasan Jumlah Surat Masuk & Selesai -->
+      <div class="w-full px-4 sm:px-6 lg:px-10 mb-2 mx-auto">
+        <div class="flex flex-col h-full bg-white dark:bg-slate-850 shadow-xl dark:shadow-dark-xl rounded-2xl">
+          <div class="p-6 pb-0">
+            <h6 class="text-lg font-bold mb-4 text-gray-800 dark:text-white uppercase">Ringkasan Daftar Surat</h6>
+            <p class="text-m dark:text-white dark:opacity-60">2025</p>
           </div>
-        </div>
-
-        <!-- Daftar Evaluator -->
-        <div class="w-full max-w-full px-3 mb-6 lg:w-7/12">
-          <div class="flex flex-col h-full bg-white dark:bg-slate-850 shadow-xl dark:shadow-dark-xl rounded-2xl p-6 overflow-x-auto">
-            <h6 class="text-lg font-bold mb-4 text-gray-800 dark:text-white uppercase">Daftar Evaluator</h6>
-            <table class="min-w-full text-sm text-left border border-gray-200 dark:border-gray-700">
-              <thead class="bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-white/90">
-                <tr>
-                  <th class="px-4 py-2 border-b dark:border-gray-600">Nomor Surat</th>
-                  <th class="px-4 py-2 border-b dark:border-gray-600">Nama Badan Usaha</th>
-                  <th class="px-4 py-2 border-b dark:border-gray-600">Evaluator</th>
-                </tr>
-              </thead>
-              <tbody class="text-gray-700 dark:text-white/80">
-                <tr class="hover:bg-gray-50 dark:hover:bg-slate-700">
-                  <td class="px-4 py-2 text-m border-b dark:border-gray-600">0001</td>
-                  <td class="px-4 py-2 text-m border-b dark:border-gray-600">PT Maju Jaya</td>
-                  <td class="px-4 py-2 text-m border-b dark:border-gray-600">Dewi Kartika</td>
-                </tr>
-                <tr class="hover:bg-gray-50 dark:hover:bg-slate-700">
-                  <td class="px-4 py-2 text-m border-b dark:border-gray-600">0002</td>
-                  <td class="px-4 py-2 text-m border-b dark:border-gray-600">CV Berkah Abadi</td>
-                  <td class="px-4 py-2 text-m border-b dark:border-gray-600">Rizky Hidayat</td>
-                </tr>
-                <tr class="hover:bg-gray-50 dark:hover:bg-slate-700">
-                  <td class="px-4 py-2 text-m">0003</td>
-                  <td class="px-4 py-2 text-m">PT Sinar Terang</td>
-                  <td class="px-4 py-2 text-m">Nina Ayu</td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="p-4 grow flex items-center">
+            <canvas id="chart-line-1" height="450" style="width: 100%;"></canvas>
           </div>
         </div>
       </div>
     </div>
+    <script>
+  const ctxLine1 = document.getElementById('chart-line-1').getContext('2d');
+
+  new Chart(ctxLine1, {
+    type: 'line',
+    data: {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sept', 'Okt', 'Nov', 'Des'],
+      datasets: [
+        {
+          label: 'Jumlah Surat Masuk',
+          data: [50, 75, 100, 80, 120, 150, 200, 180, 160, 170, 190, 220],
+          borderColor: 'rgba(99, 102, 241, 1)',
+          backgroundColor: 'rgba(99, 102, 241, 0.1)',
+          fill: true,
+          tension: 0.4,
+          pointBackgroundColor: 'rgba(99, 102, 241, 1)',
+          pointRadius: 4,
+        },
+        {
+          label: 'Jumlah Surat Selesai',
+          data: [10, 20, 30, 50, 60, 80, 90, 100, 110, 120, 130, 150],
+          borderColor: 'rgba(34,197,94,1)',
+          backgroundColor: 'rgba(34,197,94,0.1)',
+          fill: true,
+          tension: 0.4,
+          pointBackgroundColor: 'rgba(34,197,94,1)',
+          pointRadius: 4,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: false, // Nonaktifkan animasi
+      plugins: {
+        legend: {
+          position: 'top',
+          labels: {
+            color: '#374151'
+          }
+        },
+        tooltip: {
+          mode: 'index',
+          intersect: false
+        }
+      },
+      interaction: {
+        mode: 'nearest',
+        axis: 'x',
+        intersect: false
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: '#6B7280'
+          }
+        },
+        y: {
+          beginAtZero: true,
+          ticks: {
+            color: '#6B7280',
+            stepSize: 25
+          }
+        }
+      }
+    }
+  });
+</script>
+
+
+
+   
+    <!-- Daftar Evaluator
+      <div class="w-full max-w-full px-3 mb-6 lg:w-7/12">
+        <div class="flex flex-col h-full bg-white dark:bg-slate-850 shadow-xl dark:shadow-dark-xl rounded-2xl p-6 overflow-x-auto">
+          <h6 class="text-lg font-bold mb-4 text-gray-800 dark:text-white uppercase">Daftar Evaluator</h6>
+          <table class="min-w-full text-sm text-left border border-gray-200 dark:border-gray-700">
+            <thead class="bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-white/90">
+              <tr>
+                <th class="px-4 py-2 border-b dark:border-gray-600">Nomor Surat</th>
+                <th class="px-4 py-2 border-b dark:border-gray-600">Nama Badan Usaha</th>
+                <th class="px-4 py-2 border-b dark:border-gray-600">Evaluator</th>
+              </tr>
+            </thead>
+            <tbody class="text-gray-700 dark:text-white/80">
+              <tr class="hover:bg-gray-50 dark:hover:bg-slate-700">
+                <td class="px-4 py-2 text-m border-b dark:border-gray-600">0001</td>
+                <td class="px-4 py-2 text-m border-b dark:border-gray-600">PT Maju Jaya</td>
+                <td class="px-4 py-2 text-m border-b dark:border-gray-600">Dewi Kartika</td>
+              </tr>
+              <tr class="hover:bg-gray-50 dark:hover:bg-slate-700">
+                <td class="px-4 py-2 text-m border-b dark:border-gray-600">0002</td>
+                <td class="px-4 py-2 text-m border-b dark:border-gray-600">CV Berkah Abadi</td>
+                <td class="px-4 py-2 text-m border-b dark:border-gray-600">Rizky Hidayat</td>
+              </tr>
+              <tr class="hover:bg-gray-50 dark:hover:bg-slate-700">
+                <td class="px-4 py-2 text-m">0003</td>
+                <td class="px-4 py-2 text-m">PT Sinar Terang</td>
+                <td class="px-4 py-2 text-m">Nina Ayu</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>-->
+
 
 
 
@@ -462,7 +523,7 @@
           </div>
         </footer>
       </div>
-      <!-- end cards -->
+      end cards -->
   </main>
   <!-- -right-90 in loc de 0-->
   <div fixed-plugin-card class="z-sticky backdrop-blur-2xl backdrop-saturate-200 dark:bg-slate-850/80 shadow-3xl w-90 ease -right-90 fixed top-0 left-auto flex h-full min-w-0 flex-col break-words rounded-none border-0 bg-white/80 bg-clip-border px-2.5 duration-200">

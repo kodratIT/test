@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/png" href=" {{ asset('assets/img/logo-esdm.svg') }} " />
-  <title>Profile Evaluator</title>
+  <title>Profile Kepala Bidang</title>
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
   <!-- Font Awesome Icons -->
@@ -19,16 +19,71 @@
   <!-- Main Styling -->
   <link href="{{ asset('assets/css/argon-dashboard-tailwind.css?v=1.0.1') }}" rel="stylesheet" />
 </head>
+<style>
+  @keyframes slideOutUp {
+    0% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    100% {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+  }
+
+  .floating-alert {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    padding: 15px 20px;
+    border-left: 5px solid;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.5s ease-in-out;
+  }
+
+  .floating-alert.success {
+    background-color: #d4edda;
+    color: #155724;
+    border-left-color: #28a745;
+  }
+
+  .floating-alert.warning {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-left-color: #f44336;
+  }
+
+  .slide-out {
+    animation: slideOutUp 0.8s forwards;
+  }
+</style>
 
 <body
   class="m-0 font-sans antialiased font-normal dark:bg-slate-900 text-base leading-default bg-gray-50 text-slate-500">
   <div
     class="absolute bg-y-50 w-full top-0 bg-[url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/profile-layout-header.jpg')] min-h-75">
-    <span class="absolute top-0 left-0 w-full h-full bg-yellow-500 opacity-80"></span>
+    <span class="absolute top-0 left-0 w-full h-full bg-blue-500 opacity-80"></span>
   </div>
 
-
-  @include('components.sidebarevaluatorberkala')
+  @include('components.sidebarkabidberkala')
+  @if (session('alert'))
+  <div id="alert" class="floating-alert {{ session('alert.type', 'success') }}">
+    {{ session('alert.message') }}
+  </div>
+  <script>
+    setTimeout(() => {
+      const el = document.getElementById('alert');
+      if (el) el.classList.add('slide-out');
+    }, 3000);
+    setTimeout(() => {
+      const el = document.getElementById('alert');
+      if (el) el.remove();
+    }, 3800);
+  </script>
+  @endif
 
   <div class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68">
     <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all ease-in shadow-none duration-250 rounded-2xl lg:flex-nowrap lg:justify-start" navbar-main navbar-scroll="false">
@@ -41,7 +96,7 @@
             </li>
             <li class="text-sm pl-2 capitalize leading-normal text-white before:float-left before:pr-2 before:text-white before:content-['/']" aria-current="page">Profil</li>
           </ol>
-          <h6 class="mb-0 font-bold text-white capitalize">Profil Evaluator</h6>
+          <h6 class="mb-0 font-bold text-white capitalize">Profil Kepala Bidang</h6>
         </nav>
 
         <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
@@ -98,6 +153,7 @@
               $identitas = $identitas ?? null;
               $foto = data_get($identitas, 'foto'); // aman meskipun $identitas null
               @endphp
+
 
               <form action="{{ route('tim_admin.update') }}" method="POST" enctype="multipart/form-data" class="w-full px-4 py-6 bg-white rounded-xl shadow-md  dark:bg-slate-800">
                 @csrf
@@ -254,46 +310,44 @@
                     </div>
                   </div>
               </form>
-
-              <script>
-                function enableReadonlyForm() {
-
-                  const inputs = document.querySelectorAll('input, select');
-                  inputs.forEach(input => {
-
-                    //if (input.id === 'email') return;
-
-                    if (input.hasAttribute('readonly') || input.hasAttribute('disabled')) {
-                      input.removeAttribute('readonly');
-                      input.removeAttribute('disabled');
-                      input.classList.remove('cursor-not-allowed', 'bg-gray-100');
-                    }
-                  });
-
-                  // Sinkronisasi select pangkat dengan hidden input
-                  const select = document.getElementById('pangkat');
-                  const hidden = document.getElementById('pangkat_hidden');
-
-                  select.addEventListener('change', function() {
-                    hidden.value = this.value;
-                  });
-
-                }
-
-                function previewImage(event) {
-                  const file = event.target.files[0];
-                  if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                      const preview = document.getElementById('previewFoto');
-                      preview.src = e.target.result;
-                    };
-                    reader.readAsDataURL(file);
-                  }
-                }
-              </script>
-
 </body>
+<script>
+  function enableReadonlyForm() {
+
+    const inputs = document.querySelectorAll('input, select');
+    inputs.forEach(input => {
+
+      //if (input.id === 'email') return;
+
+      if (input.hasAttribute('readonly') || input.hasAttribute('disabled')) {
+        input.removeAttribute('readonly');
+        input.removeAttribute('disabled');
+        input.classList.remove('cursor-not-allowed', 'bg-gray-100');
+      }
+    });
+
+    // Sinkronisasi select pangkat dengan hidden input
+    const select = document.getElementById('pangkat');
+    const hidden = document.getElementById('pangkat_hidden');
+
+    select.addEventListener('change', function() {
+      hidden.value = this.value;
+    });
+
+  }
+
+  function previewImage(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const preview = document.getElementById('previewFoto');
+        preview.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+</script>
 <!-- plugin for scrollbar  -->
 <script src="../assets/js/plugins/perfect-scrollbar.min.js" async></script>
 <!-- main script file  -->
