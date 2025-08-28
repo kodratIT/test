@@ -603,7 +603,7 @@
                           <thead class="bg-gray-100">
                             <tr id="header-SLO">
                               {{-- Kolom pertama (judul data) selalu rata kiri --}}
-                              <th class="border px-2 py-1 text-left min-w-[160px]"></th>
+                              <th class="border px-2 py-1 text-left w-[150px]"></th>
 
                               {{-- Kolom berikutnya (#1, #2, dst) rata tengah --}}
                               @foreach($listSlo as $i => $item)
@@ -758,7 +758,7 @@
                           <thead class="bg-gray-100">
                             <tr id="header-SKTTK">
                               {{-- Kolom pertama judul data rata kiri --}}
-                              <th class="border px-2 py-1 text-left min-w-[180px]">Data SKTTK</th>
+                              <th class="border px-2 py-1 text-left w-[150px]"></th>
 
                               {{-- Kolom berikutnya (#1, #2, dst) rata tengah --}}
                               @foreach($listSkttk as $i => $item)
@@ -922,7 +922,7 @@
                         <p class="text-gray-500 text-center">Tidak ada lampiran</p>
                         @endif
                       </div>
-                    </div>                
+                    </div>
 
                     <!-- KOLOM 3: Evaluasi 5-->
                     <div class="bg-white rounded shadow p-4 space-y-4 border-2 border-gray-300">
@@ -994,7 +994,7 @@
                         <table class="w-full table-auto border-collapse border border-gray-300 text-sm">
                           <thead class="bg-gray-100">
                             <tr>
-                              <th class="border px-2 py-1 text-left min-w-[160px]">Data Mesin</th>
+                              <th class="border px-2 py-1 text-left w-[150px]">Data Mesin</th>
                               @foreach($mesinData as $i => $item)
                               <th class="border px-2 py-1 text-center">Unit - {{ $loop->iteration }}</th>
                               @endforeach
@@ -1135,7 +1135,7 @@
                         <table class="w-full table-auto border-collapse border border-gray-300 text-sm">
                           <thead class="bg-gray-100">
                             <tr>
-                              <th class="border px-2 py-1 text-left min-w-[160px]"></th>
+                              <th class="border px-2 py-1 text-left w-[150px]"></th>
                               @foreach($generatorData as $i => $item)
                               <th class="border px-2 py-1 text-center">Unit - {{ $loop->iteration }}</th>
                               @endforeach
@@ -1206,7 +1206,7 @@
                               <td class="font-bold border px-2 py-1 text-left">Koordinat</td>
                               @foreach($generatorData as $item)
                               <td class="border px-2 py-1 text-left">
-                                {{ $item['generator_latitude'] ?? '-' }}, {{ $item['generator_longitude'] ?? 'Tidak ada' }}
+                                {{ $item['generator_latitude'] ?? 'Tidak ada' }}, {{ $item['generator_longitude'] ?? 'Tidak ada' }}
                               </td>
                               @endforeach
                             </tr>
@@ -1291,73 +1291,94 @@
                     $jaringan = $pengajuan->distribusi['jaringan_distribusi'] ?? [];
                     $trafo = $pengajuan->distribusi['trafo'] ?? [];
                     @endphp
-                    {{-- Jaringan Distribusi --}}
+
                     <div class="bg-white rounded shadow p-4 space-y-4 border-2 border-gray-300">
+
+                      {{-- Jaringan Distribusi --}}
                       <div class="bg-white rounded shadow p-4 mb-6 border-2 border-gray-300">
                         <h2 class="text-lg font-bold text-center border-b pb-2 mb-2">Data Jaringan Distribusi</h2>
                         <div class="overflow-x-auto">
                           <table class="w-full table-auto border-collapse border border-gray-300 text-sm">
                             <thead class="bg-gray-100">
                               <tr>
-                                <th class="border px-2 py-1 text-left min-w-[160px]"></th>
-                                @foreach($jaringan as $i => $item)
+                                <th class="border px-2 py-1 text-left w-[150px]"></th>
+                                @forelse($jaringan as $i => $item)
                                 <th class="border px-2 py-1 text-center">{{ $loop->iteration }}</th>
-                                @endforeach
+                                @empty
+                                <th class="border px-2 py-1 text-center">Tidak ada</th>
+                                @endforelse
                               </tr>
                             </thead>
                             <tbody class="text-left">
                               <tr>
                                 <td class="font-bold border px-2 py-1 text-left">Pemilik Instalasi</td>
-                                @foreach($jaringan as $item)
+                                @forelse($jaringan as $item)
                                 <td class="border px-2 py-1 text-left">{{ $item['pemilik_instalasi_distribusi'] ?? 'Tidak ada' }}</td>
-                                @endforeach
+                                @empty
+                                <td class="border px-2 py-1 text-left">Tidak ada</td>
+                                @endforelse
                               </tr>
                               <tr>
                                 <td class="font-bold border px-2 py-1 text-left">Tegangan</td>
-                                @foreach($jaringan as $item)
+                                @forelse($jaringan as $item)
                                 <td class="border px-2 py-1 text-left">{{ $item['tegangan_distribusi'] ?? 'Tidak ada' }}</td>
-                                @endforeach
+                                @empty
+                                <td class="border px-2 py-1 text-left">Tidak ada</td>
+                                @endforelse
                               </tr>
                               <tr>
                                 <td class="font-bold border px-2 py-1 text-left">Kapasitas / Panjang</td>
-                                @foreach($jaringan as $item)
+                                @forelse($jaringan as $item)
                                 <td class="border px-2 py-1 text-left">{{ $item['kapasitas_panjang_distribusi'] ?? 'Tidak ada' }}</td>
-                                @endforeach
+                                @empty
+                                <td class="border px-2 py-1 text-left">Tidak ada</td>
+                                @endforelse
                               </tr>
                               <tr>
                                 <td class="font-bold border px-2 py-1 text-left">Kabupaten / Kota</td>
-                                @foreach($jaringan as $item)
+                                @forelse($jaringan as $item)
                                 <td class="border px-2 py-1 text-left">{{ $item['kabupaten_kota_distribusi'] ?? 'Tidak ada' }}</td>
-                                @endforeach
+                                @empty
+                                <td class="border px-2 py-1 text-left">Tidak ada</td>
+                                @endforelse
                               </tr>
                               <tr>
                                 <td class="font-bold border px-2 py-1 text-left">Provinsi</td>
-                                @foreach($jaringan as $item)
+                                @forelse($jaringan as $item)
                                 <td class="border px-2 py-1 text-left">{{ $item['provinsi_distribusi'] ?? 'Tidak ada' }}</td>
-                                @endforeach
+                                @empty
+                                <td class="border px-2 py-1 text-left">Tidak ada</td>
+                                @endforelse
                               </tr>
                               <tr>
                                 <td class="font-bold border px-2 py-1 text-left">Latitude</td>
-                                @foreach($jaringan as $item)
+                                @forelse($jaringan as $item)
                                 <td class="border px-2 py-1 text-left">{{ $item['latitude_distribusi'] ?? 'Tidak ada' }}</td>
-                                @endforeach
+                                @empty
+                                <td class="border px-2 py-1 text-left">Tidak ada</td>
+                                @endforelse
                               </tr>
                               <tr>
                                 <td class="font-bold border px-2 py-1 text-left">Longitude</td>
-                                @foreach($jaringan as $item)
+                                @forelse($jaringan as $item)
                                 <td class="border px-2 py-1 text-left">{{ $item['longitude_distribusi'] ?? 'Tidak ada' }}</td>
-                                @endforeach
+                                @empty
+                                <td class="border px-2 py-1 text-left">Tidak ada</td>
+                                @endforelse
                               </tr>
                               <tr>
                                 <td class="font-bold border px-2 py-1 text-left">Tahun Operasi</td>
-                                @foreach($jaringan as $item)
+                                @forelse($jaringan as $item)
                                 <td class="border px-2 py-1 text-left">{{ $item['tahun_operasi_distribusi'] ?? 'Tidak ada' }}</td>
-                                @endforeach
+                                @empty
+                                <td class="border px-2 py-1 text-left">Tidak ada</td>
+                                @endforelse
                               </tr>
                             </tbody>
                           </table>
                         </div>
                       </div>
+
 
                       {{-- Data Trafo --}}
                       <div class="bg-white rounded shadow p-4 mb-6 border-2 border-gray-300">
@@ -1366,11 +1387,11 @@
                           <table class="w-full table-auto border-collapse border border-gray-300 text-sm">
                             <tbody class="text-left">
                               <tr>
-                                <td class="font-bold border px-2 py-1 w-1/3 text-left">Pemilik Trafo</td>
+                                <td class="font-bold border px-2 py-1 text-left w-[150px]">Pemilik Trafo</td>
                                 <td class="border px-2 py-1 text-left">{{ $trafo['pemilik_trafo'] ?? 'Tidak ada' }}</td>
                               </tr>
                               <tr>
-                                <td class="font-bold border px-2 py-1 text-left">Tegangan Primer</td>
+                                <td class="font-bold border px-2 py-1 text-left w-[150px]">Tegangan Primer</td>
                                 <td class="border px-2 py-1 text-left">{{ $trafo['tegangan_primer_trafo'] ?? 'Tidak ada' }}</td>
                               </tr>
                               <tr>
@@ -1578,16 +1599,32 @@
 
                 <!--Penjualan kelebihan tenaga listrik/Excess Power. -->
                 <div class="grid grid-cols-1 gap-4 border-gray-200 rounded shadow-sm">
-                  <!-- KOLOM 1: Penjualan kelebihan tenaga listrik -->
                   @php
                   $penjualan = $pengajuan->penjualan_listrik ?? null;
                   $bulanList = [
                   'Januari','Februari','Maret','April','Mei','Juni',
                   'Juli','Agustus','September','Oktober','November','Desember'
                   ];
+
+                  // siapkan data default (12 bulan × kolom kosong)
+                  $defaultRows = array_fill(0, 12, [
+                  'dmn_ndc' => null,
+                  'beban_tertinggi' => null,
+                  'capacity_factor' => null,
+                  'afpm' => null,
+                  'afa' => null,
+                  'pembelian' => null,
+                  'produksi_bruto' => null,
+                  'pemakaian_sendiri' => null,
+                  'produksi_netto' => null,
+                  ]);
+
+                  // jika status "yes" dan ada data, gunakan datanya, kalau tidak pakai default
+                  $rows = ($penjualan && $penjualan['status'] === 'yes' && !empty($penjualan['excess_power']))
+                  ? $penjualan['excess_power']
+                  : $defaultRows;
                   @endphp
 
-                  @if($penjualan && $penjualan['status'] === 'yes')
                   <div class="bg-white rounded shadow p-4 border-2 border-gray-300 mt-6">
                     <h2 class="text-lg font-bold text-center border-b pb-2 mb-4">
                       Data Penjualan Listrik (Excess Power)
@@ -1609,7 +1646,7 @@
                           </tr>
                         </thead>
                         <tbody>
-                          @foreach($penjualan['excess_power'] as $i => $row)
+                          @foreach($rows as $i => $row)
                           <tr>
                             <td class="border px-3 py-1 text-center">{{ $bulanList[$i] ?? 'Tidak ada' }}</td>
                             <td class="border px-3 py-1">{{ $row['dmn_ndc'] ?? 'Tidak ada' }}</td>
@@ -1627,9 +1664,6 @@
                       </table>
                     </div>
                   </div>
-                  @endif
-
-
                 </div>
 
                 <!-- KOLOM 2: Evaluasi (copy) -->
@@ -1713,6 +1747,34 @@
               closePopup(); // tutup pop-up dulu
             }
           </script>
+          <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+          <script>
+            function submitEvaluasi() {
+              const laporanId = "{{ $pengajuan->id }}";
+
+              fetch(`/evaluasi/${laporanId}/submit`, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                  },
+                  body: JSON.stringify({
+                    hasil_evaluasi: "Catatan evaluasi contoh"
+                  })
+                })
+                .then(res => res.json())
+                .then(data => {
+                  if (data.success) {
+                    closePopup();
+                    alert("Hasil evaluasi berhasil dikirim!");
+                    window.location.href = "{{ route('laporan.evaluator.index') }}";
+                  }
+                });
+            }
+          </script>
+
+
         </div>
 
         <script>

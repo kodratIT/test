@@ -29,8 +29,10 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
         'cekprofil' => \App\Http\Middleware\CekProfilLengkap::class,
-    'profile.complete' => \App\Http\Middleware\CheckProfileComplete::class,
-];
-
-    
+        'profile.complete' => \App\Http\Middleware\CheckProfileComplete::class,
+        'is_pengguna' => \App\Http\Middleware\IsPengguna::class,
+        'is_kabid' => \App\Http\Middleware\IsKabid::class,
+        'is_evaluator' => \App\Http\Middleware\IsEvaluator::class,
+        'is_kadis' => \App\Http\Middleware\IsKadis::class,
+    ];
 }

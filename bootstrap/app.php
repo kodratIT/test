@@ -3,6 +3,11 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use App\http\Middleware\IsPengguna;
+use App\http\Middleware\IsKabid;
+use App\http\Middleware\IsEvaluator;
+use App\http\Middleware\IsKadis;
+use App\Http\Middleware\Auth;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -11,7 +16,14 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->alias([
+            //'auth' => Authenticate::class,
+            //'cek_profil' => CekProfilLengkap::
+            'is_pengguna' => IsPengguna::class,
+            'is_kabid' => IsKabid::class,
+            'is_evaluator' => IsEvaluator::class,
+            'is_kadis' => IsKadis::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

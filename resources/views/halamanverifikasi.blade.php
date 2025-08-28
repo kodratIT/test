@@ -1746,9 +1746,26 @@
                                     'Januari','Februari','Maret','April','Mei','Juni',
                                     'Juli','Agustus','September','Oktober','November','Desember'
                                     ];
+
+                                    // siapkan data default (12 bulan × kolom kosong)
+                                    $defaultRows = array_fill(0, 12, [
+                                    'dmn_ndc' => null,
+                                    'beban_tertinggi' => null,
+                                    'capacity_factor' => null,
+                                    'afpm' => null,
+                                    'afa' => null,
+                                    'pembelian' => null,
+                                    'produksi_bruto' => null,
+                                    'pemakaian_sendiri' => null,
+                                    'produksi_netto' => null,
+                                    ]);
+
+                                    // jika status "yes" dan ada data, gunakan datanya, kalau tidak pakai default
+                                    $rows = ($penjualan && $penjualan['status'] === 'yes' && !empty($penjualan['excess_power']))
+                                    ? $penjualan['excess_power']
+                                    : $defaultRows;
                                     @endphp
 
-                                    @if($penjualan && $penjualan['status'] === 'yes')
                                     <div class="bg-white rounded shadow p-4 border-2 border-gray-300 mt-6">
                                         <h2 class="text-lg font-bold text-center border-b pb-2 mb-4">
                                             Data Penjualan Listrik (Excess Power)
@@ -1770,7 +1787,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach($penjualan['excess_power'] as $i => $row)
+                                                    @foreach($rows as $i => $row)
                                                     <tr>
                                                         <td class="border px-3 py-1 text-center">{{ $bulanList[$i] ?? 'Tidak ada' }}</td>
                                                         <td class="border px-3 py-1">{{ $row['dmn_ndc'] ?? 'Tidak ada' }}</td>
@@ -1788,7 +1805,7 @@
                                             </table>
                                         </div>
                                     </div>
-                                    @endif
+
 
 
                                 </div>

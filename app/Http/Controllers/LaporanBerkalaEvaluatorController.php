@@ -48,4 +48,20 @@ class LaporanBerkalaEvaluatorController extends Controller
 
         return view('halamanevaluasi', compact('pengajuan'));
     }
+
+   public function submit(Request $request, $id)
+{
+    $pengajuan = Pengajuan::where('evaluator_id', Auth::id())->findOrFail($id);
+
+    // update status pengajuan
+    $pengajuan->status = 'telah dievaluasi'; 
+    $pengajuan->hasil_evaluasi = $request->hasil_evaluasi ?? null; // kalau ada catatan
+    $pengajuan->save();
+
+    // TODO: opsional kirim ke daftar kabid
+    // misal copy data ke tabel lain atau flag tertentu
+
+    return response()->json(['success' => true]);
+}
+
 }

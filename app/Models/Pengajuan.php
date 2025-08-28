@@ -21,6 +21,7 @@ class Pengajuan extends Model
         'nomor_izin_usaha',
         'tanggal_izin_usaha',
         'masa_berlaku_izin_usaha',
+        'kelebihan_listrik',
         'lampiran_izin_usaha',
 
         'jenis_izin_lingkungan',

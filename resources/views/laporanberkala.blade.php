@@ -250,10 +250,10 @@
                     </div>
                     <div class="mt-6">
                       <label>Upload Lampiran SLO</label>
-                      <input id="lampiran_slo1" name="lampiran_slo1" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" onchange="previewFile(this)">
+                      <input id="lampiran_slo" name="lampiran_slo" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" onchange="previewFile(this)">
                       <small class="text-gray-500">Format PDF Maks 5MB</small>
                     </div>
-                    <div id="preview_lampiran_slo1"></div>
+                    <div id="preview_lampiran_slo"></div>
 
 
                     <!-- SCRIPT TAMBAH, KURANG, DAN VALIDASI FILE -->
@@ -1852,7 +1852,7 @@
 
                     <!-- CHECKBOX -->
                     <label class="inline-block my-4 font-bold text-m text-slate-700 dark:text-white">
-                      <input type="checkbox" class="form-checkbox" id="slo_agreement">
+                      <input type="checkbox" class="form-checkbox" id="checkbox_akhir">
                       <span class="ml-2 text-m">Dengan ini menyatakan bahwa saya bertanggung jawab sepenuhnya atas data yang telah disampaikan.
                         Apabila dikemudian hari ditemukan bahwa data tersebut tidak benar dan mengakibatkan konsekuensi hukum,
                         maka saya atau Badan Usaha / Instansi yang saya wakili bersedia menerima segala bentuk sanksi sesuai dengan ketentuan peraturan perundang-undangan yang berlaku.
@@ -2133,7 +2133,7 @@
       }
 
       // === 4. Validasi checkbox ===
-      const checkbox = document.getElementById("slo_agreement");
+      const checkbox = document.getElementById("checkbox_akhir");
       if (!checkbox || !checkbox.checked) {
         e.preventDefault();
         Swal.fire({
