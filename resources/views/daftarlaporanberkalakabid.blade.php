@@ -157,6 +157,57 @@
                 const firstTdRound = isLast ? ' rounded-bl-2xl' : '';
                 const lastTdRound = isLast ? ' rounded-br-2xl' : '';
 
+                // Kolom Action: jika status disetujui → tampilkan tombol Lihat + Dropdown
+                let actionTd = '';
+                if (statusText === 'disetujui') {
+                  actionTd = `
+    <td class="px-6 py-3 text-xs text-center dark:text-white border-b dark:border-white/40${lastTdRound}">
+      <div class="inline-flex space-x-2">
+        <!-- Tombol Lihat (hidden awal) -->
+        <a id="lihatBtn-${index}" href="${item.action_link}" target="_blank" 
+           class="hidden inline-flex items-center justify-center w-20 h-8 text-sm font-semibold text-white rounded bg-green-600 hover:bg-green-700 transition-all">
+          Lihat
+        </a>
+
+        <!-- Tombol Dropdown -->
+        <div class="relative inline-block text-left">
+          <button onclick="toggleDropdown(this)" type="button" 
+            class="inline-flex items-center justify-center w-28 h-8 text-sm font-semibold text-white bg-blue-500 rounded hover:bg-blue-600 transition-all">
+            Pilih Aksi
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+
+          <!-- Dropdown Menu -->
+          <div class="hidden absolute right-0 mt-2 w-36 bg-white rounded shadow-lg ring-1 ring-black ring-opacity-5 z-50">
+            <a href="file_draft.docx" download onclick="markDownloaded(${index})"
+               class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-100 hover:text-blue-700">
+              Unduh Draft
+            </a>
+            <a href="javascript:;" onclick="document.getElementById('fileInput-${index}').click()"
+               class="block px-4 py-2 text-sm text-gray-700 hover:bg-green-100 hover:text-green-700">
+              Upload Draft
+            </a>
+          </div>
+        </div>
+
+        <!-- Input File Tersembunyi -->
+        <input type="file" id="fileInput-${index}" accept="application/pdf" class="hidden" onchange="handleFileUpload(this, ${index})">
+      </div>
+    </td>
+  `;
+                } else {
+                  actionTd = `
+                <td class="px-4 py-3 text-center${lastTdRound}">
+                  <a href="${item.action_link}" class="text-blue-600 hover:underline font-medium text-sm">
+                    ${item.action_text}
+                  </a>
+                </td>
+              `;
+                }
+
+                // rakit baris tabel
                 tbody += `
               <tr class="${rowClass} hover:bg-gray-100 transition">
                 <td class="px-4 py-3 font-medium text-gray-800${firstTdRound}">${item.no_pengajuan}</td>
@@ -168,11 +219,7 @@
                     ${statusLabel}
                   </span>
                 </td>
-                <td class="px-4 py-3 text-center${lastTdRound}">
-                  <a href="${item.action_link}" class="text-blue-600 hover:underline font-medium text-sm">
-                    ${item.action_text}
-                  </a>
-                </td>
+                ${actionTd}
               </tr>
             `;
               });
@@ -183,7 +230,96 @@
 
         loadLaporanKabid();
       });
+
+      // === Script Tambahan untuk Dropdown & Modal ===
+      function toggleDropdown(button) {
+        const dropdown = button.nextElementSibling;
+        dropdown.classList.toggle("hidden");
+      }
+
+    function handleFileUpload(input, rowId) {
+  if (!rowStates[rowId]) rowStates[rowId] = { downloaded: false, uploaded: false };
+  if (input.files.length > 0) {
+    const file = input.files[0];
+    // Validasi: hanya PDF
+    if (file.type !== "application/pdf") {
+      alert("Hanya file PDF yang diperbolehkan!");
+      input.value = ""; // reset input
+      return;
+    }
+
+    const fileName = file.name;
+    document.getElementById("uploadedFileName").textContent = "File: " + fileName;
+    document.getElementById("successModal").classList.remove("hidden");
+
+    rowStates[rowId].uploaded = true;
+    checkShowLihat(rowId);
+  }
+}
+
+
+      function closeSuccessModal() {
+        document.getElementById("successModal").classList.add("hidden");
+      }
+
+      // Tutup dropdown saat klik di luar
+      window.addEventListener('click', function(e) {
+        document.querySelectorAll('.relative.inline-block').forEach(function(el) {
+          if (!el.contains(e.target)) {
+            const menu = el.querySelector('div');
+            if (menu) menu.classList.add('hidden');
+          }
+        });
+      });
     </script>
+    <script>
+      // Track state per row
+      const rowStates = {};
+
+      function markDownloaded(rowId) {
+        if (!rowStates[rowId]) rowStates[rowId] = {
+          downloaded: false,
+          uploaded: false
+        };
+        rowStates[rowId].downloaded = true;
+        checkShowLihat(rowId);
+      }
+
+      function handleFileUpload(input, rowId) {
+        if (!rowStates[rowId]) rowStates[rowId] = {
+          downloaded: false,
+          uploaded: false
+        };
+        if (input.files.length > 0) {
+          const fileName = input.files[0].name;
+          document.getElementById("uploadedFileName").textContent = "File: " + fileName;
+          document.getElementById("successModal").classList.remove("hidden");
+
+          rowStates[rowId].uploaded = true;
+          checkShowLihat(rowId);
+        }
+      }
+
+      function checkShowLihat(rowId) {
+        const state = rowStates[rowId];
+        if (state.downloaded && state.uploaded) {
+          document.getElementById("lihatBtn-" + rowId).classList.remove("hidden");
+        }
+      }
+    </script>
+
+
+    <!-- Modal Notifikasi Upload -->
+    <div id="successModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+      <div class="bg-white rounded-lg p-6 w-full max-w-sm text-center">
+        <h2 class="text-lg font-semibold text-green-700 mb-2">Berhasil Upload!</h2>
+        <p class="text-sm text-gray-600 mb-4" id="uploadedFileName">Nama file akan ditampilkan di sini.</p>
+        <button onclick="closeSuccessModal()" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+          Tutup
+        </button>
+      </div>
+    </div>
+
     </div>
     </div>
     </div>

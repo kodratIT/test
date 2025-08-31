@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="csrf-token" content="{{ csrf_token() }}" />
   <link rel="icon" type="image/png" href=" {{ asset('assets/img/logo-esdm.svg') }} " />
   <title>Daftar Laporan Berkala Pengguna</title>
   <!--     Fonts and icons     -->
@@ -23,7 +24,7 @@
 <body class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">
   <div class="absolute w-full bg-blue-500 dark:hidden min-h-75" style="background-color: #08A04B"></div>
   @include('components.sidebar')
-  <main class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl">
+  <main id="main-content" class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl">
     <!-- Navbar -->
     <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all ease-in shadow-none duration-250 rounded-2xl lg:flex-nowrap lg:justify-start" navbar-main navbar-scroll="false">
       <div class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit">
@@ -84,9 +85,63 @@
       
       <!-- Header -->
       <div class="p-4 pb-0 mb-0 border-b border-gray-200 rounded-t-2xl">
-        <h6 class="leading-normal text-lg font-bold mb-4 text-gray-700 uppercase">
-          Daftar Laporan Berkala
-        </h6>
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
+          <h6 class="leading-normal text-lg font-bold text-gray-700 uppercase mb-2 sm:mb-0">
+            Daftar Laporan Berkala
+          </h6>
+          <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+            <button id="refresh-btn" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg transition-colors duration-200 flex items-center">
+              <i class="fas fa-sync-alt mr-2" id="refresh-icon"></i>
+              Refresh
+            </button>
+            <a href="{{ route('laporanberkala') }}" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm rounded-lg transition-colors duration-200 flex items-center">
+              <i class="fas fa-plus mr-2"></i>
+              Buat Baru
+            </a>
+          </div>
+        </div>
+        
+        <!-- Search and Filter Controls -->
+        <div class="flex flex-col md:flex-row gap-3 mb-4">
+          <!-- Search Input -->
+          <div class="relative flex-1">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <i class="fas fa-search text-gray-400"></i>
+            </div>
+            <input type="text" id="search-input" 
+                   class="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                   placeholder="Cari berdasarkan nomor pengajuan...">
+          </div>
+          
+          <!-- Status Filter -->
+          <div class="w-full md:w-48">
+            <select id="status-filter" 
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              <option value="">Semua Status</option>
+              <option value="proses evaluasi">Proses Evaluasi</option>
+              <option value="perbaikan">Perlu Perbaikan</option>
+              <option value="ditolak">Ditolak</option>
+              <option value="disetujui">Disetujui</option>
+            </select>
+          </div>
+          
+          <!-- Date Range Filter -->
+          <div class="w-full md:w-48">
+            <select id="date-filter" 
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              <option value="">Semua Tanggal</option>
+              <option value="today">Hari Ini</option>
+              <option value="week">Minggu Ini</option>
+              <option value="month">Bulan Ini</option>
+              <option value="year">Tahun Ini</option>
+            </select>
+          </div>
+        </div>
+        
+        <!-- Results Info -->
+        <div id="results-info" class="text-sm text-gray-600 mb-2">
+          <span id="showing-text">Menampilkan data...</span>
+        </div>
       </div>
 
       <!-- Table -->
@@ -104,76 +159,434 @@
           <tbody id="pengajuan-table" class="bg-white"></tbody>
         </table>
       </div>
+      
+      <!-- Pagination -->
+      <div id="pagination-container" class="px-4 py-3 border-t border-gray-200 bg-gray-50 rounded-b-2xl hidden">
+        <div class="flex flex-col sm:flex-row justify-between items-center">
+          <div class="text-sm text-gray-700 mb-2 sm:mb-0">
+            <span id="pagination-info">Menampilkan 1 - 10 dari 0 data</span>
+          </div>
+          <div class="flex space-x-1" id="pagination-buttons">
+            <!-- Pagination buttons will be inserted here -->
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
   $(function () {
-    function loadPengajuan() {
-      $.ajax({
-        url: "/daftar-pengajuan/list",
-        type: "GET",
-        dataType: "json",
-        success: function (data) {
-          let tbody = '';
-          $.each(data, function (index, item) {
-            const createdAt = new Date(item.created_at);
-            const tanggal =
-              createdAt.getDate().toString().padStart(2, '0') + "-" +
-              (createdAt.getMonth() + 1).toString().padStart(2, '0') + "-" +
-              createdAt.getFullYear();
-
-            // Normalisasi status
-            const status = (item.status || '').trim().toLowerCase();
-
-            // Map warna status
-            const statusMap = {
-              'proses evaluasi': 'bg-orange-400 text-white',
-              'perbaikan': 'bg-red-500 text-white',
-              'ditolak': 'bg-red-600 text-white',
-              'disetujui': 'bg-green-600 text-white'
-            };
-            const badgeClass = statusMap[status] || 'bg-gray-400 text-white';
-            const statusLabel = status.replace(/\b\w/g, c => c.toUpperCase());
-
-            // striped row
-            const rowClass = index % 2 === 0 ? "bg-white" : "bg-gray-50";
-
-            // Sudut bawah hanya di baris terakhir
-            const isLast = index === data.length - 1;
-            const firstTdRound = isLast ? ' rounded-bl-2xl' : '';
-            const lastTdRound  = isLast ? ' rounded-br-2xl' : '';
-
-            tbody += `
-              <tr class="${rowClass} hover:bg-gray-100 transition border-b last:border-b-0">
-                <td class="px-4 py-3 text-xs font-medium${firstTdRound}">${item.no_pengajuan}</td>
-                <td class="px-4 py-3 text-center text-">${tanggal}</td>
-                <td class="px-4 py-3 text-center text-xs">${item.catatan ?? '-'}</td>
-                <td class="px-4 py-3 text-center">
-                  <span class="inline-block px-3 py-1 text-xs font-semibold rounded-full ${badgeClass} whitespace-nowrap">
-                    ${statusLabel}
-                  </span>
-                </td>
-                <td class="px-4 py-3 text-center${lastTdRound}">
-                  ${
-                    item.action_text 
-                    ? `<a href="${item.action_link}" class="text-blue-600 hover:underline font-medium text-xs">${item.action_text}</a>` 
-                    : ''
-                  }
-                </td>
-              </tr>
-            `;
-          });
-          $('#pengajuan-table').html(tbody);
-        },
-        error: function (xhr) {
-          console.log(xhr.responseText);
+    // Global variables
+    let currentPage = 1;
+    let totalPages = 1;
+    let totalRecords = 0;
+    let isLoading = false;
+    let searchTimeout;
+    
+    // CSRF Token
+    const csrfToken = $('meta[name="csrf-token"]').attr('content');
+    if (csrfToken) {
+      $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': csrfToken
         }
       });
     }
 
+    // Show loading state
+    function showLoading() {
+      isLoading = true;
+      $('#refresh-icon').addClass('fa-spin');
+      $('#pengajuan-table').html(`
+        <tr>
+          <td colspan="5" class="text-center py-8">
+            <div class="flex justify-center items-center">
+              <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <span class="text-gray-600">Memuat data...</span>
+            </div>
+          </td>
+        </tr>
+      `);
+    }
+
+    // Hide loading state
+    function hideLoading() {
+      isLoading = false;
+      $('#refresh-icon').removeClass('fa-spin');
+    }
+
+    // Show empty state
+    function showEmpty() {
+      $('#pengajuan-table').html(`
+        <tr>
+          <td colspan="5" class="text-center py-12">
+            <div class="flex flex-col items-center">
+              <svg class="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+              </svg>
+              <p class="text-gray-500 text-lg font-medium mb-1">Belum ada data pengajuan</p>
+              <p class="text-gray-400 text-sm mb-4">Data pengajuan laporan berkala akan muncul di sini</p>
+              <a href="{{ route('laporanberkala') }}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm transition-colors duration-200">
+                <i class="fas fa-plus mr-2"></i>Buat Pengajuan Baru
+              </a>
+            </div>
+          </td>
+        </tr>
+      `);
+      $('#pagination-container').addClass('hidden');
+    }
+
+    // Create enhanced action buttons
+    function createActionButtons(item) {
+      const status = (item.status || '').trim().toLowerCase();
+      const canEdit = !['disetujui', 'ditolak'].includes(status);
+      const canDelete = status === 'draft';
+      
+      let actions = `
+        <div class="relative group">
+          <button class="p-2 text-gray-600 hover:text-gray-900 focus:outline-none rounded-lg hover:bg-gray-100 transition-colors duration-200" 
+                  onclick="toggleActionMenu(event, ${item.id})">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path>
+            </svg>
+          </button>
+          <div id="action-menu-${item.id}" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50 hidden">
+            <div class="py-1">
+              <a href="/pengajuan/${item.id}/detail" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                <i class="fas fa-eye mr-3 w-4"></i>Lihat Detail
+              </a>
+      `;
+      
+      if (canEdit) {
+        actions += `
+              <a href="/pengajuan/${item.id}/edit" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                <i class="fas fa-edit mr-3 w-4"></i>Edit Pengajuan
+              </a>
+        `;
+      }
+      
+      actions += `
+              <a href="/pengajuan/${item.id}/download" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                <i class="fas fa-download mr-3 w-4"></i>Download Dokumen
+              </a>
+      `;
+      
+      if (canDelete) {
+        actions += `
+              <button onclick="deleteDraft(${item.id})" class="w-full flex items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+                <i class="fas fa-trash mr-3 w-4"></i>Hapus Draft
+              </button>
+        `;
+      }
+      
+      actions += `
+            </div>
+          </div>
+        </div>
+      `;
+      
+      return actions;
+    }
+
+    // Toggle action menu
+    window.toggleActionMenu = function(event, itemId) {
+      event.stopPropagation();
+      
+      // Close all other menus
+      $('[id^="action-menu-"]').addClass('hidden');
+      
+      // Toggle current menu
+      $(`#action-menu-${itemId}`).toggleClass('hidden');
+    };
+
+    // Close menus when clicking outside
+    $(document).on('click', function() {
+      $('[id^="action-menu-"]').addClass('hidden');
+    });
+
+    // Delete draft function
+    window.deleteDraft = function(itemId) {
+      Swal.fire({
+        title: 'Hapus Draft?',
+        text: 'Draft yang dihapus tidak dapat dikembalikan!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc2626',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Ya, Hapus!',
+        cancelButtonText: 'Batal'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+            url: `/pengajuan/${itemId}/delete`,
+            type: 'DELETE',
+            success: function(response) {
+              Swal.fire('Berhasil!', 'Draft berhasil dihapus.', 'success');
+              loadPengajuan();
+            },
+            error: function(xhr) {
+              Swal.fire('Error!', 'Gagal menghapus draft.', 'error');
+            }
+          });
+        }
+      });
+    };
+
+    // Load pengajuan with enhanced functionality
+    function loadPengajuan(page = 1, search = '', status = '', dateFilter = '') {
+      if (isLoading) return;
+      
+      showLoading();
+      currentPage = page;
+      
+      const params = {
+        page: page,
+        per_page: 10
+      };
+      
+      if (search) params.search = search;
+      if (status) params.status = status;
+      if (dateFilter) params.date_filter = dateFilter;
+      
+      $.ajax({
+        url: "/daftar-pengajuan/list",
+        type: "GET",
+        data: params,
+        dataType: "json",
+        success: function (response) {
+          hideLoading();
+          
+          const data = response.data || response;
+          const pagination = response.pagination || {};
+          
+          totalRecords = pagination.total || data.length || 0;
+          totalPages = pagination.last_page || 1;
+          currentPage = pagination.current_page || page;
+          
+          if (totalRecords === 0) {
+            showEmpty();
+            updateResultsInfo(0, 0, 0);
+            return;
+          }
+          
+          let tbody = '';
+          $.each(data, function (index, item) {
+            const createdAt = new Date(item.created_at);
+            const tanggal = createdAt.getDate().toString().padStart(2, '0') + "-" +
+              (createdAt.getMonth() + 1).toString().padStart(2, '0') + "-" +
+              createdAt.getFullYear();
+
+            const status = (item.status || '').trim().toLowerCase();
+            const statusMap = {
+              'proses evaluasi': 'bg-orange-100 text-orange-800 border border-orange-200',
+              'perbaikan': 'bg-red-100 text-red-800 border border-red-200',
+              'ditolak': 'bg-red-100 text-red-800 border border-red-200',
+              'disetujui': 'bg-green-100 text-green-800 border border-green-200',
+              'draft': 'bg-gray-100 text-gray-800 border border-gray-200'
+            };
+            const badgeClass = statusMap[status] || 'bg-gray-100 text-gray-800 border border-gray-200';
+            const statusLabel = status.replace(/\b\w/g, c => c.toUpperCase());
+
+            const rowClass = index % 2 === 0 ? "bg-white" : "bg-gray-50";
+            const isLast = index === data.length - 1;
+            const firstTdRound = isLast ? ' rounded-bl-2xl' : '';
+            const lastTdRound = isLast ? ' rounded-br-2xl' : '';
+
+            tbody += `
+              <tr class="${rowClass} hover:bg-gray-100 transition-colors duration-200 border-b last:border-b-0">
+                <td class="px-4 py-3 text-xs font-medium text-gray-900${firstTdRound}">
+                  <div class="font-mono text-blue-600">${item.no_pengajuan}</div>
+                </td>
+                <td class="px-4 py-3 text-center text-sm text-gray-600">${tanggal}</td>
+                <td class="px-4 py-3 text-center text-xs text-gray-600 max-w-xs truncate" title="${item.catatan || '-'}">
+                  ${item.catatan || '-'}
+                </td>
+                <td class="px-4 py-3 text-center">
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${badgeClass}">
+                    ${statusLabel}
+                  </span>
+                </td>
+                <td class="px-4 py-3 text-center${lastTdRound}">
+                  ${createActionButtons(item)}
+                </td>
+              </tr>
+            `;
+          });
+          
+          $('#pengajuan-table').html(tbody);
+          
+          // Update pagination
+          updatePagination();
+          
+          // Update results info
+          const startRecord = ((currentPage - 1) * 10) + 1;
+          const endRecord = Math.min(currentPage * 10, totalRecords);
+          updateResultsInfo(startRecord, endRecord, totalRecords);
+          
+        },
+        error: function (xhr, status, error) {
+          hideLoading();
+          
+          let errorMessage = 'Terjadi kesalahan saat memuat data';
+          
+          if (xhr.responseJSON && xhr.responseJSON.message) {
+            errorMessage = xhr.responseJSON.message;
+          } else if (xhr.status === 404) {
+            errorMessage = 'Data tidak ditemukan';
+          } else if (xhr.status === 500) {
+            errorMessage = 'Kesalahan server internal';
+          } else if (xhr.status === 0) {
+            errorMessage = 'Tidak dapat terhubung ke server';
+          }
+          
+          Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: errorMessage,
+            confirmButtonColor: '#dc2626'
+          });
+          
+          console.error('AJAX Error:', {
+            status: xhr.status,
+            error: error,
+            response: xhr.responseText
+          });
+        }
+      });
+    }
+
+    // Update results info
+    function updateResultsInfo(start, end, total) {
+      $('#showing-text').text(`Menampilkan ${start}-${end} dari ${total} data`);
+    }
+
+    // Update pagination
+    function updatePagination() {
+      if (totalPages <= 1) {
+        $('#pagination-container').addClass('hidden');
+        return;
+      }
+      
+      $('#pagination-container').removeClass('hidden');
+      
+      let paginationHtml = '';
+      
+      // Previous button
+      if (currentPage > 1) {
+        paginationHtml += `
+          <button onclick="changePage(${currentPage - 1})" 
+                  class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50 hover:text-gray-700">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+        `;
+      } else {
+        paginationHtml += `
+          <span class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-300 bg-gray-100 border border-gray-300 rounded-l-md cursor-not-allowed">
+            <i class="fas fa-chevron-left"></i>
+          </span>
+        `;
+      }
+      
+      // Page numbers
+      const startPage = Math.max(1, currentPage - 2);
+      const endPage = Math.min(totalPages, currentPage + 2);
+      
+      for (let i = startPage; i <= endPage; i++) {
+        if (i === currentPage) {
+          paginationHtml += `
+            <span class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 border border-blue-300">
+              ${i}
+            </span>
+          `;
+        } else {
+          paginationHtml += `
+            <button onclick="changePage(${i})" 
+                    class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 hover:bg-gray-50 hover:text-gray-700">
+              ${i}
+            </button>
+          `;
+        }
+      }
+      
+      // Next button
+      if (currentPage < totalPages) {
+        paginationHtml += `
+          <button onclick="changePage(${currentPage + 1})" 
+                  class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50 hover:text-gray-700">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        `;
+      } else {
+        paginationHtml += `
+          <span class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-300 bg-gray-100 border border-gray-300 rounded-r-md cursor-not-allowed">
+            <i class="fas fa-chevron-right"></i>
+          </span>
+        `;
+      }
+      
+      $('#pagination-buttons').html(paginationHtml);
+      $('#pagination-info').text(`Menampilkan ${((currentPage - 1) * 10) + 1} - ${Math.min(currentPage * 10, totalRecords)} dari ${totalRecords} data`);
+    }
+
+    // Change page function
+    window.changePage = function(page) {
+      if (page !== currentPage && page >= 1 && page <= totalPages) {
+        loadPengajuan(page, $('#search-input').val(), $('#status-filter').val(), $('#date-filter').val());
+      }
+    };
+
+    // Search functionality
+    $('#search-input').on('input', function() {
+      const searchValue = $(this).val();
+      
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(function() {
+        loadPengajuan(1, searchValue, $('#status-filter').val(), $('#date-filter').val());
+      }, 500);
+    });
+
+    // Filter functionality
+    $('#status-filter, #date-filter').on('change', function() {
+      loadPengajuan(1, $('#search-input').val(), $('#status-filter').val(), $('#date-filter').val());
+    });
+
+    // Refresh functionality
+    $('#refresh-btn').on('click', function() {
+      $('#search-input').val('');
+      $('#status-filter').val('');
+      $('#date-filter').val('');
+      loadPengajuan(1);
+    });
+
+    // Sidebar toggle functionality
+    document.addEventListener('DOMContentLoaded', function () {
+      const toggleButton = document.querySelector('[sidenav-trigger]');
+      const sidebar = document.getElementById('sidenav-main');
+      const mainContent = document.getElementById('main-content');
+
+      if (toggleButton && sidebar && mainContent) {
+        toggleButton.addEventListener('click', function () {
+          sidebar.classList.toggle('-translate-x-full');
+          sidebar.classList.toggle('translate-x-0');
+
+          if (mainContent.classList.contains('xl:ml-68')) {
+            mainContent.classList.remove('xl:ml-68');
+            mainContent.classList.add('ml-0');
+          } else {
+            mainContent.classList.remove('ml-0');
+            mainContent.classList.add('xl:ml-68');
+          }
+        });
+      }
+    });
+
+    // Initial load
     loadPengajuan();
   });
 </script>

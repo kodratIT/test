@@ -85,7 +85,7 @@ $isProfileComplete = $user && $user->isProfileComplete();
       <li class="mt-0.5 w-full">
         <a href="{{ route('logout') }}"
           onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-          class="block w-full text-left py-2.5 text-lg ease-nav-brand flex items-center whitespace-nowrap px-4 transition-colors
+          class="block w-full text-left py-2.7 text-lg ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors
             dark:text-white dark:opacity-80 hover:bg-red-50 dark:hover:bg-red-600 rounded-lg">
           <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
             <i class="relative top-0 text-lg leading-normal ni ni-bold-left text-red-500"></i>

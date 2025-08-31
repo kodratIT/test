@@ -29,6 +29,13 @@ Route::middleware(['auth', 'is_pengguna'])->group(function () {
 
     Route::get('/daftar-pengajuan', [DaftarPengajuanController::class, 'index'])->name('daftar.pengajuan.index');
     Route::get('/daftar-pengajuan/list', [DaftarPengajuanController::class, 'list'])->name('daftar.pengajuan.list');
+    
+    // Routes for pengajuan CRUD
+    Route::get('/pengajuan/{id}/detail', [DaftarPengajuanController::class, 'detail'])->name('pengajuan.detail');
+    Route::get('/pengajuan/{id}/edit', [DaftarPengajuanController::class, 'edit'])->name('pengajuan.edit');
+    Route::put('/pengajuan/{id}', [DaftarPengajuanController::class, 'update'])->name('pengajuan.update');
+    Route::delete('/pengajuan/{id}/delete', [DaftarPengajuanController::class, 'delete'])->name('pengajuan.delete');
+    Route::get('/pengajuan/{id}/download', [DaftarPengajuanController::class, 'download'])->name('pengajuan.download');
 
 
     Route::get('daftarpengajuanpengguna', function () {
