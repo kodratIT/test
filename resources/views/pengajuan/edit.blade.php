@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/png" href=" {{ asset('assets/img/logo-esdm.svg') }} " />
-  <title>Pengajuan Surat</title>
+  <title>Perbaikan Laporan Berkala</title>
   <!--     Fonts and icons     -->
 
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
@@ -64,9 +64,9 @@
             </li>
             <li
               class="text-sm pl-2 capitalize leading-normal text-white before:float-left before:pr-2 before:text-white before:content-['/']"
-              aria-current="page">Buat Pengajuan</li>
+              aria-current="page">Perbaikan Laporan</li>
           </ol>
-          <h6 class="mb-4 font-bold text-white capitalize">Buat Pengajuan</h6>
+          <h6 class="mb-4 font-bold text-white capitalize">Perbaikan Laporan Berkala</h6>
         </nav>
 
         <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
@@ -124,79 +124,139 @@
             <div class="flex flex-col -mx-3">
               <div class="w-full max-w-full px-3">
 
-                <h2 class="text-xl font-bold mb-6 uppercase text-center text-gray-700 dark:text-white">laporan Berkala</h2>
+                <h2 class="text-xl font-bold mb-6 uppercase text-center text-gray-700 dark:text-white">Perbaikan Laporan Berkala</h2>
 
+                @if($pengajuan->status == 'perbaikan')
+                <!-- Status Badge -->
+                <div class="mb-6 flex justify-center">
+                  <div class="inline-flex items-center px-4 py-2 bg-yellow-100 border border-yellow-300 rounded-lg">
+                    <i class="fas fa-edit text-yellow-600 mr-2"></i>
+                    <span class="text-sm font-medium text-yellow-800">Status: Perlu Perbaikan</span>
+                  </div>
+                </div>
+                @endif
 
-
-
-                <form action="{{ route('pengajuan.store') }}"
+                <form action="{{ route('pengajuan.update', $pengajuan->id) }}"
                   method="POST"
                   enctype="multipart/form-data"
                   novalidate
                   onsubmit="return validateForm(event)">
                   <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                  <input type="hidden" name="_method" value="PUT">
                   <div id="page1" class="page">
 
                     <!-- IZIN USAHA -->
                     <h3 class="text-lg font-bold uppercase mt-2 pb-2 text-gray-700 dark:text-white">Izin Usaha Penyediaan Tenaga Listrik</h3>
+                    
+                    @if($pengajuan->status == 'perbaikan' && $pengajuan->catatan_perbaikan_izin_usaha)
+                    <!-- Catatan Perbaikan untuk Izin Usaha -->
+                    <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                      <div class="flex items-start">
+                        <i class="fas fa-exclamation-circle text-red-500 mt-1 mr-2"></i>
+                        <div>
+                          <p class="text-sm font-medium text-red-800">Catatan Perbaikan:</p>
+                          <p class="text-sm text-red-700 mt-1">{!! nl2br(e($pengajuan->catatan_perbaikan_izin_usaha)) !!}</p>
+                        </div>
+                      </div>
+                    </div>
+                    @endif
+                    
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <label>Nomor</label>
-                        <input name="nomor_izin_usaha" id="nomor_izin_usaha" type="text" class="w-full border p-2 rounded-lg" required>
+                        <input name="nomor_izin_usaha" id="nomor_izin_usaha" type="text" class="w-full border p-2 rounded-lg" value="{{ old('nomor_izin_usaha', $pengajuan->nomor_izin_usaha) }}" required>
                       </div>
                       <div>
                         <label>Tanggal</label>
-                        <input name="tanggal_izin_usaha" id="tanggal_izin_usaha" type="date" class="w-full border p-2 rounded-lg datepicker" placeholder="DD-MM-YYYY" required>
+                        <input name="tanggal_izin_usaha" id="tanggal_izin_usaha" type="date" class="w-full border p-2 rounded-lg datepicker" value="{{ old('tanggal_izin_usaha', $pengajuan->tanggal_izin_usaha) }}" placeholder="DD-MM-YYYY" required>
                       </div>
                       <div>
                         <label>Masa Berlaku</label>
-                        <input name="masa_berlaku_izin_usaha" id="masa_berlaku_izin_usaha" type="date" class="w-full border p-2 rounded-lg datepicker" placeholder="DD-MM-YYYY" required>
+                        <input name="masa_berlaku_izin_usaha" id="masa_berlaku_izin_usaha" type="date" class="w-full border p-2 rounded-lg datepicker" value="{{ old('masa_berlaku_izin_usaha', $pengajuan->masa_berlaku_izin_usaha) }}" placeholder="DD-MM-YYYY" required>
                       </div>
                       <div>
                         <label>Kelebihan Tenaga Listrik dijual Kepada</label>
-                        <input name="kelebihan_listrik" id="kelebihan_listrik" type="text" class="w-full border p-2 rounded-lg" required>
+                        <input name="kelebihan_listrik" id="kelebihan_listrik" type="text" class="w-full border p-2 rounded-lg" value="{{ old('kelebihan_listrik', $pengajuan->kelebihan_listrik) }}" required>
                       </div>
 
                     </div>
                     <div class="mt-6">
-                      <label>Upload IUPLTS </label>
-                      <input id="lampiran_izin_usaha" name="lampiran_izin_usaha" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" required onchange="previewFile(this)">
-                      <small class="text-gray-500">Format PDF Maks 5MB</small>
+                      <label>Upload IUPLTS</label>
+                      @if($pengajuan->lampiran_izin_usaha)
+                      <div class="mb-2 text-sm text-gray-600">
+                        <i class="fas fa-file-pdf text-red-500 mr-1"></i>
+                        File saat ini: <a href="{{ asset('storage/' . $pengajuan->lampiran_izin_usaha) }}" target="_blank" class="text-blue-600 underline">Lihat file</a>
+                      </div>
+                      @endif
+                      <input id="lampiran_izin_usaha" name="lampiran_izin_usaha" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" onchange="previewFile(this)">
+                      <small class="text-gray-500">Format PDF Maks 5MB (Kosongkan jika tidak ingin mengubah file)</small>
                     </div>
                     <div id="preview_lampiran_izin_usaha"></div>
 
                     <!-- IZIN LINGKUNGAN    -->
                     <h3 class="text-lg font-bold uppercase mt-6 pb-2 text-gray-700 dark:text-white">Izin Lingkungan</h3>
+                    
+                    @if($pengajuan->status == 'perbaikan' && $pengajuan->catatan_perbaikan_izin_lingkungan)
+                    <!-- Catatan Perbaikan untuk Izin Lingkungan -->
+                    <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                      <div class="flex items-start">
+                        <i class="fas fa-exclamation-circle text-red-500 mt-1 mr-2"></i>
+                        <div>
+                          <p class="text-sm font-medium text-red-800">Catatan Perbaikan:</p>
+                          <p class="text-sm text-red-700 mt-1">{!! nl2br(e($pengajuan->catatan_perbaikan_izin_lingkungan)) !!}</p>
+                        </div>
+                      </div>
+                    </div>
+                    @endif
+                    
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <label>Jenis Izin</label>
-                        <input name="jenis_izin_lingkungan" id="jenis_izin_lingkungan" type="text" class="w-full border p-2 rounded-lg" required>
+                        <input name="jenis_izin_lingkungan" id="jenis_izin_lingkungan" type="text" class="w-full border p-2 rounded-lg" value="{{ old('jenis_izin_lingkungan', $pengajuan->jenis_izin_lingkungan) }}" required>
                       </div>
                       <div>
                         <label>Nomor</label>
-                        <input name="nomor_izin_lingkungan" id="nomor_izin_lingkungan" type="text" class="w-full border p-2 rounded-lg" required>
+                        <input name="nomor_izin_lingkungan" id="nomor_izin_lingkungan" type="text" class="w-full border p-2 rounded-lg" value="{{ old('nomor_izin_lingkungan', $pengajuan->nomor_izin_lingkungan) }}" required>
                       </div>
                       <div>
                         <label>Tanggal</label>
-                        <input name="tanggal_izin_lingkungan" id="tanggal_izin_lingkungan" type="text" class="w-full border p-2 rounded-lg datepicker" placeholder="DD-MM-YYYY" required>
+                        <input name="tanggal_izin_lingkungan" id="tanggal_izin_lingkungan" type="text" class="w-full border p-2 rounded-lg datepicker" value="{{ old('tanggal_izin_lingkungan', $pengajuan->tanggal_izin_lingkungan) }}" placeholder="DD-MM-YYYY" required>
                       </div>
                       <div>
                         <label>Masa Berlaku</label>
-                        <input name="masa_berlaku_izin_lingkungan" id="masa_berlaku_izin_lingkungan" type="text" class="w-full border p-2 rounded-lg datepicker" placeholder="DD-MM-YYYY" required>
+                        <input name="masa_berlaku_izin_lingkungan" id="masa_berlaku_izin_lingkungan" type="text" class="w-full border p-2 rounded-lg datepicker" value="{{ old('masa_berlaku_izin_lingkungan', $pengajuan->masa_berlaku_izin_lingkungan) }}" placeholder="DD-MM-YYYY" required>
                       </div>
                     </div>
 
                     <div class="mt-6">
                       <label>Upload Izin Lingkungan</label>
-                      <input id="lampiran_izin_lingkungan" name="lampiran_izin_lingkungan" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" required onchange="previewFile(this)">
-                      <small class="text-gray-500">Format PDF Maks 5MB</small>
+                      @if($pengajuan->lampiran_izin_lingkungan)
+                      <div class="mb-2 text-sm text-gray-600">
+                        <i class="fas fa-file-pdf text-red-500 mr-1"></i>
+                        File saat ini: <a href="{{ asset('storage/' . $pengajuan->lampiran_izin_lingkungan) }}" target="_blank" class="text-blue-600 underline">Lihat file</a>
+                      </div>
+                      @endif
+                      <input id="lampiran_izin_lingkungan" name="lampiran_izin_lingkungan" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" onchange="previewFile(this)">
+                      <small class="text-gray-500">Format PDF Maks 5MB (Kosongkan jika tidak ingin mengubah file)</small>
                     </div>
                     <div id="preview_lampiran_izin_lingkungan"></div>
 
                     <!-- Tombol Aksi -->
 
                     <h3 class="text-lg font-bold uppercase mt-6 pb-2 text-gray-700 dark:text-white">Sertifikat Laik Operasi (SLO)</h3>
-
+                    
+                    @if($pengajuan->status == 'perbaikan' && $pengajuan->catatan_perbaikan_slo)
+                    <!-- Catatan Perbaikan untuk SLO -->
+                    <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                      <div class="flex items-start">
+                        <i class="fas fa-exclamation-circle text-red-500 mt-1 mr-2"></i>
+                        <div>
+                          <p class="text-sm font-medium text-red-800">Catatan Perbaikan:</p>
+                          <p class="text-sm text-red-700 mt-1">{!! nl2br(e($pengajuan->catatan_perbaikan_slo)) !!}</p>
+                        </div>
+                      </div>
+                    </div>
+                    @endif
 
                     <div class="flex justify-end gap-2 mb-4">
                       <button type="button" onclick="addColumn(event)" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Tambah</button>
@@ -209,49 +269,101 @@
                         <thead class="bg-gray-200 text-center">
                           <tr>
                             <th class="border border-gray-300 p-2 bg-gray-100 text-left sticky left-0 z-10 min-w-[150px] max-w-[150px] w-[150px]">Field</th>
-                            <th class="border border-gray-300 p-2 min-w-[220px]">SLO-1</th>
+                            @if($pengajuan->slo && count($pengajuan->slo) > 0)
+                              @foreach($pengajuan->slo as $index => $slo)
+                                <th class="border border-gray-300 p-2 min-w-[220px]">SLO-{{ $loop->iteration }}</th>
+                              @endforeach
+                            @else
+                              <th class="border border-gray-300 p-2 min-w-[220px]">SLO-1</th>
+                            @endif
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
                             <td class="border border-gray-300 p-2 font-semibold bg-gray-50 sticky left-0">Nomor Sertifikat</td>
-                            <td class="border border-gray-300 p-2">
-                              <input name="nomor_sertifikat_slo[]" id="nomor_sertifikat_1" type="text" class="w-full border p-1 rounded" placeholder="">
-                            </td>
+                            @if($pengajuan->slo && count($pengajuan->slo) > 0)
+                              @foreach($pengajuan->slo as $index => $slo)
+                                <td class="border border-gray-300 p-2">
+                                  <input name="nomor_sertifikat_slo[]" id="nomor_sertifikat_{{ $loop->iteration }}" type="text" class="w-full border p-1 rounded" value="{{ old('nomor_sertifikat_slo.' . $index, $slo['nomor_sertifikat_slo'] ?? '') }}">
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border border-gray-300 p-2">
+                                <input name="nomor_sertifikat_slo[]" id="nomor_sertifikat_1" type="text" class="w-full border p-1 rounded" placeholder="">
+                              </td>
+                            @endif
                           </tr>
                           <tr>
                             <td class="border border-gray-300 p-2 font-semibold bg-gray-50 sticky left-0">Nomor Register</td>
-                            <td class="border border-gray-300 p-2">
-                              <input name="nomor_register_slo[]" id="nomor_register_1" type="text" class="w-full border p-1 rounded" placeholder="">
-                            </td>
+                            @if($pengajuan->slo && count($pengajuan->slo) > 0)
+                              @foreach($pengajuan->slo as $index => $slo)
+                                <td class="border border-gray-300 p-2">
+                                  <input name="nomor_register_slo[]" id="nomor_register_{{ $loop->iteration }}" type="text" class="w-full border p-1 rounded" value="{{ old('nomor_register_slo.' . $index, $slo['nomor_register_slo'] ?? '') }}">
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border border-gray-300 p-2">
+                                <input name="nomor_register_slo[]" id="nomor_register_1" type="text" class="w-full border p-1 rounded" placeholder="">
+                              </td>
+                            @endif
                           </tr>
 
                           <tr>
                             <td class="border border-gray-300 p-2 font-semibold bg-gray-50 sticky left-0">Tanggal Terbit</td>
-                            <td class="border border-gray-300 p-2">
-                              <input name="tanggal_terbit_slo[]" id="tanggal_terbit_slo_1" type="text" class="w-full border p-1 rounded datepicker" placeholder="DD-MM-YYYY">
-                            </td>
+                            @if($pengajuan->slo && count($pengajuan->slo) > 0)
+                              @foreach($pengajuan->slo as $index => $slo)
+                                <td class="border border-gray-300 p-2">
+                                  <input name="tanggal_terbit_slo[]" id="tanggal_terbit_slo_{{ $loop->iteration }}" type="text" class="w-full border p-1 rounded datepicker" value="{{ old('tanggal_terbit_slo.' . $index, $slo['tanggal_terbit_slo'] ?? '') }}" placeholder="DD-MM-YYYY">
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border border-gray-300 p-2">
+                                <input name="tanggal_terbit_slo[]" id="tanggal_terbit_slo_1" type="text" class="w-full border p-1 rounded datepicker" placeholder="DD-MM-YYYY">
+                              </td>
+                            @endif
                           </tr>
                           <tr>
                             <td class="border border-gray-300 p-2 font-semibold bg-gray-50 sticky left-0">Tanggal Masa Berlaku</td>
-                            <td class="border border-gray-300 p-2">
-                              <input name="tanggal_masa_berlaku_slo[]" id="tanggal_masa_berlaku_slo_1" type="text" class="w-full border p-1 rounded datepicker" placeholder="DD-MM-YYYY">
-                            </td>
+                            @if($pengajuan->slo && count($pengajuan->slo) > 0)
+                              @foreach($pengajuan->slo as $index => $slo)
+                                <td class="border border-gray-300 p-2">
+                                  <input name="tanggal_masa_berlaku_slo[]" id="tanggal_masa_berlaku_slo_{{ $loop->iteration }}" type="text" class="w-full border p-1 rounded datepicker" value="{{ old('tanggal_masa_berlaku_slo.' . $index, $slo['tanggal_masa_berlaku_slo'] ?? '') }}" placeholder="DD-MM-YYYY">
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border border-gray-300 p-2">
+                                <input name="tanggal_masa_berlaku_slo[]" id="tanggal_masa_berlaku_slo_1" type="text" class="w-full border p-1 rounded datepicker" placeholder="DD-MM-YYYY">
+                              </td>
+                            @endif
                           </tr>
 
                           <tr>
                             <td class="border border-gray-300 p-2 font-semibold bg-gray-50 sticky left-0">Lembaga Inspeksi Teknik (LIT)</td>
-                            <td class="border border-gray-300 p-2">
-                              <input name="lit[]" id="lit_1" type="text" class="w-full border p-1 rounded">
-                            </td>
+                            @if($pengajuan->slo && count($pengajuan->slo) > 0)
+                              @foreach($pengajuan->slo as $index => $slo)
+                                <td class="border border-gray-300 p-2">
+                                  <input name="lit[]" id="lit_{{ $loop->iteration }}" type="text" class="w-full border p-1 rounded" value="{{ old('lit.' . $index, $slo['lit'] ?? '') }}">
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border border-gray-300 p-2">
+                                <input name="lit[]" id="lit_1" type="text" class="w-full border p-1 rounded">
+                              </td>
+                            @endif
                           </tr>
                         </tbody>
                       </table>
                     </div>
                     <div class="mt-6">
                       <label>Upload SLO</label>
+                      @if($pengajuan->lampiran_slo)
+                      <div class="mb-2 text-sm text-gray-600">
+                        <i class="fas fa-file-pdf text-red-500 mr-1"></i>
+                        File saat ini: <a href="{{ asset('storage/' . $pengajuan->lampiran_slo) }}" target="_blank" class="text-blue-600 underline">Lihat file</a>
+                      </div>
+                      @endif
                       <input id="lampiran_slo" name="lampiran_slo" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" onchange="previewFile(this)">
-                      <small class="text-gray-500">Format PDF Maks 5MB</small>
+                      <small class="text-gray-500">Format PDF Maks 5MB (Kosongkan jika tidak ingin mengubah file)</small>
                     </div>
                     <div id="preview_lampiran_slo"></div>
 
@@ -401,7 +513,19 @@
 
                     <!-- -->
                     <h3 class="text-lg font-bold uppercase mt-6 pb-2 text-gray-700 dark:text-white">SERTIFIKAT KOMPETENSI TENAGA TEKNIK KETENAGALISTRIKAN (SKTTK)</h3>
-
+                    
+                    @if($pengajuan->status == 'perbaikan' && $pengajuan->catatan_perbaikan_skttk)
+                    <!-- Catatan Perbaikan untuk SKTTK -->
+                    <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                      <div class="flex items-start">
+                        <i class="fas fa-exclamation-circle text-red-500 mt-1 mr-2"></i>
+                        <div>
+                          <p class="text-sm font-medium text-red-800">Catatan Perbaikan:</p>
+                          <p class="text-sm text-red-700 mt-1">{!! nl2br(e($pengajuan->catatan_perbaikan_skttk)) !!}</p>
+                        </div>
+                      </div>
+                    </div>
+                    @endif
 
                     <div class="flex justify-end gap-2 mb-4">
                       <button type="button" onclick="addSKTTKColumn()" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Tambah</button>
@@ -414,81 +538,183 @@
                         <thead>
                           <tr>
                             <th class="border border-gray-300 p-2 bg-gray-100 text-left sticky left-0 z-10 min-w-[150px] max-w-[150px] w-[150px]">Field</th>
-                            <th class="border p-2 bg-gray-200 border-gray-300   min-w-[220px]">SKTTK1</th>
+                            @if($pengajuan->skttk && count($pengajuan->skttk) > 0)
+                              @foreach($pengajuan->skttk as $index => $skttk)
+                                <th class="border p-2 bg-gray-200 border-gray-300 min-w-[220px]">SKTTK{{ $index + 1 }}</th>
+                              @endforeach
+                            @else
+                              <th class="border p-2 bg-gray-200 border-gray-300 min-w-[220px]">SKTTK1</th>
+                            @endif
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
                             <td class="border border-gray-300 p-2 font-semibold bg-gray-50 sticky left-0">Nomor Sertifikat</td>
-                            <td class="border border-gray-300 p-2">
-                              <input name="nomor_sertifikat_skttk[]" id="nomor_sertifikat_skttk_1" type="text" class="w-full border p-1 rounded" placeholder="1234.0.12.A123.12.2025">
-                            </td>
+                            @if($pengajuan->skttk && count($pengajuan->skttk) > 0)
+                              @foreach($pengajuan->skttk as $index => $skttk)
+                                <td class="border border-gray-300 p-2">
+                                  <input name="nomor_sertifikat_skttk[]" id="nomor_sertifikat_skttk_{{ $index + 1 }}" type="text" class="w-full border p-1 rounded" value="{{ old('nomor_sertifikat_skttk.' . $index, $skttk['nomor_sertifikat_skttk'] ?? '') }}" placeholder="1234.0.12.A123.12.2025">
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border border-gray-300 p-2">
+                                <input name="nomor_sertifikat_skttk[]" id="nomor_sertifikat_skttk_1" type="text" class="w-full border p-1 rounded" placeholder="1234.0.12.A123.12.2025">
+                              </td>
+                            @endif
                           </tr>
                           <tr>
                             <td class="border border-gray-300 p-2 font-semibold bg-gray-50 sticky left-0">Nomor Register</td>
-                            <td class="border border-gray-300 p-2">
-                              <input name="nomor_register_skttk[]" id="nomor_register_skttk_1" type="text" class="w-full border p-1 rounded" placeholder="12345.1.2025">
-                            </td>
+                            @if($pengajuan->skttk && count($pengajuan->skttk) > 0)
+                              @foreach($pengajuan->skttk as $index => $skttk)
+                                <td class="border border-gray-300 p-2">
+                                  <input name="nomor_register_skttk[]" id="nomor_register_skttk_{{ $index + 1 }}" type="text" class="w-full border p-1 rounded" value="{{ old('nomor_register_skttk.' . $index, $skttk['nomor_register_skttk'] ?? '') }}" placeholder="12345.1.2025">
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border border-gray-300 p-2">
+                                <input name="nomor_register_skttk[]" id="nomor_register_skttk_1" type="text" class="w-full border p-1 rounded" placeholder="12345.1.2025">
+                              </td>
+                            @endif
                           </tr>
                           <tr>
                             <td class="border border-gray-300 p-2 font-semibold bg-gray-50 sticky left-0">Nama</td>
-                            <td class="border p-2">
-                              <input name="nama_skttk[]" id="nama_skttk_1" type="text" class="w-full border p-1 rounded">
-                            </td>
+                            @if($pengajuan->skttk && count($pengajuan->skttk) > 0)
+                              @foreach($pengajuan->skttk as $index => $skttk)
+                                <td class="border p-2">
+                                  <input name="nama_skttk[]" id="nama_skttk_{{ $index + 1 }}" type="text" class="w-full border p-1 rounded" value="{{ old('nama_skttk.' . $index, $skttk['nama_skttk'] ?? '') }}">
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border p-2">
+                                <input name="nama_skttk[]" id="nama_skttk_1" type="text" class="w-full border p-1 rounded">
+                              </td>
+                            @endif
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Jabatan</td>
-                            <td class="border p-2">
-                              <input name="jabatan_skttk[]" id="jabatan_skttk_1" type="text" class="w-full border p-1 rounded">
-                            </td>
+                            @if($pengajuan->skttk && count($pengajuan->skttk) > 0)
+                              @foreach($pengajuan->skttk as $index => $skttk)
+                                <td class="border p-2">
+                                  <input name="jabatan_skttk[]" id="jabatan_skttk_{{ $index + 1 }}" type="text" class="w-full border p-1 rounded" value="{{ old('jabatan_skttk.' . $index, $skttk['jabatan_skttk'] ?? '') }}">
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border p-2">
+                                <input name="jabatan_skttk[]" id="jabatan_skttk_1" type="text" class="w-full border p-1 rounded">
+                              </td>
+                            @endif
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Kode Jenjang Kualifikasi</td>
-                            <td class="border p-2">
-                              <input name="kode_kualifikasi_skttk[]" id="kode_kualifikasi_skttk_1" type="text" placeholder="A.12.123.12.KUALIFIKASI.1.ABCDEF" class="w-full border p-1 rounded">
-                            </td>
+                            @if($pengajuan->skttk && count($pengajuan->skttk) > 0)
+                              @foreach($pengajuan->skttk as $index => $skttk)
+                                <td class="border p-2">
+                                  <input name="kode_kualifikasi_skttk[]" id="kode_kualifikasi_skttk_{{ $index + 1 }}" type="text" class="w-full border p-1 rounded" value="{{ old('kode_kualifikasi_skttk.' . $index, $skttk['kode_kualifikasi_skttk'] ?? '') }}" placeholder="A.12.123.12.KUALIFIKASI.1.ABCDEF">
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border p-2">
+                                <input name="kode_kualifikasi_skttk[]" id="kode_kualifikasi_skttk_1" type="text" placeholder="A.12.123.12.KUALIFIKASI.1.ABCDEF" class="w-full border p-1 rounded">
+                              </td>
+                            @endif
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Unit Kompetensi Inti (1)</td>
-                            <td class="border p-2">
-                              <input name="kompetensi_inti1_skttk[]" id="kompetensi_inti1_skttk_1" type="text" class="w-full border p-1 rounded">
-                            </td>
+                            @if($pengajuan->skttk && count($pengajuan->skttk) > 0)
+                              @foreach($pengajuan->skttk as $index => $skttk)
+                                <td class="border p-2">
+                                  <input name="kompetensi_inti1_skttk[]" id="kompetensi_inti1_skttk_{{ $index + 1 }}" type="text" class="w-full border p-1 rounded" value="{{ old('kompetensi_inti1_skttk.' . $index, $skttk['kompetensi_inti1_skttk'] ?? '') }}">
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border p-2">
+                                <input name="kompetensi_inti1_skttk[]" id="kompetensi_inti1_skttk_1" type="text" class="w-full border p-1 rounded">
+                              </td>
+                            @endif
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Unit Kompetensi Inti (2)</td>
-                            <td class="border p-2">
-                              <input name="kompetensi_inti2_skttk[]" id="kompetensi_inti2_skttk_1" type="text" class="w-full border p-1 rounded">
-                            </td>
+                            @if($pengajuan->skttk && count($pengajuan->skttk) > 0)
+                              @foreach($pengajuan->skttk as $index => $skttk)
+                                <td class="border p-2">
+                                  <input name="kompetensi_inti2_skttk[]" id="kompetensi_inti2_skttk_{{ $index + 1 }}" type="text" class="w-full border p-1 rounded" value="{{ old('kompetensi_inti2_skttk.' . $index, $skttk['kompetensi_inti2_skttk'] ?? '') }}">
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border p-2">
+                                <input name="kompetensi_inti2_skttk[]" id="kompetensi_inti2_skttk_1" type="text" class="w-full border p-1 rounded">
+                              </td>
+                            @endif
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Unit Kompetensi Pilihan (1)</td>
-                            <td class="border p-2">
-                              <input name="kompetensi_pilihan1_skttk[]" id="kompetensi_pilihan1_skttk_1" type="text" class="w-full border p-1 rounded">
-                            </td>
+                            @if($pengajuan->skttk && count($pengajuan->skttk) > 0)
+                              @foreach($pengajuan->skttk as $index => $skttk)
+                                <td class="border p-2">
+                                  <input name="kompetensi_pilihan1_skttk[]" id="kompetensi_pilihan1_skttk_{{ $index + 1 }}" type="text" class="w-full border p-1 rounded" value="{{ old('kompetensi_pilihan1_skttk.' . $index, $skttk['kompetensi_pilihan1_skttk'] ?? '') }}">
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border p-2">
+                                <input name="kompetensi_pilihan1_skttk[]" id="kompetensi_pilihan1_skttk_1" type="text" class="w-full border p-1 rounded">
+                              </td>
+                            @endif
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Unit Kompetensi Pilihan (2)</td>
-                            <td class="border p-2">
-                              <input name="kompetensi_pilihan2_skttk[]" id="kompetensi_pilihan2_skttk_1" type="text" class="w-full border p-1 rounded">
-                            </td>
+                            @if($pengajuan->skttk && count($pengajuan->skttk) > 0)
+                              @foreach($pengajuan->skttk as $index => $skttk)
+                                <td class="border p-2">
+                                  <input name="kompetensi_pilihan2_skttk[]" id="kompetensi_pilihan2_skttk_{{ $index + 1 }}" type="text" class="w-full border p-1 rounded" value="{{ old('kompetensi_pilihan2_skttk.' . $index, $skttk['kompetensi_pilihan2_skttk'] ?? '') }}">
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border p-2">
+                                <input name="kompetensi_pilihan2_skttk[]" id="kompetensi_pilihan2_skttk_1" type="text" class="w-full border p-1 rounded">
+                              </td>
+                            @endif
                           </tr>
                           <tr>
                             <td class="border border-gray-300 p-2 font-semibold bg-gray-50 sticky left-0">Tanggal Terbit</td>
-                            <td class="border border-gray-300 p-2">
-                              <input name="tanggal_terbit_skttk[]" id="tanggal_terbit_skttk_1" type="text" class="w-full border p-1 rounded datepicker" placeholder="DD-MM-YYYY">
-                            </td>
+                            @if($pengajuan->skttk && count($pengajuan->skttk) > 0)
+                              @foreach($pengajuan->skttk as $index => $skttk)
+                                <td class="border border-gray-300 p-2">
+                                  <input name="tanggal_terbit_skttk[]" id="tanggal_terbit_skttk_{{ $index + 1 }}" type="text" class="w-full border p-1 rounded datepicker" value="{{ old('tanggal_terbit_skttk.' . $index, $skttk['tanggal_terbit_skttk'] ?? '') }}" placeholder="DD-MM-YYYY">
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border border-gray-300 p-2">
+                                <input name="tanggal_terbit_skttk[]" id="tanggal_terbit_skttk_1" type="text" class="w-full border p-1 rounded datepicker" placeholder="DD-MM-YYYY">
+                              </td>
+                            @endif
                           </tr>
                           <tr>
                             <td class="border border-gray-300 p-2 font-semibold bg-gray-50 sticky left-0">Tanggal Masa Berlaku</td>
-                            <td class="border border-gray-300 p-2">
-                              <input name="tanggal_masa_berlaku_skttk[]" id="tanggal_masa_berlaku_skttk_1" type="text" class="w-full border p-1 rounded datepicker" placeholder="DD-MM-YYYY">
-                            </td>
+                            @if($pengajuan->skttk && count($pengajuan->skttk) > 0)
+                              @foreach($pengajuan->skttk as $index => $skttk)
+                                <td class="border border-gray-300 p-2">
+                                  <input name="tanggal_masa_berlaku_skttk[]" id="tanggal_masa_berlaku_skttk_{{ $index + 1 }}" type="text" class="w-full border p-1 rounded datepicker" value="{{ old('tanggal_masa_berlaku_skttk.' . $index, $skttk['tanggal_masa_berlaku_skttk'] ?? '') }}" placeholder="DD-MM-YYYY">
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border border-gray-300 p-2">
+                                <input name="tanggal_masa_berlaku_skttk[]" id="tanggal_masa_berlaku_skttk_1" type="text" class="w-full border p-1 rounded datepicker" placeholder="DD-MM-YYYY">
+                              </td>
+                            @endif
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Lembaga Sertifikasi Kompetensi (LSK)</td>
-                            <td class="border p-2">
-                              <input name="lsk_skttk[]" id="lsk_skttk_1" type="text" class="w-full border p-1 rounded">
-                            </td>
+                            @if($pengajuan->skttk && count($pengajuan->skttk) > 0)
+                              @foreach($pengajuan->skttk as $index => $skttk)
+                                <td class="border p-2">
+                                  <input name="lsk_skttk[]" id="lsk_skttk_{{ $index + 1 }}" type="text" class="w-full border p-1 rounded" value="{{ old('lsk_skttk.' . $index, $skttk['lsk_skttk'] ?? '') }}">
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border p-2">
+                                <input name="lsk_skttk[]" id="lsk_skttk_1" type="text" class="w-full border p-1 rounded">
+                              </td>
+                            @endif
                           </tr>
 
                         </tbody>
@@ -496,8 +722,14 @@
                     </div>
                     <div class="mt-6">
                       <label>Upload SKTTK</label>
+                      @if($pengajuan->lampiran_skttk)
+                      <div class="mb-2 text-sm text-gray-600">
+                        <i class="fas fa-file-pdf text-red-500 mr-1"></i>
+                        File saat ini: <a href="{{ asset('storage/' . $pengajuan->lampiran_skttk) }}" target="_blank" class="text-blue-600 underline">Lihat file</a>
+                      </div>
+                      @endif
                       <input id="lampiran_skttk" name="lampiran_skttk" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" onchange="previewFile(this)">
-                      <small class="text-gray-500">Format PDF Maks 5MB</small>
+                      <small class="text-gray-500">Format PDF Maks 5MB (Kosongkan jika tidak ingin mengubah file)</small>
                     </div>
                     <div id="preview_lampiran_skttk"></div>
 
@@ -757,59 +989,129 @@
                         <thead>
                           <tr>
                             <th class="border border-gray-300 p-2 bg-gray-100 text-left sticky left-0 min-w-[150px] max-w-[150px] w-[150px]">Data Mesin</th>
-                            <th class="border border-gray-300 p-2 bg-gray-100 min-w-[220px]">Unit 1</th>
+                            @if($pengajuan->mesin && count($pengajuan->mesin) > 0)
+                              @foreach($pengajuan->mesin as $index => $mesin)
+                                <th class="border border-gray-300 p-2 bg-gray-100 min-w-[220px]">Unit {{ $index + 1 }}</th>
+                              @endforeach
+                            @else
+                              <th class="border border-gray-300 p-2 bg-gray-100 min-w-[220px]">Unit 1</th>
+                            @endif
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Jenis Penggerak</td>
-                            <td class="border p-2">
-                              <input id="mesin_jenis_penggerak_1" name="jenis_penggerak[]" type="text" class="w-full border p-1 rounded" required>
-                            </td>
+                            @if($pengajuan->mesin && count($pengajuan->mesin) > 0)
+                              @foreach($pengajuan->mesin as $index => $mesin)
+                                <td class="border p-2">
+                                  <input id="mesin_jenis_penggerak_{{ $index + 1 }}" name="jenis_penggerak[]" type="text" class="w-full border p-1 rounded" value="{{ old('jenis_penggerak.' . $index, $mesin['jenis_penggerak'] ?? '') }}" required>
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border p-2">
+                                <input id="mesin_jenis_penggerak_1" name="jenis_penggerak[]" type="text" class="w-full border p-1 rounded" required>
+                              </td>
+                            @endif
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Jenis Pembangkit</td>
-                            <td class="border p-2">
-                              <select id="mesin_jenis_pembangkit_1" name="jenis_pembangkit[]" class="w-full border p-1 rounded" required>
-                                <option value="">Pilih</option>
-                                <option>PLTD</option>
-                                <option>PLTBm</option>
-                                <option>PLTMH</option>
-                                <option>PLTU</option>
-                                <option>PLTBg</option>
-                                <option>PLTMG</option>
-                              </select>
-                            </td>
+                            @if($pengajuan->mesin && count($pengajuan->mesin) > 0)
+                              @foreach($pengajuan->mesin as $index => $mesin)
+                                <td class="border p-2">
+                                  <select id="mesin_jenis_pembangkit_{{ $index + 1 }}" name="jenis_pembangkit[]" class="w-full border p-1 rounded" required>
+                                    <option value="">Pilih</option>
+                                    <option {{ (old('jenis_pembangkit.' . $index, $mesin['jenis_pembangkit'] ?? '') == 'PLTD') ? 'selected' : '' }}>PLTD</option>
+                                    <option {{ (old('jenis_pembangkit.' . $index, $mesin['jenis_pembangkit'] ?? '') == 'PLTBm') ? 'selected' : '' }}>PLTBm</option>
+                                    <option {{ (old('jenis_pembangkit.' . $index, $mesin['jenis_pembangkit'] ?? '') == 'PLTMH') ? 'selected' : '' }}>PLTMH</option>
+                                    <option {{ (old('jenis_pembangkit.' . $index, $mesin['jenis_pembangkit'] ?? '') == 'PLTU') ? 'selected' : '' }}>PLTU</option>
+                                    <option {{ (old('jenis_pembangkit.' . $index, $mesin['jenis_pembangkit'] ?? '') == 'PLTBg') ? 'selected' : '' }}>PLTBg</option>
+                                    <option {{ (old('jenis_pembangkit.' . $index, $mesin['jenis_pembangkit'] ?? '') == 'PLTMG') ? 'selected' : '' }}>PLTMG</option>
+                                  </select>
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border p-2">
+                                <select id="mesin_jenis_pembangkit_1" name="jenis_pembangkit[]" class="w-full border p-1 rounded" required>
+                                  <option value="">Pilih</option>
+                                  <option>PLTD</option>
+                                  <option>PLTBm</option>
+                                  <option>PLTMH</option>
+                                  <option>PLTU</option>
+                                  <option>PLTBg</option>
+                                  <option>PLTMG</option>
+                                </select>
+                              </td>
+                            @endif
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Energi Primer / Utama</td>
-                            <td class="border p-2">
-                              <input id="mesin_energi_primer_1" name="energi_primer[]" type="text" class="w-full border p-1 rounded" required>
-                            </td>
+                            @if($pengajuan->mesin && count($pengajuan->mesin) > 0)
+                              @foreach($pengajuan->mesin as $index => $mesin)
+                                <td class="border p-2">
+                                  <input id="mesin_energi_primer_{{ $index + 1 }}" name="energi_primer[]" type="text" class="w-full border p-1 rounded" value="{{ old('energi_primer.' . $index, $mesin['energi_primer'] ?? '') }}" required>
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border p-2">
+                                <input id="mesin_energi_primer_1" name="energi_primer[]" type="text" class="w-full border p-1 rounded" required>
+                              </td>
+                            @endif
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Merk / Tipe / Seri</td>
-                            <td class="border p-2">
-                              <input id="mesin_merk_tipe_1" name="mesin_merk_tipe[]" type="text" class="w-full border p-1 rounded" required>
-                            </td>
+                            @if($pengajuan->mesin && count($pengajuan->mesin) > 0)
+                              @foreach($pengajuan->mesin as $index => $mesin)
+                                <td class="border p-2">
+                                  <input id="mesin_merk_tipe_{{ $index + 1 }}" name="mesin_merk_tipe[]" type="text" class="w-full border p-1 rounded" value="{{ old('mesin_merk_tipe.' . $index, $mesin['mesin_merk_tipe'] ?? '') }}" required>
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border p-2">
+                                <input id="mesin_merk_tipe_1" name="mesin_merk_tipe[]" type="text" class="w-full border p-1 rounded" required>
+                              </td>
+                            @endif
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Pabrikan / Tahun</td>
-                            <td class="border p-2">
-                              <input id="mesin_pabrikan_1" name="mesin_pabrikan[]" type="text" class="w-full border p-1 rounded" required>
-                            </td>
+                            @if($pengajuan->mesin && count($pengajuan->mesin) > 0)
+                              @foreach($pengajuan->mesin as $index => $mesin)
+                                <td class="border p-2">
+                                  <input id="mesin_pabrikan_{{ $index + 1 }}" name="mesin_pabrikan[]" type="text" class="w-full border p-1 rounded" value="{{ old('mesin_pabrikan.' . $index, $mesin['mesin_pabrikan'] ?? '') }}" required>
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border p-2">
+                                <input id="mesin_pabrikan_1" name="mesin_pabrikan[]" type="text" class="w-full border p-1 rounded" required>
+                              </td>
+                            @endif
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Kapasitas (kW / kVA)</td>
-                            <td class="border p-2">
-                              <input id="mesin_kapasitas_1" name="mesin_kapasitas[]" type="text" class="w-full border p-1 rounded" required>
-                            </td>
+                            @if($pengajuan->mesin && count($pengajuan->mesin) > 0)
+                              @foreach($pengajuan->mesin as $index => $mesin)
+                                <td class="border p-2">
+                                  <input id="mesin_kapasitas_{{ $index + 1 }}" name="mesin_kapasitas[]" type="text" class="w-full border p-1 rounded" value="{{ old('mesin_kapasitas.' . $index, $mesin['mesin_kapasitas'] ?? '') }}" required>
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border p-2">
+                                <input id="mesin_kapasitas_1" name="mesin_kapasitas[]" type="text" class="w-full border p-1 rounded" required>
+                              </td>
+                            @endif
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Putaran (rpm)</td>
-                            <td class="border p-2">
-                              <input id="mesin_putaran_1" name="mesin_putaran[]" type="text" class="w-full border p-1 rounded" required>
-                            </td>
+                            @if($pengajuan->mesin && count($pengajuan->mesin) > 0)
+                              @foreach($pengajuan->mesin as $index => $mesin)
+                                <td class="border p-2">
+                                  <input id="mesin_putaran_{{ $index + 1 }}" name="mesin_putaran[]" type="text" class="w-full border p-1 rounded" value="{{ old('mesin_putaran.' . $index, $mesin['mesin_putaran'] ?? '') }}" required>
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border p-2">
+                                <input id="mesin_putaran_1" name="mesin_putaran[]" type="text" class="w-full border p-1 rounded" required>
+                              </td>
+                            @endif
                           </tr>
                         </tbody>
                       </table>
@@ -987,91 +1289,201 @@
                         <thead>
                           <tr>
                             <th class="border border-gray-300 p-2 bg-gray-100 text-left sticky left-0 min-w-[150px] max-w-[150px] w-[150px]">Data Generator</th>
-                            <th class="border border-gray-300 p-2 bg-gray-100 min-w-[220px]">Unit 1</th>
+                            @if($pengajuan->generator && count($pengajuan->generator) > 0)
+                              @foreach($pengajuan->generator as $index => $generator)
+                                <th class="border border-gray-300 p-2 bg-gray-100 min-w-[220px]">Unit {{ $index + 1 }}</th>
+                              @endforeach
+                            @else
+                              <th class="border border-gray-300 p-2 bg-gray-100 min-w-[220px]">Unit 1</th>
+                            @endif
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Merk / Tipe / Seri</td>
-                            <td class="border p-2">
-                              <input id="generator_merk_tipe_1" name="generator_merk_tipe[]" type="text" class="w-full border p-1 rounded" required>
-                            </td>
+                            @if($pengajuan->generator && count($pengajuan->generator) > 0)
+                              @foreach($pengajuan->generator as $index => $generator)
+                                <td class="border p-2">
+                                  <input id="generator_merk_tipe_{{ $index + 1 }}" name="generator_merk_tipe[]" type="text" class="w-full border p-1 rounded" value="{{ old('generator_merk_tipe.' . $index, $generator['generator_merk_tipe'] ?? '') }}" required>
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border p-2">
+                                <input id="generator_merk_tipe_1" name="generator_merk_tipe[]" type="text" class="w-full border p-1 rounded" required>
+                              </td>
+                            @endif
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Pabrikan / Tahun</td>
-                            <td class="border p-2">
-                              <input id="generator_pabrikan_1" name="generator_pabrikan[]" type="text" class="w-full border p-1 rounded" required>
-                            </td>
+                            @if($pengajuan->generator && count($pengajuan->generator) > 0)
+                              @foreach($pengajuan->generator as $index => $generator)
+                                <td class="border p-2">
+                                  <input id="generator_pabrikan_{{ $index + 1 }}" name="generator_pabrikan[]" type="text" class="w-full border p-1 rounded" value="{{ old('generator_pabrikan.' . $index, $generator['generator_pabrikan'] ?? '') }}" required>
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border p-2">
+                                <input id="generator_pabrikan_1" name="generator_pabrikan[]" type="text" class="w-full border p-1 rounded" required>
+                              </td>
+                            @endif
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Kapasitas (kW / kVA)</td>
-                            <td class="border p-2">
-                              <input id="generator_kapasitas_1" name="generator_kapasitas[]" type="text" class="w-full border p-1 rounded" required>
-                            </td>
+                            @if($pengajuan->generator && count($pengajuan->generator) > 0)
+                              @foreach($pengajuan->generator as $index => $generator)
+                                <td class="border p-2">
+                                  <input id="generator_kapasitas_{{ $index + 1 }}" name="generator_kapasitas[]" type="text" class="w-full border p-1 rounded" value="{{ old('generator_kapasitas.' . $index, $generator['generator_kapasitas'] ?? '') }}" required>
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border p-2">
+                                <input id="generator_kapasitas_1" name="generator_kapasitas[]" type="text" class="w-full border p-1 rounded" required>
+                              </td>
+                            @endif
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Tegangan (V)</td>
-                            <td class="border p-2">
-                              <input id="generator_tegangan_1" name="generator_tegangan[]" type="text" class="w-full border p-1 rounded" required>
-                            </td>
+                            @if($pengajuan->generator && count($pengajuan->generator) > 0)
+                              @foreach($pengajuan->generator as $index => $generator)
+                                <td class="border p-2">
+                                  <input id="generator_tegangan_{{ $index + 1 }}" name="generator_tegangan[]" type="text" class="w-full border p-1 rounded" value="{{ old('generator_tegangan.' . $index, $generator['generator_tegangan'] ?? '') }}" required>
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border p-2">
+                                <input id="generator_tegangan_1" name="generator_tegangan[]" type="text" class="w-full border p-1 rounded" required>
+                              </td>
+                            @endif
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Arus (A)</td>
-                            <td class="border p-2">
-                              <input id="generator_arus_1" name="generator_arus[]" type="text" class="w-full border p-1 rounded" required>
-                            </td>
+                            @if($pengajuan->generator && count($pengajuan->generator) > 0)
+                              @foreach($pengajuan->generator as $index => $generator)
+                                <td class="border p-2">
+                                  <input id="generator_arus_{{ $index + 1 }}" name="generator_arus[]" type="text" class="w-full border p-1 rounded" value="{{ old('generator_arus.' . $index, $generator['generator_arus'] ?? '') }}" required>
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border p-2">
+                                <input id="generator_arus_1" name="generator_arus[]" type="text" class="w-full border p-1 rounded" required>
+                              </td>
+                            @endif
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Faktor Daya</td>
-                            <td class="border p-2">
-                              <input id="generator_faktor_daya_1" name="generator_faktor_daya[]" type="text" class="w-full border p-1 rounded" required>
-                            </td>
+                            @if($pengajuan->generator && count($pengajuan->generator) > 0)
+                              @foreach($pengajuan->generator as $index => $generator)
+                                <td class="border p-2">
+                                  <input id="generator_faktor_daya_{{ $index + 1 }}" name="generator_faktor_daya[]" type="text" class="w-full border p-1 rounded" value="{{ old('generator_faktor_daya.' . $index, $generator['generator_faktor_daya'] ?? '') }}" required>
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border p-2">
+                                <input id="generator_faktor_daya_1" name="generator_faktor_daya[]" type="text" class="w-full border p-1 rounded" required>
+                              </td>
+                            @endif
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Fasa</td>
-                            <td class="border p-2">
-                              <input id="generator_fasa_1" name="generator_fasa[]" type="text" class="w-full border p-1 rounded" required>
-                            </td>
+                            @if($pengajuan->generator && count($pengajuan->generator) > 0)
+                              @foreach($pengajuan->generator as $index => $generator)
+                                <td class="border p-2">
+                                  <input id="generator_fasa_{{ $index + 1 }}" name="generator_fasa[]" type="text" class="w-full border p-1 rounded" value="{{ old('generator_fasa.' . $index, $generator['generator_fasa'] ?? '') }}" required>
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border p-2">
+                                <input id="generator_fasa_1" name="generator_fasa[]" type="text" class="w-full border p-1 rounded" required>
+                              </td>
+                            @endif
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Frekuensi (Hz)</td>
-                            <td class="border p-2">
-                              <input id="generator_frekuensi_1" name="generator_frekuensi[]" type="text" class="w-full border p-1 rounded" required>
-                            </td>
+                            @if($pengajuan->generator && count($pengajuan->generator) > 0)
+                              @foreach($pengajuan->generator as $index => $generator)
+                                <td class="border p-2">
+                                  <input id="generator_frekuensi_{{ $index + 1 }}" name="generator_frekuensi[]" type="text" class="w-full border p-1 rounded" value="{{ old('generator_frekuensi.' . $index, $generator['generator_frekuensi'] ?? '') }}" required>
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border p-2">
+                                <input id="generator_frekuensi_1" name="generator_frekuensi[]" type="text" class="w-full border p-1 rounded" required>
+                              </td>
+                            @endif
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Putaran (rpm)</td>
-                            <td class="border p-2">
-                              <input id="generator_putaran_1" name="generator_putaran[]" type="text" class="w-full border p-1 rounded" required>
-                            </td>
+                            @if($pengajuan->generator && count($pengajuan->generator) > 0)
+                              @foreach($pengajuan->generator as $index => $generator)
+                                <td class="border p-2">
+                                  <input id="generator_putaran_{{ $index + 1 }}" name="generator_putaran[]" type="text" class="w-full border p-1 rounded" value="{{ old('generator_putaran.' . $index, $generator['generator_putaran'] ?? '') }}" required>
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border p-2">
+                                <input id="generator_putaran_1" name="generator_putaran[]" type="text" class="w-full border p-1 rounded" required>
+                              </td>
+                            @endif
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Lokasi Unit (Kab / Kota)</td>
-                            <td class="border p-2">
-                              <select id="generator_lokasi_1" name="generator_lokasi[]" class="w-full border p-1 rounded" required>
-                                <option value="">Pilih Lokasi</option>
-                                <option>Kota Jambi</option>
-                                <option>Kabupaten Muaro Jambi</option>
-                                <option>Kabupaten Batanghari</option>
-                                <option>Kabupaten Tanjung Jabung Barat</option>
-                                <option>Kabupaten Tanjung Jabung Timur</option>
-                                <option>Kabupaten Bungo</option>
-                                <option>Kabupaten Tebo</option>
-                                <option>Kabupaten Merangin</option>
-                                <option>Kabupaten Sarolangun</option>
-                                <option>Kabupaten Kerinci</option>
-                                <option>Kota Sungai Penuh</option>
-                              </select>
-                            </td>
+                            @if($pengajuan->generator && count($pengajuan->generator) > 0)
+                              @foreach($pengajuan->generator as $index => $generator)
+                                <td class="border p-2">
+                                  <select id="generator_lokasi_{{ $index + 1 }}" name="generator_lokasi[]" class="w-full border p-1 rounded" required>
+                                    <option value="">Pilih Lokasi</option>
+                                    <option {{ (old('generator_lokasi.' . $index, $generator['generator_lokasi'] ?? '') == 'Kota Jambi') ? 'selected' : '' }}>Kota Jambi</option>
+                                    <option {{ (old('generator_lokasi.' . $index, $generator['generator_lokasi'] ?? '') == 'Kabupaten Muaro Jambi') ? 'selected' : '' }}>Kabupaten Muaro Jambi</option>
+                                    <option {{ (old('generator_lokasi.' . $index, $generator['generator_lokasi'] ?? '') == 'Kabupaten Batanghari') ? 'selected' : '' }}>Kabupaten Batanghari</option>
+                                    <option {{ (old('generator_lokasi.' . $index, $generator['generator_lokasi'] ?? '') == 'Kabupaten Tanjung Jabung Barat') ? 'selected' : '' }}>Kabupaten Tanjung Jabung Barat</option>
+                                    <option {{ (old('generator_lokasi.' . $index, $generator['generator_lokasi'] ?? '') == 'Kabupaten Tanjung Jabung Timur') ? 'selected' : '' }}>Kabupaten Tanjung Jabung Timur</option>
+                                    <option {{ (old('generator_lokasi.' . $index, $generator['generator_lokasi'] ?? '') == 'Kabupaten Bungo') ? 'selected' : '' }}>Kabupaten Bungo</option>
+                                    <option {{ (old('generator_lokasi.' . $index, $generator['generator_lokasi'] ?? '') == 'Kabupaten Tebo') ? 'selected' : '' }}>Kabupaten Tebo</option>
+                                    <option {{ (old('generator_lokasi.' . $index, $generator['generator_lokasi'] ?? '') == 'Kabupaten Merangin') ? 'selected' : '' }}>Kabupaten Merangin</option>
+                                    <option {{ (old('generator_lokasi.' . $index, $generator['generator_lokasi'] ?? '') == 'Kabupaten Sarolangun') ? 'selected' : '' }}>Kabupaten Sarolangun</option>
+                                    <option {{ (old('generator_lokasi.' . $index, $generator['generator_lokasi'] ?? '') == 'Kabupaten Kerinci') ? 'selected' : '' }}>Kabupaten Kerinci</option>
+                                    <option {{ (old('generator_lokasi.' . $index, $generator['generator_lokasi'] ?? '') == 'Kota Sungai Penuh') ? 'selected' : '' }}>Kota Sungai Penuh</option>
+                                  </select>
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border p-2">
+                                <select id="generator_lokasi_1" name="generator_lokasi[]" class="w-full border p-1 rounded" required>
+                                  <option value="">Pilih Lokasi</option>
+                                  <option>Kota Jambi</option>
+                                  <option>Kabupaten Muaro Jambi</option>
+                                  <option>Kabupaten Batanghari</option>
+                                  <option>Kabupaten Tanjung Jabung Barat</option>
+                                  <option>Kabupaten Tanjung Jabung Timur</option>
+                                  <option>Kabupaten Bungo</option>
+                                  <option>Kabupaten Tebo</option>
+                                  <option>Kabupaten Merangin</option>
+                                  <option>Kabupaten Sarolangun</option>
+                                  <option>Kabupaten Kerinci</option>
+                                  <option>Kota Sungai Penuh</option>
+                                </select>
+                              </td>
+                            @endif
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Koordinat</td>
-                            <td class="border p-2 space-y-1">
-                              <input id="generator_latitude_1" name="generator_latitude[]" type="number" step="any"
-                                placeholder="Latitude (cth: -1.234567)" class="w-full border p-1 rounded mb-1" required>
-                              <input id="generator_longitude_1" name="generator_longitude[]" type="number" step="any"
-                                placeholder="Longitude (cth: 103.456789)" class="w-full border p-1 rounded" required>
-                            </td>
+                            @if($pengajuan->generator && count($pengajuan->generator) > 0)
+                              @foreach($pengajuan->generator as $index => $generator)
+                                <td class="border p-2 space-y-1">
+                                  <input id="generator_latitude_{{ $index + 1 }}" name="generator_latitude[]" type="number" step="any"
+                                    placeholder="Latitude (cth: -1.234567)" class="w-full border p-1 rounded mb-1" value="{{ old('generator_latitude.' . $index, $generator['generator_latitude'] ?? '') }}" required>
+                                  <input id="generator_longitude_{{ $index + 1 }}" name="generator_longitude[]" type="number" step="any"
+                                    placeholder="Longitude (cth: 103.456789)" class="w-full border p-1 rounded" value="{{ old('generator_longitude.' . $index, $generator['generator_longitude'] ?? '') }}" required>
+                                </td>
+                              @endforeach
+                            @else
+                              <td class="border p-2 space-y-1">
+                                <input id="generator_latitude_1" name="generator_latitude[]" type="number" step="any"
+                                  placeholder="Latitude (cth: -1.234567)" class="w-full border p-1 rounded mb-1" required>
+                                <input id="generator_longitude_1" name="generator_longitude[]" type="number" step="any"
+                                  placeholder="Longitude (cth: 103.456789)" class="w-full border p-1 rounded" required>
+                              </td>
+                            @endif
                           </tr>
 
                         </tbody>
@@ -1275,9 +1687,9 @@
                     <div class="mt-6">
                       <label for="sambunganListrik" class="block text-sm font-medium text-gray-700">Apakah ada sambungan listrik dari pihak lain?</label>
                       <select id="sambunganListrik" name="sambunganListrik" class="mt-1 block w-full p-2 border rounded-md" onchange="toggleSambunganListrikTable()" required>
-                        <option value="" disabled selected hidden>Pilih</option>
-                        <option value="ada">Ada</option>
-                        <option value="tidak">Tidak</option>
+                        <option value="" disabled {{ !old('sambunganListrik', $pengajuan->sambunganListrik ?? '') ? 'selected' : '' }} hidden>Pilih</option>
+                        <option value="ada" {{ old('sambunganListrik', $pengajuan->sambunganListrik ?? '') == 'ada' ? 'selected' : '' }}>Ada</option>
+                        <option value="tidak" {{ old('sambunganListrik', $pengajuan->sambunganListrik ?? '') == 'tidak' ? 'selected' : '' }}>Tidak</option>
                       </select>
                     </div>
 
@@ -1296,55 +1708,121 @@
                           <thead class="bg-gray-200 text-center">
                             <tr>
                               <th class="border border-gray-300 p-2 bg-gray-100 text-left sticky left-0 z-10 w-[200px] min-w-[200px] max-w-[200px]">Field</th>
-                              <th class="border border-gray-300 p-2 min-w-[220px]">Saluran Distribusi-1</th>
+                              @if($pengajuan->distribusi && count($pengajuan->distribusi) > 0)
+                                @foreach($pengajuan->distribusi as $index => $distribusi)
+                                  <th class="border border-gray-300 p-2 min-w-[220px]">Saluran Distribusi-{{ $loop->iteration }}</th>
+                                @endforeach
+                              @else
+                                <th class="border border-gray-300 p-2 min-w-[220px]">Saluran Distribusi-1</th>
+                              @endif
                             </tr>
                           </thead>
                           <tbody>
                             <tr id="row-pemilik_instalasi_distribusi">
                               <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Pemilik Instalasi</td>
-                              <td><input id="pemilik_instalasi_distribusi-0" name="pemilik_instalasi_distribusi[]" type="text" class="w-full border p-1 rounded"></td>
+                              @if($pengajuan->distribusi && count($pengajuan->distribusi) > 0)
+                                @foreach($pengajuan->distribusi as $index => $distribusi)
+                                  <td><input id="pemilik_instalasi_distribusi-{{ $index }}" name="pemilik_instalasi_distribusi[]" type="text" class="w-full border p-1 rounded" value="{{ old('pemilik_instalasi_distribusi.' . $index, $distribusi['pemilik_instalasi_distribusi'] ?? '') }}"></td>
+                                @endforeach
+                              @else
+                                <td><input id="pemilik_instalasi_distribusi-0" name="pemilik_instalasi_distribusi[]" type="text" class="w-full border p-1 rounded"></td>
+                              @endif
                             </tr>
                             <tr id="row-tegangan_distribusi">
                               <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Tegangan (V)</td>
-                              <td><input id="tegangan_distribusi-0" name="tegangan_distribusi[]" type="text" class="w-full border p-1 rounded"></td>
+                              @if($pengajuan->distribusi && count($pengajuan->distribusi) > 0)
+                                @foreach($pengajuan->distribusi as $index => $distribusi)
+                                  <td><input id="tegangan_distribusi-{{ $index }}" name="tegangan_distribusi[]" type="text" class="w-full border p-1 rounded" value="{{ old('tegangan_distribusi.' . $index, $distribusi['tegangan_distribusi'] ?? '') }}"></td>
+                                @endforeach
+                              @else
+                                <td><input id="tegangan_distribusi-0" name="tegangan_distribusi[]" type="text" class="w-full border p-1 rounded"></td>
+                              @endif
                             </tr>
                             <tr id="row-kapasitas_panjang_distribusi">
                               <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Panjang (kms)</td>
-                              <td><input id="kapasitas_panjang_distribusi-0" name="kapasitas_panjang_distribusi[]" type="text" class="w-full border p-1 rounded"></td>
+                              @if($pengajuan->distribusi && count($pengajuan->distribusi) > 0)
+                                @foreach($pengajuan->distribusi as $index => $distribusi)
+                                  <td><input id="kapasitas_panjang_distribusi-{{ $index }}" name="kapasitas_panjang_distribusi[]" type="text" class="w-full border p-1 rounded" value="{{ old('kapasitas_panjang_distribusi.' . $index, $distribusi['kapasitas_panjang_distribusi'] ?? '') }}"></td>
+                                @endforeach
+                              @else
+                                <td><input id="kapasitas_panjang_distribusi-0" name="kapasitas_panjang_distribusi[]" type="text" class="w-full border p-1 rounded"></td>
+                              @endif
                             </tr>
                             <tr id="row-kabupaten_kota_distribusi">
                               <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Kabupaten/Kota</td>
-                              <td>
-                                <select id="kabupaten_kota_distribusi-0" name="kabupaten_kota_distribusi[]" class="w-full border p-1 rounded">
-                                  <option disabled selected>Pilih Kabupaten/Kota</option>
-                                  <option value="Batanghari">Batanghari</option>
-                                  <option value="Bungo">Bungo</option>
-                                  <option value="Kerinci">Kerinci</option>
-                                  <option value="Merangin">Merangin</option>
-                                  <option value="Muaro Jambi">Muaro Jambi</option>
-                                  <option value="Sarolangun">Sarolangun</option>
-                                  <option value="Tanjung Jabung Barat">Tanjung Jabung Barat</option>
-                                  <option value="Tanjung Jabung Timur">Tanjung Jabung Timur</option>
-                                  <option value="Tebo">Tebo</option>
-                                  <option value="Kota Jambi">Kota Jambi</option>
-                                  <option value="Kota Sungai Penuh">Kota Sungai Penuh</option>
-                                </select>
-                              </td>
+                              @if($pengajuan->distribusi && count($pengajuan->distribusi) > 0)
+                                @foreach($pengajuan->distribusi as $index => $distribusi)
+                                  <td>
+                                    <select id="kabupaten_kota_distribusi-{{ $index }}" name="kabupaten_kota_distribusi[]" class="w-full border p-1 rounded">
+                                      <option disabled {{ !old('kabupaten_kota_distribusi.' . $index, $distribusi['kabupaten_kota_distribusi'] ?? '') ? 'selected' : '' }}>Pilih Kabupaten/Kota</option>
+                                      <option value="Batanghari" {{ old('kabupaten_kota_distribusi.' . $index, $distribusi['kabupaten_kota_distribusi'] ?? '') == 'Batanghari' ? 'selected' : '' }}>Batanghari</option>
+                                      <option value="Bungo" {{ old('kabupaten_kota_distribusi.' . $index, $distribusi['kabupaten_kota_distribusi'] ?? '') == 'Bungo' ? 'selected' : '' }}>Bungo</option>
+                                      <option value="Kerinci" {{ old('kabupaten_kota_distribusi.' . $index, $distribusi['kabupaten_kota_distribusi'] ?? '') == 'Kerinci' ? 'selected' : '' }}>Kerinci</option>
+                                      <option value="Merangin" {{ old('kabupaten_kota_distribusi.' . $index, $distribusi['kabupaten_kota_distribusi'] ?? '') == 'Merangin' ? 'selected' : '' }}>Merangin</option>
+                                      <option value="Muaro Jambi" {{ old('kabupaten_kota_distribusi.' . $index, $distribusi['kabupaten_kota_distribusi'] ?? '') == 'Muaro Jambi' ? 'selected' : '' }}>Muaro Jambi</option>
+                                      <option value="Sarolangun" {{ old('kabupaten_kota_distribusi.' . $index, $distribusi['kabupaten_kota_distribusi'] ?? '') == 'Sarolangun' ? 'selected' : '' }}>Sarolangun</option>
+                                      <option value="Tanjung Jabung Barat" {{ old('kabupaten_kota_distribusi.' . $index, $distribusi['kabupaten_kota_distribusi'] ?? '') == 'Tanjung Jabung Barat' ? 'selected' : '' }}>Tanjung Jabung Barat</option>
+                                      <option value="Tanjung Jabung Timur" {{ old('kabupaten_kota_distribusi.' . $index, $distribusi['kabupaten_kota_distribusi'] ?? '') == 'Tanjung Jabung Timur' ? 'selected' : '' }}>Tanjung Jabung Timur</option>
+                                      <option value="Tebo" {{ old('kabupaten_kota_distribusi.' . $index, $distribusi['kabupaten_kota_distribusi'] ?? '') == 'Tebo' ? 'selected' : '' }}>Tebo</option>
+                                      <option value="Kota Jambi" {{ old('kabupaten_kota_distribusi.' . $index, $distribusi['kabupaten_kota_distribusi'] ?? '') == 'Kota Jambi' ? 'selected' : '' }}>Kota Jambi</option>
+                                      <option value="Kota Sungai Penuh" {{ old('kabupaten_kota_distribusi.' . $index, $distribusi['kabupaten_kota_distribusi'] ?? '') == 'Kota Sungai Penuh' ? 'selected' : '' }}>Kota Sungai Penuh</option>
+                                    </select>
+                                  </td>
+                                @endforeach
+                              @else
+                                <td>
+                                  <select id="kabupaten_kota_distribusi-0" name="kabupaten_kota_distribusi[]" class="w-full border p-1 rounded">
+                                    <option disabled selected>Pilih Kabupaten/Kota</option>
+                                    <option value="Batanghari">Batanghari</option>
+                                    <option value="Bungo">Bungo</option>
+                                    <option value="Kerinci">Kerinci</option>
+                                    <option value="Merangin">Merangin</option>
+                                    <option value="Muaro Jambi">Muaro Jambi</option>
+                                    <option value="Sarolangun">Sarolangun</option>
+                                    <option value="Tanjung Jabung Barat">Tanjung Jabung Barat</option>
+                                    <option value="Tanjung Jabung Timur">Tanjung Jabung Timur</option>
+                                    <option value="Tebo">Tebo</option>
+                                    <option value="Kota Jambi">Kota Jambi</option>
+                                    <option value="Kota Sungai Penuh">Kota Sungai Penuh</option>
+                                  </select>
+                                </td>
+                              @endif
                             </tr>
                             <tr id="row-provinsi_distribusi">
                               <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Provinsi</td>
-                              <td><input id="provinsi_distribusi-0" name="provinsi_distribusi[]" type="text" class="w-full border p-1 rounded bg-gray-100" readonly value="Jambi"></td>
+                              @if($pengajuan->distribusi && count($pengajuan->distribusi) > 0)
+                                @foreach($pengajuan->distribusi as $index => $distribusi)
+                                  <td><input id="provinsi_distribusi-{{ $index }}" name="provinsi_distribusi[]" type="text" class="w-full border p-1 rounded bg-gray-100" readonly value="Jambi"></td>
+                                @endforeach
+                              @else
+                                <td><input id="provinsi_distribusi-0" name="provinsi_distribusi[]" type="text" class="w-full border p-1 rounded bg-gray-100" readonly value="Jambi"></td>
+                              @endif
                             </tr>
                             <tr id="row-koordinat_distribusi">
                               <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Koordinat</td>
-                              <td>
-                                <input id="latitude_distribusi-0" name="latitude_distribusi[]" type="number" step="any" placeholder="Latitude (cth: -1.234567)" class="w-full border p-1 rounded mb-1">
-                                <input id="longitude_distribusi-0" name="longitude_distribusi[]" type="number" step="any" placeholder="Longitude (cth: 103.456789)" class="w-full border p-1 rounded">
-                              </td>
+                              @if($pengajuan->distribusi && count($pengajuan->distribusi) > 0)
+                                @foreach($pengajuan->distribusi as $index => $distribusi)
+                                  <td>
+                                    <input id="latitude_distribusi-{{ $index }}" name="latitude_distribusi[]" type="number" step="any" placeholder="Latitude (cth: -1.234567)" class="w-full border p-1 rounded mb-1" value="{{ old('latitude_distribusi.' . $index, $distribusi['latitude_distribusi'] ?? '') }}">
+                                    <input id="longitude_distribusi-{{ $index }}" name="longitude_distribusi[]" type="number" step="any" placeholder="Longitude (cth: 103.456789)" class="w-full border p-1 rounded" value="{{ old('longitude_distribusi.' . $index, $distribusi['longitude_distribusi'] ?? '') }}">
+                                  </td>
+                                @endforeach
+                              @else
+                                <td>
+                                  <input id="latitude_distribusi-0" name="latitude_distribusi[]" type="number" step="any" placeholder="Latitude (cth: -1.234567)" class="w-full border p-1 rounded mb-1">
+                                  <input id="longitude_distribusi-0" name="longitude_distribusi[]" type="number" step="any" placeholder="Longitude (cth: 103.456789)" class="w-full border p-1 rounded">
+                                </td>
+                              @endif
                             </tr>
                             <tr id="row-tahun_operasi_distribusi">
                               <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Tahun Operasi</td>
-                              <td><input id="tahun_operasi_distribusi-0" name="tahun_operasi_distribusi[]" type="text" class="w-full border p-1 rounded"></td>
+                              @if($pengajuan->distribusi && count($pengajuan->distribusi) > 0)
+                                @foreach($pengajuan->distribusi as $index => $distribusi)
+                                  <td><input id="tahun_operasi_distribusi-{{ $index }}" name="tahun_operasi_distribusi[]" type="text" class="w-full border p-1 rounded" value="{{ old('tahun_operasi_distribusi.' . $index, $distribusi['tahun_operasi_distribusi'] ?? '') }}"></td>
+                                @endforeach
+                              @else
+                                <td><input id="tahun_operasi_distribusi-0" name="tahun_operasi_distribusi[]" type="text" class="w-full border p-1 rounded"></td>
+                              @endif
                             </tr>
                           </tbody>
                         </table>
