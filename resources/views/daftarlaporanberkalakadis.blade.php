@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="icon" type="image/png" href=" {{ asset('assets/img/logo-esdm.svg') }} " />
   <title>Daftar Laporan Berkala Kepala Dinas</title>
   <!--     Fonts and icons     -->
@@ -16,6 +17,7 @@
   <!-- Popper -->
   <script src="https://unpkg.com/@popperjs/core@2"></script>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!-- Main Styling -->
   <link href="{{ asset('assets/css/argon-dashboard-tailwind.css?v=1.0.1') }}" rel="stylesheet" />
 </head>
@@ -185,93 +187,57 @@
                   </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-100">
+                  @forelse($pengajuans ?? [] as $index => $pengajuan)
                   <tr class="border-b dark:border-slate-700">
                     <td class="px-4 py-3">
                       <div class="flex flex-col">
-                        <span class="font-medium text-xs text-slate-900 dark:text-white">0001</span>
+                        <span class="font-medium text-xs text-slate-900 dark:text-white">{{ str_pad($index + 1, 4, '0', STR_PAD_LEFT) }}</span>
                       </div>
                     </td>
-                    <td class="px-4 py-3 text-center text-xs">Perseroan Terbatas (PT)</td>
-                    <td class="px-4 py-3 text-center text-xs">23/04/2025</td>
-                    <td class="px-4 py-3 text-center">
-                      <span class="inline-flex items-center justify-center w-40 h-8 text-xs font-semibold text-white rounded-full bg-orange-400">
-                        PROSES PERSETUJUAN
-                      </span>
+                    <td class="px-4 py-3 text-center text-xs">
+                      {{ $pengajuan->pengguna->identitas->namabadanusaha ?? 'Tidak Ada' }}
                     </td>
+                    <td class="px-4 py-3 text-center text-xs">
+                      {{ $pengajuan->created_at ? $pengajuan->created_at->format('d/m/Y') : '-' }}
                     </td>
                     <td class="px-4 py-3 text-center">
-                      <button onclick="setujuiSurat(this)" class="inline-flex items-center justify-center px-4 h-8 text-xs font-semibold text-white bg-blue-600 rounded-full hover:bg-blue-700 transition-all">
-                        Setujui
-                      </button>
+                      @if($pengajuan->status === 'validasi')
+                        <span class="inline-flex items-center justify-center w-40 h-8 text-xs font-semibold text-white rounded-full bg-orange-400">
+                          PERSETUJUAN VALIDASI
+                        </span>
+                      @elseif($pengajuan->status === 'menunggu persetujuan kadis')
+                        <span class="inline-flex items-center justify-center w-40 h-8 text-xs font-semibold text-white rounded-full bg-orange-400">
+                          PERSETUJUAN VALIDASI
+                        </span>
+                      @elseif($pengajuan->status === 'disetujui kadis')
+                        <span class="inline-flex items-center justify-center w-40 h-8 text-xs font-semibold text-white rounded-full bg-green-600">
+                          DISETUJUI
+                        </span>
+                      @else
+                        <span class="inline-flex items-center justify-center w-40 h-8 text-xs font-semibold text-white rounded-full bg-gray-400">
+                          {{ strtoupper($pengajuan->status) }}
+                        </span>
+                      @endif
+                    </td>
+                    <td class="px-4 py-3 text-center">
+                      @if($pengajuan->status === 'validasi' || $pengajuan->status === 'menunggu persetujuan kadis')
+                        <button onclick="setujuiSurat('{{ $pengajuan->id }}')" class="inline-flex items-center justify-center px-4 h-8 text-xs font-semibold text-white bg-blue-600 rounded-full hover:bg-blue-700 transition-all">
+                          Setujui
+                        </button>
+                      @elseif($pengajuan->status === 'disetujui kadis')
+                        <span class="text-green-600 text-xl">✔️</span>
+                      @else
+                        <span class="text-gray-400 text-sm">-</span>
+                      @endif
                     </td>
                   </tr>
-
-                  <tr class="border-b dark:border-slate-700">
-                    <td class="px-4 py-3">
-                      <div class="flex flex-col">
-                        <span class="font-medium text-xs text-slate-900 dark:text-white">0002</span>
-                      </div>
-                    </td>
-                    <td class="px-4 py-3 text-center text-xs">Perseroan Terbatas (PT)</td>
-                    <td class="px-4 py-3 text-center text-xs">11/01/2025</td>
-                    <td class="px-4 py-3 text-center">
-                      <span class="inline-flex items-center justify-center w-40 h-8 text-xs font-semibold text-white rounded-full bg-green-600">
-                        DISETUJUI
-                      </span>
-                    </td>
-                    <td class="px-4 py-3 text-center" data-status="DISETUJUI">
-                      <span class="text-green-600 text-xl">✔️</span>
+                  @empty
+                  <tr>
+                    <td colspan="5" class="px-4 py-8 text-center text-gray-500">
+                      Tidak ada data laporan berkala yang tersedia untuk persetujuan
                     </td>
                   </tr>
-
-                  <tr class="border-b dark:border-slate-700">
-                    <td class="px-4 py-3">
-                      <div class="flex flex-col">
-                        <span class="font-medium text-xs text-slate-900 dark:text-white">0003</span>
-                      </div>
-                    </td>
-                    <td class="px-4 py-3 text-center text-xs">Perseroan Terbatas (PT)</td>
-                    <td class="px-4 py-3 text-center text-xs">12/05/2025</td>
-                    <td class="px-4 py-3 text-center">
-                      <span class="inline-flex items-center justify-center w-40 h-8 text-xs font-semibold text-white rounded-full bg-green-600">
-                        DISETUJUI
-                      </span>
-                    </td>
-                    </td>
-                    <td class="px-4 py-3 text-center" data-status="DISETUJUI">
-                      <span class="text-green-600 text-xl">✔️</span>
-                    </td>
-                  </tr>
-
-                  <tr class="border-b dark:border-slate-700">
-                    <td class="px-4 py-3">
-                      <div class="flex flex-col">
-                        <span class="font-medium text-xs text-slate-900 dark:text-white">0004</span>
-                      </div>
-                    </td>
-                    <td class="px-4 py-3 text-center text-xs">Perseroan Terbatas (PT)</td>
-                    <td class="px-4 py-3 text-center text-xs">19/09/2025</td>
-                    <td class="px-4 py-3 text-center">
-                      <span class="inline-flex items-center justify-center w-40 h-8 text-xs font-semibold text-white rounded-full bg-orange-400">
-                        PROSES PERSETUJUAN
-                      </span>
-                    <td class="px-4 py-3 text-center">
-                      <button onclick="setujuiSurat(this)" class="inline-flex items-center justify-center px-4 h-8 text-xs font-semibold text-white bg-blue-600 rounded-full hover:bg-blue-700 transition-all">
-                        Setujui
-                      </button>
-                    </td>
-                  </tr>
-                  <script>
-                    document.querySelectorAll('.deadline').forEach(cell => {
-                      const deadline = new Date(cell.dataset.deadline);
-                      const today = new Date();
-                      const selisihHari = Math.ceil((deadline - today) / (1000 * 60 * 60 * 24));
-
-                      if (selisihHari < 2) {
-                        cell.classList.add('text-red-600', 'font-bold');
-                      }
-                    });
-                  </script>
+                  @endforelse
                 </tbody>
               </table>
             </div>
@@ -613,5 +579,78 @@
 <script src="../assets/js/plugins/perfect-scrollbar.min.js" async></script>
 <!-- main script file  -->
 <script src="../assets/js/argon-dashboard-tailwind.js?v=1.0.1" async></script>
+
+<script>
+function setujuiSurat(pengajuanId) {
+    Swal.fire({
+        title: 'Konfirmasi Persetujuan',
+        text: 'Apakah Anda yakin ingin menyetujui laporan berkala ini?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, Setujui!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Show loading
+            Swal.fire({
+                title: 'Memproses...',
+                text: 'Sedang memproses persetujuan',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+            
+            // Kirim request ke backend
+            fetch(`/pengajuan/${pengajuanId}/approve-kadis`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    catatan_kadis: 'Laporan berkala telah disetujui oleh Kepala Dinas.'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                Swal.close();
+                
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: 'Laporan berkala berhasil disetujui.',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        // Reload halaman untuk update data
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal!',
+                        text: data.message || 'Terjadi kesalahan saat menyetujui laporan.',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            })
+            .catch(error => {
+                Swal.close();
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Terjadi kesalahan jaringan: ' + error.message,
+                    confirmButtonText: 'OK'
+                });
+            });
+        }
+    });
+}
+</script>
 
 </html>

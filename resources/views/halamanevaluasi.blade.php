@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="icon" type="image/png" href=" {{ asset('assets/img/logo-esdm.svg') }} " />
   <title>Daftar Permohonan</title>
   <!--     Fonts and icons     -->
@@ -17,6 +18,7 @@
   <!-- Popper -->
   <script src="https://unpkg.com/@popperjs/core@2"></script>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!-- Main Styling -->
   <link href="{{ asset('assets/css/argon-dashboard-tailwind.css?v=1.0.1') }}" rel="stylesheet" />
 </head>
@@ -92,7 +94,10 @@
           <h6 class="mb-0 font-bold text-white capitalize">Data Teknis</h6>
         </nav>
 
-        <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
+      <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
+        <div class="mr-4">
+          <span class="text-white text-sm">Evaluator: {{ Auth::user()->name }}</span>
+        </div>
           <div class="flex items-center md:ml-auto md:pr-4">
             <div class="relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease">
               <span
@@ -313,9 +318,9 @@
                         <option value="Ditolak">Ditolak</option>
                       </select>
 
-                      <!-- Tombol Simpan 3 -->
+                      <!-- Tombol Simpan 1 -->
                       <div class="pt-2 mt-6">
-                        <button onclick="tampilkanPopup2()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
+                        <button onclick="simpanEvaluasiBagian('data_pemilik', 1)" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
                           Simpan Evaluasi
                         </button>
                       </div>
@@ -453,7 +458,7 @@
                       </select>
                       <!-- Tombol Simpan 3 -->
                       <div class="pt-2 mt-6">
-                        <button onclick="tampilkanPopup2()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
+                        <button onclick="simpanEvaluasiBagian('izin_usaha', 2)" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
                           Simpan Evaluasi
                         </button>
                       </div>
@@ -570,7 +575,7 @@
                       </select>
                       <!-- Tombol Simpan 3 -->
                       <div class="pt-2 mt-6">
-                        <button onclick="tampilkanPopup3()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
+                        <button onclick="simpanEvaluasiBagian('izin_lingkungan', 3)" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
                           Simpan Evaluasi
                         </button>
                       </div>
@@ -723,7 +728,7 @@
                       </select>
                       <!-- Tombol Simpan 3 -->
                       <div class="pt-2 mt-6">
-                        <button onclick="tampilkanPopup4()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
+                        <button onclick="simpanEvaluasiBagian('slo', 4)" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
                           Simpan Evaluasi
                         </button>
                       </div>
@@ -928,36 +933,36 @@
                     <div class="bg-white rounded shadow p-4 space-y-4 border-2 border-gray-300">
                       <h2 class="text-lg text-center font-bold border-b pb-2 mb-2">Evaluasi</h2>
 
-                      <label for="catatan-perbaikan-4" class="text-sm font-semibold">Catatan Perbaikan :</label>
+                      <label for="catatan-perbaikan-5" class="text-sm font-semibold">Catatan Perbaikan :</label>
                       <textarea
-                        id="catatan-perbaikan-4"
-                        name="catatan_perbaikan_4"
+                        id="catatan-perbaikan-5"
+                        name="catatan_perbaikan_5"
                         rows="8"
                         class="w-full p-2 border rounded text-sm"
                         placeholder="Tulis catatan perbaikan..."></textarea>
 
-                      <label for="status-permohonan-4" class="text-sm font-semibold">Status Permohonan :</label>
+                      <label for="status-permohonan-5" class="text-sm font-semibold">Status Permohonan :</label>
                       <select
-                        id="status-permohonan-4"
-                        name="status_permohonan_4"
-                        class="w-full border p-4 rounded text-sm">
+                        id="status-permohonan-5"
+                        name="status_permohonan_5"
+                        class="w-full border p-2 rounded text-sm">
                         <option value="" disabled selected hidden>-- Status --</option>
                         <option value="Disetujui">Disetujui</option>
                         <option value="Ditolak">Ditolak</option>
                       </select>
-                      <!-- Tombol Simpan 3 -->
+                      <!-- Tombol Simpan 5 -->
                       <div class="pt-2 mt-6">
-                        <button onclick="tampilkanPopup4()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
+                        <button onclick="simpanEvaluasiBagian('skttk', 5)" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
                           Simpan Evaluasi
                         </button>
                       </div>
 
-                      <!-- Modal Pop-up 3 -->
-                      <div id="popupBerhasil4" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+                      <!-- Modal Pop-up 5 -->
+                      <div id="popupBerhasil5" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
                         <div class="bg-white p-6 rounded-lg shadow-lg text-center w-80">
                           <h2 class="text-lg font-semibold text-green-700 mb-2">Berhasil!</h2>
                           <p class="text-gray-700 mb-4">Evaluasi berhasil disimpan.</p>
-                          <button onclick="tutupPopup4()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded">
+                          <button onclick="tutupPopup5()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded">
                             OK
                           </button>
                         </div>
@@ -1098,7 +1103,7 @@
                       </select>
                       <!-- Tombol Simpan 1 -->
                       <div class="pt-2">
-                        <button onclick="tampilkanPopup6()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
+                        <button onclick="simpanEvaluasiBagian('data_mesin', 6)" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
                           Simpan Evaluasi
                         </button>
                       </div>
@@ -1266,7 +1271,7 @@
                       </select>
                       <!-- Tombol Simpan 2 -->
                       <div class="pt-2 mt-6">
-                        <button onclick="tampilkanPopup7()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
+                        <button onclick="simpanEvaluasiBagian('data_generator', 7)" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
                           Simpan Evaluasi
                         </button>
                       </div>
@@ -1479,7 +1484,7 @@
                       </select>
                       <!-- Tombol Simpan 3 -->
                       <div class="pt-2 mt-6">
-                        <button onclick="tampilkanPopup8()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
+                        <button onclick="simpanEvaluasiBagian('sambungan_listrik', 8)" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
                           Simpan Evaluasi
                         </button>
                       </div>
@@ -1578,7 +1583,7 @@
                   </select>
                   <!-- Tombol Simpan 4 -->
                   <div class="pt-2 mt-6">
-                    <button onclick="tampilkanPopup9()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
+                    <button onclick="simpanEvaluasiBagian('kapasitas_produksi', 9)" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
                       Simpan Evaluasi
                     </button>
                   </div>
@@ -1666,30 +1671,40 @@
                   </div>
                 </div>
 
-                <!-- KOLOM 2: Evaluasi (copy) -->
+                <!-- KOLOM 2: Evaluasi Excess Power (10) -->
                 <div class="bg-white rounded shadow p-4 space-y-4 border-2 border-gray-300">
                   <h2 class="text-lg text-center font-bold border-b pb-2 mb-2">Evaluasi</h2>
-                  <label class="text-sm font-semibold">Catatan Perbaikan :</label>
-                  <textarea rows="8" class="w-full p-2 border rounded text-sm" placeholder="Tulis catatan perbaikan..."></textarea>
-                  <label class="text-sm font-semibold">Status Permohonan :</label>
-                  <select class="w-full border p-2 rounded text-sm">
+                  
+                  <label for="catatan-perbaikan-10" class="text-sm font-semibold">Catatan Perbaikan :</label>
+                  <textarea
+                    id="catatan-perbaikan-10"
+                    name="catatan_perbaikan_10"
+                    rows="8"
+                    class="w-full p-2 border rounded text-sm"
+                    placeholder="Tulis catatan perbaikan..."></textarea>
+                    
+                  <label for="status-permohonan-10" class="text-sm font-semibold">Status Permohonan :</label>
+                  <select
+                    id="status-permohonan-10"
+                    name="status_permohonan_10"
+                    class="w-full border p-2 rounded text-sm">
                     <option value="" disabled selected hidden>-- Status --</option>
-                    <option>Disetujui</option>
-                    <option>Ditolak</option>
+                    <option value="Disetujui">Disetujui</option>
+                    <option value="Ditolak">Ditolak</option>
                   </select>
-                  <!-- Tombol Simpan 6 -->
+                  <!-- Tombol Simpan 10 -->
                   <div class="pt-2 mt-6">
-                    <button onclick="tampilkanPopup11()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
+                    <button onclick="simpanEvaluasiBagian('excess_power', 10)" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
                       Simpan Evaluasi
                     </button>
                   </div>
 
-                  <!-- Modal Pop-up 6 -->
-                  <div id="popupBerhasil11" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+                  <!-- Modal Pop-up 10 -->
+                  <div id="popupBerhasil10" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
                     <div class="bg-white p-6 rounded-lg shadow-lg text-center w-80">
                       <h2 class="text-lg font-semibold text-green-700 mb-2">Berhasil!</h2>
                       <p class="text-gray-700 mb-4">Evaluasi berhasil disimpan.</p>
-                      <button onclick="tutupPopup11()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded">
+                      <button onclick="tutupPopup10()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded">
                         OK
                       </button>
                     </div>
@@ -1752,23 +1767,89 @@
           <script>
             function submitEvaluasi() {
               const laporanId = "{{ $pengajuan->id }}";
+              
+              // Show loading dengan SweetAlert
+              if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                  title: 'Mengirim Evaluasi...',
+                  html: 'Mohon tunggu sebentar',
+                  allowOutsideClick: false,
+                  didOpen: () => {
+                    Swal.showLoading();
+                  }
+                });
+              }
 
               fetch(`/evaluasi/${laporanId}/submit`, {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                    "Accept": "application/json"
                   },
                   body: JSON.stringify({
-                    hasil_evaluasi: "Catatan evaluasi contoh"
+                    hasil_evaluasi: "Evaluasi telah diselesaikan dan siap dikirim ke Kabid"
                   })
                 })
-                .then(res => res.json())
+                .then(response => {
+                  console.log('Submit response status:', response.status);
+                  if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                  }
+                  return response.json();
+                })
                 .then(data => {
+                  console.log('Submit response data:', data);
+                  
+                  if (typeof Swal !== 'undefined') {
+                    Swal.close();
+                  }
+                  
                   if (data.success) {
                     closePopup();
-                    alert("Hasil evaluasi berhasil dikirim!");
-                    window.location.href = "{{ route('laporan.evaluator.index') }}";
+                    
+                    if (typeof Swal !== 'undefined') {
+                      Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: data.message || 'Hasil evaluasi berhasil dikirim ke Kabid!',
+                        confirmButtonText: 'OK'
+                      }).then(() => {
+                        window.location.href = "{{ route('laporan.evaluator.index') }}";
+                      });
+                    } else {
+                      alert(data.message || "Hasil evaluasi berhasil dikirim ke Kabid!");
+                      window.location.href = "{{ route('laporan.evaluator.index') }}";
+                    }
+                  } else {
+                    const errorMessage = data.message || 'Terjadi kesalahan saat mengirim evaluasi.';
+                    console.error('Server error:', errorMessage);
+                    
+                    if (typeof Swal !== 'undefined') {
+                      Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal!',
+                        text: errorMessage,
+                        confirmButtonText: 'OK'
+                      });
+                    } else {
+                      alert('Error: ' + errorMessage);
+                    }
+                  }
+                })
+                .catch(error => {
+                  console.error('Submit error:', error);
+                  
+                  if (typeof Swal !== 'undefined') {
+                    Swal.close();
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Error!',
+                      text: 'Terjadi kesalahan jaringan: ' + error.message,
+                      confirmButtonText: 'OK'
+                    });
+                  } else {
+                    alert('Error jaringan: ' + error.message);
                   }
                 });
             }
@@ -1925,6 +2006,258 @@
             const status = document.getElementById('status-evaluasi').value;
             console.log(`Evaluasi disimpan untuk ${doc}: ${status}, Catatan: ${catatan}`);
             closeModal();
+          }
+
+          // Fungsi untuk simpan evaluasi per bagian dengan AJAX
+          function simpanEvaluasiBagian(sectionName, sectionNumber) {
+            console.log('simpanEvaluasiBagian called:', sectionName, sectionNumber);
+            
+            // Cek apakah field ada
+            const catatanField = document.getElementById(`catatan-perbaikan-${sectionNumber}`);
+            const statusField = document.getElementById(`status-permohonan-${sectionNumber}`);
+            
+            if (!catatanField || !statusField) {
+              console.error('Field tidak ditemukan:', {
+                catatan: catatanField ? 'ada' : 'tidak ada',
+                status: statusField ? 'ada' : 'tidak ada',
+                sectionNumber: sectionNumber
+              });
+              alert('Error: Field form tidak ditemukan!');
+              return;
+            }
+            
+            const catatan = catatanField.value.trim();
+            const status = statusField.value;
+            
+            console.log('Data yang akan dikirim:', { section: sectionName, catatan, status });
+            
+            // Validasi input
+            if (!status) {
+              if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                  icon: 'warning',
+                  title: 'Status Belum Dipilih',
+                  text: 'Silakan pilih status evaluasi terlebih dahulu.',
+                  confirmButtonText: 'OK'
+                });
+              } else {
+                alert('Status evaluasi harus dipilih!');
+              }
+              return;
+            }
+            
+            // Show loading
+            if (typeof Swal !== 'undefined') {
+              Swal.fire({
+                title: 'Menyimpan Evaluasi...',
+                html: 'Mohon tunggu sebentar',
+                allowOutsideClick: false,
+                didOpen: () => {
+                  Swal.showLoading();
+                }
+              });
+            }
+            
+            // Kirim data ke backend
+            fetch('/evaluasi/{{ $pengajuan->id }}/save-section', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                'Accept': 'application/json'
+              },
+              body: JSON.stringify({
+                section: sectionName,
+                catatan: catatan,
+                status: status
+              })
+            })
+            .then(response => {
+              console.log('Response status:', response.status);
+              if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+              }
+              return response.json();
+            })
+            .then(data => {
+              console.log('Response data:', data);
+              
+              if (typeof Swal !== 'undefined') {
+                Swal.close();
+              }
+              
+              if (data.success) {
+                // Disable input setelah berhasil disimpan
+                if (catatanField) catatanField.disabled = true;
+                if (statusField) statusField.disabled = true;
+                
+                // Ubah tombol menjadi tidak aktif
+                const button = event && event.target ? event.target : null;
+                if (button) {
+                  button.disabled = true;
+                  button.classList.add('cursor-not-allowed', 'bg-gray-400');
+                  button.classList.remove('bg-green-600', 'hover:bg-green-700');
+                  button.textContent = 'Tersimpan';
+                }
+                
+                if (typeof Swal !== 'undefined') {
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: 'Evaluasi bagian berhasil disimpan.',
+                    confirmButtonText: 'OK'
+                  });
+                } else {
+                  alert('Evaluasi bagian berhasil disimpan!');
+                }
+              } else {
+                const errorMessage = data.message || 'Terjadi kesalahan saat menyimpan evaluasi.';
+                console.error('Server error:', errorMessage);
+                
+                if (typeof Swal !== 'undefined') {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: errorMessage,
+                    confirmButtonText: 'OK'
+                  });
+                } else {
+                  alert('Error: ' + errorMessage);
+                }
+              }
+            })
+            .catch(error => {
+              console.error('Fetch error:', error);
+              
+              if (typeof Swal !== 'undefined') {
+                Swal.close();
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Error!',
+                  text: 'Terjadi kesalahan jaringan: ' + error.message,
+                  confirmButtonText: 'OK'
+                });
+              } else {
+                alert('Error jaringan: ' + error.message);
+              }
+            });
+          }
+          
+          // Load data evaluasi yang tersimpan saat halaman dimuat
+          document.addEventListener('DOMContentLoaded', function() {
+            loadSavedEvaluations();
+          });
+          
+          function loadSavedEvaluations() {
+            // Data evaluasi dari server
+            const evaluasiData = @json($evaluasiData ?? []);
+            const currentEvaluation = @json($currentEvaluation ?? null);
+            const pengajuanStatus = @json($pengajuan->status ?? 'proses evaluasi');
+            
+            console.log('Loading saved evaluations:', {
+              evaluasiData,
+              currentEvaluation,
+              pengajuanStatus
+            });
+            
+            // Cek apakah evaluasi sudah dikirim ke kabid
+            const isSubmittedToKabid = pengajuanStatus !== 'proses evaluasi' || 
+                                      (currentEvaluation && currentEvaluation.status === 'selesai');
+            
+            console.log('Is submitted to Kabid?', isSubmittedToKabid);
+            
+          // Mapping section name ke section number
+          const sectionMapping = {
+            'data_pemilik': 1,
+            'izin_usaha': 2,
+            'izin_lingkungan': 3,
+            'slo': 4,
+            'skttk': 5,
+            'data_mesin': 6,
+            'data_generator': 7,
+            'sambungan_listrik': 8,
+            'kapasitas_produksi': 9,
+            'excess_power': 10
+          };
+            
+            // Loop melalui data evaluasi dan populate form
+            Object.keys(evaluasiData).forEach(sectionName => {
+              const sectionData = evaluasiData[sectionName];
+              const sectionNumber = sectionMapping[sectionName];
+              
+              if (sectionNumber && sectionData) {
+                console.log(`Loading section ${sectionName} (${sectionNumber}):`, sectionData);
+                
+                // Cari field dan populate
+                const catatanField = document.getElementById(`catatan-perbaikan-${sectionNumber}`);
+                const statusField = document.getElementById(`status-permohonan-${sectionNumber}`);
+                
+                if (catatanField && statusField) {
+                  // Set nilai
+                  catatanField.value = sectionData.catatan || '';
+                  statusField.value = sectionData.status || '';
+                  
+                  // Update tombol dan field state
+                  const container = catatanField.closest('.bg-white');
+                  if (container) {
+                    const button = container.querySelector('button[onclick*="simpanEvaluasiBagian"]');
+                    if (button) {
+                      if (isSubmittedToKabid) {
+                        // Jika sudah dikirim ke kabid: disable semua dan ubah tombol
+                        catatanField.disabled = true;
+                        statusField.disabled = true;
+                        button.disabled = true;
+                        button.classList.add('cursor-not-allowed', 'bg-gray-400');
+                        button.classList.remove('bg-green-600', 'hover:bg-green-700');
+                        button.textContent = 'Telah Dikirim';
+                        
+                        // Tambahkan info status
+                        const info = document.createElement('small');
+                        info.className = 'text-blue-600 block mt-1 font-semibold';
+                        info.textContent = 'Evaluasi telah dikirim ke Kabid';
+                        if (!button.parentNode.querySelector('small')) {
+                          button.parentNode.appendChild(info);
+                        }
+                      } else {
+                        // Jika belum dikirim: field masih bisa diedit, ubah tombol jadi "Update"
+                        catatanField.disabled = false;
+                        statusField.disabled = false;
+                        button.disabled = false;
+                        button.classList.remove('cursor-not-allowed', 'bg-gray-400');
+                        button.classList.add('bg-blue-600', 'hover:bg-blue-700');
+                        button.textContent = 'Update Evaluasi';
+                        
+                        // Tambahkan info tanggal evaluasi terakhir
+                        if (sectionData.evaluated_at) {
+                          const evaluatedDate = new Date(sectionData.evaluated_at).toLocaleString('id-ID');
+                          const info = document.createElement('small');
+                          info.className = 'text-gray-500 block mt-1';
+                          info.textContent = `Terakhir dievaluasi: ${evaluatedDate}`;
+                          if (!button.parentNode.querySelector('small')) {
+                            button.parentNode.appendChild(info);
+                          }
+                        }
+                      }
+                    }
+                  }
+                  
+                  console.log(`Section ${sectionName} loaded successfully - editable: ${!isSubmittedToKabid}`);
+                } else {
+                  console.warn(`Fields not found for section ${sectionName} (${sectionNumber})`);
+                }
+              }
+            });
+            
+            // Update tombol "Kirim Hasil Evaluasi" jika sudah dikirim
+            if (isSubmittedToKabid) {
+              const submitButton = document.querySelector('button[onclick="showPopup()"]');
+              if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.classList.add('cursor-not-allowed', 'bg-gray-400');
+                submitButton.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                submitButton.textContent = 'Telah Dikirim ke Kabid';
+              }
+            }
           }
         </script>
 

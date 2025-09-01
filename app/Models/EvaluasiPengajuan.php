@@ -7,7 +7,27 @@ use Illuminate\Database\Eloquent\Model;
 class EvaluasiPengajuan extends Model
 {
     protected $table = 'evaluasi_pengajuan';
-    protected $fillable = ['pengajuan_id', 'evaluator_id', 'status', 'catatan'];
+    protected $fillable = [
+        'pengajuan_id', 
+        'evaluator_id', 
+        'status', 
+        'catatan',
+        'assigned_at',
+        'assigned_by',
+        'completed_at',
+        'catatan_penugasan',
+        'evaluation_days',
+        'rating',
+        'metadata'
+    ];
+    
+    protected $casts = [
+        'assigned_at' => 'datetime',
+        'completed_at' => 'datetime',
+        'metadata' => 'array',
+        'rating' => 'decimal:1',
+        'evaluation_days' => 'integer'
+    ];
 
     public function pengajuan()
     {

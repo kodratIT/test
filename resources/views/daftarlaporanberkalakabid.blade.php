@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="csrf-token" content="{{ csrf_token() }}" />
   <link rel="icon" type="image/png" href=" {{ asset('assets/img/logo-esdm.svg') }} " />
   <title>Daftar Laporan Berkala Kepala Bidang</title>
   <!--     Fonts and icons     -->
@@ -104,10 +105,10 @@
               <table class="min-w-full text-sm text-left text-gray-700 border-separate border-spacing-0">
                 <thead class="bg-blue-500 text-white uppercase text-xs tracking-wider">
                   <tr>
-                    <th class="px-4 py-3 font-semibold">No</th>
+                    <th class="px-4 py-3 font-semibold">No Pengajuan</th>
                     <th class="px-4 py-3 font-semibold text-center">Tanggal</th>
                     <th class="px-4 py-3 font-semibold text-center">Badan Usaha</th>
-                    <th class="px-4 py-3 font-semibold text-center">Catatan</th>
+                    <th class="px-4 py-3 font-semibold text-center">Evaluator</th>
                     <th class="px-4 py-3 font-semibold text-center">Status</th>
                     <th class="px-4 py-3 font-semibold text-center">Aksi</th>
                   </tr>
@@ -142,12 +143,30 @@
                 const statusMap = {
                   'proses evaluasi': 'bg-orange-400 text-white',
                   'perbaikan': 'bg-red-500 text-white',
+                  'evaluasi': 'bg-blue-400 text-white',
+                  'validasi': 'bg-purple-500 text-white',
+                  'menunggu persetujuan kadis': 'bg-purple-500 text-white',
+                  'disetujui kadis': 'bg-green-600 text-white',
                   'proses verifikasi': 'bg-blue-500 text-white',
                   'proses pengesahan': 'bg-green-400 text-white',
                   'disetujui': 'bg-green-600 text-white'
                 };
                 const badgeClass = statusMap[statusText] || 'bg-gray-400 text-white';
-                const statusLabel = statusText.replace(/\b\w/g, c => c.toUpperCase());
+                
+                // Custom labels for status
+                const statusLabelMap = {
+                  'proses evaluasi': 'Proses Evaluasi',
+                  'perbaikan': 'Perbaikan',
+                  'evaluasi': 'Evaluasi',
+                  'validasi': 'Divalidasi Kabid',
+                  'menunggu persetujuan kadis': 'Menunggu Persetujuan Kadis',
+                  'disetujui kadis': 'Disetujui Kadis',
+                  'proses verifikasi': 'Proses Verifikasi',
+                  'proses pengesahan': 'Proses Pengesahan',
+                  'disetujui': 'Disetujui'
+                };
+                
+                const statusLabel = statusLabelMap[statusText] || statusText.replace(/\b\w/g, c => c.toUpperCase());
 
                 // striped rows
                 const rowClass = index % 2 === 0 ? "bg-white" : "bg-gray-50";
@@ -207,19 +226,55 @@
               `;
                 }
 
+                // Action buttons based on status and conditions
+                let actionButtons = '';
+                
+                // Always add view button first
+                actionButtons += `
+                  <a href="${item.action_link}" class="px-3 py-1 text-xs font-semibold text-blue-600 bg-blue-100 rounded hover:bg-blue-200 mr-1">
+                    Lihat Detail
+                  </a>
+                `;
+                
+                // Add status-specific action buttons
+                if (item.can_assign) {
+                  actionButtons += `
+                    <button onclick="showAssignModal(${item.id})" class="px-3 py-1 text-xs font-semibold text-green-600 bg-green-100 rounded hover:bg-green-200 mr-1">
+                      Assign Evaluator
+                    </button>
+                  `;
+                } else if (item.can_reassign) {
+                  actionButtons += `
+                    <button onclick="showReassignModal(${item.id})" class="px-3 py-1 text-xs font-semibold text-yellow-600 bg-yellow-100 rounded hover:bg-yellow-200 mr-1">
+                      Reassign
+                    </button>
+                  `;
+                }
+                
+                // Approve/Reject buttons (shown in detail page now)
+                if (item.can_approve) {
+                  actionButtons += `
+                    <span class="px-2 py-1 text-xs font-semibold text-green-700 bg-green-50 rounded border border-green-200">
+                      Siap Disetujui
+                    </span>
+                  `;
+                }
+
                 // rakit baris tabel
                 tbody += `
               <tr class="${rowClass} hover:bg-gray-100 transition">
                 <td class="px-4 py-3 font-medium text-gray-800${firstTdRound}">${item.no_pengajuan}</td>
                 <td class="px-4 py-3 text-center">${tanggal}</td>
                 <td class="px-4 py-3 text-center">${item.badan_usaha}</td>
-                <td class="px-4 py-3 text-center">${item.catatan}</td>
+                <td class="px-4 py-3 text-center">${item.evaluator}</td>
                 <td class="px-4 py-3 text-center">
                   <span class="inline-block px-3 py-1 text-xs font-bold rounded-full ${badgeClass} whitespace-nowrap">
                     ${statusLabel}
                   </span>
                 </td>
-                ${actionTd}
+                <td class="px-4 py-3 text-center${lastTdRound}">
+                  ${actionButtons}
+                </td>
               </tr>
             `;
               });
@@ -304,6 +359,73 @@
         const state = rowStates[rowId];
         if (state.downloaded && state.uploaded) {
           document.getElementById("lihatBtn-" + rowId).classList.remove("hidden");
+        }
+      }
+
+      // Kabid Action Functions
+      function showAssignModal(pengajuanId) {
+        // TODO: Implement assign evaluator modal
+        alert('Assign evaluator modal untuk pengajuan ID: ' + pengajuanId + '\n\nFitur ini akan segera diimplementasikan!');
+      }
+
+      function showReassignModal(pengajuanId) {
+        // TODO: Implement reassign evaluator modal
+        alert('Reassign evaluator modal untuk pengajuan ID: ' + pengajuanId + '\n\nFitur ini akan segera diimplementasikan!');
+      }
+
+      function showApprovalModal(pengajuanId) {
+        if (confirm('Apakah Anda yakin ingin menyetujui pengajuan ini?')) {
+          $.ajax({
+            url: `/pengajuan/${pengajuanId}/approve`,
+            type: 'POST',
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+              catatan_kabid: prompt('Catatan (opsional):') || ''
+            },
+            success: function(response) {
+              if (response.success) {
+                alert('Pengajuan berhasil disetujui!');
+                loadLaporanKabid(); // Reload table
+              } else {
+                alert('Error: ' + response.message);
+              }
+            },
+            error: function(xhr) {
+              alert('Terjadi kesalahan: ' + xhr.responseJSON?.message || 'Unknown error');
+            }
+          });
+        }
+      }
+
+      function showRejectModal(pengajuanId) {
+        const catatan = prompt('Masukkan alasan penolakan:');
+        if (catatan && catatan.trim() !== '') {
+          $.ajax({
+            url: `/pengajuan/${pengajuanId}/reject`,
+            type: 'POST',
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+              catatan_kabid: catatan,
+              alasan_penolakan: catatan
+            },
+            success: function(response) {
+              if (response.success) {
+                alert('Pengajuan berhasil ditolak!');
+                loadLaporanKabid(); // Reload table
+              } else {
+                alert('Error: ' + response.message);
+              }
+            },
+            error: function(xhr) {
+              alert('Terjadi kesalahan: ' + xhr.responseJSON?.message || 'Unknown error');
+            }
+          });
+        } else {
+          alert('Alasan penolakan harus diisi!');
         }
       }
     </script>

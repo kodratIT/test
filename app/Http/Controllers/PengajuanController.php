@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use App\Models\Pengajuan;
 use App\Models\EvaluasiPengajuan;
@@ -476,37 +477,89 @@ class PengajuanController extends Controller
     {
         $request->validate([
             'evaluator_id' => 'required|exists:users,id',
+            'catatan_penugasan' => 'nullable|string|max:500',
         ]);
 
-        $pengajuan = Pengajuan::findOrFail($id);
-        $pengajuan->evaluator_id = $request->evaluator_id;
-        $pengajuan->status = 'proses evaluasi';
-        $pengajuan->save();
+        DB::beginTransaction();
+        try {
+            $pengajuan = Pengajuan::findOrFail($id);
+            
+            // Validasi status pengajuan
+            if (!in_array($pengajuan->status, ['proses evaluasi', 'masuk'])) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Pengajuan tidak dapat dikirim dengan status: ' . $pengajuan->status
+                ], 400);
+            }
+            
+            // Validasi evaluator
+            $evaluator = User::where('id', $request->evaluator_id)
+                ->where('role_pengguna', 'evaluator')
+                ->first();
+                
+            if (!$evaluator) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Evaluator tidak valid atau tidak aktif.'
+                ], 400);
+            }
 
-        return response()->json(['success' => true]);
+            // Cek workload evaluator (opsional - bisa diatur max pending per evaluator)
+            $currentWorkload = EvaluasiPengajuan::where('evaluator_id', $request->evaluator_id)
+                ->where('status', 'menunggu evaluasi')
+                ->count();
+                
+            if ($currentWorkload >= 10) { // Max 10 pending evaluations
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Evaluator ' . $evaluator->name . ' sudah memiliki terlalu banyak tugas pending (' . $currentWorkload . ').'
+                ], 400);
+            }
 
+            // Update pengajuan
+            $pengajuan->update([
+                'evaluator_id' => $request->evaluator_id,
+                'status' => 'proses evaluasi',
+                'assigned_at' => now(),
+                'assigned_by' => Auth::id(),
+            ]);
 
-        // app/Http/Controllers/PengajuanController.php
+            // Buat atau update record evaluasi
+            EvaluasiPengajuan::updateOrCreate(
+                [
+                    'pengajuan_id' => $pengajuan->id,
+                    'evaluator_id' => $request->evaluator_id,
+                ],
+                [
+                    'status' => 'menunggu evaluasi',
+                    'catatan_penugasan' => $request->catatan_penugasan,
+                    'assigned_at' => now(),
+                ]
+            );
 
+            // Log activity
+            $this->logActivity($pengajuan->id, 'assigned', 
+                'Pengajuan ditugaskan ke evaluator: ' . $evaluator->name, 
+                $request->catatan_penugasan);
 
+            // TODO: Send notification email to evaluator
+            // $this->sendAssignmentNotification($pengajuan, $evaluator);
 
-
-        // simpan evaluator_id di pengajuan (opsional)
-        $pengajuan->update([
-            'status' => 'proses evaluasi',
-            'evaluator_id' => $request->evaluator_id,
-        ]);
-
-        // buat record evaluasi
-        EvaluasiPengajuan::create([
-            'pengajuan_id' => $pengajuan->id,
-            'evaluator_id' => $request->evaluator_id,
-            'status' => 'menunggu evaluasi',
-        ]);
-
-        return redirect()->back()->with('success', 'Pengajuan berhasil dikirim ke evaluator.');
+            DB::commit();
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Pengajuan berhasil dikirim ke evaluator: ' . $evaluator->name
+            ]);
+            
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'success' => false, 
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
     }
-
     /**
      * Mengubah kumpulan input array menjadi array of objects (untuk JSON di DB).
      * - Menentukan jumlah baris berdasarkan field terpanjang.
@@ -591,5 +644,18 @@ class PengajuanController extends Controller
 
         // 🔹 Kalau bukan array dan bukan Request
         return [];
+    }
+
+    private function logActivity($pengajuanId, $action, $description, $notes = null)
+    {
+        DB::table('activity_logs')->insert([
+            'pengajuan_id' => $pengajuanId,
+            'user_id' => Auth::id(),
+            'action' => $action,
+            'description' => $description,
+            'notes' => $notes,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 }

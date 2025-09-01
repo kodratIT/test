@@ -16,6 +16,7 @@ class Pengajuan extends Model
         'pengguna_id',
         'no_pengajuan',
         'status',
+        'evaluator_id',
 
         // Field statis
         'nomor_izin_usaha',
@@ -52,6 +53,25 @@ class Pengajuan extends Model
 
         // Dropdown / opsional
         'penjualan_listrik',
+        
+        // Kabid approval fields
+        'approved_by_kabid_at',
+        'approved_by_kabid_id',
+        'catatan_kabid',
+        'rejected_by_kabid_at',
+        'rejected_by_kabid_id',
+        'alasan_penolakan',
+        
+        // Assignment tracking
+        'assigned_at',
+        'assigned_by',
+        'reassigned_at',
+        'reassigned_by',
+        
+        // Evaluation tracking
+        'evaluated_at',
+        'evaluator_recommendation',
+        'evaluator_notes',
     ];
 
 
@@ -101,5 +121,19 @@ class Pengajuan extends Model
     public function evaluator()
     {
         return $this->belongsTo(User::class, 'evaluator_id');
+    }
+
+    // Relasi ke EvaluasiPengajuan
+    public function evaluasiPengajuan()
+    {
+        return $this->hasMany(EvaluasiPengajuan::class, 'pengajuan_id');
+    }
+
+    // Get current active evaluation
+    public function currentEvaluation()
+    {
+        return $this->hasOne(EvaluasiPengajuan::class, 'pengajuan_id')
+                    ->where('status', 'menunggu evaluasi')
+                    ->latest();
     }
 }

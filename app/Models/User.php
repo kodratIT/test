@@ -50,6 +50,18 @@ class User extends Authenticatable
         return $this->hasOne(IdentitasTimAdmin::class, 'pengguna_id', 'id');
     }
 
+    // ✅ Relasi untuk evaluator ke EvaluasiPengajuan
+    public function evaluasiPengajuan()
+    {
+        return $this->hasMany(EvaluasiPengajuan::class, 'evaluator_id');
+    }
+
+    // ✅ Relasi untuk pengajuan yang di-assign ke evaluator ini
+    public function pengajuanEvaluator()
+    {
+        return $this->hasMany(Pengajuan::class, 'evaluator_id');
+    }
+
     
 
     // ✅ Cek apakah profil pengguna lengkap

@@ -10,9 +10,11 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\IdentitasTimAdminController;
 use App\Http\Controllers\LaporanBerkalaKepalaBidangController;
 use App\Http\Controllers\KepalaBidangController;
+use App\Http\Controllers\BerandakabidController;
 use App\Http\Controllers\EvaluatorController;
 use App\Http\Controllers\BadanusahaController;
 use App\Http\Controllers\LaporanBerkalaEvaluatorController;
+use App\Http\Controllers\LaporanBerkalaKadisController;
 use App\Http\Controllers\LampiranController;
 
 //pengguna
@@ -68,15 +70,33 @@ Route::middleware(['auth', 'is_kabid'])->group(function () {
 
     Route::get('/profilekabid', [IdentitasTimAdminController::class, 'showProfileKabid'])->name('profile.kabid');
 
+    // Dashboard Kabid API endpoints
+    Route::get('/berandakabid/stats', [BerandakabidController::class, 'getStats'])->name('berandakabid.stats');
+    Route::get('/berandakabid/quick-actions', [BerandakabidController::class, 'getQuickActions'])->name('berandakabid.quickActions');
+    Route::get('/berandakabid/evaluator-workload', [BerandakabidController::class, 'getEvaluatorWorkload'])->name('berandakabid.evaluatorWorkload');
+
     Route::prefix('daftarlaporanberkalakabid')->group(function () {
         Route::get('/', [LaporanBerkalaKepalaBidangController::class, 'index'])->name('laporan.kabid.index');
         Route::get('/list', [LaporanBerkalaKepalaBidangController::class, 'getList'])->name('laporan.kabid.list');
+        Route::get('/statistics', [LaporanBerkalaKepalaBidangController::class, 'getStatistics'])->name('laporan.kabid.statistics');
+        Route::get('/recent-activities', [LaporanBerkalaKepalaBidangController::class, 'getRecentActivities'])->name('laporan.kabid.recentActivities');
+        Route::get('/pending-approvals', [LaporanBerkalaKepalaBidangController::class, 'getPendingApprovals'])->name('laporan.kabid.pendingApprovals');
+        Route::get('/export', [LaporanBerkalaKepalaBidangController::class, 'export'])->name('laporan.kabid.export');
     });
 
-    Route::post('/pengajuan/{id}/kirim-evaluator', [PengajuanController::class, 'kirimKeEvaluator'])->name('pengajuan.kirimEvaluator');
-
-    // routes/web.php
-    Route::post('/pengajuan/{id}/kirim-evaluator', [PengajuanController::class, 'kirimKeEvaluator'])->name('pengajuan.kirim');
+    // Pengajuan management endpoints
+    Route::post('/pengajuan/{id}/kirim-evaluator', [LaporanBerkalaKepalaBidangController::class, 'kirimKeEvaluator'])->name('pengajuan.kirimEvaluator');
+    Route::post('/pengajuan/{id}/approve', [LaporanBerkalaKepalaBidangController::class, 'approve'])->name('pengajuan.approve');
+    Route::post('/pengajuan/{id}/reject', [LaporanBerkalaKepalaBidangController::class, 'reject'])->name('pengajuan.reject');
+    Route::post('/pengajuan/{id}/reassign-evaluator', [LaporanBerkalaKepalaBidangController::class, 'reassignEvaluator'])->name('pengajuan.reassignEvaluator');
+    
+    // Route untuk laporan berkala Kabid
+    Route::prefix('laporan-berkala-kabid')->group(function () {
+        Route::get('/', [LaporanBerkalaKepalaBidangController::class, 'index'])->name('laporan-berkala-kabid.index');
+        Route::post('/{id}/approve', [LaporanBerkalaKepalaBidangController::class, 'approve'])->name('laporan-berkala-kabid.approve');
+        Route::post('/{id}/reject', [LaporanBerkalaKepalaBidangController::class, 'reject'])->name('laporan-berkala-kabid.reject');
+        Route::post('/{id}/reassign-evaluator', [LaporanBerkalaKepalaBidangController::class, 'reassignEvaluator'])->name('laporan-berkala-kabid.reassign-evaluator');
+    });
 
     // kelola evaluator
     Route::get('/kelolaevaluator', [EvaluatorController::class, 'index'])->name('evaluator.index');
@@ -108,7 +128,11 @@ Route::middleware(['auth', 'is_evaluator'])->group(function () {
     Route::get('/daftarlaporanberkalaevaluator/{id}', [LaporanBerkalaEvaluatorController::class, 'show'])
         ->name('laporan.evaluator.show');
 
-    // route submit evaluasi
+    // route simpan evaluasi per bagian (AJAX)
+    Route::post('/evaluasi/{id}/save-section', [LaporanBerkalaEvaluatorController::class, 'saveSection'])
+        ->name('laporan.evaluator.save_section');
+        
+    // route submit evaluasi final
     Route::post('/evaluasi/{id}/submit', [LaporanBerkalaEvaluatorController::class, 'submit'])
         ->name('laporan.evaluator.submit');
 
@@ -119,6 +143,12 @@ Route::middleware(['auth', 'is_evaluator'])->group(function () {
 //kadis
 Route::middleware(['auth', 'is_kadis'])->group(function () {
     Route::get('/profilevalidator', [IdentitasTimAdminController::class, 'showProfile'])->name('profilevalidator');
+
+    // Daftar laporan berkala untuk Kadis - hanya yang sudah divalidasi Kabid
+    Route::get('/daftarlaporanberkalakadis', [LaporanBerkalaKadisController::class, 'index'])->name('kadis.laporan.index');
+    
+    // Aksi approval oleh Kadis
+    Route::post('/pengajuan/{id}/approve-kadis', [LaporanBerkalaKadisController::class, 'approve'])->name('pengajuan.approve.kadis');
 
     // Kelola Pegawai (oleh Kepala Bidang)
     Route::get('/kelolapegawai', [KepalaBidangController::class, 'index'])->name('kepala-bidang.index');
@@ -131,9 +161,12 @@ Route::middleware(['auth', 'is_kadis'])->group(function () {
 
 
 
-Route::get('/pengajuan/{id}', [PengajuanController::class, 'show'])->name('pengajuan.show');
+// Route untuk Kabid - melihat detail pengajuan untuk verifikasi
 Route::get('/pengajuan/{id}', [LaporanBerkalaKepalaBidangController::class, 'show'])
     ->name('pengajuan.show');
+
+// Route untuk pengguna biasa - melihat detail pengajuan sendiri
+Route::get('/pengajuan/{id}/detail', [PengajuanController::class, 'show'])->name('pengajuan.detail');
 
 Route::get('/lampiran/{filename}', function ($filename) {
     $path = storage_path('app/private/uploads/' . $filename);
@@ -239,9 +272,7 @@ Route::get('/daftarlaporanberkalapengguna', function () {
     return view('daftarlaporanberkalapengguna');
 })->name('daftarlaporanberkalapengguna');
 
-Route::get('/daftarlaporanberkalakadis', function () {
-    return view('daftarlaporanberkalakadis');
-})->name('daftarlaporanberkalakadis');
+// Route ini sudah dipindahkan ke middleware is_kadis
 
 Route::get('/halamanverifikasi', function () {
     return view('halamanverifikasi');
