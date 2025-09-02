@@ -207,14 +207,28 @@
                           (createdAt.getMonth() + 1).toString().padStart(2, '0') + "-" +
                           createdAt.getFullYear();
 
-                        // status badge khusus evaluator
+                        // status badge khusus untuk evaluator
                         const statusText = (item.status || '').toLowerCase();
-                        const statusMap = {
-                          'menunggu evaluasi': 'bg-orange-400 text-white',
-                          'telah dievaluasi': 'bg-green-600 text-white'
-                        };
-                        const badgeClass = statusMap[statusText] || 'bg-gray-400 text-white';
-                        const statusLabel = statusText.replace(/\b\w/g, c => c.toUpperCase());
+                        let badgeClass = '';
+                        let statusLabel = '';
+                        
+                        // Mapping status khusus evaluator
+                        if (statusText === 'menunggu evaluasi' || statusText === 'menunggu' || statusText === 'pending evaluasi') {
+                          // Menunggu Evaluasi = Kuning
+                          badgeClass = 'bg-yellow-500';
+                          statusLabel = 'MENUNGGU EVALUASI';
+                        } else if (statusText === 'validasi') {
+                          // Validasi = Green (Telah Divalidasi)
+                          badgeClass = 'bg-green-500';
+                          statusLabel = 'TELAH DIVALIDASI';
+                        } else if (statusText === 'butuh perbaikan' || statusText === 'perbaikan' || statusText === 'perlu perbaikan') {
+                          // Butuh Perbaikan = Gray
+                          badgeClass = 'bg-gray-500';
+                          statusLabel = 'BUTUH PERBAIKAN';
+                        } else {// Telah Dievaluasi = Green
+                          badgeClass = 'bg-green-500';
+                          statusLabel = 'TELAH DIEVALUASI';
+                        } 
 
                         // striped rows
                         const rowClass = index % 2 === 0 ? "bg-white" : "bg-gray-50";
@@ -224,20 +238,44 @@
                         const firstTdRound = isLast ? ' rounded-bl-2xl' : '';
                         const lastTdRound = isLast ? ' rounded-br-2xl' : '';
 
+                        // Logika aksi berdasarkan status
+                        let actionTd = '';
+                        
+                        if (statusText === 'menunggu evaluasi' || statusText === 'menunggu' || statusText === 'pending evaluasi') {
+                          // Status Menunggu Evaluasi: Link Evaluasi
+                          actionTd = `
+                            <a href="/daftarlaporanberkalaevaluator/${item.id}" class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-yellow-600 bg-yellow-50 rounded-lg hover:bg-yellow-100 hover:text-yellow-700 transition-colors duration-200">
+                              <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                              </svg>
+                              Evaluasi
+                            </a>
+                          `;
+                        } else{
+                          // Status Telah Dievaluasi: Link Lihat
+                          actionTd = `
+                            <a href="/daftarlaporanberkalaevaluator/${item.id}" class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 hover:text-blue-700 transition-colors duration-200">
+                              <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                              </svg>
+                              Lihat Hasil
+                            </a>
+                          `;
+                        } 
+
                         tbody += `
               <tr class="${rowClass} hover:bg-gray-100 transition">
                 <td class="px-4 py-3 font-medium text-gray-800${firstTdRound}">${item.no_pengajuan}</td>
                 <td class="px-4 py-3 text-center">${tanggal}</td>
                 <td class="px-4 py-3 text-center">${item.badan_usaha}</td>
                 <td class="px-4 py-3 text-center">
-                  <span class="inline-block px-3 py-1 text-xs font-bold rounded-full ${badgeClass} whitespace-nowrap">
+                  <span class="inline-flex items-center justify-center w-40 h-8 text-xs font-semibold text-white rounded-full ${badgeClass}">
                     ${statusLabel}
                   </span>
                 </td>
                 <td class="px-4 py-3 text-center${lastTdRound}">
-                  <a href="${item.action_link}" class="text-blue-600 hover:underline font-medium text-sm">
-                    ${item.action_text}
-                  </a>
+                  ${actionTd}
                 </td>
               </tr>
             `;

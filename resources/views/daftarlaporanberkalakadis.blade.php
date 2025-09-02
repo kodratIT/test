@@ -20,6 +20,45 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!-- Main Styling -->
   <link href="{{ asset('assets/css/argon-dashboard-tailwind.css?v=1.0.1') }}" rel="stylesheet" />
+  
+  <!-- Custom Styles for SweetAlert2 -->
+  <style>
+    .swal2-confirm-custom {
+      background-color: #22c55e !important;
+      color: white !important;
+      font-weight: bold !important;
+      border: none !important;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2) !important;
+    }
+    
+    .swal2-cancel-custom {
+      background-color: #ef4444 !important;
+      color: white !important;
+      font-weight: bold !important;
+      border: none !important;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2) !important;
+    }
+    
+    .swal2-confirm-custom:hover {
+      background-color: #16a34a !important;
+    }
+    
+    .swal2-cancel-custom:hover {
+      background-color: #dc2626 !important;
+    }
+    
+    /* Force text color for SweetAlert2 buttons */
+    .swal2-actions button {
+      color: white !important;
+      font-weight: bold !important;
+    }
+    
+    .swal2-confirm span,
+    .swal2-cancel span {
+      color: white !important;
+      font-weight: bold !important;
+    }
+  </style>
 </head>
 
 <body class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">
@@ -225,7 +264,13 @@
                           Setujui
                         </button>
                       @elseif($pengajuan->status === 'disetujui kadis')
-                        <span class="text-green-600 text-xl">✔️</span>
+                        <a href="/daftarlaporanberkalaevaluator/{{ $pengajuan->id }}" class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 hover:text-blue-700 transition-colors duration-200">
+                          <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 616 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                          </svg>
+                          Lihat
+                        </a>
                       @else
                         <span class="text-gray-400 text-sm">-</span>
                       @endif
@@ -587,10 +632,15 @@ function setujuiSurat(pengajuanId) {
         text: 'Apakah Anda yakin ingin menyetujui laporan berkala ini?',
         icon: 'question',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Ya, Setujui!',
-        cancelButtonText: 'Batal'
+        confirmButtonColor: '#22c55e',
+        cancelButtonColor: '#ef4444',
+        confirmButtonText: '<span style="color: white; font-weight: bold;">Ya, Setujui!</span>',
+        cancelButtonText: '<span style="color: white; font-weight: bold;">Batal</span>',
+        customClass: {
+            confirmButton: 'swal2-confirm-custom',
+            cancelButton: 'swal2-cancel-custom'
+        },
+        buttonsStyling: true
     }).then((result) => {
         if (result.isConfirmed) {
             // Show loading

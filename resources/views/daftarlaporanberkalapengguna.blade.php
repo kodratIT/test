@@ -245,53 +245,36 @@
     // Create enhanced action buttons
     function createActionButtons(item) {
       const status = (item.status || '').trim().toLowerCase();
-      const canEdit = !['disetujui', 'ditolak'].includes(status);
-      const canDelete = status === 'draft';
       
-      let actions = `
-        <div class="relative group">
-          <button class="p-2 text-gray-600 hover:text-gray-900 focus:outline-none rounded-lg hover:bg-gray-100 transition-colors duration-200" 
-                  onclick="toggleActionMenu(event, ${item.id})">
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path>
+      // Logic berdasarkan status
+      if (status === 'perbaikan' || status === 'perlu perbaikan') {
+        // Status Perbaikan: Link Edit Pengajuan
+        return `
+          <a href="/pengajuan/${item.id}/edit" class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-orange-600 bg-orange-50 rounded-lg hover:bg-orange-100 hover:text-orange-700 transition-colors duration-200">
+            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
             </svg>
-          </button>
-          <div id="action-menu-${item.id}" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50 hidden">
-            <div class="py-1">
-              <a href="/pengajuan/${item.id}/detail" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                <i class="fas fa-eye mr-3 w-4"></i>Lihat Detail
-              </a>
-      `;
-      
-      if (canEdit) {
-        actions += `
-              <a href="/pengajuan/${item.id}/edit" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                <i class="fas fa-edit mr-3 w-4"></i>Edit Pengajuan
-              </a>
+            Edit Pengajuan
+          </a>
         `;
-      }
-      
-      actions += `
-              <a href="/pengajuan/${item.id}/download" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                <i class="fas fa-download mr-3 w-4"></i>Download Dokumen
-              </a>
-      `;
-      
-      if (canDelete) {
-        actions += `
-              <button onclick="deleteDraft(${item.id})" class="w-full flex items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50">
-                <i class="fas fa-trash mr-3 w-4"></i>Hapus Draft
-              </button>
+      } else if (status === 'disetujui' || status === 'disetujui kadis') {
+        // Status Disetujui: Link Lihat
+        return `
+          <a href="/pengajuan/${item.id}/detail" class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 hover:text-blue-700 transition-colors duration-200">
+            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            </svg>
+            Lihat
+          </a>
         `;
+      } else if (status === 'proses evaluasi') {
+        // Status Proses Evaluasi: Tidak tampilkan apa-apa
+        return `<span class="text-gray-400 text-sm">-</span>`;
+      } else {
+        // Status lainnya: Tidak tampilkan apa-apa
+        return `<span class="text-gray-400 text-sm">-</span>`;
       }
-      
-      actions += `
-            </div>
-          </div>
-        </div>
-      `;
-      
-      return actions;
     }
 
     // Toggle action menu
@@ -382,16 +365,33 @@
               (createdAt.getMonth() + 1).toString().padStart(2, '0') + "-" +
               createdAt.getFullYear();
 
-            const status = (item.status || '').trim().toLowerCase();
-            const statusMap = {
-              'proses evaluasi': 'bg-orange-100 text-orange-800 border border-orange-200',
-              'perbaikan': 'bg-red-100 text-red-800 border border-red-200',
-              'ditolak': 'bg-red-100 text-red-800 border border-red-200',
-              'disetujui': 'bg-green-100 text-green-800 border border-green-200',
-              'draft': 'bg-gray-100 text-gray-800 border border-gray-200'
-            };
-            const badgeClass = statusMap[status] || 'bg-gray-100 text-gray-800 border border-gray-200';
-            const statusLabel = status.replace(/\b\w/g, c => c.toUpperCase());
+            // status badge - 4 status dengan warna yang ditentukan
+            const statusText = (item.status || '').toLowerCase();
+            let badgeClass = '';
+            let statusLabel = '';
+            
+            // Mapping 4 status utama
+            if (statusText === 'proses evaluasi') {
+              // Proses Evaluasi = Kuning
+              badgeClass = 'bg-yellow-500';
+              statusLabel = 'PROSES EVALUASI';
+            } else if (statusText === 'proses verifikasi' || statusText === 'evaluasi') {
+              // Proses Verifikasi = Biru  
+              badgeClass = 'bg-blue-500';
+              statusLabel = 'PROSES VERIFIKASI';
+            } else if (statusText === 'proses pengesahan' || statusText === 'menunggu persetujuan kadis' || statusText === 'validasi') {
+              // Proses Pengesahan = Hijau
+              badgeClass = 'bg-green-500';
+              statusLabel = 'PROSES PENGESAHAN';
+            } else if (statusText === 'disetujui' || statusText === 'disetujui kadis') {
+              // Disetujui = Hijau Pekat
+              badgeClass = 'bg-green-600';
+              statusLabel = 'DISETUJUI';
+            } else {
+              // Default case untuk status lain
+              badgeClass = 'bg-gray-400';
+              statusLabel = statusText.toUpperCase();
+            }
 
             const rowClass = index % 2 === 0 ? "bg-white" : "bg-gray-50";
             const isLast = index === data.length - 1;
@@ -408,7 +408,7 @@
                   ${item.catatan || '-'}
                 </td>
                 <td class="px-4 py-3 text-center">
-                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${badgeClass}">
+                  <span class="inline-flex items-center justify-center w-40 h-8 text-xs font-semibold text-white rounded-full ${badgeClass}">
                     ${statusLabel}
                   </span>
                 </td>

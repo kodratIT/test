@@ -61,6 +61,9 @@ class LaporanBerkalaKepalaBidangController extends Controller
                     'can_reassign' => $item->evaluator_id && in_array($item->status, ['proses evaluasi']),
                     'can_approve' => in_array($item->status, ['evaluasi']),
                     'can_reject' => in_array($item->status, ['evaluasi']),
+                    // PDF information
+                    'has_pdf' => !empty($item->lembar_pengesahan_pdf) && \Storage::exists($item->lembar_pengesahan_pdf),
+                    'pdf_filename' => $item->lembar_pengesahan_pdf ? basename($item->lembar_pengesahan_pdf) : null,
                 ];
             });
 

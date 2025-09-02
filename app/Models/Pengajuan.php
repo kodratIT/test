@@ -72,6 +72,10 @@ class Pengajuan extends Model
         'evaluated_at',
         'evaluator_recommendation',
         'evaluator_notes',
+        
+        // Document management
+        'lembar_pengesahan_pdf',
+        'nomor_pengesahan',
     ];
 
 

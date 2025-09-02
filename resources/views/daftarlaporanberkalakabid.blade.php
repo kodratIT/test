@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="csrf-token" content="{{ csrf_token() }}" />
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="icon" type="image/png" href=" {{ asset('assets/img/logo-esdm.svg') }} " />
   <title>Daftar Laporan Berkala Kepala Bidang</title>
   <!--     Fonts and icons     -->
@@ -101,14 +101,14 @@
             </div>
 
             <!-- Table -->
-            <div class="flex-auto overflow-x-auto">
+           <div class="flex-auto overflow-x-auto">
               <table class="min-w-full text-sm text-left text-gray-700 border-separate border-spacing-0">
                 <thead class="bg-blue-500 text-white uppercase text-xs tracking-wider">
                   <tr>
-                    <th class="px-4 py-3 font-semibold">No Pengajuan</th>
+                    <th class="px-4 py-3 font-semibold">No</th>
                     <th class="px-4 py-3 font-semibold text-center">Tanggal</th>
                     <th class="px-4 py-3 font-semibold text-center">Badan Usaha</th>
-                    <th class="px-4 py-3 font-semibold text-center">Evaluator</th>
+                    <th class="px-4 py-3 font-semibold text-center">Catatan</th>
                     <th class="px-4 py-3 font-semibold text-center">Status</th>
                     <th class="px-4 py-3 font-semibold text-center">Aksi</th>
                   </tr>
@@ -138,35 +138,33 @@
                   (createdAt.getMonth() + 1).toString().padStart(2, '0') + "-" +
                   createdAt.getFullYear();
 
-                // status badge
+                // status badge - 4 status dengan warna yang ditentukan
                 const statusText = (item.status || '').toLowerCase();
-                const statusMap = {
-                  'proses evaluasi': 'bg-orange-400 text-white',
-                  'perbaikan': 'bg-red-500 text-white',
-                  'evaluasi': 'bg-blue-400 text-white',
-                  'validasi': 'bg-purple-500 text-white',
-                  'menunggu persetujuan kadis': 'bg-purple-500 text-white',
-                  'disetujui kadis': 'bg-green-600 text-white',
-                  'proses verifikasi': 'bg-blue-500 text-white',
-                  'proses pengesahan': 'bg-green-400 text-white',
-                  'disetujui': 'bg-green-600 text-white'
-                };
-                const badgeClass = statusMap[statusText] || 'bg-gray-400 text-white';
+                let badgeClass = '';
+                let statusLabel = '';
                 
-                // Custom labels for status
-                const statusLabelMap = {
-                  'proses evaluasi': 'Proses Evaluasi',
-                  'perbaikan': 'Perbaikan',
-                  'evaluasi': 'Evaluasi',
-                  'validasi': 'Divalidasi Kabid',
-                  'menunggu persetujuan kadis': 'Menunggu Persetujuan Kadis',
-                  'disetujui kadis': 'Disetujui Kadis',
-                  'proses verifikasi': 'Proses Verifikasi',
-                  'proses pengesahan': 'Proses Pengesahan',
-                  'disetujui': 'Disetujui'
-                };
-                
-                const statusLabel = statusLabelMap[statusText] || statusText.replace(/\b\w/g, c => c.toUpperCase());
+                // Mapping 4 status utama
+                if (statusText === 'proses evaluasi') {
+                  // Proses Evaluasi = Kuning
+                  badgeClass = 'bg-yellow-500';
+                  statusLabel = 'PROSES EVALUASI';
+                } else if (statusText === 'proses verifikasi' || statusText === 'evaluasi') {
+                  // Proses Verifikasi = Biru  
+                  badgeClass = 'bg-blue-500';
+                  statusLabel = 'PROSES VERIFIKASI';
+                } else if (statusText === 'proses pengesahan' || statusText === 'menunggu persetujuan kadis' || statusText === 'validasi') {
+                  // Proses Pengesahan = Hijau
+                  badgeClass = 'bg-green-500';
+                  statusLabel = 'PROSES PENGESAHAN';
+                } else if (statusText === 'disetujui' || statusText === 'disetujui kadis') {
+                  // Disetujui = Hijau Pekat
+                  badgeClass = 'bg-green-600';
+                  statusLabel = 'DISETUJUI';
+                } else {
+                  // Default case untuk status lain
+                  badgeClass = 'bg-gray-400';
+                  statusLabel = statusText.toUpperCase();
+                }
 
                 // striped rows
                 const rowClass = index % 2 === 0 ? "bg-white" : "bg-gray-50";
@@ -176,88 +174,89 @@
                 const firstTdRound = isLast ? ' rounded-bl-2xl' : '';
                 const lastTdRound = isLast ? ' rounded-br-2xl' : '';
 
-                // Kolom Action: jika status disetujui → tampilkan tombol Lihat + Dropdown
+                // Kolom Action berdasarkan status - menggunakan approach file referensi
                 let actionTd = '';
-                if (statusText === 'disetujui') {
-                  actionTd = `
-    <td class="px-6 py-3 text-xs text-center dark:text-white border-b dark:border-white/40${lastTdRound}">
-      <div class="inline-flex space-x-2">
-        <!-- Tombol Lihat (hidden awal) -->
-        <a id="lihatBtn-${index}" href="${item.action_link}" target="_blank" 
-           class="hidden inline-flex items-center justify-center w-20 h-8 text-sm font-semibold text-white rounded bg-green-600 hover:bg-green-700 transition-all">
-          Lihat
-        </a>
-
-        <!-- Tombol Dropdown -->
-        <div class="relative inline-block text-left">
-          <button onclick="toggleDropdown(this)" type="button" 
-            class="inline-flex items-center justify-center w-28 h-8 text-sm font-semibold text-white bg-blue-500 rounded hover:bg-blue-600 transition-all">
-            Pilih Aksi
-            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-
-          <!-- Dropdown Menu -->
-          <div class="hidden absolute right-0 mt-2 w-36 bg-white rounded shadow-lg ring-1 ring-black ring-opacity-5 z-50">
-            <a href="file_draft.docx" download onclick="markDownloaded(${index})"
-               class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-100 hover:text-blue-700">
-              Unduh Draft
-            </a>
-            <a href="javascript:;" onclick="document.getElementById('fileInput-${index}').click()"
-               class="block px-4 py-2 text-sm text-gray-700 hover:bg-green-100 hover:text-green-700">
-              Upload Draft
-            </a>
-          </div>
-        </div>
-
-        <!-- Input File Tersembunyi -->
-        <input type="file" id="fileInput-${index}" accept="application/pdf" class="hidden" onchange="handleFileUpload(this, ${index})">
-      </div>
-    </td>
-  `;
-                } else {
+                
+                if (statusText === 'disetujui' || statusText === 'disetujui kadis') {
+                  // Status Disetujui atau Disetujui Kadis: Titik 3 dengan menu dinamis berdasarkan PDF
+                  let menuItems = [];
+                  
+                  // Lihat Detail - selalu ada
+                  menuItems.push(`
+                    <a href="${item.action_link}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900">
+                      <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      </svg>
+                      Lihat Detail
+                    </a>
+                  `);
+                  
+                  // Logic berdasarkan ketersediaan PDF
+                  if (item.has_pdf) {
+                    // Jika PDF sudah ada, tampilkan Download PDF dan hide Download Word
+                    menuItems.push(`
+                      <a href="/dokumen/pdf/${item.id}/download" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-700">
+                        <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Download PDF
+                      </a>
+                    `);
+                  } else {
+                    // Jika PDF belum ada, tampilkan Download Word dan Upload PDF
+                    menuItems.push(`
+                      <a href="/dokumen/word/${item.id}/download" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">
+                        <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Download Word
+                      </a>
+                    `);
+                    
+                    menuItems.push(`
+                      <a href="javascript:;" onclick="openUploadPdfModal(${item.id})" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-700">
+                        <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                        </svg>
+                        Upload PDF
+                      </a>
+                    `);
+                  }
+                  
                   actionTd = `
                 <td class="px-4 py-3 text-center${lastTdRound}">
-                  <a href="${item.action_link}" class="text-blue-600 hover:underline font-medium text-sm">
-                    ${item.action_text}
+                  <div class="relative inline-block text-left">
+                    <!-- Icon Titik 3 -->
+                    <button onclick="toggleDropdown(this)" type="button" 
+                      class="inline-flex items-center justify-center w-8 h-8 text-gray-500 bg-white rounded-lg hover:text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+                      </svg>
+                    </button>
+
+                    <!-- Dropdown Menu -->
+                    <div class="hidden absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 z-50">
+                      <div class="py-1">
+                        ${menuItems.join('')}
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              `;
+                } else {
+                  // Status lainnya: Hanya link "Lihat" tanpa dropdown
+                  actionTd = `
+                <td class="px-4 py-3 text-center${lastTdRound}">
+                  <a href="${item.action_link}" class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 hover:text-blue-700 transition-colors duration-200">
+                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                    Lihat
                   </a>
                 </td>
               `;
-                }
-
-                // Action buttons based on status and conditions
-                let actionButtons = '';
-                
-                // Always add view button first
-                actionButtons += `
-                  <a href="${item.action_link}" class="px-3 py-1 text-xs font-semibold text-blue-600 bg-blue-100 rounded hover:bg-blue-200 mr-1">
-                    Lihat Detail
-                  </a>
-                `;
-                
-                // Add status-specific action buttons
-                if (item.can_assign) {
-                  actionButtons += `
-                    <button onclick="showAssignModal(${item.id})" class="px-3 py-1 text-xs font-semibold text-green-600 bg-green-100 rounded hover:bg-green-200 mr-1">
-                      Assign Evaluator
-                    </button>
-                  `;
-                } else if (item.can_reassign) {
-                  actionButtons += `
-                    <button onclick="showReassignModal(${item.id})" class="px-3 py-1 text-xs font-semibold text-yellow-600 bg-yellow-100 rounded hover:bg-yellow-200 mr-1">
-                      Reassign
-                    </button>
-                  `;
-                }
-                
-                // Approve/Reject buttons (shown in detail page now)
-                if (item.can_approve) {
-                  actionButtons += `
-                    <span class="px-2 py-1 text-xs font-semibold text-green-700 bg-green-50 rounded border border-green-200">
-                      Siap Disetujui
-                    </span>
-                  `;
                 }
 
                 // rakit baris tabel
@@ -266,15 +265,13 @@
                 <td class="px-4 py-3 font-medium text-gray-800${firstTdRound}">${item.no_pengajuan}</td>
                 <td class="px-4 py-3 text-center">${tanggal}</td>
                 <td class="px-4 py-3 text-center">${item.badan_usaha}</td>
-                <td class="px-4 py-3 text-center">${item.evaluator}</td>
+                <td class="px-4 py-3 text-center">${item.catatan || '-'}</td>
                 <td class="px-4 py-3 text-center">
-                  <span class="inline-block px-3 py-1 text-xs font-bold rounded-full ${badgeClass} whitespace-nowrap">
+                  <span class="inline-flex items-center justify-center w-40 h-8 text-xs font-semibold text-white rounded-full ${badgeClass}">
                     ${statusLabel}
                   </span>
                 </td>
-                <td class="px-4 py-3 text-center${lastTdRound}">
-                  ${actionButtons}
-                </td>
+                ${actionTd}
               </tr>
             `;
               });
@@ -287,49 +284,44 @@
       });
 
       // === Script Tambahan untuk Dropdown & Modal ===
-      function toggleDropdown(button) {
-        const dropdown = button.nextElementSibling;
-        dropdown.classList.toggle("hidden");
-      }
-
-    function handleFileUpload(input, rowId) {
-  if (!rowStates[rowId]) rowStates[rowId] = { downloaded: false, uploaded: false };
-  if (input.files.length > 0) {
-    const file = input.files[0];
-    // Validasi: hanya PDF
-    if (file.type !== "application/pdf") {
-      alert("Hanya file PDF yang diperbolehkan!");
-      input.value = ""; // reset input
-      return;
-    }
-
-    const fileName = file.name;
-    document.getElementById("uploadedFileName").textContent = "File: " + fileName;
-    document.getElementById("successModal").classList.remove("hidden");
-
-    rowStates[rowId].uploaded = true;
-    checkShowLihat(rowId);
-  }
-}
-
-
-      function closeSuccessModal() {
-        document.getElementById("successModal").classList.add("hidden");
-      }
-
-      // Tutup dropdown saat klik di luar
-      window.addEventListener('click', function(e) {
-        document.querySelectorAll('.relative.inline-block').forEach(function(el) {
-          if (!el.contains(e.target)) {
-            const menu = el.querySelector('div');
-            if (menu) menu.classList.add('hidden');
-          }
-        });
-      });
-    </script>
-    <script>
       // Track state per row
       const rowStates = {};
+
+      function toggleDropdown(button) {
+        // Tutup semua dropdown lain terlebih dahulu
+        document.querySelectorAll('.relative.inline-block .hidden').forEach(function(menu) {
+          if (!menu.classList.contains('hidden')) {
+            menu.classList.add('hidden');
+          }
+        });
+        
+        // Toggle dropdown yang diklik
+        const dropdown = button.nextElementSibling;
+        dropdown.classList.toggle("hidden");
+        
+        // Prevent event bubbling
+        event.stopPropagation();
+      }
+
+      function handleFileUpload(input, rowId) {
+        if (!rowStates[rowId]) rowStates[rowId] = { downloaded: false, uploaded: false };
+        if (input.files.length > 0) {
+          const file = input.files[0];
+          // Validasi: hanya PDF
+          if (file.type !== "application/pdf") {
+            alert("Hanya file PDF yang diperbolehkan!");
+            input.value = ""; // reset input
+            return;
+          }
+
+          const fileName = file.name;
+          document.getElementById("uploadedFileName").textContent = "File: " + fileName;
+          document.getElementById("successModal").classList.remove("hidden");
+
+          rowStates[rowId].uploaded = true;
+          checkShowLihat(rowId);
+        }
+      }
 
       function markDownloaded(rowId) {
         if (!rowStates[rowId]) rowStates[rowId] = {
@@ -340,21 +332,6 @@
         checkShowLihat(rowId);
       }
 
-      function handleFileUpload(input, rowId) {
-        if (!rowStates[rowId]) rowStates[rowId] = {
-          downloaded: false,
-          uploaded: false
-        };
-        if (input.files.length > 0) {
-          const fileName = input.files[0].name;
-          document.getElementById("uploadedFileName").textContent = "File: " + fileName;
-          document.getElementById("successModal").classList.remove("hidden");
-
-          rowStates[rowId].uploaded = true;
-          checkShowLihat(rowId);
-        }
-      }
-
       function checkShowLihat(rowId) {
         const state = rowStates[rowId];
         if (state.downloaded && state.uploaded) {
@@ -362,74 +339,253 @@
         }
       }
 
-      // Kabid Action Functions
-      function showAssignModal(pengajuanId) {
-        // TODO: Implement assign evaluator modal
-        alert('Assign evaluator modal untuk pengajuan ID: ' + pengajuanId + '\n\nFitur ini akan segera diimplementasikan!');
+      function closeSuccessModal() {
+        document.getElementById("successModal").classList.add("hidden");
       }
 
-      function showReassignModal(pengajuanId) {
-        // TODO: Implement reassign evaluator modal
-        alert('Reassign evaluator modal untuk pengajuan ID: ' + pengajuanId + '\n\nFitur ini akan segera diimplementasikan!');
+      // === PDF Upload Modal Functions ===
+      let currentUploadPengajuanId = null;
+      
+      // Function to update lembar_pengesahan field in database
+      function updateLembarPengesahan(pengajuanId, pdfUrl) {
+        fetch('/pengajuan/update-lembar-pengesahan', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            pengajuan_id: pengajuanId,
+            lembar_pengesahan: pdfUrl
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            console.log('Lembar pengesahan berhasil diupdate');
+          } else {
+            console.error('Gagal update lembar pengesahan:', data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error updating lembar pengesahan:', error);
+        });
       }
 
-      function showApprovalModal(pengajuanId) {
-        if (confirm('Apakah Anda yakin ingin menyetujui pengajuan ini?')) {
-          $.ajax({
-            url: `/pengajuan/${pengajuanId}/approve`,
-            type: 'POST',
-            headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            data: {
-              catatan_kabid: prompt('Catatan (opsional):') || ''
-            },
-            success: function(response) {
+      function openUploadPdfModal(pengajuanId) {
+        currentUploadPengajuanId = pengajuanId;
+        document.getElementById('uploadPdfModal').classList.remove('hidden');
+        // Reset form
+        document.getElementById('uploadPdfForm').reset();
+        // Set the hidden input value for pengajuan_id
+        document.getElementById('pengajuanIdInput').value = pengajuanId;
+        document.getElementById('uploadProgress').classList.add('hidden');
+        document.getElementById('uploadSpinner').classList.add('hidden');
+        document.getElementById('uploadBtnText').textContent = 'Upload';
+        document.getElementById('uploadBtn').disabled = false;
+      }
+
+      function closeUploadPdfModal() {
+        document.getElementById('uploadPdfModal').classList.add('hidden');
+        currentUploadPengajuanId = null;
+      }
+
+      // Handle form submission
+      document.getElementById('uploadPdfForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        if (!currentUploadPengajuanId) {
+          alert('Error: ID pengajuan tidak valid');
+          return;
+        }
+
+        const formData = new FormData();
+        const fileInput = document.getElementById('pdfFile');
+        const keteranganInput = document.getElementById('keterangan');
+        
+        // Validasi file
+        if (!fileInput.files[0]) {
+          alert('Silakan pilih file PDF terlebih dahulu');
+          return;
+        }
+        
+        const file = fileInput.files[0];
+        
+        // Validasi tipe file
+        if (file.type !== 'application/pdf') {
+          alert('File harus berformat PDF');
+          return;
+        }
+        
+        // Validasi ukuran file (10MB)
+        if (file.size > 10 * 1024 * 1024) {
+          alert('Ukuran file maksimal 10MB');
+          return;
+        }
+        
+        formData.append('pdf_file', file);
+        formData.append('keterangan', keteranganInput.value);
+        formData.append('pengajuan_id', currentUploadPengajuanId);
+        formData.append('_token', '{{ csrf_token() }}');
+        
+        // Show loading state
+        document.getElementById('uploadBtn').disabled = true;
+        document.getElementById('uploadBtnText').textContent = 'Uploading...';
+        document.getElementById('uploadSpinner').classList.remove('hidden');
+        document.getElementById('uploadProgress').classList.remove('hidden');
+        
+        // Upload dengan XMLHttpRequest untuk tracking progress
+        const xhr = new XMLHttpRequest();
+        
+        // Progress handler
+        xhr.upload.addEventListener('progress', function(e) {
+          if (e.lengthComputable) {
+            const percentComplete = Math.round((e.loaded / e.total) * 100);
+            document.getElementById('progressBar').style.width = percentComplete + '%';
+            document.getElementById('progressPercent').textContent = percentComplete + '%';
+          }
+        });
+        
+        // Success handler
+        xhr.addEventListener('load', function() {
+          if (xhr.status === 200) {
+            try {
+              const response = JSON.parse(xhr.responseText);
               if (response.success) {
-                alert('Pengajuan berhasil disetujui!');
-                loadLaporanKabid(); // Reload table
+                // Close upload modal
+                closeUploadPdfModal();
+                
+                // Update database lembar_pengesahan field with PDF link
+                if (response.pdf_url) {
+                  updateLembarPengesahan(currentUploadPengajuanId, response.pdf_url);
+                }
+                
+                // Show success modal
+                document.getElementById('uploadedFileName').textContent = 'File PDF berhasil diupload: ' + response.filename;
+                document.getElementById('successModal').classList.remove('hidden');
+                
+                // Reload table to reflect changes (remove Download Word and Upload PDF actions)
+                setTimeout(() => {
+                  location.reload();
+                }, 2000);
               } else {
                 alert('Error: ' + response.message);
               }
-            },
-            error: function(xhr) {
-              alert('Terjadi kesalahan: ' + xhr.responseJSON?.message || 'Unknown error');
+            } catch (e) {
+              alert('Error parsing response: ' + e.message);
             }
-          });
-        }
-      }
+          } else {
+            alert('Upload failed with status: ' + xhr.status);
+          }
+          
+          // Reset form state
+          document.getElementById('uploadBtn').disabled = false;
+          document.getElementById('uploadBtnText').textContent = 'Upload';
+          document.getElementById('uploadSpinner').classList.add('hidden');
+        });
+        
+        // Error handler
+        xhr.addEventListener('error', function() {
+          alert('Upload failed - network error');
+          
+          // Reset form state
+          document.getElementById('uploadBtn').disabled = false;
+          document.getElementById('uploadBtnText').textContent = 'Upload';
+          document.getElementById('uploadSpinner').classList.add('hidden');
+        });
+        
+        // Send request
+        xhr.open('POST', '/dokumen/upload-pdf');
+        xhr.send(formData);
+      });
 
-      function showRejectModal(pengajuanId) {
-        const catatan = prompt('Masukkan alasan penolakan:');
-        if (catatan && catatan.trim() !== '') {
-          $.ajax({
-            url: `/pengajuan/${pengajuanId}/reject`,
-            type: 'POST',
-            headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            data: {
-              catatan_kabid: catatan,
-              alasan_penolakan: catatan
-            },
-            success: function(response) {
-              if (response.success) {
-                alert('Pengajuan berhasil ditolak!');
-                loadLaporanKabid(); // Reload table
-              } else {
-                alert('Error: ' + response.message);
-              }
-            },
-            error: function(xhr) {
-              alert('Terjadi kesalahan: ' + xhr.responseJSON?.message || 'Unknown error');
+      // Tutup dropdown saat klik di luar
+      document.addEventListener('click', function(e) {
+        // Cek apakah yang diklik adalah dropdown button atau isinya
+        const isDropdownClick = e.target.closest('.relative.inline-block');
+        const isDropdownButton = e.target.closest('button[onclick="toggleDropdown(this)"]');
+        
+        // Jika bukan klik pada dropdown, tutup semua dropdown
+        if (!isDropdownClick && !isDropdownButton) {
+          document.querySelectorAll('.relative.inline-block .absolute').forEach(function(menu) {
+            if (!menu.classList.contains('hidden')) {
+              menu.classList.add('hidden');
             }
           });
-        } else {
-          alert('Alasan penolakan harus diisi!');
         }
-      }
+        
+        // Tutup upload modal jika klik di luar modal content
+        const uploadModal = document.getElementById('uploadPdfModal');
+        if (e.target === uploadModal) {
+          closeUploadPdfModal();
+        }
+        
+        // Tutup success modal jika klik di luar modal content  
+        const successModal = document.getElementById('successModal');
+        if (e.target === successModal) {
+          closeSuccessModal();
+        }
+      });
     </script>
 
+
+    <!-- Modal Upload PDF -->
+    <div id="uploadPdfModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+      <div class="bg-white rounded-lg p-6 w-full max-w-md">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-lg font-semibold text-gray-800">Upload Lembar Pengesahan PDF</h2>
+          <button onclick="closeUploadPdfModal()" class="text-gray-400 hover:text-gray-600 text-xl">&times;</button>
+        </div>
+        
+        <form id="uploadPdfForm" method="POST" action="/dokumen/upload-pdf" enctype="multipart/form-data">
+          @csrf
+          <input type="hidden" id="pengajuanIdInput" name="pengajuan_id" value="">
+          <div class="mb-4">
+            <label for="pdfFile" class="block text-sm font-medium text-gray-700 mb-2">
+              Pilih File PDF
+            </label>
+            <input type="file" id="pdfFile" name="pdf_file" accept=".pdf" required
+                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            <p class="text-xs text-gray-500 mt-1">Maksimal 10MB, format PDF saja</p>
+          </div>
+          
+          <div class="mb-4">
+            <label for="keterangan" class="block text-sm font-medium text-gray-700 mb-2">
+              Keterangan (Opsional)
+            </label>
+            <textarea id="keterangan" name="keterangan" rows="3" 
+                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder="Tambahkan keterangan jika diperlukan..."></textarea>
+          </div>
+          
+          <div class="flex justify-end space-x-3">
+            <button type="button" onclick="closeUploadPdfModal()" 
+                    class="px-4 py-2 text-gray-600 border border-gray-300 rounded hover:bg-gray-50">
+              Batal
+            </button>
+            <button type="submit" id="uploadBtn"
+                    class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50">
+              <span id="uploadBtnText">Upload</span>
+              <div id="uploadSpinner" class="hidden inline-block ml-2">
+                <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+              </div>
+            </button>
+          </div>
+        </form>
+        
+        <!-- Progress Bar -->
+        <div id="uploadProgress" class="hidden mt-4">
+          <div class="flex justify-between mb-1">
+            <span class="text-sm font-medium text-blue-700">Progress</span>
+            <span class="text-sm font-medium text-blue-700" id="progressPercent">0%</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-2">
+            <div class="bg-blue-600 h-2 rounded-full transition-all duration-300" id="progressBar" style="width: 0%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Modal Notifikasi Upload -->
     <div id="successModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
@@ -442,10 +598,6 @@
       </div>
     </div>
 
-    </div>
-    </div>
-    </div>
-    </footer>
     </div>
   </main>
 

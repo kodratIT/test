@@ -16,6 +16,7 @@ use App\Http\Controllers\BadanusahaController;
 use App\Http\Controllers\LaporanBerkalaEvaluatorController;
 use App\Http\Controllers\LaporanBerkalaKadisController;
 use App\Http\Controllers\LampiranController;
+use App\Http\Controllers\DocumentController;
 
 //pengguna
 Route::middleware(['auth', 'is_pengguna'])->group(function () {
@@ -180,6 +181,75 @@ Route::get('/lampiran/{filename}', function ($filename) {
 
 Route::get('/lampiran/{file}', [LampiranController::class, 'show'])->name('lampiran.show');
 
+// Document routes - untuk download lembar pengesahan
+Route::middleware('auth')->group(function () {
+    Route::get('/dokumen/lembar-pengesahan/{id}/download', [DocumentController::class, 'downloadLembarPengesahan'])
+        ->name('dokumen.lembar-pengesahan.download');
+    Route::get('/dokumen/lembar-pengesahan/{id}/preview', [DocumentController::class, 'previewLembarPengesahan'])
+        ->name('dokumen.lembar-pengesahan.preview');
+    Route::get('/dokumen/word/{id}/download', [DocumentController::class, 'downloadWordDocument'])
+        ->name('dokumen.word.download');
+    
+    // Upload dan download PDF yang sudah diupload
+    Route::post('/dokumen/upload-pdf', [DocumentController::class, 'uploadPengesahanPdf'])
+        ->name('dokumen.upload-pdf');
+    Route::get('/dokumen/pdf/{id}/download', [DocumentController::class, 'downloadUploadedPdf'])
+        ->name('dokumen.pdf.download');
+});
+
+// Debug route (remove in production)
+Route::get('/debug/document/{id}', function($id) {
+    try {
+        // Gunakan query yang sama seperti DocumentController methods
+        $pengajuan = App\Models\Pengajuan::with([
+            'pengguna.identitas',
+            'pengguna.identitasPengguna',
+            'evaluator.identitasTimAdmin'
+        ])->findOrFail($id);
+        
+        // Ambil data lengkap untuk debugging
+        $identitas = $pengajuan->pengguna->identitas;
+        $identitasPengguna = $pengajuan->pengguna->identitasPengguna;
+        $evaluator = $pengajuan->evaluator;
+        
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'id' => $pengajuan->id,
+                'status' => $pengajuan->status,
+                'nomor_pengesahan' => $pengajuan->nomor_pengesahan,
+                'created_at' => $pengajuan->created_at->format('d F Y'),
+                'catatan_kadis' => $pengajuan->catatan_kadis,
+                'perusahaan' => [
+                    'nama_badan_usaha' => $identitas->namabadanusaha ?? null,
+                    'nib' => $identitas->nib ?? null,
+                    'email_perusahaan' => $identitas->email_perusahaan ?? null,
+                    'alamat_kantor_pusat' => $identitas->alamatkantorpusat ?? null,
+                    'alamat_kantor_cabang' => $identitas->alamatkantorcabang ?? null,
+                    'no_telp_pusat' => $identitas->notelpkantorpusat ?? null,
+                    'no_telp_cabang' => $identitas->notelpkantorcabang ?? null,
+                    'contact_person_nama' => $identitas->contact_person_nama ?? null,
+                    'contact_person_jabatan' => $identitas->contact_person_jabatan ?? null,
+                    'contact_person_email' => $identitas->contact_person_email ?? null,
+                    'contact_person_no_telp' => $identitas->contact_person_no_telp ?? null
+                ],
+                'pengguna' => [
+                    'nama' => $identitasPengguna->nama ?? null,
+                    'email' => $pengajuan->pengguna->email ?? null
+                ],
+                'evaluator' => [
+                    'nama' => $evaluator->identitasTimAdmin->nama ?? null,
+                    'nip' => $evaluator->identitasTimAdmin->nip ?? null
+                ]
+            ]
+        ]);
+    } catch (Exception $e) {
+        return response()->json([
+            'success' => false,
+            'error' => $e->getMessage()
+        ]);
+    }
+})->middleware('auth');
 
 Route::post('/identitas/store', [IdentitasTimAdminController::class, 'store'])
     ->name('identitas.store');
