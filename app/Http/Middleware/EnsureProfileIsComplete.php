@@ -19,22 +19,22 @@ class EnsureProfileIsComplete
             !$user->name ||
             !$user->email ||
             !$identitas ||
-            !$identitas->nama_badan_usaha ||
+            !$identitas->namabadanusaha ||
             !$identitas->nib ||
             !$identitas->email_perusahaan ||
-            !$identitas->alamat_kantor_pusat ||
-            !$identitas->telepon_kantor_pusat ||
-            !$identitas->nama_kontak_person ||
-            !$identitas->jabatan_kontak_person ||
-            !$identitas->email_kontak_person ||
-            !$identitas->telepon_kontak_person
+            !$identitas->alamatkantorpusat ||
+            !$identitas->notelpkantorpusat ||
+            !$identitas->contact_person_nama ||
+            !$identitas->contact_person_jabatan ||
+            !$identitas->contact_person_email ||
+            !$identitas->contact_person_no_telp
         ) {
-            // Biarkan akses ke halaman profile atau logout
-            if ($request->is('profile') || $request->is('logout')) {
+            // Biarkan akses ke halaman profileidentitas atau logout
+            if ($request->is('profileidentitas') || $request->is('logout') || $request->is('profile*')) {
                 return $next($request);
             }
 
-            return redirect('/profile')->with('error', 'Silakan lengkapi seluruh data profil terlebih dahulu.');
+            return redirect('/profileidentitas')->with('error', 'Silakan lengkapi seluruh data profil terlebih dahulu.');
         }
 
         return $next($request);

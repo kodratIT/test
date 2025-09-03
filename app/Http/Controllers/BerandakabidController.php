@@ -105,17 +105,36 @@ class BerandakabidController extends Controller
         if (!$startDate) $startDate = now()->startOfMonth();
         if (!$endDate) $endDate = now()->endOfMonth();
 
-        $baseQuery = Pengajuan::whereBetween('created_at', [$startDate, $endDate]);
+        // Base query untuk semua pengajuan
+        $baseQuery = Pengajuan::query();
         
         return [
+            // Total keseluruhan laporan berkala
             'total_pengajuan' => (clone $baseQuery)->count(),
-            'menunggu_evaluasi' => (clone $baseQuery)->where('status', 'proses evaluasi')->count(),
-            'sedang_evaluasi' => (clone $baseQuery)->where('status', 'evaluasi')->count(),
-            'siap_validasi' => (clone $baseQuery)->where('status', 'validasi')->count(),
-            'perlu_perbaikan' => (clone $baseQuery)->where('status', 'perbaikan')->count(),
-            'selesai' => (clone $baseQuery)->where('status', 'pengesahan')->count(),
-            'unassigned' => Pengajuan::whereNull('evaluator_id')
-                ->where('status', 'proses evaluasi')
+            
+            // Step 1: Laporan Berkala - pengajuan yang baru masuk dan menunggu evaluasi
+            // Status: 'proses evaluasi', 'menunggu evaluasi'
+            'menunggu_evaluasi' => (clone $baseQuery)->whereIn('status', ['proses evaluasi', 'menunggu evaluasi'])->count(),
+            
+            // Step 2: Dievaluasi - pengajuan yang sedang dalam proses evaluasi
+            // Status: 'evaluasi', 'dalam evaluasi'
+            'sedang_evaluasi' => (clone $baseQuery)->whereIn('status', ['evaluasi', 'dalam evaluasi'])->count(),
+            
+            // Step 3: Diverifikasi - pengajuan yang sudah selesai evaluasi dan siap validasi kabid
+            // Status: 'validasi', 'siap validasi', 'menunggu persetujuan kabid'
+            'siap_validasi' => (clone $baseQuery)->whereIn('status', ['validasi', 'siap validasi', 'menunggu persetujuan kabid'])->count(),
+            
+            // Step 4: Lembar Pengesahan - pengajuan yang sudah selesai dan ada PDF-nya
+            // Berdasarkan field lembar_pengesahan_pdf yang ada isinya
+            'selesai' => (clone $baseQuery)->whereNotNull('lembar_pengesahan_pdf')
+                ->where('lembar_pengesahan_pdf', '!=', '')
+                ->count(),
+            
+            // Additional stats for internal use
+            'perlu_perbaikan' => (clone $baseQuery)->whereIn('status', ['perbaikan', 'perlu perbaikan'])->count(),
+            'disetujui_kadis' => (clone $baseQuery)->where('status', 'disetujui kadis')->count(),
+            'unassigned' => (clone $baseQuery)->whereNull('evaluator_id')
+                ->whereIn('status', ['proses evaluasi', 'menunggu evaluasi'])
                 ->count(),
         ];
     }

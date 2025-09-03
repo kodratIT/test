@@ -8,6 +8,7 @@ use App\http\Middleware\IsKabid;
 use App\http\Middleware\IsEvaluator;
 use App\http\Middleware\IsKadis;
 use App\Http\Middleware\Auth;
+use App\Http\Middleware\EnsureProfileIsComplete;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -19,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             //'auth' => Authenticate::class,
             //'cek_profil' => CekProfilLengkap::
+            'profile.complete' => EnsureProfileIsComplete::class,
             'is_pengguna' => IsPengguna::class,
             'is_kabid' => IsKabid::class,
             'is_evaluator' => IsEvaluator::class,

@@ -91,7 +91,7 @@
         <div class="bg-white rounded-3xl shadow-xl p-5 flex justify-between items-start">
           <div>
             <p class="text-m font-semibold uppercase text-gray-600">Permohonan</p>
-            <h5 class="text-xl font-bold text-gray-900 mb-1">100</h5>
+            <h5 class="text-xl font-bold text-gray-900 mb-1">{{ number_format($totalPermohonan) }}</h5>
           </div>
           <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tl from-blue-500 to-violet-500">
             <i class="ni ni-money-coins text-white text-lg"></i>
@@ -102,7 +102,7 @@
         <div class="bg-white rounded-3xl shadow-xl p-5 flex justify-between items-start">
           <div>
             <p class="text-m font-semibold uppercase text-gray-600">Surat Keterangan</p>
-            <h5 class="text-xl font-bold text-gray-900 mb-1">30</h5>
+            <h5 class="text-xl font-bold text-gray-900 mb-1">{{ number_format($totalSuratKeterangan) }}</h5>
           </div>
           <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tl from-red-600 to-orange-600">
             <i class="ni ni-world text-white text-lg"></i>
@@ -113,7 +113,7 @@
         <div class="bg-white rounded-3xl shadow-xl p-5 flex justify-between items-start">
           <div>
             <p class="text-m font-semibold uppercase text-gray-600">Badan Usaha</p>
-            <h5 class="text-xl font-bold text-gray-900 mb-1">56</h5>
+            <h5 class="text-xl font-bold text-gray-900 mb-1">{{ number_format($totalBadanUsaha) }}</h5>
           </div>
           <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tl from-emerald-500 to-teal-400">
             <i class="ni ni-paper-diploma text-white text-lg"></i>
@@ -148,11 +148,11 @@
   new Chart(ctxLine1, {
     type: 'line',
     data: {
-      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sept', 'Okt', 'Nov', 'Des'],
+      labels: {!! json_encode($months) !!},
       datasets: [
         {
           label: 'Jumlah Surat Masuk',
-          data: [50, 75, 100, 80, 120, 150, 200, 180, 160, 170, 190, 220],
+          data: {!! json_encode($chartData['surat_masuk']) !!},
           borderColor: 'rgba(99, 102, 241, 1)',
           backgroundColor: 'rgba(99, 102, 241, 0.1)',
           fill: true,
@@ -162,7 +162,7 @@
         },
         {
           label: 'Jumlah Surat Selesai',
-          data: [10, 20, 30, 50, 60, 80, 90, 100, 110, 120, 130, 150],
+          data: {!! json_encode($chartData['surat_selesai']) !!},
           borderColor: 'rgba(34,197,94,1)',
           backgroundColor: 'rgba(34,197,94,0.1)',
           fill: true,

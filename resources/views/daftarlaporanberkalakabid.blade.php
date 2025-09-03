@@ -19,6 +19,29 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Main Styling -->
   <link href="{{ asset('assets/css/argon-dashboard-tailwind.css?v=1.0.1') }}" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
+  <!-- Custom SweetAlert Styles -->
+  <style>
+    .swal-custom-popup {
+      background-color: #ffffff !important;
+      color: #333333 !important;
+    }
+    .swal-custom-title {
+      color: #059669 !important;
+      font-weight: 600 !important;
+    }
+    .swal-custom-content {
+      color: #374151 !important;
+      font-size: 14px !important;
+    }
+    .swal2-popup .swal2-title {
+      color: #059669 !important;
+    }
+    .swal2-popup .swal2-html-container {
+      color: #374151 !important;
+    }
+  </style>
 </head>
 
 <body class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">
@@ -123,6 +146,46 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+      // Flash notif dari server
+      document.addEventListener('DOMContentLoaded', function() {
+        @if(session('success'))
+          Swal.fire({ 
+            icon: 'success', 
+            title: 'Berhasil', 
+            text: @json(session('success')),
+            customClass: {
+              popup: 'swal-custom-popup',
+              title: 'swal-custom-title',
+              content: 'swal-custom-content'
+            }
+          });
+        @endif
+        @if(session('error'))
+          Swal.fire({ 
+            icon: 'error', 
+            title: 'Gagal', 
+            text: @json(session('error')),
+            customClass: {
+              popup: 'swal-custom-popup',
+              title: 'text-red-600 font-semibold',
+              content: 'swal-custom-content'
+            }
+          });
+        @endif
+        @if($errors->any())
+          Swal.fire({ 
+            icon: 'error', 
+            title: 'Validasi Gagal', 
+            html: `{!! implode('<br>', $errors->all()) !!}`,
+            customClass: {
+              popup: 'swal-custom-popup',
+              title: 'text-red-600 font-semibold',
+              content: 'swal-custom-content'
+            }
+          });
+        @endif
+      });
+
       $(function() {
         function loadLaporanKabid() {
           $.ajax({
@@ -182,15 +245,15 @@
                   let menuItems = [];
                   
                   // Lihat Detail - selalu ada
-                  menuItems.push(`
-                    <a href="${item.action_link}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900">
-                      <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                      </svg>
-                      Lihat Detail
-                    </a>
-                  `);
+                  // menuItems.push(`
+                  //   <a href="${item.action_link}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900">
+                  //     <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  //       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  //       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  //     </svg>
+                  //     Lihat Detail
+                  //   </a>
+                  // `);
                   
                   // Logic berdasarkan ketersediaan PDF
                   if (item.has_pdf) {
@@ -461,22 +524,32 @@
                   updateLembarPengesahan(currentUploadPengajuanId, response.pdf_url);
                 }
                 
-                // Show success modal
-                document.getElementById('uploadedFileName').textContent = 'File PDF berhasil diupload: ' + response.filename;
-                document.getElementById('successModal').classList.remove('hidden');
+                // Notifikasi sukses
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Berhasil Upload',
+                  text: 'File PDF berhasil diupload: ' + (response.filename || ''),
+                  timer: 1800,
+                  showConfirmButton: true,
+                  customClass: {
+                    popup: 'swal-custom-popup',
+                    title: 'swal-custom-title',
+                    content: 'swal-custom-content'
+                  }
+                });
                 
                 // Reload table to reflect changes (remove Download Word and Upload PDF actions)
                 setTimeout(() => {
                   location.reload();
-                }, 2000);
+                }, 1800);
               } else {
-                alert('Error: ' + response.message);
+                Swal.fire({ icon: 'error', title: 'Gagal', text: response.message || 'Upload gagal' });
               }
             } catch (e) {
-              alert('Error parsing response: ' + e.message);
+              Swal.fire({ icon: 'error', title: 'Error', text: 'Error parsing response: ' + e.message });
             }
           } else {
-            alert('Upload failed with status: ' + xhr.status);
+            Swal.fire({ icon: 'error', title: 'Gagal', text: 'Upload gagal. Status: ' + xhr.status });
           }
           
           // Reset form state
@@ -487,7 +560,7 @@
         
         // Error handler
         xhr.addEventListener('error', function() {
-          alert('Upload failed - network error');
+          Swal.fire({ icon: 'error', title: 'Gagal', text: 'Upload gagal - masalah jaringan' });
           
           // Reset form state
           document.getElementById('uploadBtn').disabled = false;
@@ -549,15 +622,7 @@
                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
             <p class="text-xs text-gray-500 mt-1">Maksimal 10MB, format PDF saja</p>
           </div>
-          
-          <div class="mb-4">
-            <label for="keterangan" class="block text-sm font-medium text-gray-700 mb-2">
-              Keterangan (Opsional)
-            </label>
-            <textarea id="keterangan" name="keterangan" rows="3" 
-                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="Tambahkan keterangan jika diperlukan..."></textarea>
-          </div>
+        
           
           <div class="flex justify-end space-x-3">
             <button type="button" onclick="closeUploadPdfModal()" 

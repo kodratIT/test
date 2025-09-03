@@ -73,6 +73,18 @@ class Pengajuan extends Model
         'evaluator_recommendation',
         'evaluator_notes',
         
+        // Section-specific revision notes
+        'catatan_perbaikan_data_pemilik',
+        'catatan_perbaikan_izin_usaha',
+        'catatan_perbaikan_izin_lingkungan', 
+        'catatan_perbaikan_slo',
+        'catatan_perbaikan_skttk',
+        'catatan_perbaikan_data_mesin',
+        'catatan_perbaikan_data_generator',
+        'catatan_perbaikan_sambungan_listrik',
+        'catatan_perbaikan_kapasitas_produksi',
+        'catatan_perbaikan_excess_power',
+        
         // Document management
         'lembar_pengesahan_pdf',
         'nomor_pengesahan',
@@ -99,7 +111,14 @@ class Pengajuan extends Model
         'status'        => 'string',
 
         // Checkbox (boolean)
-        'checkbox'      => 'boolean', // <── tambahkan di sini
+        'checkbox'      => 'boolean',
+        
+        // Datetime fields untuk tracking assignment dan evaluation
+        'assigned_at'   => 'datetime',
+        'reassigned_at' => 'datetime',
+        'evaluated_at'  => 'datetime',
+        'approved_by_kabid_at' => 'datetime',
+        'rejected_by_kabid_at' => 'datetime',
     ];
 
     // Helper untuk akses sub JSON

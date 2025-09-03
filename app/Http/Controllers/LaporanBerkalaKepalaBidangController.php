@@ -62,7 +62,7 @@ class LaporanBerkalaKepalaBidangController extends Controller
                     'can_approve' => in_array($item->status, ['evaluasi']),
                     'can_reject' => in_array($item->status, ['evaluasi']),
                     // PDF information
-                    'has_pdf' => !empty($item->lembar_pengesahan_pdf) && \Storage::exists($item->lembar_pengesahan_pdf),
+                    'has_pdf' => $this->checkPdfExists($item->lembar_pengesahan_pdf),
                     'pdf_filename' => $item->lembar_pengesahan_pdf ? basename($item->lembar_pengesahan_pdf) : null,
                 ];
             });
@@ -493,6 +493,108 @@ class LaporanBerkalaKepalaBidangController extends Controller
         return response()->json($pending);
     }
 
+    /**
+     * Save evaluation section - Kabid can edit/update evaluation data
+     */
+    public function saveSection(Request $request, $id)
+    {
+        \Log::info('Kabid saveSection called', [
+            'request_data' => $request->all(),
+            'id' => $id,
+            'user_id' => Auth::id()
+        ]);
+        
+        try {
+            $request->validate([
+                'section' => 'required|string',
+                'catatan' => 'nullable|string|max:1000',
+                'status' => 'required|in:Disetujui,Ditolak,Perbaikan'
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            \Log::error('Validation failed in kabid saveSection', [
+                'errors' => $e->errors(),
+                'request_data' => $request->all()
+            ]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal: ' . implode(', ', array_map('implode', $e->errors()))
+            ], 422);
+        }
+
+        DB::beginTransaction();
+        try {
+            $pengajuan = Pengajuan::findOrFail($id);
+            
+            // Get or create evaluation record for this pengajuan
+            $evaluasi = EvaluasiPengajuan::where('pengajuan_id', $id)
+                ->where('evaluator_id', $pengajuan->evaluator_id)
+                ->latest()
+                ->first();
+            
+            if (!$evaluasi) {
+                // If no evaluation exists, create one
+                $evaluasi = EvaluasiPengajuan::create([
+                    'pengajuan_id' => $id,
+                    'evaluator_id' => $pengajuan->evaluator_id,
+                    'status' => 'draft',
+                    'metadata' => json_encode(['sections' => []])
+                ]);
+            }
+            
+            // Get current metadata
+            $metadata = [];
+            if ($evaluasi->metadata) {
+                $metadata = is_string($evaluasi->metadata) 
+                    ? json_decode($evaluasi->metadata, true) 
+                    : $evaluasi->metadata;
+            }
+            
+            // Initialize sections if not exists
+            if (!isset($metadata['sections'])) {
+                $metadata['sections'] = [];
+            }
+            
+            // Update the specific section with the same structure as evaluator
+            $metadata['sections'][$request->section] = [
+                'catatan' => $request->catatan,
+                'status' => $request->status,
+                'evaluated_at' => now()->toISOString(),
+                'evaluator_id' => $pengajuan->evaluator_id, // Keep original evaluator
+                'updated_by_kabid' => Auth::id(),
+                'kabid_updated_at' => now()->toISOString()
+            ];
+            
+            $metadata['last_updated_by_kabid'] = Auth::id();
+            $metadata['last_updated_at'] = now()->toISOString();
+            
+            // Save updated metadata
+            $evaluasi->update([
+                'metadata' => json_encode($metadata),
+                'updated_at' => now()
+            ]);
+            
+            // Log activity
+            $this->logActivity($pengajuan->id, 'section_updated_by_kabid', 
+                'Section ' . $request->section . ' diupdate oleh Kabid');
+            
+            DB::commit();
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Data evaluasi berhasil disimpan'
+            ]);
+            
+        } catch (\Exception $e) {
+            DB::rollback();
+            \Log::error('Error saving evaluation section by Kabid: ' . $e->getMessage());
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
     // Helper methods
     private function getStatusBadge($status)
     {
@@ -622,5 +724,30 @@ class LaporanBerkalaKepalaBidangController extends Controller
         ];
         
         return $actionTexts[$status] ?? 'Lihat';
+    }
+    
+    /**
+     * Check if PDF file exists using multiple possible paths
+     */
+    private function checkPdfExists($filePath)
+    {
+        if (empty($filePath)) {
+            return false;
+        }
+        
+        // Check multiple possible locations for the file
+        $possiblePaths = [
+            storage_path('app/' . $filePath),
+            storage_path('app/private/' . $filePath),
+            storage_path('app/public/' . $filePath)
+        ];
+        
+        foreach ($possiblePaths as $path) {
+            if (file_exists($path) && is_readable($path)) {
+                return true;
+            }
+        }
+        
+        return false;
     }
 }

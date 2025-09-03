@@ -200,6 +200,19 @@
 
                     <!-- IZIN USAHA -->
                     <h3 class="text-lg font-bold uppercase mt-2 pb-2 text-gray-700 dark:text-white">Izin Usaha Penyediaan Tenaga Listrik</h3>
+                    
+                    @if($pengajuan->status == 'perbaikan' && $pengajuan->catatan_perbaikan_izin_usaha)
+                    <!-- Catatan Perbaikan untuk Izin Usaha -->
+                    <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                      <div class="flex items-start">
+                        <i class="fas fa-exclamation-circle text-red-500 mt-1 mr-2"></i>
+                        <div>
+                          <p class="text-sm font-medium text-red-800">Catatan Perbaikan:</p>
+                          <p class="text-sm text-red-700 mt-1">{!! nl2br(e($pengajuan->catatan_perbaikan_izin_usaha)) !!}</p>
+                        </div>
+                      </div>
+                    </div>
+                    @endif
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <label>Nomor</label>
@@ -224,22 +237,32 @@
                     </div>
                     <div class="mt-6">
                       <label>Upload IUPLTS</label>
-                      <input id="lampiran_izin_usaha" name="lampiran_izin_usaha" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" onchange="previewFile(this)">
-                      <small class="text-gray-500">Format PDF Maks 5MB</small>
                       @if($pengajuan->lampiran_izin_usaha)
-                        <p class="text-sm text-gray-600 mt-2">
-                          File saat ini: 
-                          <a href="{{ route('lampiran.show', $pengajuan->lampiran_izin_usaha) }}" 
-                             class="text-blue-600 hover:text-blue-800" target="_blank">
-                            {{ $pengajuan->lampiran_izin_usaha }}
-                          </a>
-                        </p>
+                      <div class="mb-2 text-sm text-gray-600">
+                        <i class="fas fa-file-pdf text-red-500 mr-1"></i>
+                        File saat ini: <a href="{{ asset('storage/' . $pengajuan->lampiran_izin_usaha) }}" target="_blank" class="text-blue-600 underline">Lihat file</a>
+                      </div>
                       @endif
+                      <input id="lampiran_izin_usaha" name="lampiran_izin_usaha" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" onchange="previewFile(this)">
+                      <small class="text-gray-500">Format PDF Maks 5MB (Kosongkan jika tidak ingin mengubah file)</small>
                     </div>
                     <div id="preview_lampiran_izin_usaha"></div>
 
                     <!-- IZIN LINGKUNGAN    -->
                     <h3 class="text-lg font-bold uppercase mt-6 pb-2 text-gray-700 dark:text-white">Izin Lingkungan</h3>
+                    
+                    @if($pengajuan->status == 'perbaikan' && $pengajuan->catatan_perbaikan_izin_lingkungan)
+                    <!-- Catatan Perbaikan untuk Izin Lingkungan -->
+                    <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                      <div class="flex items-start">
+                        <i class="fas fa-exclamation-circle text-red-500 mt-1 mr-2"></i>
+                        <div>
+                          <p class="text-sm font-medium text-red-800">Catatan Perbaikan:</p>
+                          <p class="text-sm text-red-700 mt-1">{!! nl2br(e($pengajuan->catatan_perbaikan_izin_lingkungan)) !!}</p>
+                        </div>
+                      </div>
+                    </div>
+                    @endif
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <label>Jenis Izin</label>
@@ -265,23 +288,33 @@
 
                     <div class="mt-6">
                       <label>Upload Izin Lingkungan</label>
-                      <input id="lampiran_izin_lingkungan" name="lampiran_izin_lingkungan" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" onchange="previewFile(this)">
-                      <small class="text-gray-500">Format PDF Maks 5MB</small>
                       @if($pengajuan->lampiran_izin_lingkungan)
-                        <p class="text-sm text-gray-600 mt-2">
-                          File saat ini: 
-                          <a href="{{ route('lampiran.show', $pengajuan->lampiran_izin_lingkungan) }}" 
-                             class="text-blue-600 hover:text-blue-800" target="_blank">
-                            {{ $pengajuan->lampiran_izin_lingkungan }}
-                          </a>
-                        </p>
+                      <div class="mb-2 text-sm text-gray-600">
+                        <i class="fas fa-file-pdf text-red-500 mr-1"></i>
+                        File saat ini: <a href="{{ asset('storage/' . $pengajuan->lampiran_izin_lingkungan) }}" target="_blank" class="text-blue-600 underline">Lihat file</a>
+                      </div>
                       @endif
+                      <input id="lampiran_izin_lingkungan" name="lampiran_izin_lingkungan" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" onchange="previewFile(this)">
+                      <small class="text-gray-500">Format PDF Maks 5MB (Kosongkan jika tidak ingin mengubah file)</small>
                     </div>
                     <div id="preview_lampiran_izin_lingkungan"></div>
 
                     <!-- Tombol Aksi -->
 
                     <h3 class="text-lg font-bold uppercase mt-6 pb-2 text-gray-700 dark:text-white">Sertifikat Laik Operasi (SLO)</h3>
+                    
+                    @if($pengajuan->status == 'perbaikan' && $pengajuan->catatan_perbaikan_slo)
+                    <!-- Catatan Perbaikan untuk SLO -->
+                    <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                      <div class="flex items-start">
+                        <i class="fas fa-exclamation-circle text-red-500 mt-1 mr-2"></i>
+                        <div>
+                          <p class="text-sm font-medium text-red-800">Catatan Perbaikan:</p>
+                          <p class="text-sm text-red-700 mt-1">{!! nl2br(e($pengajuan->catatan_perbaikan_slo)) !!}</p>
+                        </div>
+                      </div>
+                    </div>
+                    @endif
 
                     <div class="flex justify-end gap-2 mb-4">
                       <button type="button" onclick="addColumn(event)" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Tambah</button>
@@ -341,22 +374,32 @@
                     </div>
                     <div class="mt-6">
                       <label>Upload SLO</label>
-                      <input id="lampiran_slo" name="lampiran_slo" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" onchange="previewFile(this)">
-                      <small class="text-gray-500">Format PDF Maks 5MB</small>
                       @if($pengajuan->lampiran_slo)
-                        <p class="text-sm text-gray-600 mt-2">
-                          File saat ini: 
-                          <a href="{{ route('lampiran.show', $pengajuan->lampiran_slo) }}" 
-                             class="text-blue-600 hover:text-blue-800" target="_blank">
-                            {{ $pengajuan->lampiran_slo }}
-                          </a>
-                        </p>
+                      <div class="mb-2 text-sm text-gray-600">
+                        <i class="fas fa-file-pdf text-red-500 mr-1"></i>
+                        File saat ini: <a href="{{ asset('storage/' . $pengajuan->lampiran_slo) }}" target="_blank" class="text-blue-600 underline">Lihat file</a>
+                      </div>
                       @endif
+                      <input id="lampiran_slo" name="lampiran_slo" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" onchange="previewFile(this)">
+                      <small class="text-gray-500">Format PDF Maks 5MB (Kosongkan jika tidak ingin mengubah file)</small>
                     </div>
                     <div id="preview_lampiran_slo"></div>
 
                     <!-- SKTTK Section -->
                     <h3 class="text-lg font-bold uppercase mt-6 pb-2 text-gray-700 dark:text-white">SERTIFIKAT KOMPETENSI TENAGA TEKNIK KETENAGALISTRIKAN (SKTTK)</h3>
+                    
+                    @if($pengajuan->status == 'perbaikan' && $pengajuan->catatan_perbaikan_skttk)
+                    <!-- Catatan Perbaikan untuk SKTTK -->
+                    <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                      <div class="flex items-start">
+                        <i class="fas fa-exclamation-circle text-red-500 mt-1 mr-2"></i>
+                        <div>
+                          <p class="text-sm font-medium text-red-800">Catatan Perbaikan:</p>
+                          <p class="text-sm text-red-700 mt-1">{!! nl2br(e($pengajuan->catatan_perbaikan_skttk)) !!}</p>
+                        </div>
+                      </div>
+                    </div>
+                    @endif
 
                     <div class="flex justify-end gap-2 mb-4">
                       <button type="button" onclick="addSKTTKColumn()" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Tambah</button>
@@ -464,17 +507,14 @@
                     </div>
                     <div class="mt-6">
                       <label>Upload SKTTK</label>
-                      <input id="lampiran_skttk" name="lampiran_skttk" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" onchange="previewFile(this)">
-                      <small class="text-gray-500">Format PDF Maks 5MB</small>
                       @if($pengajuan->lampiran_skttk)
-                        <p class="text-sm text-gray-600 mt-2">
-                          File saat ini: 
-                          <a href="{{ route('lampiran.show', $pengajuan->lampiran_skttk) }}" 
-                             class="text-blue-600 hover:text-blue-800" target="_blank">
-                            {{ $pengajuan->lampiran_skttk }}
-                          </a>
-                        </p>
+                      <div class="mb-2 text-sm text-gray-600">
+                        <i class="fas fa-file-pdf text-red-500 mr-1"></i>
+                        File saat ini: <a href="{{ asset('storage/' . $pengajuan->lampiran_skttk) }}" target="_blank" class="text-blue-600 underline">Lihat file</a>
+                      </div>
                       @endif
+                      <input id="lampiran_skttk" name="lampiran_skttk" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" onchange="previewFile(this)">
+                      <small class="text-gray-500">Format PDF Maks 5MB (Kosongkan jika tidak ingin mengubah file)</small>
                     </div>
                     <div id="preview_lampiran_skttk"></div>
 

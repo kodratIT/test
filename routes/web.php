@@ -91,6 +91,10 @@ Route::middleware(['auth', 'is_kabid'])->group(function () {
     Route::post('/pengajuan/{id}/reject', [LaporanBerkalaKepalaBidangController::class, 'reject'])->name('pengajuan.reject');
     Route::post('/pengajuan/{id}/reassign-evaluator', [LaporanBerkalaKepalaBidangController::class, 'reassignEvaluator'])->name('pengajuan.reassignEvaluator');
     
+    // Route untuk kabid mengedit/menyimpan data evaluasi per section
+    Route::post('/kabid/evaluasi/{id}/save-section', [LaporanBerkalaKepalaBidangController::class, 'saveSection'])
+        ->name('laporan.kabid.save_section');
+    
     // Route untuk laporan berkala Kabid
     Route::prefix('laporan-berkala-kabid')->group(function () {
         Route::get('/', [LaporanBerkalaKepalaBidangController::class, 'index'])->name('laporan-berkala-kabid.index');
@@ -147,7 +151,9 @@ Route::middleware(['auth', 'is_kadis'])->group(function () {
 
     // Daftar laporan berkala untuk Kadis - hanya yang sudah divalidasi Kabid
     Route::get('/daftarlaporanberkalakadis', [LaporanBerkalaKadisController::class, 'index'])->name('kadis.laporan.index');
-    
+    Route::get('/daftarlaporanberkalakadis/{id}', [LaporanBerkalaKadisController::class, 'show'])->name('kadis.laporan.show');
+
+
     // Aksi approval oleh Kadis
     Route::post('/pengajuan/{id}/approve-kadis', [LaporanBerkalaKadisController::class, 'approve'])->name('pengajuan.approve.kadis');
 
@@ -310,21 +316,14 @@ Route::get('/daftar', function () {
     return view('daftar');
 })->name('daftar');
 
-Route::get('/berandakabid', function () {
-    return view('berandakabid');
-})->name('berandakabid');
+Route::get('/berandakabid', [BerandakabidController::class, 'index'])->name('berandakabid');
 
-Route::get('/berandaevaluator', function () {
-    return view('berandaevaluator');
-})->name('berandaevaluator');
+Route::get('/berandaevaluator', [EvaluatorController::class, 'dashboard'])
+    ->name('berandaevaluator')
+    ->middleware('auth', 'is_evaluator');
 
-Route::get('/berandakadis', function () {
-    return view('berandakadis');
-})->name('berandakadis');
+Route::get('/berandakadis', [LaporanBerkalaKadisController::class, 'dashboard'])->name('berandakadis');
 
-Route::get('/berandapengguna', function () {
-    return view('berandapengguna');
-})->name('berandapengguna');
 
 Route::get('/verbase', function () {
     return view('verbase');

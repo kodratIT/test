@@ -102,7 +102,7 @@
                 <!-- Step 1 -->
                 <div class="cursor-pointer" onclick="showStep(1)">
                   <div class="relative mb-2 w-10 h-10 mx-auto bg-blue-500 text-white rounded-full flex items-center justify-center">
-                    1
+                    {{ $stats['menunggu_evaluasi'] ?? 0 }}
                   </div>
                   <div class="text-m text-blue-500 font-semibold mt-1">Laporan Berkala</div>
                 </div>
@@ -110,7 +110,7 @@
                 <!-- Step 2 -->
                 <div class="cursor-pointer" onclick="showStep(2)">
                   <div class="relative mb-2 w-10 h-10 mx-auto bg-blue-500 text-white rounded-full flex items-center justify-center">
-                    1
+                    {{ $stats['sedang_evaluasi'] ?? 0 }}
                   </div>
                   <div class="text-m text-blue-500  font-semibold mt-1">Dievaluasi</div>
                 </div>
@@ -118,7 +118,7 @@
                 <!-- Step 3 -->
                 <div class="cursor-pointer" onclick="showStep(3)">
                   <div class="relative mb-2 w-10 h-10 mx-auto bg-blue-500 text-white rounded-full flex items-center justify-center">
-                    1
+                    {{ $stats['siap_validasi'] ?? 0 }}
                   </div>
                   <div class="text-m text-blue-500  font-semibold mt-1">Diverifikasi</div>
                 </div>
@@ -126,7 +126,7 @@
                 <!-- Step 4 -->
                 <div class="cursor-pointer" onclick="showStep(4)">
                   <div class="relative mb-2 w-10 h-10 mx-auto bg-blue-500 text-white rounded-full flex items-center justify-center">
-                    1
+                    {{ $stats['selesai'] ?? 0 }}
                   </div>
                   <div class="text-m text-blue-500  font-semibold mt-1">Lembar Pengesahan</div>
                 </div>
@@ -268,14 +268,39 @@
     </div>
     <script>
       const ctxLine1 = document.getElementById('chart-line-1').getContext('2d');
+      
+      // Data dari controller
+      const monthlyData = @json($chartData['monthly'] ?? []);
+      const statusData = @json($chartData['status'] ?? []);
+      
+      // Siapkan labels bulan (Jan-Des)
+      const monthLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sept', 'Okt', 'Nov', 'Des'];
+      
+      // Inisialisasi data dengan 0 untuk setiap bulan
+      let monthlyChartData = new Array(12).fill(0);
+      
+      // Isi data berdasarkan hasil query
+      monthlyData.forEach(item => {
+        const monthIndex = parseInt(item.month.split('-')[1]) - 1; // Extract month dan convert ke index
+        if (monthIndex >= 0 && monthIndex < 12) {
+          monthlyChartData[monthIndex] = item.count;
+        }
+      });
+      
+      // Hitung data kumulatif untuk status berbeda (simulasi - bisa disesuaikan dengan kebutuhan)
+      const totalPengajuan = {{ $stats['total_pengajuan'] ?? 0 }};
+      const menungguEvaluasi = {{ $stats['menunggu_evaluasi'] ?? 0 }};
+      const sedangEvaluasi = {{ $stats['sedang_evaluasi'] ?? 0 }};
+      const siapValidasi = {{ $stats['siap_validasi'] ?? 0 }};
+      const selesai = {{ $stats['selesai'] ?? 0 }};
 
       new Chart(ctxLine1, {
         type: 'line',
         data: {
-          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sept', 'Okt', 'Nov', 'Des'],
+          labels: monthLabels,
           datasets: [{
-              label: 'Laporan Berkala',
-              data: [30, 45, 60, 50, 70, 80, 90, 85, 80, 95, 100, 110],
+              label: 'Total Pengajuan',
+              data: monthlyChartData,
               borderColor: 'rgba(59, 130, 246, 1)', // biru
               backgroundColor: 'rgba(59, 130, 246, 0.1)',
               fill: true,
@@ -284,8 +309,8 @@
               pointRadius: 4,
             },
             {
-              label: 'Dievaluasi',
-              data: [20, 35, 40, 45, 60, 70, 80, 75, 70, 80, 85, 90],
+              label: 'Menunggu Evaluasi',
+              data: monthlyChartData.map(val => Math.floor(val * (menungguEvaluasi / Math.max(totalPengajuan, 1)))),
               borderColor: 'rgba(234, 179, 8, 1)', // kuning
               backgroundColor: 'rgba(234, 179, 8, 0.1)',
               fill: true,
@@ -294,8 +319,8 @@
               pointRadius: 4,
             },
             {
-              label: 'Diverifikasi',
-              data: [10, 15, 25, 35, 45, 60, 70, 65, 60, 65, 70, 75],
+              label: 'Sedang Evaluasi',
+              data: monthlyChartData.map(val => Math.floor(val * (sedangEvaluasi / Math.max(totalPengajuan, 1)))),
               borderColor: 'rgba(16, 185, 129, 1)', // hijau
               backgroundColor: 'rgba(16, 185, 129, 0.1)',
               fill: true,
@@ -304,8 +329,8 @@
               pointRadius: 4,
             },
             {
-              label: 'Lembar Pengesahan',
-              data: [5, 10, 15, 25, 30, 35, 45, 50, 55, 60, 65, 70],
+              label: 'Selesai',
+              data: monthlyChartData.map(val => Math.floor(val * (selesai / Math.max(totalPengajuan, 1)))),
               borderColor: 'rgba(239, 68, 68, 1)', // merah
               backgroundColor: 'rgba(239, 68, 68, 0.1)',
               fill: true,
@@ -366,27 +391,37 @@
             <table class="min-w-full text-sm text-left border border-gray-200 dark:border-gray-700">
               <thead class="bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-white/90">
                 <tr>
-                  <th class="px-4 py-2 border-b dark:border-gray-600">Nomor Surat</th>
+                  <th class="px-4 py-2 border-b dark:border-gray-600">Nomor Pengajuan</th>
                   <th class="px-4 py-2 border-b dark:border-gray-600">Nama Badan Usaha</th>
                   <th class="px-4 py-2 border-b dark:border-gray-600">Evaluator</th>
+                  <th class="px-4 py-2 border-b dark:border-gray-600">Status</th>
                 </tr>
               </thead>
               <tbody class="text-gray-700 dark:text-white/80">
-                <tr class="hover:bg-gray-50 dark:hover:bg-slate-700">
-                  <td class="px-4 py-2 text-m border-b dark:border-gray-600">0001</td>
-                  <td class="px-4 py-2 text-m border-b dark:border-gray-600">PT Maju Jaya</td>
-                  <td class="px-4 py-2 text-m border-b dark:border-gray-600">Dewi Kartika</td>
-                </tr>
-                <tr class="hover:bg-gray-50 dark:hover:bg-slate-700">
-                  <td class="px-4 py-2 text-m border-b dark:border-gray-600">0002</td>
-                  <td class="px-4 py-2 text-m border-b dark:border-gray-600">CV Berkah Abadi</td>
-                  <td class="px-4 py-2 text-m border-b dark:border-gray-600">Rizky Hidayat</td>
-                </tr>
-                <tr class="hover:bg-gray-50 dark:hover:bg-slate-700">
-                  <td class="px-4 py-2 text-m">0003</td>
-                  <td class="px-4 py-2 text-m">PT Sinar Terang</td>
-                  <td class="px-4 py-2 text-m">Nina Ayu</td>
-                </tr>
+                @if(isset($evaluatorPerformance) && count($evaluatorPerformance) > 0)
+                  @foreach($evaluatorPerformance->take(10) as $evaluator)
+                    <tr class="hover:bg-gray-50 dark:hover:bg-slate-700">
+                      <td class="px-4 py-2 text-m border-b dark:border-gray-600">{{ $evaluator['name'] ?? '-' }}</td>
+                      <td class="px-4 py-2 text-m border-b dark:border-gray-600">{{ $evaluator['total_assigned'] ?? 0 }} tugasan</td>
+                      <td class="px-4 py-2 text-m border-b dark:border-gray-600">{{ $evaluator['completed'] ?? 0 }} selesai</td>
+                      <td class="px-4 py-2 text-m border-b dark:border-gray-600">
+                        <span class="px-2 py-1 text-xs rounded-full 
+                          @if($evaluator['pending'] == 0) bg-green-100 text-green-800 
+                          @elseif($evaluator['pending'] < 3) bg-yellow-100 text-yellow-800 
+                          @else bg-red-100 text-red-800 @endif">
+                          {{ $evaluator['pending'] ?? 0 }} pending
+                        </span>
+                      </td>
+                    </tr>
+                  @endforeach
+                @else
+                  <!-- Tampilkan data contoh jika belum ada data real -->
+                  <tr class="hover:bg-gray-50 dark:hover:bg-slate-700">
+                    <td class="px-4 py-2 text-m border-b dark:border-gray-600 text-center" colspan="4">
+                      <span class="text-gray-500">Belum ada data evaluator tersedia</span>
+                    </td>
+                  </tr>
+                @endif
               </tbody>
             </table>
           </div>

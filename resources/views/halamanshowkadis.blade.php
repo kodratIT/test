@@ -320,11 +320,11 @@
                       </select>
 
                       <!-- Tombol Simpan 1 -->
-                      <div class="pt-2 mt-6">
+                      <!-- <div class="pt-2 mt-6">
                         <button onclick="simpanEvaluasiBagian('data_pemilik', 1)" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
                           Simpan Evaluasi
                         </button>
-                      </div>
+                      </div> -->
 
                       <!-- Modal Pop-up 3 -->
                       <div id="popupBerhasil1" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
@@ -459,11 +459,11 @@
                         <option value="Perbaikan">Perbaikan</option>
                       </select>
                       <!-- Tombol Simpan 3 -->
-                      <div class="pt-2 mt-6">
-                        <button onclick="simpanEvaluasiBagian('izin_usaha', 2)" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
+                      <!-- <div class="pt-2 mt-6">
+                        <button onclick="simpanEvaluasiBagian('izin_usaha', 2)"  class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
                           Simpan Evaluasi
                         </button>
-                      </div>
+                      </div> -->
 
                       <!-- Modal Pop-up 3 -->
                       <div id="popupBerhasil2" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
@@ -577,11 +577,11 @@
                         <option value="Perbaikan">Perbaikan</option>
                       </select>
                       <!-- Tombol Simpan 3 -->
-                      <div class="pt-2 mt-6">
+                      <!-- <div class="pt-2 mt-6">
                         <button onclick="simpanEvaluasiBagian('izin_lingkungan', 3)" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
                           Simpan Evaluasi
                         </button>
-                      </div>
+                      </div> -->
 
                       <!-- Modal Pop-up 3 -->
                       <div id="popupBerhasil3" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
@@ -731,11 +731,11 @@
                         <option value="Perbaikan">Perbaikan</option>
                       </select>
                       <!-- Tombol Simpan 3 -->
-                      <div class="pt-2 mt-6">
+                      <!-- <div class="pt-2 mt-6">
                         <button onclick="simpanEvaluasiBagian('slo', 4)" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
                           Simpan Evaluasi
                         </button>
-                      </div>
+                      </div> -->
 
                       <!-- Modal Pop-up 3 -->
                       <div id="popupBerhasil4" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
@@ -956,11 +956,11 @@
                         <option value="Perbaikan">Perbaikan</option>
                       </select>
                       <!-- Tombol Simpan 5 -->
-                      <div class="pt-2 mt-6">
+                      <!-- <div class="pt-2 mt-6">
                         <button onclick="simpanEvaluasiBagian('skttk', 5)" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
                           Simpan Evaluasi
                         </button>
-                      </div>
+                      </div> -->
 
                       <!-- Modal Pop-up 5 -->
                       <div id="popupBerhasil5" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
@@ -1108,11 +1108,11 @@
                         <option value="Perbaikan">Perbaikan</option>
                       </select>
                       <!-- Tombol Simpan 1 -->
-                      <div class="pt-2">
+                      <!-- <div class="pt-2">
                         <button onclick="simpanEvaluasiBagian('data_mesin', 6)" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
                           Simpan Evaluasi
                         </button>
-                      </div>
+                      </div> -->
 
                       <!-- Modal Pop-up 1 -->
                       <div id="popupBerhasil6" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
@@ -1277,11 +1277,11 @@
                         <option value="Perbaikan">Perbaikan</option>
                       </select>
                       <!-- Tombol Simpan 2 -->
-                      <div class="pt-2 mt-6">
+                      <!-- <div class="pt-2 mt-6">
                         <button onclick="simpanEvaluasiBagian('data_generator', 7)" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
                           Simpan Evaluasi
                         </button>
-                      </div>
+                      </div> -->
 
                       <!-- Modal Pop-up 2 -->
                       <div id="popupBerhasil7" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
@@ -1491,11 +1491,11 @@
                         <option value="Perbaikan">Perbaikan</option>
                       </select>
                       <!-- Tombol Simpan 3 -->
-                      <div class="pt-2 mt-6">
+                      <!-- <div class="pt-2 mt-6">
                         <button onclick="simpanEvaluasiBagian('sambungan_listrik', 8)" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
                           Simpan Evaluasi
                         </button>
-                      </div>
+                      </div> -->
 
                       <!-- Modal Pop-up 3 -->
                       <div id="popupBerhasil8" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
@@ -1591,11 +1591,11 @@
                     <option value="Perbaikan">Perbaikan</option>
                   </select>
                   <!-- Tombol Simpan 4 -->
-                  <div class="pt-2 mt-6">
+                  <!-- <div class="pt-2 mt-6">
                     <button onclick="simpanEvaluasiBagian('kapasitas_produksi', 9)" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded w-full">
                       Simpan Evaluasi
                     </button>
-                  </div>
+                  </div> -->
 
                   <!-- Modal Pop-up 4 -->
                   <div id="popupBerhasil9" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">

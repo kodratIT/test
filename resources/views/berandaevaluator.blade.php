@@ -93,7 +93,10 @@
         <div class="bg-white rounded-3xl shadow-xl p-5 flex justify-between items-start">
           <div>
             <p class="text-m font-semibold uppercase text-gray-600">Laporan Masuk</p>
-            <h5 class="text-xl font-bold text-gray-900 mb-1">100</h5>
+            <h5 class="text-xl font-bold text-gray-900 mb-1">{{ $stats['laporan_masuk'] }}</h5>
+            <p class="text-xs text-gray-500">
+              Menunggu: {{ $stats['menunggu_evaluasi'] }} | Dalam Proses: {{ $stats['dalam_evaluasi'] }}
+            </p>
            </div>
           <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tl from-blue-500 to-violet-500">
             <i class="ni ni-money-coins text-white text-lg"></i>
@@ -104,10 +107,13 @@
         <div class="bg-white rounded-3xl shadow-xl p-5 flex justify-between items-start">
           <div>
             <p class="text-m font-semibold uppercase text-gray-600">Laporan Selesai</p>
-            <h5 class="text-xl font-bold text-gray-900 mb-1">30</h5>
+            <h5 class="text-xl font-bold text-gray-900 mb-1">{{ $stats['selesai_evaluasi'] }}</h5>
+            <p class="text-xs text-gray-500">
+              Sudah diteruskan ke Kabid untuk validasi
+            </p>
             </div>
-          <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tl from-red-600 to-orange-600">
-            <i class="ni ni-world text-white text-lg"></i>
+          <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tl from-green-500 to-green-600">
+            <i class="ni ni-check-bold text-white text-lg"></i>
           </div>
         </div>
         </div>
@@ -133,17 +139,95 @@
         </div>
       </div>
     </div>
+    
+    <!-- Recent Pengajuan untuk Evaluator -->
+    <!-- @if(isset($recentPengajuan) && $recentPengajuan->count() > 0)
+    <div class="w-full px-4 sm:px-6 lg:px-10 mb-2 mx-auto">
+      <div class="bg-white dark:bg-slate-850 shadow-xl rounded-2xl border border-gray-200 dark:border-gray-700">
+        <div class="p-6 pb-0">
+          <h6 class="text-lg font-bold mb-4 text-gray-800 dark:text-white uppercase">Pengajuan Terbaru</h6>
+        </div>
+        <div class="p-4 overflow-x-auto">
+          <table class="min-w-full text-sm text-left">
+            <thead class="bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-white/90">
+              <tr>
+                <th class="px-4 py-2 border-b dark:border-gray-600">No. Pengajuan</th>
+                <th class="px-4 py-2 border-b dark:border-gray-600">Perusahaan</th>
+                <th class="px-4 py-2 border-b dark:border-gray-600">Tanggal Masuk</th>
+                <th class="px-4 py-2 border-b dark:border-gray-600">Status</th>
+                <th class="px-4 py-2 border-b dark:border-gray-600">Aksi</th>
+              </tr>
+            </thead>
+            <tbody class="text-gray-700 dark:text-white/80">
+              @foreach($recentPengajuan as $pengajuan)
+                <tr class="hover:bg-gray-50 dark:hover:bg-slate-700">
+                  <td class="px-4 py-2 border-b dark:border-gray-600">{{ $pengajuan->no_pengajuan ?? 'N/A' }}</td>
+                  <td class="px-4 py-2 border-b dark:border-gray-600">
+                    {{ $pengajuan->pengguna->identitas->namabadanusaha ?? 'N/A' }}
+                  </td>
+                  <td class="px-4 py-2 border-b dark:border-gray-600">
+                    @if($pengajuan->assigned_at)
+                      {{ \Carbon\Carbon::parse($pengajuan->assigned_at)->format('d M Y') }}
+                    @elseif($pengajuan->created_at)
+                      {{ \Carbon\Carbon::parse($pengajuan->created_at)->format('d M Y') }}
+                    @else
+                      N/A
+                    @endif
+                  </td>
+                  <td class="px-4 py-2 border-b dark:border-gray-600">
+                    <span class="px-2 py-1 text-xs rounded-full
+                      @switch($pengajuan->status)
+                        @case('proses evaluasi')
+                          bg-yellow-100 text-yellow-800
+                          @break
+                        @case('evaluasi')
+                          bg-blue-100 text-blue-800
+                          @break
+                        @case('validasi')
+                          bg-green-100 text-green-800
+                          @break
+                        @case('pengesahan')
+                          bg-green-100 text-green-800
+                          @break
+                        @case('disetujui kadis')
+                          bg-green-200 text-green-900
+                          @break
+                        @default
+                          bg-gray-100 text-gray-800
+                      @endswitch">
+                      {{ ucfirst(str_replace('_', ' ', $pengajuan->status)) }}
+                    </span>
+                  </td>
+                  <td class="px-4 py-2 border-b dark:border-gray-600">
+                    @if(in_array($pengajuan->status, ['proses evaluasi', 'evaluasi']))
+                      <a href="{{ route('laporan.evaluator.show', $pengajuan->id) }}" 
+                         class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                        Evaluasi
+                      </a>
+                    @else
+                      <span class="text-gray-400 text-sm">Selesai</span>
+                    @endif
+                  </td>
+                </tr>
+              @endforeach
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    @endif -->
+    
     <script>
   const ctxLine1 = document.getElementById('chart-line-1').getContext('2d');
 
   new Chart(ctxLine1, {
     type: 'line',
     data: {
-      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sept', 'Okt', 'Nov', 'Des'],
+      labels: {!! json_encode($months) !!},
       datasets: [
         {
           label: 'Jumlah Laporan Masuk',
-          data: [50, 75, 100, 80, 120, 150, 200, 180, 160, 170, 190, 220],
+          data: {!! json_encode($chartData['laporan_masuk']) !!},
           borderColor: 'rgba(99, 102, 241, 1)',
           backgroundColor: 'rgba(99, 102, 241, 0.1)',
           fill: true,
@@ -153,7 +237,7 @@
         },
         {
           label: 'Jumlah Laporan Selesai',
-          data: [10, 20, 30, 50, 60, 80, 90, 100, 110, 120, 130, 150],
+          data: {!! json_encode($chartData['laporan_selesai']) !!},
           borderColor: 'rgba(34,197,94,1)',
           backgroundColor: 'rgba(34,197,94,0.1)',
           fill: true,

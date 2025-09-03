@@ -11,6 +11,73 @@ use App\Models\EvaluasiPengajuan;
 
 class EvaluatorController extends Controller
 {
+    // === Bagian Dashboard Evaluator ===
+    public function dashboard()
+    {
+        $evaluatorId = Auth::id();
+        
+        // Ambil semua pengajuan yang ditugaskan ke evaluator ini
+        $pengajuanEvaluator = Pengajuan::where('evaluator_id', $evaluatorId)->get();
+        
+        // Statistik pengajuan evaluator
+        $stats = [
+            'laporan_masuk' => $pengajuanEvaluator->whereIn('status', ['proses evaluasi', 'evaluasi'])->count(),
+            'dalam_evaluasi' => $pengajuanEvaluator->where('status', 'evaluasi')->count(),
+            'menunggu_evaluasi' => $pengajuanEvaluator->where('status', 'proses evaluasi')->count(),
+            'selesai_evaluasi' => $pengajuanEvaluator->whereIn('status', ['validasi', 'pengesahan', 'disetujui kadis'])->count(),
+        ];
+        
+        // Data untuk chart (12 bulan terakhir)
+        $chartData = [];
+        $months = [];
+        
+        for ($i = 11; $i >= 0; $i--) {
+            $date = now()->subMonths($i);
+            $months[] = $date->format('M');
+            
+            // Laporan masuk ke evaluator (assigned) - fallback ke created_at jika assigned_at null
+            $laporanMasuk = Pengajuan::where('evaluator_id', $evaluatorId)
+                ->where(function($query) use ($date) {
+                    $query->where(function($subQuery) use ($date) {
+                        $subQuery->whereNotNull('assigned_at')
+                                 ->whereMonth('assigned_at', $date->month)
+                                 ->whereYear('assigned_at', $date->year);
+                    })->orWhere(function($subQuery) use ($date) {
+                        $subQuery->whereNull('assigned_at')
+                                 ->whereMonth('created_at', $date->month)
+                                 ->whereYear('created_at', $date->year);
+                    });
+                })->count();
+                
+            // Laporan selesai dievaluasi - fallback ke updated_at jika evaluated_at null
+            $laporanSelesai = Pengajuan::where('evaluator_id', $evaluatorId)
+                ->whereIn('status', ['validasi', 'pengesahan', 'disetujui kadis'])
+                ->where(function($query) use ($date) {
+                    $query->where(function($subQuery) use ($date) {
+                        $subQuery->whereNotNull('evaluated_at')
+                                 ->whereMonth('evaluated_at', $date->month)
+                                 ->whereYear('evaluated_at', $date->year);
+                    })->orWhere(function($subQuery) use ($date) {
+                        $subQuery->whereNull('evaluated_at')
+                                 ->whereMonth('updated_at', $date->month)
+                                 ->whereYear('updated_at', $date->year);
+                    });
+                })->count();
+                
+            $chartData['laporan_masuk'][] = $laporanMasuk;
+            $chartData['laporan_selesai'][] = $laporanSelesai;
+        }
+        
+        // Pengajuan terbaru untuk evaluator
+        $recentPengajuan = Pengajuan::where('evaluator_id', $evaluatorId)
+            ->with(['pengguna.identitas'])
+            ->orderBy('assigned_at', 'desc')
+            ->take(5)
+            ->get();
+            
+        return view('berandaevaluator', compact('stats', 'chartData', 'months', 'recentPengajuan'));
+    }
+
     // === Bagian Manajemen Evaluator ===
 
 

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Pengajuan;
 use App\Models\User;
+use App\Models\EvaluasiPengajuan;
 use Carbon\Carbon;
 
 class LaporanBerkalaKadisController extends Controller
@@ -31,6 +32,61 @@ class LaporanBerkalaKadisController extends Controller
             ->get();
 
         return view('daftarlaporanberkalakadis', compact('pengajuans'));
+    }
+
+    /**
+     * Menampilkan detail pengajuan untuk Kadis
+     */
+    public function show($id)
+    {
+        try {
+            // Debug: Log the ID being requested
+            \Log::info('Kadis show method called with ID: ' . $id);
+            
+            $pengajuan = Pengajuan::with([
+                'pengguna.identitas',
+                'evaluator'
+            ])->findOrFail($id);
+            
+            // Debug: Log pengajuan found
+            \Log::info('Pengajuan found with status: ' . $pengajuan->status);
+            
+            // Validasi akses - hanya pengajuan dengan status tertentu yang bisa dilihat Kadis
+            if (!in_array($pengajuan->status, ['validasi', 'menunggu persetujuan kadis', 'disetujui kadis'])) {
+                \Log::warning('Access denied for status: ' . $pengajuan->status);
+                return redirect()->back()->with('error', 'Anda tidak memiliki akses untuk melihat pengajuan ini. Status: ' . $pengajuan->status);
+            }
+            
+            // Ambil data evaluasi terbaru dari evaluator (dengan null check)
+            $currentEvaluation = null;
+            if ($pengajuan->evaluator_id) {
+                $currentEvaluation = EvaluasiPengajuan::where('pengajuan_id', $id)
+                    ->where('evaluator_id', $pengajuan->evaluator_id)
+                    ->latest()
+                    ->first();
+            }
+                
+            // Ambil data evaluasi per section jika ada (dengan null check)
+            $evaluasiData = [];
+            if ($currentEvaluation && isset($currentEvaluation->metadata) && is_array($currentEvaluation->metadata) && !empty($currentEvaluation->metadata['sections'])) {
+                $evaluasiData = $currentEvaluation->metadata['sections'];
+            }
+            
+            // Ambil daftar evaluator untuk keperluan reassign (jika diperlukan)
+            $evaluators = User::where('role_pengguna', 'evaluator')
+                ->get(); // Remove status check for now to debug
+            
+            \Log::info('About to return view with data');
+            return view('halamanshowkadis', compact('pengajuan', 'evaluasiData', 'currentEvaluation', 'evaluators'));
+            
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            \Log::error('Pengajuan not found with ID: ' . $id);
+            return redirect()->back()->with('error', 'Pengajuan dengan ID ' . $id . ' tidak ditemukan.');
+        } catch (\Exception $e) {
+            \Log::error('Error in Kadis show: ' . $e->getMessage());
+            \Log::error('Stack trace: ' . $e->getTraceAsString());
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -82,6 +138,71 @@ class LaporanBerkalaKadisController extends Controller
                 'success' => false, 
                 'message' => 'Terjadi kesalahan: ' . $e->getMessage()
             ], 500);
+        }
+    }
+
+    /**
+     * Dashboard untuk Kepala Dinas
+     */
+    public function dashboard()
+    {
+        try {
+            // Statistik umum
+            // Total Permohonan = pengajuan yang masuk proses verifikasi dan disetujui
+            // Status yang relevan: 'validasi', 'menunggu persetujuan kadis', 'disetujui kadis'
+            $totalPermohonan = Pengajuan::whereIn('status', ['validasi', 'menunggu persetujuan kadis', 'disetujui kadis'])->count();
+            
+            // Total Surat Keterangan = pengajuan yang sudah diinput PDF-nya
+            // Field lembar_pengesahan_pdf tidak null dan tidak kosong
+            $totalSuratKeterangan = Pengajuan::whereNotNull('lembar_pengesahan_pdf')
+                ->where('lembar_pengesahan_pdf', '!=', '')
+                ->count();
+            
+            // Total Badan Usaha tetap sama (unique users)
+            $totalBadanUsaha = Pengajuan::distinct('pengguna_id')->count('pengguna_id');
+            
+            // Data untuk chart per bulan (12 bulan terakhir)
+            $chartData = [];
+            $months = [];
+            
+            for ($i = 11; $i >= 0; $i--) {
+                $date = now()->subMonths($i);
+                $months[] = $date->format('M');
+                
+                // Surat Masuk = pengajuan yang masuk ke proses verifikasi (status relevan untuk Kadis)
+                $suratMasuk = Pengajuan::whereMonth('created_at', $date->month)
+                    ->whereYear('created_at', $date->year)
+                    ->whereIn('status', ['validasi', 'menunggu persetujuan kadis', 'disetujui kadis'])
+                    ->count();
+                    
+                // Surat Selesai = pengajuan yang sudah ada PDF-nya (sudah selesai diproses)
+                $suratSelesai = Pengajuan::whereMonth('created_at', $date->month)
+                    ->whereYear('created_at', $date->year)
+                    ->whereNotNull('lembar_pengesahan_pdf')
+                    ->where('lembar_pengesahan_pdf', '!=', '')
+                    ->count();
+                    
+                $chartData['surat_masuk'][] = $suratMasuk;
+                $chartData['surat_selesai'][] = $suratSelesai;
+            }
+            
+            return view('berandakadis', compact(
+                'totalPermohonan',
+                'totalSuratKeterangan', 
+                'totalBadanUsaha',
+                'chartData',
+                'months'
+            ));
+            
+        } catch (\Exception $e) {
+            // Fallback data jika terjadi error
+            return view('berandakadis', [
+                'totalPermohonan' => 0,
+                'totalSuratKeterangan' => 0,
+                'totalBadanUsaha' => 0,
+                'chartData' => ['surat_masuk' => array_fill(0, 12, 0), 'surat_selesai' => array_fill(0, 12, 0)],
+                'months' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            ]);
         }
     }
 
@@ -142,4 +263,6 @@ class LaporanBerkalaKadisController extends Controller
                 return '-';
         }
     }
+
+    
 }

@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/png" href=" {{ asset('assets/img/logo-esdm.svg') }} " />
-  <title>Perbaikan Laporan Berkala</title>
+  <title>Pengajuan Surat</title>
   <!--     Fonts and icons     -->
 
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
@@ -64,9 +64,9 @@
             </li>
             <li
               class="text-sm pl-2 capitalize leading-normal text-white before:float-left before:pr-2 before:text-white before:content-['/']"
-              aria-current="page">Perbaikan Laporan</li>
+              aria-current="page">Buat Pengajuan</li>
           </ol>
-          <h6 class="mb-4 font-bold text-white capitalize">Perbaikan Laporan Berkala</h6>
+          <h6 class="mb-4 font-bold text-white capitalize">Buat Pengajuan</h6>
         </nav>
 
         <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
@@ -136,6 +136,8 @@
                 </div>
                 @endif
 
+              
+
                 <form action="{{ route('pengajuan.update', $pengajuan->id) }}"
                   method="POST"
                   enctype="multipart/form-data"
@@ -147,6 +149,39 @@
 
                     <!-- IZIN USAHA -->
                     <h3 class="text-lg font-bold uppercase mt-2 pb-2 text-gray-700 dark:text-white">Izin Usaha Penyediaan Tenaga Listrik</h3>
+                    
+                    <!-- Section Evaluation Status -->
+                    @php 
+                      $sectionEval = isset($latestEvaluation) && $latestEvaluation->metadata && isset($latestEvaluation->metadata['sections']['izin_usaha']) 
+                        ? $latestEvaluation->metadata['sections']['izin_usaha'] 
+                        : ['status' => '-', 'catatan' => '-', 'evaluated_at' => null];
+                    @endphp
+                    <div class="mb-4 p-3 rounded-lg border
+                      {{ $sectionEval['status'] == 'Disetujui' ? 'bg-green-50 border-green-200' : ($sectionEval['status'] == '-' ? 'bg-gray-50 border-gray-200' : 'bg-red-50 border-red-200') }}">
+                      <div class="flex items-start justify-between mb-2">
+                        <h4 class="font-semibold {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-800' : ($sectionEval['status'] == '-' ? 'text-gray-800' : 'text-red-800') }}">
+                          Hasil Evaluasi - Izin Usaha
+                        </h4>
+                        <span class="px-2 py-1 rounded-full text-xs font-medium
+                          {{ $sectionEval['status'] == 'Disetujui' ? 'bg-green-100 text-green-800' : ($sectionEval['status'] == '-' ? 'bg-gray-100 text-gray-800' : 'bg-red-100 text-red-800') }}">
+                          {{ $sectionEval['status'] }}
+                        </span>
+                      </div>
+                      <p class="text-sm {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-700' : ($sectionEval['status'] == '-' ? 'text-gray-700' : 'text-red-700') }} mb-2">
+                        <span class="font-medium">Komentar Evaluator:</span> {{ $sectionEval['catatan'] }}
+                      </p>
+                      @if($sectionEval['evaluated_at'])
+                      <p class="text-xs {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-600' : 'text-red-600' }}">
+                        <i class="fas fa-clock mr-1"></i>
+                        Status: {{ $sectionEval['status'] }} | Dievaluasi: {{ \Carbon\Carbon::parse($sectionEval['evaluated_at'])->format('d F Y H:i') }}
+                      </p>
+                      @else
+                      <p class="text-xs text-gray-500">
+                        <i class="fas fa-clock mr-1"></i>
+                        Status: {{ $sectionEval['status'] }} | Dievaluasi: -
+                      </p>
+                      @endif
+                    </div>
                     
                     @if($pengajuan->status == 'perbaikan' && $pengajuan->catatan_perbaikan_izin_usaha)
                     <!-- Catatan Perbaikan untuk Izin Usaha -->
@@ -168,11 +203,11 @@
                       </div>
                       <div>
                         <label>Tanggal</label>
-                        <input name="tanggal_izin_usaha" id="tanggal_izin_usaha" type="date" class="w-full border p-2 rounded-lg datepicker" value="{{ old('tanggal_izin_usaha', $pengajuan->tanggal_izin_usaha) }}" placeholder="DD-MM-YYYY" required>
+                        <input name="tanggal_izin_usaha" id="tanggal_izin_usaha" type="date" class="w-full border p-2 rounded-lg datepicker" value="{{ old('tanggal_izin_usaha', $pengajuan->tanggal_izin_usaha ? $pengajuan->tanggal_izin_usaha->format('Y-m-d') : '') }}" required>
                       </div>
                       <div>
                         <label>Masa Berlaku</label>
-                        <input name="masa_berlaku_izin_usaha" id="masa_berlaku_izin_usaha" type="date" class="w-full border p-2 rounded-lg datepicker" value="{{ old('masa_berlaku_izin_usaha', $pengajuan->masa_berlaku_izin_usaha) }}" placeholder="DD-MM-YYYY" required>
+                        <input name="masa_berlaku_izin_usaha" id="masa_berlaku_izin_usaha" type="date" class="w-full border p-2 rounded-lg datepicker" value="{{ old('masa_berlaku_izin_usaha', $pengajuan->masa_berlaku_izin_usaha ? $pengajuan->masa_berlaku_izin_usaha->format('Y-m-d') : '') }}" required>
                       </div>
                       <div>
                         <label>Kelebihan Tenaga Listrik dijual Kepada</label>
@@ -181,7 +216,7 @@
 
                     </div>
                     <div class="mt-6">
-                      <label>Upload IUPLTS</label>
+                      <label>Upload IUPLTS </label>
                       @if($pengajuan->lampiran_izin_usaha)
                       <div class="mb-2 text-sm text-gray-600">
                         <i class="fas fa-file-pdf text-red-500 mr-1"></i>
@@ -195,6 +230,39 @@
 
                     <!-- IZIN LINGKUNGAN    -->
                     <h3 class="text-lg font-bold uppercase mt-6 pb-2 text-gray-700 dark:text-white">Izin Lingkungan</h3>
+                    
+                    <!-- Section Evaluation Status -->
+                    @php 
+                      $sectionEval = isset($latestEvaluation) && $latestEvaluation->metadata && isset($latestEvaluation->metadata['sections']['izin_lingkungan']) 
+                        ? $latestEvaluation->metadata['sections']['izin_lingkungan'] 
+                        : ['status' => '-', 'catatan' => '-', 'evaluated_at' => null];
+                    @endphp
+                    <div class="mb-4 p-3 rounded-lg border
+                      {{ $sectionEval['status'] == 'Disetujui' ? 'bg-green-50 border-green-200' : ($sectionEval['status'] == '-' ? 'bg-gray-50 border-gray-200' : 'bg-red-50 border-red-200') }}">
+                      <div class="flex items-start justify-between mb-2">
+                        <h4 class="font-semibold {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-800' : ($sectionEval['status'] == '-' ? 'text-gray-800' : 'text-red-800') }}">
+                          Hasil Evaluasi - Izin Lingkungan
+                        </h4>
+                        <span class="px-2 py-1 rounded-full text-xs font-medium
+                          {{ $sectionEval['status'] == 'Disetujui' ? 'bg-green-100 text-green-800' : ($sectionEval['status'] == '-' ? 'bg-gray-100 text-gray-800' : 'bg-red-100 text-red-800') }}">
+                          {{ $sectionEval['status'] }}
+                        </span>
+                      </div>
+                      <p class="text-sm {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-700' : ($sectionEval['status'] == '-' ? 'text-gray-700' : 'text-red-700') }} mb-2">
+                        <span class="font-medium">Komentar Evaluator:</span> {{ $sectionEval['catatan'] }}
+                      </p>
+                      @if($sectionEval['evaluated_at'])
+                      <p class="text-xs {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-600' : 'text-red-600' }}">
+                        <i class="fas fa-clock mr-1"></i>
+                        Status: {{ $sectionEval['status'] }} | Dievaluasi: {{ \Carbon\Carbon::parse($sectionEval['evaluated_at'])->format('d F Y H:i') }}
+                      </p>
+                      @else
+                      <p class="text-xs text-gray-500">
+                        <i class="fas fa-clock mr-1"></i>
+                        Status: {{ $sectionEval['status'] }} | Dievaluasi: -
+                      </p>
+                      @endif
+                    </div>
                     
                     @if($pengajuan->status == 'perbaikan' && $pengajuan->catatan_perbaikan_izin_lingkungan)
                     <!-- Catatan Perbaikan untuk Izin Lingkungan -->
@@ -220,11 +288,11 @@
                       </div>
                       <div>
                         <label>Tanggal</label>
-                        <input name="tanggal_izin_lingkungan" id="tanggal_izin_lingkungan" type="text" class="w-full border p-2 rounded-lg datepicker" value="{{ old('tanggal_izin_lingkungan', $pengajuan->tanggal_izin_lingkungan) }}" placeholder="DD-MM-YYYY" required>
+                        <input name="tanggal_izin_lingkungan" id="tanggal_izin_lingkungan" type="date" class="w-full border p-2 rounded-lg datepicker" value="{{ old('tanggal_izin_lingkungan', $pengajuan->tanggal_izin_lingkungan ? $pengajuan->tanggal_izin_lingkungan->format('Y-m-d') : '') }}" required>
                       </div>
                       <div>
                         <label>Masa Berlaku</label>
-                        <input name="masa_berlaku_izin_lingkungan" id="masa_berlaku_izin_lingkungan" type="text" class="w-full border p-2 rounded-lg datepicker" value="{{ old('masa_berlaku_izin_lingkungan', $pengajuan->masa_berlaku_izin_lingkungan) }}" placeholder="DD-MM-YYYY" required>
+                        <input name="masa_berlaku_izin_lingkungan" id="masa_berlaku_izin_lingkungan" type="date" class="w-full border p-2 rounded-lg datepicker" value="{{ old('masa_berlaku_izin_lingkungan', $pengajuan->masa_berlaku_izin_lingkungan ? $pengajuan->masa_berlaku_izin_lingkungan->format('Y-m-d') : '') }}" required>
                       </div>
                     </div>
 
@@ -244,6 +312,39 @@
                     <!-- Tombol Aksi -->
 
                     <h3 class="text-lg font-bold uppercase mt-6 pb-2 text-gray-700 dark:text-white">Sertifikat Laik Operasi (SLO)</h3>
+                    
+                    <!-- Section Evaluation Status -->
+                    @php 
+                      $sectionEval = isset($latestEvaluation) && $latestEvaluation->metadata && isset($latestEvaluation->metadata['sections']['slo']) 
+                        ? $latestEvaluation->metadata['sections']['slo'] 
+                        : ['status' => '-', 'catatan' => '-', 'evaluated_at' => null];
+                    @endphp
+                    <div class="mb-4 p-3 rounded-lg border
+                      {{ $sectionEval['status'] == 'Disetujui' ? 'bg-green-50 border-green-200' : ($sectionEval['status'] == '-' ? 'bg-gray-50 border-gray-200' : 'bg-red-50 border-red-200') }}">
+                      <div class="flex items-start justify-between mb-2">
+                        <h4 class="font-semibold {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-800' : ($sectionEval['status'] == '-' ? 'text-gray-800' : 'text-red-800') }}">
+                          Hasil Evaluasi - Sertifikat Laik Operasi (SLO)
+                        </h4>
+                        <span class="px-2 py-1 rounded-full text-xs font-medium
+                          {{ $sectionEval['status'] == 'Disetujui' ? 'bg-green-100 text-green-800' : ($sectionEval['status'] == '-' ? 'bg-gray-100 text-gray-800' : 'bg-red-100 text-red-800') }}">
+                          {{ $sectionEval['status'] }}
+                        </span>
+                      </div>
+                      <p class="text-sm {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-700' : ($sectionEval['status'] == '-' ? 'text-gray-700' : 'text-red-700') }} mb-2">
+                        <span class="font-medium">Komentar Evaluator:</span> {{ $sectionEval['catatan'] }}
+                      </p>
+                      @if($sectionEval['evaluated_at'])
+                      <p class="text-xs {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-600' : 'text-red-600' }}">
+                        <i class="fas fa-clock mr-1"></i>
+                        Status: {{ $sectionEval['status'] }} | Dievaluasi: {{ \Carbon\Carbon::parse($sectionEval['evaluated_at'])->format('d F Y H:i') }}
+                      </p>
+                      @else
+                      <p class="text-xs text-gray-500">
+                        <i class="fas fa-clock mr-1"></i>
+                        Status: {{ $sectionEval['status'] }} | Dievaluasi: -
+                      </p>
+                      @endif
+                    </div>
                     
                     @if($pengajuan->status == 'perbaikan' && $pengajuan->catatan_perbaikan_slo)
                     <!-- Catatan Perbaikan untuk SLO -->
@@ -269,87 +370,60 @@
                         <thead class="bg-gray-200 text-center">
                           <tr>
                             <th class="border border-gray-300 p-2 bg-gray-100 text-left sticky left-0 z-10 min-w-[150px] max-w-[150px] w-[150px]">Field</th>
-                            @if($pengajuan->slo && count($pengajuan->slo) > 0)
-                              @foreach($pengajuan->slo as $index => $slo)
-                                <th class="border border-gray-300 p-2 min-w-[220px]">SLO-{{ $loop->iteration }}</th>
-                              @endforeach
-                            @else
-                              <th class="border border-gray-300 p-2 min-w-[220px]">SLO-1</th>
-                            @endif
+                            @php
+                              $sloData = $pengajuan->slo ?? [];
+                              $sloCount = max(1, count($sloData));
+                            @endphp
+                            @for($i = 1; $i <= $sloCount; $i++)
+                              <th class="border border-gray-300 p-2 min-w-[220px]">SLO-{{ $i }}</th>
+                            @endfor
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
                             <td class="border border-gray-300 p-2 font-semibold bg-gray-50 sticky left-0">Nomor Sertifikat</td>
-                            @if($pengajuan->slo && count($pengajuan->slo) > 0)
-                              @foreach($pengajuan->slo as $index => $slo)
-                                <td class="border border-gray-300 p-2">
-                                  <input name="nomor_sertifikat_slo[]" id="nomor_sertifikat_{{ $loop->iteration }}" type="text" class="w-full border p-1 rounded" value="{{ old('nomor_sertifikat_slo.' . $index, $slo['nomor_sertifikat_slo'] ?? '') }}">
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $sloCount; $i++)
                               <td class="border border-gray-300 p-2">
-                                <input name="nomor_sertifikat_slo[]" id="nomor_sertifikat_1" type="text" class="w-full border p-1 rounded" placeholder="">
+                                <input name="nomor_sertifikat_slo[]" id="nomor_sertifikat_{{ $i+1 }}" type="text" class="w-full border p-1 rounded" 
+                                  value="{{ old('nomor_sertifikat_slo.'.$i, $sloData[$i]['nomor_sertifikat_slo'] ?? '') }}" placeholder="">
                               </td>
-                            @endif
+                            @endfor
                           </tr>
                           <tr>
                             <td class="border border-gray-300 p-2 font-semibold bg-gray-50 sticky left-0">Nomor Register</td>
-                            @if($pengajuan->slo && count($pengajuan->slo) > 0)
-                              @foreach($pengajuan->slo as $index => $slo)
-                                <td class="border border-gray-300 p-2">
-                                  <input name="nomor_register_slo[]" id="nomor_register_{{ $loop->iteration }}" type="text" class="w-full border p-1 rounded" value="{{ old('nomor_register_slo.' . $index, $slo['nomor_register_slo'] ?? '') }}">
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $sloCount; $i++)
                               <td class="border border-gray-300 p-2">
-                                <input name="nomor_register_slo[]" id="nomor_register_1" type="text" class="w-full border p-1 rounded" placeholder="">
+                                <input name="nomor_register_slo[]" id="nomor_register_{{ $i+1 }}" type="text" class="w-full border p-1 rounded" 
+                                  value="{{ old('nomor_register_slo.'.$i, $sloData[$i]['nomor_register_slo'] ?? '') }}" placeholder="">
                               </td>
-                            @endif
+                            @endfor
                           </tr>
-
                           <tr>
                             <td class="border border-gray-300 p-2 font-semibold bg-gray-50 sticky left-0">Tanggal Terbit</td>
-                            @if($pengajuan->slo && count($pengajuan->slo) > 0)
-                              @foreach($pengajuan->slo as $index => $slo)
-                                <td class="border border-gray-300 p-2">
-                                  <input name="tanggal_terbit_slo[]" id="tanggal_terbit_slo_{{ $loop->iteration }}" type="text" class="w-full border p-1 rounded datepicker" value="{{ old('tanggal_terbit_slo.' . $index, $slo['tanggal_terbit_slo'] ?? '') }}" placeholder="DD-MM-YYYY">
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $sloCount; $i++)
                               <td class="border border-gray-300 p-2">
-                                <input name="tanggal_terbit_slo[]" id="tanggal_terbit_slo_1" type="text" class="w-full border p-1 rounded datepicker" placeholder="DD-MM-YYYY">
+                                <input name="tanggal_terbit_slo[]" id="tanggal_terbit_slo_{{ $i+1 }}" type="text" class="w-full border p-1 rounded datepicker" 
+                                  value="{{ old('tanggal_terbit_slo.'.$i, $sloData[$i]['tanggal_terbit_slo'] ?? '') }}" placeholder="DD-MM-YYYY">
                               </td>
-                            @endif
+                            @endfor
                           </tr>
                           <tr>
                             <td class="border border-gray-300 p-2 font-semibold bg-gray-50 sticky left-0">Tanggal Masa Berlaku</td>
-                            @if($pengajuan->slo && count($pengajuan->slo) > 0)
-                              @foreach($pengajuan->slo as $index => $slo)
-                                <td class="border border-gray-300 p-2">
-                                  <input name="tanggal_masa_berlaku_slo[]" id="tanggal_masa_berlaku_slo_{{ $loop->iteration }}" type="text" class="w-full border p-1 rounded datepicker" value="{{ old('tanggal_masa_berlaku_slo.' . $index, $slo['tanggal_masa_berlaku_slo'] ?? '') }}" placeholder="DD-MM-YYYY">
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $sloCount; $i++)
                               <td class="border border-gray-300 p-2">
-                                <input name="tanggal_masa_berlaku_slo[]" id="tanggal_masa_berlaku_slo_1" type="text" class="w-full border p-1 rounded datepicker" placeholder="DD-MM-YYYY">
+                                <input name="tanggal_masa_berlaku_slo[]" id="tanggal_masa_berlaku_slo_{{ $i+1 }}" type="text" class="w-full border p-1 rounded datepicker" 
+                                  value="{{ old('tanggal_masa_berlaku_slo.'.$i, $sloData[$i]['tanggal_masa_berlaku_slo'] ?? '') }}" placeholder="DD-MM-YYYY">
                               </td>
-                            @endif
+                            @endfor
                           </tr>
-
                           <tr>
                             <td class="border border-gray-300 p-2 font-semibold bg-gray-50 sticky left-0">Lembaga Inspeksi Teknik (LIT)</td>
-                            @if($pengajuan->slo && count($pengajuan->slo) > 0)
-                              @foreach($pengajuan->slo as $index => $slo)
-                                <td class="border border-gray-300 p-2">
-                                  <input name="lit[]" id="lit_{{ $loop->iteration }}" type="text" class="w-full border p-1 rounded" value="{{ old('lit.' . $index, $slo['lit'] ?? '') }}">
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $sloCount; $i++)
                               <td class="border border-gray-300 p-2">
-                                <input name="lit[]" id="lit_1" type="text" class="w-full border p-1 rounded">
+                                <input name="lit[]" id="lit_{{ $i+1 }}" type="text" class="w-full border p-1 rounded" 
+                                  value="{{ old('lit.'.$i, $sloData[$i]['lit'] ?? '') }}">
                               </td>
-                            @endif
+                            @endfor
                           </tr>
                         </tbody>
                       </table>
@@ -372,7 +446,7 @@
 
 
                     <script>
-                      let columnCount = 1;
+                      let columnCount = {{ $sloCount }};
 
                       function addColumn(event) {
                         columnCount++;
@@ -514,6 +588,39 @@
                     <!-- -->
                     <h3 class="text-lg font-bold uppercase mt-6 pb-2 text-gray-700 dark:text-white">SERTIFIKAT KOMPETENSI TENAGA TEKNIK KETENAGALISTRIKAN (SKTTK)</h3>
                     
+                    <!-- Section Evaluation Status -->
+                    @php 
+                      $sectionEval = isset($latestEvaluation) && $latestEvaluation->metadata && isset($latestEvaluation->metadata['sections']['skttk']) 
+                        ? $latestEvaluation->metadata['sections']['skttk'] 
+                        : ['status' => '-', 'catatan' => '-', 'evaluated_at' => null];
+                    @endphp
+                    <div class="mb-4 p-3 rounded-lg border
+                      {{ $sectionEval['status'] == 'Disetujui' ? 'bg-green-50 border-green-200' : ($sectionEval['status'] == '-' ? 'bg-gray-50 border-gray-200' : 'bg-red-50 border-red-200') }}">
+                      <div class="flex items-start justify-between mb-2">
+                        <h4 class="font-semibold {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-800' : ($sectionEval['status'] == '-' ? 'text-gray-800' : 'text-red-800') }}">
+                          Hasil Evaluasi - SKTTK
+                        </h4>
+                        <span class="px-2 py-1 rounded-full text-xs font-medium
+                          {{ $sectionEval['status'] == 'Disetujui' ? 'bg-green-100 text-green-800' : ($sectionEval['status'] == '-' ? 'bg-gray-100 text-gray-800' : 'bg-red-100 text-red-800') }}">
+                          {{ $sectionEval['status'] }}
+                        </span>
+                      </div>
+                      <p class="text-sm {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-700' : ($sectionEval['status'] == '-' ? 'text-gray-700' : 'text-red-700') }} mb-2">
+                        <span class="font-medium">Komentar Evaluator:</span> {{ $sectionEval['catatan'] }}
+                      </p>
+                      @if($sectionEval['evaluated_at'])
+                      <p class="text-xs {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-600' : 'text-red-600' }}">
+                        <i class="fas fa-clock mr-1"></i>
+                        Status: {{ $sectionEval['status'] }} | Dievaluasi: {{ \Carbon\Carbon::parse($sectionEval['evaluated_at'])->format('d F Y H:i') }}
+                      </p>
+                      @else
+                      <p class="text-xs text-gray-500">
+                        <i class="fas fa-clock mr-1"></i>
+                        Status: {{ $sectionEval['status'] }} | Dievaluasi: -
+                      </p>
+                      @endif
+                    </div>
+                    
                     @if($pengajuan->status == 'perbaikan' && $pengajuan->catatan_perbaikan_skttk)
                     <!-- Catatan Perbaikan untuk SKTTK -->
                     <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
@@ -538,185 +645,124 @@
                         <thead>
                           <tr>
                             <th class="border border-gray-300 p-2 bg-gray-100 text-left sticky left-0 z-10 min-w-[150px] max-w-[150px] w-[150px]">Field</th>
-                            @if($pengajuan->skttk && count($pengajuan->skttk) > 0)
-                              @foreach($pengajuan->skttk as $index => $skttk)
-                                <th class="border p-2 bg-gray-200 border-gray-300 min-w-[220px]">SKTTK{{ $index + 1 }}</th>
-                              @endforeach
-                            @else
-                              <th class="border p-2 bg-gray-200 border-gray-300 min-w-[220px]">SKTTK1</th>
-                            @endif
+                            @php
+                              $skttkData = $pengajuan->skttk ?? [];
+                              $skttkCount = max(1, count($skttkData));
+                            @endphp
+                            @for($i = 1; $i <= $skttkCount; $i++)
+                              <th class="border p-2 bg-gray-200 border-gray-300 min-w-[220px]">SKTTK{{ $i }}</th>
+                            @endfor
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
                             <td class="border border-gray-300 p-2 font-semibold bg-gray-50 sticky left-0">Nomor Sertifikat</td>
-                            @if($pengajuan->skttk && count($pengajuan->skttk) > 0)
-                              @foreach($pengajuan->skttk as $index => $skttk)
-                                <td class="border border-gray-300 p-2">
-                                  <input name="nomor_sertifikat_skttk[]" id="nomor_sertifikat_skttk_{{ $index + 1 }}" type="text" class="w-full border p-1 rounded" value="{{ old('nomor_sertifikat_skttk.' . $index, $skttk['nomor_sertifikat_skttk'] ?? '') }}" placeholder="1234.0.12.A123.12.2025">
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $skttkCount; $i++)
                               <td class="border border-gray-300 p-2">
-                                <input name="nomor_sertifikat_skttk[]" id="nomor_sertifikat_skttk_1" type="text" class="w-full border p-1 rounded" placeholder="1234.0.12.A123.12.2025">
+                                <input name="nomor_sertifikat_skttk[]" id="nomor_sertifikat_skttk_{{ $i+1 }}" type="text" class="w-full border p-1 rounded" 
+                                  value="{{ old('nomor_sertifikat_skttk.'.$i, $skttkData[$i]['nomor_sertifikat_skttk'] ?? '') }}" placeholder="1234.0.12.A123.12.2025">
                               </td>
-                            @endif
+                            @endfor
                           </tr>
                           <tr>
                             <td class="border border-gray-300 p-2 font-semibold bg-gray-50 sticky left-0">Nomor Register</td>
-                            @if($pengajuan->skttk && count($pengajuan->skttk) > 0)
-                              @foreach($pengajuan->skttk as $index => $skttk)
-                                <td class="border border-gray-300 p-2">
-                                  <input name="nomor_register_skttk[]" id="nomor_register_skttk_{{ $index + 1 }}" type="text" class="w-full border p-1 rounded" value="{{ old('nomor_register_skttk.' . $index, $skttk['nomor_register_skttk'] ?? '') }}" placeholder="12345.1.2025">
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $skttkCount; $i++)
                               <td class="border border-gray-300 p-2">
-                                <input name="nomor_register_skttk[]" id="nomor_register_skttk_1" type="text" class="w-full border p-1 rounded" placeholder="12345.1.2025">
+                                <input name="nomor_register_skttk[]" id="nomor_register_skttk_{{ $i+1 }}" type="text" class="w-full border p-1 rounded" 
+                                  value="{{ old('nomor_register_skttk.'.$i, $skttkData[$i]['nomor_register_skttk'] ?? '') }}" placeholder="12345.1.2025">
                               </td>
-                            @endif
+                            @endfor
                           </tr>
                           <tr>
                             <td class="border border-gray-300 p-2 font-semibold bg-gray-50 sticky left-0">Nama</td>
-                            @if($pengajuan->skttk && count($pengajuan->skttk) > 0)
-                              @foreach($pengajuan->skttk as $index => $skttk)
-                                <td class="border p-2">
-                                  <input name="nama_skttk[]" id="nama_skttk_{{ $index + 1 }}" type="text" class="w-full border p-1 rounded" value="{{ old('nama_skttk.' . $index, $skttk['nama_skttk'] ?? '') }}">
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $skttkCount; $i++)
                               <td class="border p-2">
-                                <input name="nama_skttk[]" id="nama_skttk_1" type="text" class="w-full border p-1 rounded">
+                                <input name="nama_skttk[]" id="nama_skttk_{{ $i+1 }}" type="text" class="w-full border p-1 rounded" 
+                                  value="{{ old('nama_skttk.'.$i, $skttkData[$i]['nama_skttk'] ?? '') }}">
                               </td>
-                            @endif
+                            @endfor
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Jabatan</td>
-                            @if($pengajuan->skttk && count($pengajuan->skttk) > 0)
-                              @foreach($pengajuan->skttk as $index => $skttk)
-                                <td class="border p-2">
-                                  <input name="jabatan_skttk[]" id="jabatan_skttk_{{ $index + 1 }}" type="text" class="w-full border p-1 rounded" value="{{ old('jabatan_skttk.' . $index, $skttk['jabatan_skttk'] ?? '') }}">
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $skttkCount; $i++)
                               <td class="border p-2">
-                                <input name="jabatan_skttk[]" id="jabatan_skttk_1" type="text" class="w-full border p-1 rounded">
+                                <input name="jabatan_skttk[]" id="jabatan_skttk_{{ $i+1 }}" type="text" class="w-full border p-1 rounded" 
+                                  value="{{ old('jabatan_skttk.'.$i, $skttkData[$i]['jabatan_skttk'] ?? '') }}">
                               </td>
-                            @endif
+                            @endfor
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Kode Jenjang Kualifikasi</td>
-                            @if($pengajuan->skttk && count($pengajuan->skttk) > 0)
-                              @foreach($pengajuan->skttk as $index => $skttk)
-                                <td class="border p-2">
-                                  <input name="kode_kualifikasi_skttk[]" id="kode_kualifikasi_skttk_{{ $index + 1 }}" type="text" class="w-full border p-1 rounded" value="{{ old('kode_kualifikasi_skttk.' . $index, $skttk['kode_kualifikasi_skttk'] ?? '') }}" placeholder="A.12.123.12.KUALIFIKASI.1.ABCDEF">
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $skttkCount; $i++)
                               <td class="border p-2">
-                                <input name="kode_kualifikasi_skttk[]" id="kode_kualifikasi_skttk_1" type="text" placeholder="A.12.123.12.KUALIFIKASI.1.ABCDEF" class="w-full border p-1 rounded">
+                                <input name="kode_kualifikasi_skttk[]" id="kode_kualifikasi_skttk_{{ $i+1 }}" type="text" class="w-full border p-1 rounded" 
+                                  value="{{ old('kode_kualifikasi_skttk.'.$i, $skttkData[$i]['kode_kualifikasi_skttk'] ?? '') }}" placeholder="A.12.123.12.KUALIFIKASI.1.ABCDEF">
                               </td>
-                            @endif
+                            @endfor
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Unit Kompetensi Inti (1)</td>
-                            @if($pengajuan->skttk && count($pengajuan->skttk) > 0)
-                              @foreach($pengajuan->skttk as $index => $skttk)
-                                <td class="border p-2">
-                                  <input name="kompetensi_inti1_skttk[]" id="kompetensi_inti1_skttk_{{ $index + 1 }}" type="text" class="w-full border p-1 rounded" value="{{ old('kompetensi_inti1_skttk.' . $index, $skttk['kompetensi_inti1_skttk'] ?? '') }}">
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $skttkCount; $i++)
                               <td class="border p-2">
-                                <input name="kompetensi_inti1_skttk[]" id="kompetensi_inti1_skttk_1" type="text" class="w-full border p-1 rounded">
+                                <input name="kompetensi_inti1_skttk[]" id="kompetensi_inti1_skttk_{{ $i+1 }}" type="text" class="w-full border p-1 rounded" 
+                                  value="{{ old('kompetensi_inti1_skttk.'.$i, $skttkData[$i]['kompetensi_inti1_skttk'] ?? '') }}">
                               </td>
-                            @endif
+                            @endfor
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Unit Kompetensi Inti (2)</td>
-                            @if($pengajuan->skttk && count($pengajuan->skttk) > 0)
-                              @foreach($pengajuan->skttk as $index => $skttk)
-                                <td class="border p-2">
-                                  <input name="kompetensi_inti2_skttk[]" id="kompetensi_inti2_skttk_{{ $index + 1 }}" type="text" class="w-full border p-1 rounded" value="{{ old('kompetensi_inti2_skttk.' . $index, $skttk['kompetensi_inti2_skttk'] ?? '') }}">
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $skttkCount; $i++)
                               <td class="border p-2">
-                                <input name="kompetensi_inti2_skttk[]" id="kompetensi_inti2_skttk_1" type="text" class="w-full border p-1 rounded">
+                                <input name="kompetensi_inti2_skttk[]" id="kompetensi_inti2_skttk_{{ $i+1 }}" type="text" class="w-full border p-1 rounded" 
+                                  value="{{ old('kompetensi_inti2_skttk.'.$i, $skttkData[$i]['kompetensi_inti2_skttk'] ?? '') }}">
                               </td>
-                            @endif
+                            @endfor
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Unit Kompetensi Pilihan (1)</td>
-                            @if($pengajuan->skttk && count($pengajuan->skttk) > 0)
-                              @foreach($pengajuan->skttk as $index => $skttk)
-                                <td class="border p-2">
-                                  <input name="kompetensi_pilihan1_skttk[]" id="kompetensi_pilihan1_skttk_{{ $index + 1 }}" type="text" class="w-full border p-1 rounded" value="{{ old('kompetensi_pilihan1_skttk.' . $index, $skttk['kompetensi_pilihan1_skttk'] ?? '') }}">
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $skttkCount; $i++)
                               <td class="border p-2">
-                                <input name="kompetensi_pilihan1_skttk[]" id="kompetensi_pilihan1_skttk_1" type="text" class="w-full border p-1 rounded">
+                                <input name="kompetensi_pilihan1_skttk[]" id="kompetensi_pilihan1_skttk_{{ $i+1 }}" type="text" class="w-full border p-1 rounded" 
+                                  value="{{ old('kompetensi_pilihan1_skttk.'.$i, $skttkData[$i]['kompetensi_pilihan1_skttk'] ?? '') }}">
                               </td>
-                            @endif
+                            @endfor
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Unit Kompetensi Pilihan (2)</td>
-                            @if($pengajuan->skttk && count($pengajuan->skttk) > 0)
-                              @foreach($pengajuan->skttk as $index => $skttk)
-                                <td class="border p-2">
-                                  <input name="kompetensi_pilihan2_skttk[]" id="kompetensi_pilihan2_skttk_{{ $index + 1 }}" type="text" class="w-full border p-1 rounded" value="{{ old('kompetensi_pilihan2_skttk.' . $index, $skttk['kompetensi_pilihan2_skttk'] ?? '') }}">
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $skttkCount; $i++)
                               <td class="border p-2">
-                                <input name="kompetensi_pilihan2_skttk[]" id="kompetensi_pilihan2_skttk_1" type="text" class="w-full border p-1 rounded">
+                                <input name="kompetensi_pilihan2_skttk[]" id="kompetensi_pilihan2_skttk_{{ $i+1 }}" type="text" class="w-full border p-1 rounded" 
+                                  value="{{ old('kompetensi_pilihan2_skttk.'.$i, $skttkData[$i]['kompetensi_pilihan2_skttk'] ?? '') }}">
                               </td>
-                            @endif
+                            @endfor
                           </tr>
                           <tr>
                             <td class="border border-gray-300 p-2 font-semibold bg-gray-50 sticky left-0">Tanggal Terbit</td>
-                            @if($pengajuan->skttk && count($pengajuan->skttk) > 0)
-                              @foreach($pengajuan->skttk as $index => $skttk)
-                                <td class="border border-gray-300 p-2">
-                                  <input name="tanggal_terbit_skttk[]" id="tanggal_terbit_skttk_{{ $index + 1 }}" type="text" class="w-full border p-1 rounded datepicker" value="{{ old('tanggal_terbit_skttk.' . $index, $skttk['tanggal_terbit_skttk'] ?? '') }}" placeholder="DD-MM-YYYY">
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $skttkCount; $i++)
                               <td class="border border-gray-300 p-2">
-                                <input name="tanggal_terbit_skttk[]" id="tanggal_terbit_skttk_1" type="text" class="w-full border p-1 rounded datepicker" placeholder="DD-MM-YYYY">
+                                <input name="tanggal_terbit_skttk[]" id="tanggal_terbit_skttk_{{ $i+1 }}" type="text" class="w-full border p-1 rounded datepicker" 
+                                  value="{{ old('tanggal_terbit_skttk.'.$i, $skttkData[$i]['tanggal_terbit_skttk'] ?? '') }}" placeholder="DD-MM-YYYY">
                               </td>
-                            @endif
+                            @endfor
                           </tr>
                           <tr>
                             <td class="border border-gray-300 p-2 font-semibold bg-gray-50 sticky left-0">Tanggal Masa Berlaku</td>
-                            @if($pengajuan->skttk && count($pengajuan->skttk) > 0)
-                              @foreach($pengajuan->skttk as $index => $skttk)
-                                <td class="border border-gray-300 p-2">
-                                  <input name="tanggal_masa_berlaku_skttk[]" id="tanggal_masa_berlaku_skttk_{{ $index + 1 }}" type="text" class="w-full border p-1 rounded datepicker" value="{{ old('tanggal_masa_berlaku_skttk.' . $index, $skttk['tanggal_masa_berlaku_skttk'] ?? '') }}" placeholder="DD-MM-YYYY">
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $skttkCount; $i++)
                               <td class="border border-gray-300 p-2">
-                                <input name="tanggal_masa_berlaku_skttk[]" id="tanggal_masa_berlaku_skttk_1" type="text" class="w-full border p-1 rounded datepicker" placeholder="DD-MM-YYYY">
+                                <input name="tanggal_masa_berlaku_skttk[]" id="tanggal_masa_berlaku_skttk_{{ $i+1 }}" type="text" class="w-full border p-1 rounded datepicker" 
+                                  value="{{ old('tanggal_masa_berlaku_skttk.'.$i, $skttkData[$i]['tanggal_masa_berlaku_skttk'] ?? '') }}" placeholder="DD-MM-YYYY">
                               </td>
-                            @endif
+                            @endfor
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Lembaga Sertifikasi Kompetensi (LSK)</td>
-                            @if($pengajuan->skttk && count($pengajuan->skttk) > 0)
-                              @foreach($pengajuan->skttk as $index => $skttk)
-                                <td class="border p-2">
-                                  <input name="lsk_skttk[]" id="lsk_skttk_{{ $index + 1 }}" type="text" class="w-full border p-1 rounded" value="{{ old('lsk_skttk.' . $index, $skttk['lsk_skttk'] ?? '') }}">
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $skttkCount; $i++)
                               <td class="border p-2">
-                                <input name="lsk_skttk[]" id="lsk_skttk_1" type="text" class="w-full border p-1 rounded">
+                                <input name="lsk_skttk[]" id="lsk_skttk_{{ $i+1 }}" type="text" class="w-full border p-1 rounded" 
+                                  value="{{ old('lsk_skttk.'.$i, $skttkData[$i]['lsk_skttk'] ?? '') }}">
                               </td>
-                            @endif
+                            @endfor
                           </tr>
-
                         </tbody>
                       </table>
                     </div>
@@ -734,7 +780,7 @@
                     <div id="preview_lampiran_skttk"></div>
 
                     <script>
-                      let skttkColumnCount = 1;
+                      let skttkColumnCount = {{ $skttkCount }};
 
                       const fieldIds = [
                         "nomor_sertifikat_skttk",
@@ -978,6 +1024,52 @@
                     <h3 class="text-lg font-bold uppercase mt-6 pb-2 text-gray-700 dark:text-white">
                       DATA MESIN PENGGERAK MULA
                     </h3>
+                    
+                    <!-- Section Evaluation Status -->
+                    @php 
+                      $sectionEval = isset($latestEvaluation) && $latestEvaluation->metadata && isset($latestEvaluation->metadata['sections']['data_mesin']) 
+                        ? $latestEvaluation->metadata['sections']['data_mesin'] 
+                        : ['status' => '-', 'catatan' => '-', 'evaluated_at' => null];
+                    @endphp
+                    <div class="mb-4 p-3 rounded-lg border
+                      {{ $sectionEval['status'] == 'Disetujui' ? 'bg-green-50 border-green-200' : ($sectionEval['status'] == '-' ? 'bg-gray-50 border-gray-200' : 'bg-red-50 border-red-200') }}">
+                      <div class="flex items-start justify-between mb-2">
+                        <h4 class="font-semibold {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-800' : ($sectionEval['status'] == '-' ? 'text-gray-800' : 'text-red-800') }}">
+                          Hasil Evaluasi - Data Mesin Penggerak Mula
+                        </h4>
+                        <span class="px-2 py-1 rounded-full text-xs font-medium
+                          {{ $sectionEval['status'] == 'Disetujui' ? 'bg-green-100 text-green-800' : ($sectionEval['status'] == '-' ? 'bg-gray-100 text-gray-800' : 'bg-red-100 text-red-800') }}">
+                          {{ $sectionEval['status'] }}
+                        </span>
+                      </div>
+                      <p class="text-sm {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-700' : ($sectionEval['status'] == '-' ? 'text-gray-700' : 'text-red-700') }} mb-2">
+                        <span class="font-medium">Komentar Evaluator:</span> {{ $sectionEval['catatan'] }}
+                      </p>
+                      @if($sectionEval['evaluated_at'])
+                      <p class="text-xs {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-600' : 'text-red-600' }}">
+                        <i class="fas fa-clock mr-1"></i>
+                        Status: {{ $sectionEval['status'] }} | Dievaluasi: {{ \Carbon\Carbon::parse($sectionEval['evaluated_at'])->format('d F Y H:i') }}
+                      </p>
+                      @else
+                      <p class="text-xs text-gray-500">
+                        <i class="fas fa-clock mr-1"></i>
+                        Status: {{ $sectionEval['status'] }} | Dievaluasi: -
+                      </p>
+                      @endif
+                    </div>
+                    
+                    @if($pengajuan->status == 'perbaikan' && $pengajuan->catatan_perbaikan_data_mesin)
+                    <!-- Catatan Perbaikan untuk Data Mesin -->
+                    <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                      <div class="flex items-start">
+                        <i class="fas fa-exclamation-circle text-red-500 mt-1 mr-2"></i>
+                        <div>
+                          <p class="text-sm font-medium text-red-800">Catatan Perbaikan:</p>
+                          <p class="text-sm text-red-700 mt-1">{!! nl2br(e($pengajuan->catatan_perbaikan_data_mesin)) !!}</p>
+                        </div>
+                      </div>
+                    </div>
+                    @endif
 
                     <div class="flex justify-end gap-2 mb-4">
                       <button type="button" onclick="addMesinColumn()" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Tambah</button>
@@ -989,143 +1081,106 @@
                         <thead>
                           <tr>
                             <th class="border border-gray-300 p-2 bg-gray-100 text-left sticky left-0 min-w-[150px] max-w-[150px] w-[150px]">Data Mesin</th>
-                            @if($pengajuan->mesin && count($pengajuan->mesin) > 0)
-                              @foreach($pengajuan->mesin as $index => $mesin)
-                                <th class="border border-gray-300 p-2 bg-gray-100 min-w-[220px]">Unit {{ $index + 1 }}</th>
-                              @endforeach
-                            @else
-                              <th class="border border-gray-300 p-2 bg-gray-100 min-w-[220px]">Unit 1</th>
-                            @endif
+                            @php
+                              $mesinData = $pengajuan->mesin ?? [];
+                              $mesinCount = max(1, count($mesinData));
+                            @endphp
+                            @for($i = 1; $i <= $mesinCount; $i++)
+                              <th class="border border-gray-300 p-2 bg-gray-100 min-w-[220px]">Unit {{ $i }}</th>
+                            @endfor
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Jenis Penggerak</td>
-                            @if($pengajuan->mesin && count($pengajuan->mesin) > 0)
-                              @foreach($pengajuan->mesin as $index => $mesin)
-                                <td class="border p-2">
-                                  <input id="mesin_jenis_penggerak_{{ $index + 1 }}" name="jenis_penggerak[]" type="text" class="w-full border p-1 rounded" value="{{ old('jenis_penggerak.' . $index, $mesin['jenis_penggerak'] ?? '') }}" required>
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $mesinCount; $i++)
                               <td class="border p-2">
-                                <input id="mesin_jenis_penggerak_1" name="jenis_penggerak[]" type="text" class="w-full border p-1 rounded" required>
+                                <input id="mesin_jenis_penggerak_{{ $i+1 }}" name="jenis_penggerak[]" type="text" class="w-full border p-1 rounded" 
+                                  value="{{ old('jenis_penggerak.'.$i, $mesinData[$i]['jenis_penggerak'] ?? '') }}" required>
                               </td>
-                            @endif
+                            @endfor
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Jenis Pembangkit</td>
-                            @if($pengajuan->mesin && count($pengajuan->mesin) > 0)
-                              @foreach($pengajuan->mesin as $index => $mesin)
-                                <td class="border p-2">
-                                  <select id="mesin_jenis_pembangkit_{{ $index + 1 }}" name="jenis_pembangkit[]" class="w-full border p-1 rounded" required>
-                                    <option value="">Pilih</option>
-                                    <option {{ (old('jenis_pembangkit.' . $index, $mesin['jenis_pembangkit'] ?? '') == 'PLTD') ? 'selected' : '' }}>PLTD</option>
-                                    <option {{ (old('jenis_pembangkit.' . $index, $mesin['jenis_pembangkit'] ?? '') == 'PLTBm') ? 'selected' : '' }}>PLTBm</option>
-                                    <option {{ (old('jenis_pembangkit.' . $index, $mesin['jenis_pembangkit'] ?? '') == 'PLTMH') ? 'selected' : '' }}>PLTMH</option>
-                                    <option {{ (old('jenis_pembangkit.' . $index, $mesin['jenis_pembangkit'] ?? '') == 'PLTU') ? 'selected' : '' }}>PLTU</option>
-                                    <option {{ (old('jenis_pembangkit.' . $index, $mesin['jenis_pembangkit'] ?? '') == 'PLTBg') ? 'selected' : '' }}>PLTBg</option>
-                                    <option {{ (old('jenis_pembangkit.' . $index, $mesin['jenis_pembangkit'] ?? '') == 'PLTMG') ? 'selected' : '' }}>PLTMG</option>
-                                  </select>
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $mesinCount; $i++)
                               <td class="border p-2">
-                                <select id="mesin_jenis_pembangkit_1" name="jenis_pembangkit[]" class="w-full border p-1 rounded" required>
+                                <select id="mesin_jenis_pembangkit_{{ $i+1 }}" name="jenis_pembangkit[]" class="w-full border p-1 rounded" required>
                                   <option value="">Pilih</option>
-                                  <option>PLTD</option>
-                                  <option>PLTBm</option>
-                                  <option>PLTMH</option>
-                                  <option>PLTU</option>
-                                  <option>PLTBg</option>
-                                  <option>PLTMG</option>
+                                  @php $selectedPembangkit = old('jenis_pembangkit.'.$i, $mesinData[$i]['jenis_pembangkit'] ?? ''); @endphp
+                                  <option value="PLTD" {{ $selectedPembangkit == 'PLTD' ? 'selected' : '' }}>PLTD</option>
+                                  <option value="PLTBm" {{ $selectedPembangkit == 'PLTBm' ? 'selected' : '' }}>PLTBm</option>
+                                  <option value="PLTMH" {{ $selectedPembangkit == 'PLTMH' ? 'selected' : '' }}>PLTMH</option>
+                                  <option value="PLTU" {{ $selectedPembangkit == 'PLTU' ? 'selected' : '' }}>PLTU</option>
+                                  <option value="PLTBg" {{ $selectedPembangkit == 'PLTBg' ? 'selected' : '' }}>PLTBg</option>
+                                  <option value="PLTMG" {{ $selectedPembangkit == 'PLTMG' ? 'selected' : '' }}>PLTMG</option>
                                 </select>
                               </td>
-                            @endif
+                            @endfor
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Energi Primer / Utama</td>
-                            @if($pengajuan->mesin && count($pengajuan->mesin) > 0)
-                              @foreach($pengajuan->mesin as $index => $mesin)
-                                <td class="border p-2">
-                                  <input id="mesin_energi_primer_{{ $index + 1 }}" name="energi_primer[]" type="text" class="w-full border p-1 rounded" value="{{ old('energi_primer.' . $index, $mesin['energi_primer'] ?? '') }}" required>
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $mesinCount; $i++)
                               <td class="border p-2">
-                                <input id="mesin_energi_primer_1" name="energi_primer[]" type="text" class="w-full border p-1 rounded" required>
+                                <input id="mesin_energi_primer_{{ $i+1 }}" name="energi_primer[]" type="text" class="w-full border p-1 rounded" 
+                                  value="{{ old('energi_primer.'.$i, $mesinData[$i]['energi_primer'] ?? '') }}" required>
                               </td>
-                            @endif
+                            @endfor
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Merk / Tipe / Seri</td>
-                            @if($pengajuan->mesin && count($pengajuan->mesin) > 0)
-                              @foreach($pengajuan->mesin as $index => $mesin)
-                                <td class="border p-2">
-                                  <input id="mesin_merk_tipe_{{ $index + 1 }}" name="mesin_merk_tipe[]" type="text" class="w-full border p-1 rounded" value="{{ old('mesin_merk_tipe.' . $index, $mesin['mesin_merk_tipe'] ?? '') }}" required>
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $mesinCount; $i++)
                               <td class="border p-2">
-                                <input id="mesin_merk_tipe_1" name="mesin_merk_tipe[]" type="text" class="w-full border p-1 rounded" required>
+                                <input id="mesin_merk_tipe_{{ $i+1 }}" name="mesin_merk_tipe[]" type="text" class="w-full border p-1 rounded" 
+                                  value="{{ old('mesin_merk_tipe.'.$i, $mesinData[$i]['mesin_merk_tipe'] ?? '') }}" required>
                               </td>
-                            @endif
+                            @endfor
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Pabrikan / Tahun</td>
-                            @if($pengajuan->mesin && count($pengajuan->mesin) > 0)
-                              @foreach($pengajuan->mesin as $index => $mesin)
-                                <td class="border p-2">
-                                  <input id="mesin_pabrikan_{{ $index + 1 }}" name="mesin_pabrikan[]" type="text" class="w-full border p-1 rounded" value="{{ old('mesin_pabrikan.' . $index, $mesin['mesin_pabrikan'] ?? '') }}" required>
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $mesinCount; $i++)
                               <td class="border p-2">
-                                <input id="mesin_pabrikan_1" name="mesin_pabrikan[]" type="text" class="w-full border p-1 rounded" required>
+                                <input id="mesin_pabrikan_{{ $i+1 }}" name="mesin_pabrikan[]" type="text" class="w-full border p-1 rounded" 
+                                  value="{{ old('mesin_pabrikan.'.$i, $mesinData[$i]['mesin_pabrikan'] ?? '') }}" required>
                               </td>
-                            @endif
+                            @endfor
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Kapasitas (kW / kVA)</td>
-                            @if($pengajuan->mesin && count($pengajuan->mesin) > 0)
-                              @foreach($pengajuan->mesin as $index => $mesin)
-                                <td class="border p-2">
-                                  <input id="mesin_kapasitas_{{ $index + 1 }}" name="mesin_kapasitas[]" type="text" class="w-full border p-1 rounded" value="{{ old('mesin_kapasitas.' . $index, $mesin['mesin_kapasitas'] ?? '') }}" required>
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $mesinCount; $i++)
                               <td class="border p-2">
-                                <input id="mesin_kapasitas_1" name="mesin_kapasitas[]" type="text" class="w-full border p-1 rounded" required>
+                                <input id="mesin_kapasitas_{{ $i+1 }}" name="mesin_kapasitas[]" type="text" class="w-full border p-1 rounded" 
+                                  value="{{ old('mesin_kapasitas.'.$i, $mesinData[$i]['mesin_kapasitas'] ?? '') }}" required>
                               </td>
-                            @endif
+                            @endfor
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Putaran (rpm)</td>
-                            @if($pengajuan->mesin && count($pengajuan->mesin) > 0)
-                              @foreach($pengajuan->mesin as $index => $mesin)
-                                <td class="border p-2">
-                                  <input id="mesin_putaran_{{ $index + 1 }}" name="mesin_putaran[]" type="text" class="w-full border p-1 rounded" value="{{ old('mesin_putaran.' . $index, $mesin['mesin_putaran'] ?? '') }}" required>
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $mesinCount; $i++)
                               <td class="border p-2">
-                                <input id="mesin_putaran_1" name="mesin_putaran[]" type="text" class="w-full border p-1 rounded" required>
+                                <input id="mesin_putaran_{{ $i+1 }}" name="mesin_putaran[]" type="text" class="w-full border p-1 rounded" 
+                                  value="{{ old('mesin_putaran.'.$i, $mesinData[$i]['mesin_putaran'] ?? '') }}" required>
                               </td>
-                            @endif
+                            @endfor
                           </tr>
                         </tbody>
                       </table>
                     </div>
                     <div class="mt-6">
-                      <label>Upload foto Unit, Nameplate Mesin,Tata Letak(</label>
-                      <input id="lampiran_nameplate_mesin" name="lampiran_nameplate_mesin" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" required onchange="previewFile(this)">
-                      <small class="text-gray-500">Format PDF Maks 5MB</small>
+                      <label>Upload foto Unit, Nameplate Mesin,Tata Letak</label>
+                      @if($pengajuan->lampiran_nameplate_mesin)
+                      <div class="mb-2 text-sm text-gray-600">
+                        <i class="fas fa-file-pdf text-red-500 mr-1"></i>
+                        File saat ini: <a href="{{ asset('storage/' . $pengajuan->lampiran_nameplate_mesin) }}" target="_blank" class="text-blue-600 underline">Lihat file</a>
+                      </div>
+                      @endif
+                      <input id="lampiran_nameplate_mesin" name="lampiran_nameplate_mesin" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" onchange="previewFile(this)">
+                      <small class="text-gray-500">Format PDF Maks 5MB (Kosongkan jika tidak ingin mengubah file)</small>
                     </div>
                     <div id="preview_lampiran_nameplate_mesin"></div>
 
 
                     <script>
-                      let mesinUnitCount = 1;
+                      let mesinUnitCount = {{ $mesinCount }};
 
                       const mesinFields = [
                         "jenis_penggerak",
@@ -1278,6 +1333,52 @@
                     <h3 class="text-lg font-bold uppercase mt-6 pb-2 text-gray-700 dark:text-white">
                       DATA GENERATOR
                     </h3>
+                    
+                    <!-- Section Evaluation Status -->
+                    @php 
+                      $sectionEval = isset($latestEvaluation) && $latestEvaluation->metadata && isset($latestEvaluation->metadata['sections']['data_generator']) 
+                        ? $latestEvaluation->metadata['sections']['data_generator'] 
+                        : ['status' => '-', 'catatan' => '-', 'evaluated_at' => null];
+                    @endphp
+                    <div class="mb-4 p-3 rounded-lg border
+                      {{ $sectionEval['status'] == 'Disetujui' ? 'bg-green-50 border-green-200' : ($sectionEval['status'] == '-' ? 'bg-gray-50 border-gray-200' : 'bg-red-50 border-red-200') }}">
+                      <div class="flex items-start justify-between mb-2">
+                        <h4 class="font-semibold {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-800' : ($sectionEval['status'] == '-' ? 'text-gray-800' : 'text-red-800') }}">
+                          Hasil Evaluasi - Data Generator
+                        </h4>
+                        <span class="px-2 py-1 rounded-full text-xs font-medium
+                          {{ $sectionEval['status'] == 'Disetujui' ? 'bg-green-100 text-green-800' : ($sectionEval['status'] == '-' ? 'bg-gray-100 text-gray-800' : 'bg-red-100 text-red-800') }}">
+                          {{ $sectionEval['status'] }}
+                        </span>
+                      </div>
+                      <p class="text-sm {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-700' : ($sectionEval['status'] == '-' ? 'text-gray-700' : 'text-red-700') }} mb-2">
+                        <span class="font-medium">Komentar Evaluator:</span> {{ $sectionEval['catatan'] }}
+                      </p>
+                      @if($sectionEval['evaluated_at'])
+                      <p class="text-xs {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-600' : 'text-red-600' }}">
+                        <i class="fas fa-clock mr-1"></i>
+                        Status: {{ $sectionEval['status'] }} | Dievaluasi: {{ \Carbon\Carbon::parse($sectionEval['evaluated_at'])->format('d F Y H:i') }}
+                      </p>
+                      @else
+                      <p class="text-xs text-gray-500">
+                        <i class="fas fa-clock mr-1"></i>
+                        Status: {{ $sectionEval['status'] }} | Dievaluasi: -
+                      </p>
+                      @endif
+                    </div>
+                    
+                    @if($pengajuan->status == 'perbaikan' && $pengajuan->catatan_perbaikan_data_generator)
+                    <!-- Catatan Perbaikan untuk Data Generator -->
+                    <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                      <div class="flex items-start">
+                        <i class="fas fa-exclamation-circle text-red-500 mt-1 mr-2"></i>
+                        <div>
+                          <p class="text-sm font-medium text-red-800">Catatan Perbaikan:</p>
+                          <p class="text-sm text-red-700 mt-1">{!! nl2br(e($pengajuan->catatan_perbaikan_data_generator)) !!}</p>
+                        </div>
+                      </div>
+                    </div>
+                    @endif
 
                     <div class="flex justify-end gap-2 mb-4">
                       <button type="button" onclick="addGeneratorColumn()" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Tambah</button>
@@ -1289,217 +1390,152 @@
                         <thead>
                           <tr>
                             <th class="border border-gray-300 p-2 bg-gray-100 text-left sticky left-0 min-w-[150px] max-w-[150px] w-[150px]">Data Generator</th>
-                            @if($pengajuan->generator && count($pengajuan->generator) > 0)
-                              @foreach($pengajuan->generator as $index => $generator)
-                                <th class="border border-gray-300 p-2 bg-gray-100 min-w-[220px]">Unit {{ $index + 1 }}</th>
-                              @endforeach
-                            @else
-                              <th class="border border-gray-300 p-2 bg-gray-100 min-w-[220px]">Unit 1</th>
-                            @endif
+                            @php
+                              $generatorData = $pengajuan->generator ?? [];
+                              $generatorCount = max(1, count($generatorData));
+                            @endphp
+                            @for($i = 1; $i <= $generatorCount; $i++)
+                              <th class="border border-gray-300 p-2 bg-gray-100 min-w-[220px]">Unit {{ $i }}</th>
+                            @endfor
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Merk / Tipe / Seri</td>
-                            @if($pengajuan->generator && count($pengajuan->generator) > 0)
-                              @foreach($pengajuan->generator as $index => $generator)
-                                <td class="border p-2">
-                                  <input id="generator_merk_tipe_{{ $index + 1 }}" name="generator_merk_tipe[]" type="text" class="w-full border p-1 rounded" value="{{ old('generator_merk_tipe.' . $index, $generator['generator_merk_tipe'] ?? '') }}" required>
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $generatorCount; $i++)
                               <td class="border p-2">
-                                <input id="generator_merk_tipe_1" name="generator_merk_tipe[]" type="text" class="w-full border p-1 rounded" required>
+                                <input id="generator_merk_tipe_{{ $i+1 }}" name="generator_merk_tipe[]" type="text" class="w-full border p-1 rounded" 
+                                  value="{{ old('generator_merk_tipe.'.$i, $generatorData[$i]['generator_merk_tipe'] ?? '') }}" required>
                               </td>
-                            @endif
+                            @endfor
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Pabrikan / Tahun</td>
-                            @if($pengajuan->generator && count($pengajuan->generator) > 0)
-                              @foreach($pengajuan->generator as $index => $generator)
-                                <td class="border p-2">
-                                  <input id="generator_pabrikan_{{ $index + 1 }}" name="generator_pabrikan[]" type="text" class="w-full border p-1 rounded" value="{{ old('generator_pabrikan.' . $index, $generator['generator_pabrikan'] ?? '') }}" required>
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $generatorCount; $i++)
                               <td class="border p-2">
-                                <input id="generator_pabrikan_1" name="generator_pabrikan[]" type="text" class="w-full border p-1 rounded" required>
+                                <input id="generator_pabrikan_{{ $i+1 }}" name="generator_pabrikan[]" type="text" class="w-full border p-1 rounded" 
+                                  value="{{ old('generator_pabrikan.'.$i, $generatorData[$i]['generator_pabrikan'] ?? '') }}" required>
                               </td>
-                            @endif
+                            @endfor
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Kapasitas (kW / kVA)</td>
-                            @if($pengajuan->generator && count($pengajuan->generator) > 0)
-                              @foreach($pengajuan->generator as $index => $generator)
-                                <td class="border p-2">
-                                  <input id="generator_kapasitas_{{ $index + 1 }}" name="generator_kapasitas[]" type="text" class="w-full border p-1 rounded" value="{{ old('generator_kapasitas.' . $index, $generator['generator_kapasitas'] ?? '') }}" required>
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $generatorCount; $i++)
                               <td class="border p-2">
-                                <input id="generator_kapasitas_1" name="generator_kapasitas[]" type="text" class="w-full border p-1 rounded" required>
+                                <input id="generator_kapasitas_{{ $i+1 }}" name="generator_kapasitas[]" type="text" class="w-full border p-1 rounded" 
+                                  value="{{ old('generator_kapasitas.'.$i, $generatorData[$i]['generator_kapasitas'] ?? '') }}" required>
                               </td>
-                            @endif
+                            @endfor
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Tegangan (V)</td>
-                            @if($pengajuan->generator && count($pengajuan->generator) > 0)
-                              @foreach($pengajuan->generator as $index => $generator)
-                                <td class="border p-2">
-                                  <input id="generator_tegangan_{{ $index + 1 }}" name="generator_tegangan[]" type="text" class="w-full border p-1 rounded" value="{{ old('generator_tegangan.' . $index, $generator['generator_tegangan'] ?? '') }}" required>
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $generatorCount; $i++)
                               <td class="border p-2">
-                                <input id="generator_tegangan_1" name="generator_tegangan[]" type="text" class="w-full border p-1 rounded" required>
+                                <input id="generator_tegangan_{{ $i+1 }}" name="generator_tegangan[]" type="text" class="w-full border p-1 rounded" 
+                                  value="{{ old('generator_tegangan.'.$i, $generatorData[$i]['generator_tegangan'] ?? '') }}" required>
                               </td>
-                            @endif
+                            @endfor
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Arus (A)</td>
-                            @if($pengajuan->generator && count($pengajuan->generator) > 0)
-                              @foreach($pengajuan->generator as $index => $generator)
-                                <td class="border p-2">
-                                  <input id="generator_arus_{{ $index + 1 }}" name="generator_arus[]" type="text" class="w-full border p-1 rounded" value="{{ old('generator_arus.' . $index, $generator['generator_arus'] ?? '') }}" required>
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $generatorCount; $i++)
                               <td class="border p-2">
-                                <input id="generator_arus_1" name="generator_arus[]" type="text" class="w-full border p-1 rounded" required>
+                                <input id="generator_arus_{{ $i+1 }}" name="generator_arus[]" type="text" class="w-full border p-1 rounded" 
+                                  value="{{ old('generator_arus.'.$i, $generatorData[$i]['generator_arus'] ?? '') }}" required>
                               </td>
-                            @endif
+                            @endfor
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Faktor Daya</td>
-                            @if($pengajuan->generator && count($pengajuan->generator) > 0)
-                              @foreach($pengajuan->generator as $index => $generator)
-                                <td class="border p-2">
-                                  <input id="generator_faktor_daya_{{ $index + 1 }}" name="generator_faktor_daya[]" type="text" class="w-full border p-1 rounded" value="{{ old('generator_faktor_daya.' . $index, $generator['generator_faktor_daya'] ?? '') }}" required>
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $generatorCount; $i++)
                               <td class="border p-2">
-                                <input id="generator_faktor_daya_1" name="generator_faktor_daya[]" type="text" class="w-full border p-1 rounded" required>
+                                <input id="generator_faktor_daya_{{ $i+1 }}" name="generator_faktor_daya[]" type="text" class="w-full border p-1 rounded" 
+                                  value="{{ old('generator_faktor_daya.'.$i, $generatorData[$i]['generator_faktor_daya'] ?? '') }}" required>
                               </td>
-                            @endif
+                            @endfor
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Fasa</td>
-                            @if($pengajuan->generator && count($pengajuan->generator) > 0)
-                              @foreach($pengajuan->generator as $index => $generator)
-                                <td class="border p-2">
-                                  <input id="generator_fasa_{{ $index + 1 }}" name="generator_fasa[]" type="text" class="w-full border p-1 rounded" value="{{ old('generator_fasa.' . $index, $generator['generator_fasa'] ?? '') }}" required>
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $generatorCount; $i++)
                               <td class="border p-2">
-                                <input id="generator_fasa_1" name="generator_fasa[]" type="text" class="w-full border p-1 rounded" required>
+                                <input id="generator_fasa_{{ $i+1 }}" name="generator_fasa[]" type="text" class="w-full border p-1 rounded" 
+                                  value="{{ old('generator_fasa.'.$i, $generatorData[$i]['generator_fasa'] ?? '') }}" required>
                               </td>
-                            @endif
+                            @endfor
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Frekuensi (Hz)</td>
-                            @if($pengajuan->generator && count($pengajuan->generator) > 0)
-                              @foreach($pengajuan->generator as $index => $generator)
-                                <td class="border p-2">
-                                  <input id="generator_frekuensi_{{ $index + 1 }}" name="generator_frekuensi[]" type="text" class="w-full border p-1 rounded" value="{{ old('generator_frekuensi.' . $index, $generator['generator_frekuensi'] ?? '') }}" required>
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $generatorCount; $i++)
                               <td class="border p-2">
-                                <input id="generator_frekuensi_1" name="generator_frekuensi[]" type="text" class="w-full border p-1 rounded" required>
+                                <input id="generator_frekuensi_{{ $i+1 }}" name="generator_frekuensi[]" type="text" class="w-full border p-1 rounded" 
+                                  value="{{ old('generator_frekuensi.'.$i, $generatorData[$i]['generator_frekuensi'] ?? '') }}" required>
                               </td>
-                            @endif
+                            @endfor
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Putaran (rpm)</td>
-                            @if($pengajuan->generator && count($pengajuan->generator) > 0)
-                              @foreach($pengajuan->generator as $index => $generator)
-                                <td class="border p-2">
-                                  <input id="generator_putaran_{{ $index + 1 }}" name="generator_putaran[]" type="text" class="w-full border p-1 rounded" value="{{ old('generator_putaran.' . $index, $generator['generator_putaran'] ?? '') }}" required>
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $generatorCount; $i++)
                               <td class="border p-2">
-                                <input id="generator_putaran_1" name="generator_putaran[]" type="text" class="w-full border p-1 rounded" required>
+                                <input id="generator_putaran_{{ $i+1 }}" name="generator_putaran[]" type="text" class="w-full border p-1 rounded" 
+                                  value="{{ old('generator_putaran.'.$i, $generatorData[$i]['generator_putaran'] ?? '') }}" required>
                               </td>
-                            @endif
+                            @endfor
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Lokasi Unit (Kab / Kota)</td>
-                            @if($pengajuan->generator && count($pengajuan->generator) > 0)
-                              @foreach($pengajuan->generator as $index => $generator)
-                                <td class="border p-2">
-                                  <select id="generator_lokasi_{{ $index + 1 }}" name="generator_lokasi[]" class="w-full border p-1 rounded" required>
-                                    <option value="">Pilih Lokasi</option>
-                                    <option {{ (old('generator_lokasi.' . $index, $generator['generator_lokasi'] ?? '') == 'Kota Jambi') ? 'selected' : '' }}>Kota Jambi</option>
-                                    <option {{ (old('generator_lokasi.' . $index, $generator['generator_lokasi'] ?? '') == 'Kabupaten Muaro Jambi') ? 'selected' : '' }}>Kabupaten Muaro Jambi</option>
-                                    <option {{ (old('generator_lokasi.' . $index, $generator['generator_lokasi'] ?? '') == 'Kabupaten Batanghari') ? 'selected' : '' }}>Kabupaten Batanghari</option>
-                                    <option {{ (old('generator_lokasi.' . $index, $generator['generator_lokasi'] ?? '') == 'Kabupaten Tanjung Jabung Barat') ? 'selected' : '' }}>Kabupaten Tanjung Jabung Barat</option>
-                                    <option {{ (old('generator_lokasi.' . $index, $generator['generator_lokasi'] ?? '') == 'Kabupaten Tanjung Jabung Timur') ? 'selected' : '' }}>Kabupaten Tanjung Jabung Timur</option>
-                                    <option {{ (old('generator_lokasi.' . $index, $generator['generator_lokasi'] ?? '') == 'Kabupaten Bungo') ? 'selected' : '' }}>Kabupaten Bungo</option>
-                                    <option {{ (old('generator_lokasi.' . $index, $generator['generator_lokasi'] ?? '') == 'Kabupaten Tebo') ? 'selected' : '' }}>Kabupaten Tebo</option>
-                                    <option {{ (old('generator_lokasi.' . $index, $generator['generator_lokasi'] ?? '') == 'Kabupaten Merangin') ? 'selected' : '' }}>Kabupaten Merangin</option>
-                                    <option {{ (old('generator_lokasi.' . $index, $generator['generator_lokasi'] ?? '') == 'Kabupaten Sarolangun') ? 'selected' : '' }}>Kabupaten Sarolangun</option>
-                                    <option {{ (old('generator_lokasi.' . $index, $generator['generator_lokasi'] ?? '') == 'Kabupaten Kerinci') ? 'selected' : '' }}>Kabupaten Kerinci</option>
-                                    <option {{ (old('generator_lokasi.' . $index, $generator['generator_lokasi'] ?? '') == 'Kota Sungai Penuh') ? 'selected' : '' }}>Kota Sungai Penuh</option>
-                                  </select>
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $generatorCount; $i++)
                               <td class="border p-2">
-                                <select id="generator_lokasi_1" name="generator_lokasi[]" class="w-full border p-1 rounded" required>
+                                <select id="generator_lokasi_{{ $i+1 }}" name="generator_lokasi[]" class="w-full border p-1 rounded" required>
                                   <option value="">Pilih Lokasi</option>
-                                  <option>Kota Jambi</option>
-                                  <option>Kabupaten Muaro Jambi</option>
-                                  <option>Kabupaten Batanghari</option>
-                                  <option>Kabupaten Tanjung Jabung Barat</option>
-                                  <option>Kabupaten Tanjung Jabung Timur</option>
-                                  <option>Kabupaten Bungo</option>
-                                  <option>Kabupaten Tebo</option>
-                                  <option>Kabupaten Merangin</option>
-                                  <option>Kabupaten Sarolangun</option>
-                                  <option>Kabupaten Kerinci</option>
-                                  <option>Kota Sungai Penuh</option>
+                                  @php $selectedLokasi = old('generator_lokasi.'.$i, $generatorData[$i]['generator_lokasi'] ?? ''); @endphp
+                                  <option value="Kota Jambi" {{ $selectedLokasi == 'Kota Jambi' ? 'selected' : '' }}>Kota Jambi</option>
+                                  <option value="Kabupaten Muaro Jambi" {{ $selectedLokasi == 'Kabupaten Muaro Jambi' ? 'selected' : '' }}>Kabupaten Muaro Jambi</option>
+                                  <option value="Kabupaten Batanghari" {{ $selectedLokasi == 'Kabupaten Batanghari' ? 'selected' : '' }}>Kabupaten Batanghari</option>
+                                  <option value="Kabupaten Tanjung Jabung Barat" {{ $selectedLokasi == 'Kabupaten Tanjung Jabung Barat' ? 'selected' : '' }}>Kabupaten Tanjung Jabung Barat</option>
+                                  <option value="Kabupaten Tanjung Jabung Timur" {{ $selectedLokasi == 'Kabupaten Tanjung Jabung Timur' ? 'selected' : '' }}>Kabupaten Tanjung Jabung Timur</option>
+                                  <option value="Kabupaten Bungo" {{ $selectedLokasi == 'Kabupaten Bungo' ? 'selected' : '' }}>Kabupaten Bungo</option>
+                                  <option value="Kabupaten Tebo" {{ $selectedLokasi == 'Kabupaten Tebo' ? 'selected' : '' }}>Kabupaten Tebo</option>
+                                  <option value="Kabupaten Merangin" {{ $selectedLokasi == 'Kabupaten Merangin' ? 'selected' : '' }}>Kabupaten Merangin</option>
+                                  <option value="Kabupaten Sarolangun" {{ $selectedLokasi == 'Kabupaten Sarolangun' ? 'selected' : '' }}>Kabupaten Sarolangun</option>
+                                  <option value="Kabupaten Kerinci" {{ $selectedLokasi == 'Kabupaten Kerinci' ? 'selected' : '' }}>Kabupaten Kerinci</option>
+                                  <option value="Kota Sungai Penuh" {{ $selectedLokasi == 'Kota Sungai Penuh' ? 'selected' : '' }}>Kota Sungai Penuh</option>
                                 </select>
                               </td>
-                            @endif
+                            @endfor
                           </tr>
                           <tr>
                             <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Koordinat</td>
-                            @if($pengajuan->generator && count($pengajuan->generator) > 0)
-                              @foreach($pengajuan->generator as $index => $generator)
-                                <td class="border p-2 space-y-1">
-                                  <input id="generator_latitude_{{ $index + 1 }}" name="generator_latitude[]" type="number" step="any"
-                                    placeholder="Latitude (cth: -1.234567)" class="w-full border p-1 rounded mb-1" value="{{ old('generator_latitude.' . $index, $generator['generator_latitude'] ?? '') }}" required>
-                                  <input id="generator_longitude_{{ $index + 1 }}" name="generator_longitude[]" type="number" step="any"
-                                    placeholder="Longitude (cth: 103.456789)" class="w-full border p-1 rounded" value="{{ old('generator_longitude.' . $index, $generator['generator_longitude'] ?? '') }}" required>
-                                </td>
-                              @endforeach
-                            @else
+                            @for($i = 0; $i < $generatorCount; $i++)
                               <td class="border p-2 space-y-1">
-                                <input id="generator_latitude_1" name="generator_latitude[]" type="number" step="any"
-                                  placeholder="Latitude (cth: -1.234567)" class="w-full border p-1 rounded mb-1" required>
-                                <input id="generator_longitude_1" name="generator_longitude[]" type="number" step="any"
-                                  placeholder="Longitude (cth: 103.456789)" class="w-full border p-1 rounded" required>
+                                <input id="generator_latitude_{{ $i+1 }}" name="generator_latitude[]" type="number" step="any"
+                                  placeholder="Latitude (cth: -1.234567)" class="w-full border p-1 rounded mb-1" 
+                                  value="{{ old('generator_latitude.'.$i, $generatorData[$i]['generator_latitude'] ?? '') }}" required>
+                                <input id="generator_longitude_{{ $i+1 }}" name="generator_longitude[]" type="number" step="any"
+                                  placeholder="Longitude (cth: 103.456789)" class="w-full border p-1 rounded" 
+                                  value="{{ old('generator_longitude.'.$i, $generatorData[$i]['generator_longitude'] ?? '') }}" required>
                               </td>
-                            @endif
+                            @endfor
                           </tr>
-
                         </tbody>
                       </table>
                     </div>
 
                     <div class="mt-6">
-                      <label>Upload foto Unit, Nameplate Generator,Tata Letak </label>
-                      <input id="lampiran_nameplate_generator" name="lampiran_nameplate_generator" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" required onchange="previewFile(this)">
-                      <small class="text-gray-500">Format PDF Maks 5MB</small>
+                      <label>Upload foto Unit, Nameplate Generator,Tata Letak</label>
+                      @if($pengajuan->lampiran_nameplate_generator)
+                      <div class="mb-2 text-sm text-gray-600">
+                        <i class="fas fa-file-pdf text-red-500 mr-1"></i>
+                        File saat ini: <a href="{{ asset('storage/' . $pengajuan->lampiran_nameplate_generator) }}" target="_blank" class="text-blue-600 underline">Lihat file</a>
+                      </div>
+                      @endif
+                      <input id="lampiran_nameplate_generator" name="lampiran_nameplate_generator" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" onchange="previewFile(this)">
+                      <small class="text-gray-500">Format PDF Maks 5MB (Kosongkan jika tidak ingin mengubah file)</small>
                     </div>
                     <div id="preview_lampiran_nameplate_generator"></div>
 
 
                     <script>
-                      let generatorUnitCount = 1;
+                      let generatorUnitCount = {{ $generatorCount }};
 
                       const generatorFields = [
                         "generator_merk_tipe",
@@ -1687,16 +1723,55 @@
                     <div class="mt-6">
                       <label for="sambunganListrik" class="block text-sm font-medium text-gray-700">Apakah ada sambungan listrik dari pihak lain?</label>
                       <select id="sambunganListrik" name="sambunganListrik" class="mt-1 block w-full p-2 border rounded-md" onchange="toggleSambunganListrikTable()" required>
-                        <option value="" disabled {{ !old('sambunganListrik', $pengajuan->sambunganListrik ?? '') ? 'selected' : '' }} hidden>Pilih</option>
-                        <option value="ada" {{ old('sambunganListrik', $pengajuan->sambunganListrik ?? '') == 'ada' ? 'selected' : '' }}>Ada</option>
-                        <option value="tidak" {{ old('sambunganListrik', $pengajuan->sambunganListrik ?? '') == 'tidak' ? 'selected' : '' }}>Tidak</option>
+                        @php $selectedSambungan = old('sambunganListrik', $pengajuan->sambunganListrik ?? ''); @endphp
+                        <option value="" disabled {{ !$selectedSambungan ? 'selected' : '' }} hidden>Pilih</option>
+                        <option value="ada" {{ $selectedSambungan == 'ada' ? 'selected' : '' }}>Ada</option>
+                        <option value="tidak" {{ $selectedSambungan == 'tidak' ? 'selected' : '' }}>Tidak</option>
                       </select>
                     </div>
 
                     <!-- Container Sambungan Listrik -->
-                    <div id="sambunganListrikTable" class="mt-6 hidden">
+                    @php
+                      $jaringanDistribusi = $pengajuan->jaringanDistribusi ?? [];
+                      $distribusiCount = max(1, count($jaringanDistribusi));
+                      $selectedSambungan = old('sambunganListrik', $pengajuan->sambunganListrik ?? '');
+                    @endphp
+                    <div id="sambunganListrikTable" class="mt-6 {{ $selectedSambungan == 'ada' ? '' : 'hidden' }}">
 
                       <h3 class="text-lg font-bold uppercase mt-6 pb-2 text-gray-700 dark:text-white">Jaringan / Saluran Distribusi</h3>
+                      
+                      <!-- Section Evaluation Status -->
+                      @php 
+                      $sectionEval = isset($latestEvaluation) && $latestEvaluation->metadata && isset($latestEvaluation->metadata['sections']['sambungan_listrik']) 
+                        ? $latestEvaluation->metadata['sections']['sambungan_listrik'] 
+                        : ['status' => '-', 'catatan' => '-', 'evaluated_at' => null];
+                      @endphp
+                      <div class="mb-4 p-3 rounded-lg border
+                        {{ $sectionEval['status'] == 'Disetujui' ? 'bg-green-50 border-green-200' : ($sectionEval['status'] == '-' ? 'bg-gray-50 border-gray-200' : 'bg-red-50 border-red-200') }}">
+                        <div class="flex items-start justify-between mb-2">
+                          <h4 class="font-semibold {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-800' : ($sectionEval['status'] == '-' ? 'text-gray-800' : 'text-red-800') }}">
+                            Hasil Evaluasi - Jaringan / Saluran Distribusi
+                          </h4>
+                          <span class="px-2 py-1 rounded-full text-xs font-medium
+                            {{ $sectionEval['status'] == 'Disetujui' ? 'bg-green-100 text-green-800' : ($sectionEval['status'] == '-' ? 'bg-gray-100 text-gray-800' : 'bg-red-100 text-red-800') }}">
+                            {{ $sectionEval['status'] }}
+                          </span>
+                        </div>
+                        <p class="text-sm {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-700' : ($sectionEval['status'] == '-' ? 'text-gray-700' : 'text-red-700') }} mb-2">
+                          <span class="font-medium">Komentar Evaluator:</span> {{ $sectionEval['catatan'] }}
+                        </p>
+                        @if($sectionEval['evaluated_at'])
+                        <p class="text-xs {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-600' : 'text-red-600' }}">
+                          <i class="fas fa-clock mr-1"></i>
+                          Status: {{ $sectionEval['status'] }} | Dievaluasi: {{ \Carbon\Carbon::parse($sectionEval['evaluated_at'])->format('d F Y H:i') }}
+                        </p>
+                        @else
+                        <p class="text-xs text-gray-500">
+                          <i class="fas fa-clock mr-1"></i>
+                          Status: {{ $sectionEval['status'] }} | Dievaluasi: -
+                        </p>
+                        @endif
+                      </div>
 
                       <div class="flex justify-end gap-2 mb-4">
                         <button type="button" onclick="addDistribusiColumn(event)" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Tambah</button>
@@ -1708,121 +1783,72 @@
                           <thead class="bg-gray-200 text-center">
                             <tr>
                               <th class="border border-gray-300 p-2 bg-gray-100 text-left sticky left-0 z-10 w-[200px] min-w-[200px] max-w-[200px]">Field</th>
-                              @if($pengajuan->distribusi && count($pengajuan->distribusi) > 0)
-                                @foreach($pengajuan->distribusi as $index => $distribusi)
-                                  <th class="border border-gray-300 p-2 min-w-[220px]">Saluran Distribusi-{{ $loop->iteration }}</th>
-                                @endforeach
-                              @else
-                                <th class="border border-gray-300 p-2 min-w-[220px]">Saluran Distribusi-1</th>
-                              @endif
+                              @for($i = 1; $i <= $distribusiCount; $i++)
+                                <th class="border border-gray-300 p-2 min-w-[220px]">Saluran Distribusi-{{ $i }}</th>
+                              @endfor
                             </tr>
                           </thead>
                           <tbody>
                             <tr id="row-pemilik_instalasi_distribusi">
                               <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Pemilik Instalasi</td>
-                              @if($pengajuan->distribusi && count($pengajuan->distribusi) > 0)
-                                @foreach($pengajuan->distribusi as $index => $distribusi)
-                                  <td><input id="pemilik_instalasi_distribusi-{{ $index }}" name="pemilik_instalasi_distribusi[]" type="text" class="w-full border p-1 rounded" value="{{ old('pemilik_instalasi_distribusi.' . $index, $distribusi['pemilik_instalasi_distribusi'] ?? '') }}"></td>
-                                @endforeach
-                              @else
-                                <td><input id="pemilik_instalasi_distribusi-0" name="pemilik_instalasi_distribusi[]" type="text" class="w-full border p-1 rounded"></td>
-                              @endif
+                              @for($i = 0; $i < $distribusiCount; $i++)
+                                <td><input id="pemilik_instalasi_distribusi-{{ $i }}" name="pemilik_instalasi_distribusi[]" type="text" class="w-full border p-1 rounded" value="{{ old('pemilik_instalasi_distribusi.'.$i, $jaringanDistribusi[$i]['pemilik_instalasi_distribusi'] ?? '') }}"></td>
+                              @endfor
                             </tr>
                             <tr id="row-tegangan_distribusi">
                               <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Tegangan (V)</td>
-                              @if($pengajuan->distribusi && count($pengajuan->distribusi) > 0)
-                                @foreach($pengajuan->distribusi as $index => $distribusi)
-                                  <td><input id="tegangan_distribusi-{{ $index }}" name="tegangan_distribusi[]" type="text" class="w-full border p-1 rounded" value="{{ old('tegangan_distribusi.' . $index, $distribusi['tegangan_distribusi'] ?? '') }}"></td>
-                                @endforeach
-                              @else
-                                <td><input id="tegangan_distribusi-0" name="tegangan_distribusi[]" type="text" class="w-full border p-1 rounded"></td>
-                              @endif
+                              @for($i = 0; $i < $distribusiCount; $i++)
+                                <td><input id="tegangan_distribusi-{{ $i }}" name="tegangan_distribusi[]" type="text" class="w-full border p-1 rounded" value="{{ old('tegangan_distribusi.'.$i, $jaringanDistribusi[$i]['tegangan_distribusi'] ?? '') }}"></td>
+                              @endfor
                             </tr>
                             <tr id="row-kapasitas_panjang_distribusi">
                               <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Panjang (kms)</td>
-                              @if($pengajuan->distribusi && count($pengajuan->distribusi) > 0)
-                                @foreach($pengajuan->distribusi as $index => $distribusi)
-                                  <td><input id="kapasitas_panjang_distribusi-{{ $index }}" name="kapasitas_panjang_distribusi[]" type="text" class="w-full border p-1 rounded" value="{{ old('kapasitas_panjang_distribusi.' . $index, $distribusi['kapasitas_panjang_distribusi'] ?? '') }}"></td>
-                                @endforeach
-                              @else
-                                <td><input id="kapasitas_panjang_distribusi-0" name="kapasitas_panjang_distribusi[]" type="text" class="w-full border p-1 rounded"></td>
-                              @endif
+                              @for($i = 0; $i < $distribusiCount; $i++)
+                                <td><input id="kapasitas_panjang_distribusi-{{ $i }}" name="kapasitas_panjang_distribusi[]" type="text" class="w-full border p-1 rounded" value="{{ old('kapasitas_panjang_distribusi.'.$i, $jaringanDistribusi[$i]['kapasitas_panjang_distribusi'] ?? '') }}"></td>
+                              @endfor
                             </tr>
                             <tr id="row-kabupaten_kota_distribusi">
                               <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Kabupaten/Kota</td>
-                              @if($pengajuan->distribusi && count($pengajuan->distribusi) > 0)
-                                @foreach($pengajuan->distribusi as $index => $distribusi)
-                                  <td>
-                                    <select id="kabupaten_kota_distribusi-{{ $index }}" name="kabupaten_kota_distribusi[]" class="w-full border p-1 rounded">
-                                      <option disabled {{ !old('kabupaten_kota_distribusi.' . $index, $distribusi['kabupaten_kota_distribusi'] ?? '') ? 'selected' : '' }}>Pilih Kabupaten/Kota</option>
-                                      <option value="Batanghari" {{ old('kabupaten_kota_distribusi.' . $index, $distribusi['kabupaten_kota_distribusi'] ?? '') == 'Batanghari' ? 'selected' : '' }}>Batanghari</option>
-                                      <option value="Bungo" {{ old('kabupaten_kota_distribusi.' . $index, $distribusi['kabupaten_kota_distribusi'] ?? '') == 'Bungo' ? 'selected' : '' }}>Bungo</option>
-                                      <option value="Kerinci" {{ old('kabupaten_kota_distribusi.' . $index, $distribusi['kabupaten_kota_distribusi'] ?? '') == 'Kerinci' ? 'selected' : '' }}>Kerinci</option>
-                                      <option value="Merangin" {{ old('kabupaten_kota_distribusi.' . $index, $distribusi['kabupaten_kota_distribusi'] ?? '') == 'Merangin' ? 'selected' : '' }}>Merangin</option>
-                                      <option value="Muaro Jambi" {{ old('kabupaten_kota_distribusi.' . $index, $distribusi['kabupaten_kota_distribusi'] ?? '') == 'Muaro Jambi' ? 'selected' : '' }}>Muaro Jambi</option>
-                                      <option value="Sarolangun" {{ old('kabupaten_kota_distribusi.' . $index, $distribusi['kabupaten_kota_distribusi'] ?? '') == 'Sarolangun' ? 'selected' : '' }}>Sarolangun</option>
-                                      <option value="Tanjung Jabung Barat" {{ old('kabupaten_kota_distribusi.' . $index, $distribusi['kabupaten_kota_distribusi'] ?? '') == 'Tanjung Jabung Barat' ? 'selected' : '' }}>Tanjung Jabung Barat</option>
-                                      <option value="Tanjung Jabung Timur" {{ old('kabupaten_kota_distribusi.' . $index, $distribusi['kabupaten_kota_distribusi'] ?? '') == 'Tanjung Jabung Timur' ? 'selected' : '' }}>Tanjung Jabung Timur</option>
-                                      <option value="Tebo" {{ old('kabupaten_kota_distribusi.' . $index, $distribusi['kabupaten_kota_distribusi'] ?? '') == 'Tebo' ? 'selected' : '' }}>Tebo</option>
-                                      <option value="Kota Jambi" {{ old('kabupaten_kota_distribusi.' . $index, $distribusi['kabupaten_kota_distribusi'] ?? '') == 'Kota Jambi' ? 'selected' : '' }}>Kota Jambi</option>
-                                      <option value="Kota Sungai Penuh" {{ old('kabupaten_kota_distribusi.' . $index, $distribusi['kabupaten_kota_distribusi'] ?? '') == 'Kota Sungai Penuh' ? 'selected' : '' }}>Kota Sungai Penuh</option>
-                                    </select>
-                                  </td>
-                                @endforeach
-                              @else
+                              @for($i = 0; $i < $distribusiCount; $i++)
                                 <td>
-                                  <select id="kabupaten_kota_distribusi-0" name="kabupaten_kota_distribusi[]" class="w-full border p-1 rounded">
-                                    <option disabled selected>Pilih Kabupaten/Kota</option>
-                                    <option value="Batanghari">Batanghari</option>
-                                    <option value="Bungo">Bungo</option>
-                                    <option value="Kerinci">Kerinci</option>
-                                    <option value="Merangin">Merangin</option>
-                                    <option value="Muaro Jambi">Muaro Jambi</option>
-                                    <option value="Sarolangun">Sarolangun</option>
-                                    <option value="Tanjung Jabung Barat">Tanjung Jabung Barat</option>
-                                    <option value="Tanjung Jabung Timur">Tanjung Jabung Timur</option>
-                                    <option value="Tebo">Tebo</option>
-                                    <option value="Kota Jambi">Kota Jambi</option>
-                                    <option value="Kota Sungai Penuh">Kota Sungai Penuh</option>
+                                  @php $selectedKabupaten = old('kabupaten_kota_distribusi.'.$i, $jaringanDistribusi[$i]['kabupaten_kota_distribusi'] ?? ''); @endphp
+                                  <select id="kabupaten_kota_distribusi-{{ $i }}" name="kabupaten_kota_distribusi[]" class="w-full border p-1 rounded">
+                                    <option disabled {{ !$selectedKabupaten ? 'selected' : '' }}>Pilih Kabupaten/Kota</option>
+                                    <option value="Batanghari" {{ $selectedKabupaten == 'Batanghari' ? 'selected' : '' }}>Batanghari</option>
+                                    <option value="Bungo" {{ $selectedKabupaten == 'Bungo' ? 'selected' : '' }}>Bungo</option>
+                                    <option value="Kerinci" {{ $selectedKabupaten == 'Kerinci' ? 'selected' : '' }}>Kerinci</option>
+                                    <option value="Merangin" {{ $selectedKabupaten == 'Merangin' ? 'selected' : '' }}>Merangin</option>
+                                    <option value="Muaro Jambi" {{ $selectedKabupaten == 'Muaro Jambi' ? 'selected' : '' }}>Muaro Jambi</option>
+                                    <option value="Sarolangun" {{ $selectedKabupaten == 'Sarolangun' ? 'selected' : '' }}>Sarolangun</option>
+                                    <option value="Tanjung Jabung Barat" {{ $selectedKabupaten == 'Tanjung Jabung Barat' ? 'selected' : '' }}>Tanjung Jabung Barat</option>
+                                    <option value="Tanjung Jabung Timur" {{ $selectedKabupaten == 'Tanjung Jabung Timur' ? 'selected' : '' }}>Tanjung Jabung Timur</option>
+                                    <option value="Tebo" {{ $selectedKabupaten == 'Tebo' ? 'selected' : '' }}>Tebo</option>
+                                    <option value="Kota Jambi" {{ $selectedKabupaten == 'Kota Jambi' ? 'selected' : '' }}>Kota Jambi</option>
+                                    <option value="Kota Sungai Penuh" {{ $selectedKabupaten == 'Kota Sungai Penuh' ? 'selected' : '' }}>Kota Sungai Penuh</option>
                                   </select>
                                 </td>
-                              @endif
+                              @endfor
                             </tr>
                             <tr id="row-provinsi_distribusi">
                               <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Provinsi</td>
-                              @if($pengajuan->distribusi && count($pengajuan->distribusi) > 0)
-                                @foreach($pengajuan->distribusi as $index => $distribusi)
-                                  <td><input id="provinsi_distribusi-{{ $index }}" name="provinsi_distribusi[]" type="text" class="w-full border p-1 rounded bg-gray-100" readonly value="Jambi"></td>
-                                @endforeach
-                              @else
-                                <td><input id="provinsi_distribusi-0" name="provinsi_distribusi[]" type="text" class="w-full border p-1 rounded bg-gray-100" readonly value="Jambi"></td>
-                              @endif
+                              @for($i = 0; $i < $distribusiCount; $i++)
+                                <td><input id="provinsi_distribusi-{{ $i }}" name="provinsi_distribusi[]" type="text" class="w-full border p-1 rounded bg-gray-100" readonly value="{{ old('provinsi_distribusi.'.$i, $jaringanDistribusi[$i]['provinsi_distribusi'] ?? 'Jambi') }}"></td>
+                              @endfor
                             </tr>
                             <tr id="row-koordinat_distribusi">
                               <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Koordinat</td>
-                              @if($pengajuan->distribusi && count($pengajuan->distribusi) > 0)
-                                @foreach($pengajuan->distribusi as $index => $distribusi)
-                                  <td>
-                                    <input id="latitude_distribusi-{{ $index }}" name="latitude_distribusi[]" type="number" step="any" placeholder="Latitude (cth: -1.234567)" class="w-full border p-1 rounded mb-1" value="{{ old('latitude_distribusi.' . $index, $distribusi['latitude_distribusi'] ?? '') }}">
-                                    <input id="longitude_distribusi-{{ $index }}" name="longitude_distribusi[]" type="number" step="any" placeholder="Longitude (cth: 103.456789)" class="w-full border p-1 rounded" value="{{ old('longitude_distribusi.' . $index, $distribusi['longitude_distribusi'] ?? '') }}">
-                                  </td>
-                                @endforeach
-                              @else
+                              @for($i = 0; $i < $distribusiCount; $i++)
                                 <td>
-                                  <input id="latitude_distribusi-0" name="latitude_distribusi[]" type="number" step="any" placeholder="Latitude (cth: -1.234567)" class="w-full border p-1 rounded mb-1">
-                                  <input id="longitude_distribusi-0" name="longitude_distribusi[]" type="number" step="any" placeholder="Longitude (cth: 103.456789)" class="w-full border p-1 rounded">
+                                  <input id="latitude_distribusi-{{ $i }}" name="latitude_distribusi[]" type="number" step="any" placeholder="Latitude (cth: -1.234567)" class="w-full border p-1 rounded mb-1" value="{{ old('latitude_distribusi.'.$i, $jaringanDistribusi[$i]['latitude_distribusi'] ?? '') }}">
+                                  <input id="longitude_distribusi-{{ $i }}" name="longitude_distribusi[]" type="number" step="any" placeholder="Longitude (cth: 103.456789)" class="w-full border p-1 rounded" value="{{ old('longitude_distribusi.'.$i, $jaringanDistribusi[$i]['longitude_distribusi'] ?? '') }}">
                                 </td>
-                              @endif
+                              @endfor
                             </tr>
                             <tr id="row-tahun_operasi_distribusi">
                               <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Tahun Operasi</td>
-                              @if($pengajuan->distribusi && count($pengajuan->distribusi) > 0)
-                                @foreach($pengajuan->distribusi as $index => $distribusi)
-                                  <td><input id="tahun_operasi_distribusi-{{ $index }}" name="tahun_operasi_distribusi[]" type="text" class="w-full border p-1 rounded" value="{{ old('tahun_operasi_distribusi.' . $index, $distribusi['tahun_operasi_distribusi'] ?? '') }}"></td>
-                                @endforeach
-                              @else
-                                <td><input id="tahun_operasi_distribusi-0" name="tahun_operasi_distribusi[]" type="text" class="w-full border p-1 rounded"></td>
-                              @endif
+                              @for($i = 0; $i < $distribusiCount; $i++)
+                                <td><input id="tahun_operasi_distribusi-{{ $i }}" name="tahun_operasi_distribusi[]" type="text" class="w-full border p-1 rounded" value="{{ old('tahun_operasi_distribusi.'.$i, $jaringanDistribusi[$i]['tahun_operasi_distribusi'] ?? '') }}"></td>
+                              @endfor
                             </tr>
                           </tbody>
                         </table>
@@ -1831,7 +1857,7 @@
 
 
                       <script>
-                        let distribusiCount = 1; // kolom pertama sudah ada di HTML
+                        let distribusiCount = {{ $distribusiCount }}; // kolom pertama sudah ada di HTML
 
                         const fieldKeys = [
                           "pemilik_instalasi_distribusi",
@@ -1977,6 +2003,39 @@
 
 
                       <h3 class="text-lg font-bold uppercase mt-6 pb-2 text-gray-700 dark:text-white">Transformator</h3>
+                      
+                      <!-- Section Evaluation Status -->
+                      @php 
+                      $sectionEval = isset($latestEvaluation) && $latestEvaluation->metadata && isset($latestEvaluation->metadata['sections']['sambungan_listrik']) 
+                        ? $latestEvaluation->metadata['sections']['sambungan_listrik'] 
+                        : ['status' => '-', 'catatan' => '-', 'evaluated_at' => null];
+                      @endphp
+                      <div class="mb-4 p-3 rounded-lg border
+                        {{ $sectionEval['status'] == 'Disetujui' ? 'bg-green-50 border-green-200' : ($sectionEval['status'] == '-' ? 'bg-gray-50 border-gray-200' : 'bg-red-50 border-red-200') }}">
+                        <div class="flex items-start justify-between mb-2">
+                        <h4 class="font-semibold {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-800' : ($sectionEval['status'] == '-' ? 'text-gray-800' : 'text-red-800') }}">
+                          Hasil Evaluasi - Sambungan Listrik
+                        </h4>
+                          <span class="px-2 py-1 rounded-full text-xs font-medium
+                            {{ $sectionEval['status'] == 'Disetujui' ? 'bg-green-100 text-green-800' : ($sectionEval['status'] == '-' ? 'bg-gray-100 text-gray-800' : 'bg-red-100 text-red-800') }}">
+                            {{ $sectionEval['status'] }}
+                          </span>
+                        </div>
+                        <p class="text-sm {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-700' : ($sectionEval['status'] == '-' ? 'text-gray-700' : 'text-red-700') }} mb-2">
+                          <span class="font-medium">Komentar Evaluator:</span> {{ $sectionEval['catatan'] }}
+                        </p>
+                        @if($sectionEval['evaluated_at'])
+                        <p class="text-xs {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-600' : 'text-red-600' }}">
+                          <i class="fas fa-clock mr-1"></i>
+                          Status: {{ $sectionEval['status'] }} | Dievaluasi: {{ \Carbon\Carbon::parse($sectionEval['evaluated_at'])->format('d F Y H:i') }}
+                        </p>
+                        @else
+                        <p class="text-xs text-gray-500">
+                          <i class="fas fa-clock mr-1"></i>
+                          Status: {{ $sectionEval['status'] }} | Dievaluasi: -
+                        </p>
+                        @endif
+                      </div>
 
                       <div class="overflow-x-auto">
                         <table class="min-w-full border border-gray-300 table-fixed" id="trafoTable">
@@ -1987,66 +2046,68 @@
                             </tr>
                           </thead>
                           <tbody>
+                            @php $trafoData = $pengajuan->trafo ?? []; @endphp
                             <tr>
                               <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Pemilik</td>
                               <td class="border p-2">
-                                <input id="pemilik_trafo" name="pemilik_trafo" type="text" class="w-full border p-1 rounded">
+                                <input id="pemilik_trafo" name="pemilik_trafo" type="text" class="w-full border p-1 rounded" value="{{ old('pemilik_trafo', $trafoData['pemilik_trafo'] ?? '') }}">
                               </td>
                             </tr>
                             <tr>
                               <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Tegangan Primer (V)</td>
                               <td class="border p-2">
-                                <input id="tegangan_primer_trafo" name="tegangan_primer_trafo" type="text" class="w-full border p-1 rounded">
+                                <input id="tegangan_primer_trafo" name="tegangan_primer_trafo" type="text" class="w-full border p-1 rounded" value="{{ old('tegangan_primer_trafo', $trafoData['tegangan_primer_trafo'] ?? '') }}">
                               </td>
                             </tr>
                             <tr>
                               <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Tegangan Sekunder (V)</td>
                               <td class="border p-2">
-                                <input id="tegangan_sekunder_trafo" name="tegangan_sekunder_trafo" type="text" class="w-full border p-1 rounded">
+                                <input id="tegangan_sekunder_trafo" name="tegangan_sekunder_trafo" type="text" class="w-full border p-1 rounded" value="{{ old('tegangan_sekunder_trafo', $trafoData['tegangan_sekunder_trafo'] ?? '') }}">
                               </td>
                             </tr>
                             <tr>
                               <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Kapasitas Daya (kVA)</td>
                               <td class="border p-2">
-                                <input id="kapasitas_daya_trafo" name="kapasitas_daya_trafo" type="text" class="w-full border p-1 rounded">
+                                <input id="kapasitas_daya_trafo" name="kapasitas_daya_trafo" type="text" class="w-full border p-1 rounded" value="{{ old('kapasitas_daya_trafo', $trafoData['kapasitas_daya_trafo'] ?? '') }}">
                               </td>
                             </tr>
                             <tr>
                               <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Kabupaten/Kota</td>
                               <td class="border p-2">
+                                @php $selectedKabupatenTrafo = old('kabupaten_kota_trafo', $trafoData['kabupaten_kota_trafo'] ?? ''); @endphp
                                 <select id="kabupaten_kota_trafo" name="kabupaten_kota_trafo" class="w-full border p-1 rounded">
-                                  <option disabled selected>Pilih Kabupaten/Kota</option>
-                                  <option value="Batanghari">Batanghari</option>
-                                  <option value="Bungo">Bungo</option>
-                                  <option value="Kerinci">Kerinci</option>
-                                  <option value="Merangin">Merangin</option>
-                                  <option value="Muaro Jambi">Muaro Jambi</option>
-                                  <option value="Sarolangun">Sarolangun</option>
-                                  <option value="Tanjung Jabung Barat">Tanjung Jabung Barat</option>
-                                  <option value="Tanjung Jabung Timur">Tanjung Jabung Timur</option>
-                                  <option value="Tebo">Tebo</option>
-                                  <option value="Kota Jambi">Kota Jambi</option>
-                                  <option value="Kota Sungai Penuh">Kota Sungai Penuh</option>
+                                  <option disabled {{ !$selectedKabupatenTrafo ? 'selected' : '' }}>Pilih Kabupaten/Kota</option>
+                                  <option value="Batanghari" {{ $selectedKabupatenTrafo == 'Batanghari' ? 'selected' : '' }}>Batanghari</option>
+                                  <option value="Bungo" {{ $selectedKabupatenTrafo == 'Bungo' ? 'selected' : '' }}>Bungo</option>
+                                  <option value="Kerinci" {{ $selectedKabupatenTrafo == 'Kerinci' ? 'selected' : '' }}>Kerinci</option>
+                                  <option value="Merangin" {{ $selectedKabupatenTrafo == 'Merangin' ? 'selected' : '' }}>Merangin</option>
+                                  <option value="Muaro Jambi" {{ $selectedKabupatenTrafo == 'Muaro Jambi' ? 'selected' : '' }}>Muaro Jambi</option>
+                                  <option value="Sarolangun" {{ $selectedKabupatenTrafo == 'Sarolangun' ? 'selected' : '' }}>Sarolangun</option>
+                                  <option value="Tanjung Jabung Barat" {{ $selectedKabupatenTrafo == 'Tanjung Jabung Barat' ? 'selected' : '' }}>Tanjung Jabung Barat</option>
+                                  <option value="Tanjung Jabung Timur" {{ $selectedKabupatenTrafo == 'Tanjung Jabung Timur' ? 'selected' : '' }}>Tanjung Jabung Timur</option>
+                                  <option value="Tebo" {{ $selectedKabupatenTrafo == 'Tebo' ? 'selected' : '' }}>Tebo</option>
+                                  <option value="Kota Jambi" {{ $selectedKabupatenTrafo == 'Kota Jambi' ? 'selected' : '' }}>Kota Jambi</option>
+                                  <option value="Kota Sungai Penuh" {{ $selectedKabupatenTrafo == 'Kota Sungai Penuh' ? 'selected' : '' }}>Kota Sungai Penuh</option>
                                 </select>
                               </td>
                             </tr>
                             <tr>
                               <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Provinsi</td>
                               <td class="border p-2">
-                                <input id="provinsi_trafo" type="text" name="provinsi_trafo" value="Jambi" readonly class="w-full border p-1 rounded bg-gray-100">
+                                <input id="provinsi_trafo" type="text" name="provinsi_trafo" value="{{ old('provinsi_trafo', $trafoData['provinsi_trafo'] ?? 'Jambi') }}" readonly class="w-full border p-1 rounded bg-gray-100">
                               </td>
                             </tr>
                             <tr>
                               <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Koordinat</td>
                               <td class="border p-2">
-                                <input id="latitude_trafo" name="latitude_trafo" type="number" step="any" placeholder="Latitude (cth: -1.234567)" class="w-full border p-1 rounded mb-1">
-                                <input id="longitude_trafo" name="longitude_trafo" type="number" step="any" placeholder="Longitude (cth: 103.456789)" class="w-full border p-1 rounded">
+                                <input id="latitude_trafo" name="latitude_trafo" type="number" step="any" placeholder="Latitude (cth: -1.234567)" class="w-full border p-1 rounded mb-1" value="{{ old('latitude_trafo', $trafoData['latitude_trafo'] ?? '') }}">
+                                <input id="longitude_trafo" name="longitude_trafo" type="number" step="any" placeholder="Longitude (cth: 103.456789)" class="w-full border p-1 rounded" value="{{ old('longitude_trafo', $trafoData['longitude_trafo'] ?? '') }}">
                               </td>
                             </tr>
                             <tr>
                               <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Tahun Operasi</td>
                               <td class="border p-2">
-                                <input id="tahun_operasi_trafo" name="tahun_operasi_trafo" type="text" class="w-full border p-1 rounded">
+                                <input id="tahun_operasi_trafo" name="tahun_operasi_trafo" type="text" class="w-full border p-1 rounded" value="{{ old('tahun_operasi_trafo', $trafoData['tahun_operasi_trafo'] ?? '') }}">
                               </td>
                             </tr>
                           </tbody>
@@ -2058,8 +2119,14 @@
                       <!-- Upload Lampiran -->
                       <div class="mt-6">
                         <label class="block text-sm font-medium text-gray-700 dark:text-white mb-1">Upload Lampiran Tagihan Listrik</label>
+                        @if($pengajuan->lampiran_tagihan_listrik)
+                        <div class="mb-2 text-sm text-gray-600">
+                          <i class="fas fa-file-pdf text-red-500 mr-1"></i>
+                          File saat ini: <a href="{{ asset('storage/' . $pengajuan->lampiran_tagihan_listrik) }}" target="_blank" class="text-blue-600 underline">Lihat file</a>
+                        </div>
+                        @endif
                         <input id="lampiran_tagihan_listrik" name="lampiran_tagihan_listrik" type="file" accept=".pdf" class="border border-gray-300 p-2 rounded w-full" onchange="previewFile(this)">
-                        <small class="text-gray-500">Format PDF Maks 5MB</small>
+                        <small class="text-gray-500">Format PDF Maks 5MB (Kosongkan jika tidak ingin mengubah file)</small>
                       </div>
                       <div id="preview_lampiran_tagihan_listrik"></div>
                     </div>
@@ -2099,6 +2166,39 @@
 
                   <div id="page3" class="page hidden">
 
+                    <!-- Section Evaluation Status for Kapasitas Produksi -->
+                    @php 
+                      $sectionEval = isset($latestEvaluation) && $latestEvaluation->metadata && isset($latestEvaluation->metadata['sections']['kapasitas_produksi']) 
+                        ? $latestEvaluation->metadata['sections']['kapasitas_produksi'] 
+                        : ['status' => '-', 'catatan' => '-', 'evaluated_at' => null];
+                    @endphp
+                    <div class="mb-4 p-3 rounded-lg border
+                      {{ $sectionEval['status'] == 'Disetujui' ? 'bg-green-50 border-green-200' : ($sectionEval['status'] == '-' ? 'bg-gray-50 border-gray-200' : 'bg-red-50 border-red-200') }}">
+                      <div class="flex items-start justify-between mb-2">
+                        <h4 class="font-semibold {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-800' : ($sectionEval['status'] == '-' ? 'text-gray-800' : 'text-red-800') }}">
+                          Hasil Evaluasi - Kapasitas Produksi Tenaga Listrik Pemakaian Sendiri
+                        </h4>
+                        <span class="px-2 py-1 rounded-full text-xs font-medium
+                          {{ $sectionEval['status'] == 'Disetujui' ? 'bg-green-100 text-green-800' : ($sectionEval['status'] == '-' ? 'bg-gray-100 text-gray-800' : 'bg-red-100 text-red-800') }}">
+                          {{ $sectionEval['status'] }}
+                        </span>
+                      </div>
+                      <p class="text-sm {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-700' : ($sectionEval['status'] == '-' ? 'text-gray-700' : 'text-red-700') }} mb-2">
+                        <span class="font-medium">Komentar Evaluator:</span> {{ $sectionEval['catatan'] }}
+                      </p>
+                      @if($sectionEval['evaluated_at'])
+                      <p class="text-xs {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-600' : 'text-red-600' }}">
+                        <i class="fas fa-clock mr-1"></i>
+                        Status: {{ $sectionEval['status'] }} | Dievaluasi: {{ \Carbon\Carbon::parse($sectionEval['evaluated_at'])->format('d F Y H:i') }}
+                      </p>
+                      @else
+                      <p class="text-xs text-gray-500">
+                        <i class="fas fa-clock mr-1"></i>
+                        Status: {{ $sectionEval['status'] }} | Dievaluasi: -
+                      </p>
+                      @endif
+                    </div>
+
                     <!-- Container Tabel Kapasitas -->
                     <div id="kapasitasContainer" class="mt-6"></div>
 
@@ -2109,6 +2209,8 @@
                       ];
 
                       const jenisPembangkitTabelSet = new Set();
+                      // Get existing pemakaian sendiri data from backend
+                      const existingPemakaianSendiri = {!! json_encode($pengajuan->pemakaian_sendiri ?? []) !!};
 
                       function createEnergiTable(jenis) {
                         const jenisKey = jenis.replace(/\s+/g, '_');
@@ -2146,19 +2248,22 @@
 
                         bulanList.forEach((bulan, i) => {
                           const tr = document.createElement("tr");
+                          // Get existing data for this jenis and bulan
+                          const existingData = existingPemakaianSendiri[jenisKey] && existingPemakaianSendiri[jenisKey][bulan] ? existingPemakaianSendiri[jenisKey][bulan] : {};
+                          
                           tr.innerHTML = `
       <td class="border p-2">${bulan}</td>
       <td class="border p-2">
-        <input type="text" name="pemakaian_sendiri[${jenisKey}][${bulan}][kapasitas]" class="w-full border p-1 rounded" required>
+        <input type="text" name="pemakaian_sendiri[${jenisKey}][${bulan}][kapasitas]" class="w-full border p-1 rounded" value="${existingData.kapasitas || ''}" required>
       </td>
       <td class="border p-2">
-        <input type="text" name="pemakaian_sendiri[${jenisKey}][${bulan}][faktor_daya]" class="w-full border p-1 rounded" required>
+        <input type="text" name="pemakaian_sendiri[${jenisKey}][${bulan}][faktor_daya]" class="w-full border p-1 rounded" value="${existingData.faktor_daya || ''}" required>
       </td>
       <td class="border p-2">
-        <input type="text" name="pemakaian_sendiri[${jenisKey}][${bulan}][jam_nyala]" class="w-full border p-1 rounded" required>
+        <input type="text" name="pemakaian_sendiri[${jenisKey}][${bulan}][jam_nyala]" class="w-full border p-1 rounded" value="${existingData.jam_nyala || ''}" required>
       </td>
       <td class="border p-2">
-        <input type="text" name="pemakaian_sendiri[${jenisKey}][${bulan}][daya_terpakai]" class="w-full border p-1 rounded" required>
+        <input type="text" name="pemakaian_sendiri[${jenisKey}][${bulan}][daya_terpakai]" class="w-full border p-1 rounded" value="${existingData.daya_terpakai || ''}" required>
       </td>
     `;
                           tbody.appendChild(tr);
@@ -2193,7 +2298,23 @@
                         document.querySelectorAll('select[name="jenis_pembangkit[]"]').forEach(select => {
                           select.addEventListener("change", () => handleJenisPembangkitChange(select));
                           select.dataset.listenerAttached = "true";
+                          
+                          // Auto-create tables for existing selected values during edit
+                          if (select.value && select.value.trim()) {
+                            handleJenisPembangkitChange(select);
+                          }
                         });
+                        
+                        // Auto-create tables for existing jenis pembangkit data during edit
+                        if (existingPemakaianSendiri && Object.keys(existingPemakaianSendiri).length > 0) {
+                          Object.keys(existingPemakaianSendiri).forEach(jenisKey => {
+                            const jenis = jenisKey.replace(/_/g, ' ');
+                            if (!jenisPembangkitTabelSet.has(jenis)) {
+                              jenisPembangkitTabelSet.add(jenis);
+                              createEnergiTable(jenis);
+                            }
+                          });
+                        }
                       });
                     </script>
 
@@ -2207,18 +2328,60 @@
                       <label for="excessPowerDropdown" class="block text-sm font-medium text-gray-700">
                         Apakah ada penjualan kelebihan tenaga listrik?
                       </label>
+                      @php 
+                        $penjualanListrik = $pengajuan->penjualan_listrik ?? null;
+                        $selectedPenjualan = '';
+                        if ($penjualanListrik && isset($penjualanListrik['status'])) {
+                          $selectedPenjualan = $penjualanListrik['status'];
+                        } else {
+                          $selectedPenjualan = old('penjualan_listrik', '');
+                        }
+                      @endphp
                       <select name="penjualan_listrik" id="excessPowerDropdown" class="mt-1 block w-full p-2 border rounded-md" onchange="toggleExcessPowerTable()" required>
-                        <option value="" disabled selected hidden>Pilih</option>
-                        <option value="yes">Ada</option>
-                        <option value="no">Tidak</option>
+                        <option value="" disabled {{ !$selectedPenjualan ? 'selected' : '' }} hidden>Pilih</option>
+                        <option value="yes" {{ $selectedPenjualan == 'yes' ? 'selected' : '' }}>Ada</option>
+                        <option value="no" {{ $selectedPenjualan == 'no' ? 'selected' : '' }}>Tidak</option>
                       </select>
                     </div>
 
                     <!-- Section Tabel -->
-                    <div class="mt-6 hidden" id="excessPowerSection">
+                    <div class="mt-6 {{ $selectedPenjualan == 'yes' ? '' : 'hidden' }}" id="excessPowerSection">
                       <h3 class="text-lg font-bold uppercase mt-6 pb-2 text-gray-700 dark:text-white">
                         Penjualan Kelebihan Tenaga Listrik (Excess Power)
                       </h3>
+                      
+                      <!-- Section Evaluation Status -->
+                      @php 
+                      $sectionEval = isset($latestEvaluation) && $latestEvaluation->metadata && isset($latestEvaluation->metadata['sections']['excess_power']) 
+                        ? $latestEvaluation->metadata['sections']['excess_power'] 
+                        : ['status' => '-', 'catatan' => '-', 'evaluated_at' => null];
+                      @endphp
+                      <div class="mb-4 p-3 rounded-lg border
+                        {{ $sectionEval['status'] == 'Disetujui' ? 'bg-green-50 border-green-200' : ($sectionEval['status'] == '-' ? 'bg-gray-50 border-gray-200' : 'bg-red-50 border-red-200') }}">
+                        <div class="flex items-start justify-between mb-2">
+                          <h4 class="font-semibold {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-800' : ($sectionEval['status'] == '-' ? 'text-gray-800' : 'text-red-800') }}">
+                            Hasil Evaluasi - Penjualan Kelebihan Tenaga Listrik (Excess Power)
+                          </h4>
+                          <span class="px-2 py-1 rounded-full text-xs font-medium
+                            {{ $sectionEval['status'] == 'Disetujui' ? 'bg-green-100 text-green-800' : ($sectionEval['status'] == '-' ? 'bg-gray-100 text-gray-800' : 'bg-red-100 text-red-800') }}">
+                            {{ $sectionEval['status'] }}
+                          </span>
+                        </div>
+                        <p class="text-sm {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-700' : ($sectionEval['status'] == '-' ? 'text-gray-700' : 'text-red-700') }} mb-2">
+                          <span class="font-medium">Komentar Evaluator:</span> {{ $sectionEval['catatan'] }}
+                        </p>
+                        @if($sectionEval['evaluated_at'])
+                        <p class="text-xs {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-600' : 'text-red-600' }}">
+                          <i class="fas fa-clock mr-1"></i>
+                          Dievaluasi: {{ \Carbon\Carbon::parse($sectionEval['evaluated_at'])->format('d F Y H:i') }}
+                        </p>
+                        @else
+                        <p class="text-xs text-gray-500">
+                          <i class="fas fa-clock mr-1"></i>
+                          Dievaluasi: -
+                        </p>
+                        @endif
+                      </div>
                       <div class="overflow-x-auto">
                         <table id="excessPowerTable" name="data_penjualan" class="min-w-full border border-gray-300 text-sm">
                           <thead>
@@ -2244,10 +2407,21 @@
                     </div>
 
                     <script>
+                      // Load excess power data on page load if 'yes' is selected
+                      document.addEventListener("DOMContentLoaded", function() {
+                        const dropdown = document.getElementById("excessPowerDropdown");
+                        if (dropdown.value === "yes") {
+                          toggleExcessPowerTable();
+                        }
+                      });
+                      
                       function toggleExcessPowerTable() {
                         const dropdown = document.getElementById("excessPowerDropdown");
                         const tableSection = document.getElementById("excessPowerSection");
                         const tableBody = document.getElementById("excessPowerTableBody");
+
+                        // Get existing excess power data
+                        const existingExcessPower = {!! json_encode(isset($penjualanListrik['excess_power']) ? $penjualanListrik['excess_power'] : []) !!};
 
                         if (dropdown.value === "yes") {
                           tableSection.classList.remove("hidden");
@@ -2262,17 +2436,20 @@
 
                           months.forEach((month, index) => {
                             let row = document.createElement("tr");
+                            // Get existing data for this month
+                            const existingData = existingExcessPower[index] || {};
+                            
                             row.innerHTML = `
           <td class="border p-1">${month}</td>
-          <td class="border p-1"><input type="text" name="excess_power[${index}][dmn_ndc]" class="w-full border rounded px-1 py-0.5" /></td>
-          <td class="border p-1"><input type="text" name="excess_power[${index}][beban_tertinggi]" class="w-full border rounded px-1 py-0.5" /></td>
-          <td class="border p-1"><input type="text" name="excess_power[${index}][capacity_factor]" class="w-full border rounded px-1 py-0.5" /></td>
-          <td class="border p-1"><input type="text" name="excess_power[${index}][afpm]" class="w-full border rounded px-1 py-0.5" /></td>
-          <td class="border p-1"><input type="text" name="excess_power[${index}][afa]" class="w-full border rounded px-1 py-0.5" /></td>
-          <td class="border p-1"><input type="text" name="excess_power[${index}][pembelian]" class="w-full border rounded px-1 py-0.5" /></td>
-          <td class="border p-1"><input type="text" name="excess_power[${index}][produksi_bruto]" class="w-full border rounded px-1 py-0.5" /></td>
-          <td class="border p-1"><input type="text" name="excess_power[${index}][pemakaian_sendiri]" class="w-full border rounded px-1 py-0.5" /></td>
-          <td class="border p-1"><input type="text" name="excess_power[${index}][produksi_netto]" class="w-full border rounded px-1 py-0.5" /></td>
+          <td class="border p-1"><input type="text" name="excess_power[${index}][dmn_ndc]" class="w-full border rounded px-1 py-0.5" value="${existingData.dmn_ndc || ''}"/></td>
+          <td class="border p-1"><input type="text" name="excess_power[${index}][beban_tertinggi]" class="w-full border rounded px-1 py-0.5" value="${existingData.beban_tertinggi || ''}"/></td>
+          <td class="border p-1"><input type="text" name="excess_power[${index}][capacity_factor]" class="w-full border rounded px-1 py-0.5" value="${existingData.capacity_factor || ''}"/></td>
+          <td class="border p-1"><input type="text" name="excess_power[${index}][afpm]" class="w-full border rounded px-1 py-0.5" value="${existingData.afpm || ''}"/></td>
+          <td class="border p-1"><input type="text" name="excess_power[${index}][afa]" class="w-full border rounded px-1 py-0.5" value="${existingData.afa || ''}"/></td>
+          <td class="border p-1"><input type="text" name="excess_power[${index}][pembelian]" class="w-full border rounded px-1 py-0.5" value="${existingData.pembelian || ''}"/></td>
+          <td class="border p-1"><input type="text" name="excess_power[${index}][produksi_bruto]" class="w-full border rounded px-1 py-0.5" value="${existingData.produksi_bruto || ''}"/></td>
+          <td class="border p-1"><input type="text" name="excess_power[${index}][pemakaian_sendiri]" class="w-full border rounded px-1 py-0.5" value="${existingData.pemakaian_sendiri || ''}"/></td>
+          <td class="border p-1"><input type="text" name="excess_power[${index}][produksi_netto]" class="w-full border rounded px-1 py-0.5" value="${existingData.produksi_netto || ''}"/></td>
         `;
                             tableBody.appendChild(row);
                           });
@@ -2356,6 +2533,74 @@
 
 
   <script>
+    // Handle form submission with AJAX
+    document.addEventListener("DOMContentLoaded", function() {
+      const form = document.querySelector('form[action*="pengajuan"]');
+      if (form) {
+        form.addEventListener('submit', function(e) {
+          e.preventDefault();
+          
+          // Show loading state
+          const submitButton = form.querySelector('button[type="submit"]');
+          const originalText = submitButton.textContent;
+          submitButton.disabled = true;
+          submitButton.textContent = 'Mengirim...';
+          
+          // Create FormData from form
+          const formData = new FormData(form);
+          
+          // Send AJAX request
+          fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'X-Requested-With': 'XMLHttpRequest',
+              'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || document.querySelector('input[name="_token"]')?.value
+            }
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              // Show success notification
+              Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: data.message || 'Pengajuan berhasil diperbarui dan dikirim kembali untuk evaluasi.',
+                confirmButtonColor: '#10b981'
+              }).then(() => {
+                // Redirect after success
+                if (data.redirect) {
+                  window.location.href = data.redirect;
+                }
+              });
+            } else {
+              // Show error notification
+              Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: data.message || 'Terjadi kesalahan saat memperbarui pengajuan.',
+                confirmButtonColor: '#ef4444'
+              });
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error!',
+              text: 'Terjadi kesalahan saat mengirim data.',
+              confirmButtonColor: '#ef4444'
+            });
+          })
+          .finally(() => {
+            // Restore button state
+            submitButton.disabled = false;
+            submitButton.textContent = originalText;
+          });
+        });
+      }
+    });
+
     document.addEventListener("DOMContentLoaded", function() {
       let currentPage = 1;
       const totalPages = 3;

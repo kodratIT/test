@@ -33,9 +33,12 @@ class PengajuanController extends Controller
 
     public function edit($id)
     {
-        $pengajuan = Pengajuan::with(['pengguna.identitas'])->findOrFail($id);
+        $pengajuan = Pengajuan::with(['pengguna.identitas', 'evaluasiPengajuan.evaluator'])->findOrFail($id);
         
-        return view('pengajuan.edit', compact('pengajuan'));
+        // Get the latest evaluation if exists
+        $latestEvaluation = $pengajuan->evaluasiPengajuan()->latest()->first();
+        
+        return view('pengajuan.edit', compact('pengajuan', 'latestEvaluation'));
     }
 
     public function update(Request $request, $id)

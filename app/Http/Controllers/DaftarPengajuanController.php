@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pengajuan;
+use App\Models\EvaluasiPengajuan;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -163,7 +164,16 @@ class DaftarPengajuanController extends Controller
                                ->with('error', 'Pengajuan dengan status "' . ucfirst($status) . '" tidak dapat diedit.');
             }
             
-            return view('pengajuan.edit', compact('pengajuan'));
+            // Ambil data evaluasi terbaru jika ada
+            $latestEvaluation = null;
+            if ($pengajuan->status == 'perbaikan') {
+                $latestEvaluation = EvaluasiPengajuan::where('pengajuan_id', $id)
+                                                   ->with('evaluator')
+                                                   ->orderBy('created_at', 'desc')
+                                                   ->first();
+            }
+            
+            return view('pengajuan.edit', compact('pengajuan', 'latestEvaluation'));
         } catch (\Exception $e) {
             return redirect()->route('daftarpengajuanpengguna')
                            ->with('error', 'Pengajuan tidak ditemukan.');
@@ -313,12 +323,18 @@ class DaftarPengajuanController extends Controller
                 });
             }
 
+            // Jika pengajuan sedang dalam status perbaikan, ubah kembali ke proses evaluasi
+            if (strtolower(trim($pengajuan->status)) === 'perbaikan') {
+                $updateData['status'] = 'proses evaluasi';
+                $updateData['updated_at'] = now(); // Update timestamp untuk tracking
+            }
+
             // Update data pengajuan
             $pengajuan->update($updateData);
 
             return response()->json([
                 'success' => true,
-                'message' => 'Pengajuan berhasil diperbarui.',
+                'message' => 'Pengajuan berhasil diperbarui dan dikirim kembali untuk evaluasi.',
                 'redirect' => route('daftarpengajuanpengguna')
             ]);
 
