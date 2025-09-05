@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Exception;
 use App\Models\Pengajuan;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\IOFactory;
@@ -817,6 +820,70 @@ class DocumentController extends Controller
             
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Dokumen tidak ditemukan: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Preview PDF untuk pengajuan - membuka di tab baru
+     */
+    public function previewPdf($id)
+    {
+        try {
+            $pengajuan = Pengajuan::with([
+                'pengguna.identitas',
+                'pengguna.identitasPengguna',
+                'evaluator.identitasTimAdmin',
+                'evaluasiPengajuan' => function($query) {
+                    $query->orderBy('created_at', 'desc');
+                }
+            ])->findOrFail($id);
+
+            // Cek jika ada PDF yang sudah diupload, buka itu
+            if ($pengajuan->lembar_pengesahan_pdf) {
+                $filePath = $pengajuan->lembar_pengesahan_pdf;
+                
+                // Cek beberapa kemungkinan lokasi file
+                $possiblePaths = [
+                    storage_path('app/' . $filePath),
+                    storage_path('app/pengesahan/' . basename($filePath)),
+                    storage_path('app/private/' . $filePath),
+                    storage_path('app/private/pengesahan/' . basename($filePath))
+                ];
+                
+                foreach ($possiblePaths as $path) {
+                    if (file_exists($path) && is_readable($path)) {
+                        // Return PDF file untuk ditampilkan di browser
+                        return response()->file($path, [
+                            'Content-Type' => 'application/pdf',
+                            'Content-Disposition' => 'inline; filename="lembar_pengesahan_' . $pengajuan->no_pengajuan . '.pdf"'
+                        ]);
+                    }
+                }
+                
+                // Jika PDF tidak ditemukan, log error
+                Log::warning('PDF file not found for pengajuan', [
+                    'pengajuan_id' => $id,
+                    'expected_paths' => $possiblePaths,
+                    'lembar_pengesahan_pdf' => $pengajuan->lembar_pengesahan_pdf
+                ]);
+            }
+            
+            // Jika tidak ada PDF yang diupload, generate preview HTML
+            return $this->showOfficialPreview($id, 'pengesahan');
+            
+        } catch (ModelNotFoundException $e) {
+            Log::error('Pengajuan not found for PDF preview', ['id' => $id]);
+            return response()->json(['error' => 'Pengajuan tidak ditemukan'], 404);
+        } catch (Exception $e) {
+            Log::error('Error in PDF preview', [
+                'id' => $id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            return response()->json([
+                'error' => 'Gagal memuat preview PDF: ' . $e->getMessage()
+            ], 500);
         }
     }
 }

@@ -35,8 +35,25 @@ class DaftarPengajuanController extends Controller
 
             // Filter berdasarkan status
             if ($request->filled('status')) {
-                $status = $request->status;
-                $query->whereRaw('LOWER(TRIM(status)) = ?', [strtolower($status)]);
+                $status = strtolower($request->status);
+                
+                if ($status === 'proses evaluasi') {
+                    // Gabungkan semua status yang masuk kategori "proses evaluasi"
+                    $query->whereIn('status', [
+                        'proses evaluasi', 'proses verifikasi', 'evaluasi', 
+                        'menunggu evaluasi', 'proses pengesahan', 
+                        'menunggu persetujuan kadis', 'validasi'
+                    ]);
+                } elseif ($status === 'perbaikan') {
+                    // Gabungkan status yang masuk kategori "perbaikan"
+                    $query->whereIn('status', ['perbaikan', 'perlu perbaikan', 'ditolak']);
+                } elseif ($status === 'disetujui') {
+                    // Status disetujui
+                    $query->whereIn('status', ['disetujui', 'disetujui kadis']);
+                } else {
+                    // Fallback untuk status spesifik
+                    $query->whereRaw('LOWER(TRIM(status)) = ?', [$status]);
+                }
             }
 
             // Filter berdasarkan tanggal

@@ -207,28 +207,25 @@
                           (createdAt.getMonth() + 1).toString().padStart(2, '0') + "-" +
                           createdAt.getFullYear();
 
-                        // status badge khusus untuk evaluator
+                        // status badge khusus untuk evaluator - hanya 2 status
                         const statusText = (item.status || '').toLowerCase();
                         let badgeClass = '';
                         let statusLabel = '';
                         
-                        // Mapping status khusus evaluator
-                        if (statusText === 'menunggu evaluasi' || statusText === 'menunggu' || statusText === 'pending evaluasi') {
+                        // Mapping hanya 2 status untuk evaluator:
+                        // 1. Menunggu Evaluasi - jika belum dievaluasi 
+                        // 2. Telah Dievaluasi - jika sudah dikirim evaluasi oleh evaluator
+                        
+                        if (statusText === 'menunggu evaluasi' || statusText === 'proses evaluasi' || statusText === 'pending evaluasi') {
                           // Menunggu Evaluasi = Kuning
                           badgeClass = 'bg-yellow-500';
                           statusLabel = 'MENUNGGU EVALUASI';
-                        } else if (statusText === 'validasi') {
-                          // Validasi = Green (Telah Divalidasi)
-                          badgeClass = 'bg-green-500';
-                          statusLabel = 'TELAH DIVALIDASI';
-                        } else if (statusText === 'butuh perbaikan' || statusText === 'perbaikan' || statusText === 'perlu perbaikan') {
-                          // Butuh Perbaikan = Gray
-                          badgeClass = 'bg-gray-500';
-                          statusLabel = 'BUTUH PERBAIKAN';
-                        } else {// Telah Dievaluasi = Green
+                        } else {
+                          // Selain menunggu evaluasi = Telah Dievaluasi (Green)
+                          // Ini mencakup: evaluasi selesai, validasi, perbaikan, disetujui, dll
                           badgeClass = 'bg-green-500';
                           statusLabel = 'TELAH DIEVALUASI';
-                        } 
+                        }
 
                         // striped rows
                         const rowClass = index % 2 === 0 ? "bg-white" : "bg-gray-50";
@@ -238,11 +235,11 @@
                         const firstTdRound = isLast ? ' rounded-bl-2xl' : '';
                         const lastTdRound = isLast ? ' rounded-br-2xl' : '';
 
-                        // Logika aksi berdasarkan status
+                        // Logika aksi berdasarkan status - sesuai 2 status
                         let actionTd = '';
                         
-                        if (statusText === 'menunggu evaluasi' || statusText === 'menunggu' || statusText === 'pending evaluasi') {
-                          // Status Menunggu Evaluasi: Link Evaluasi
+                        if (statusText === 'menunggu evaluasi' || statusText === 'proses evaluasi' || statusText === 'pending evaluasi') {
+                          // Status Menunggu Evaluasi: Tombol Evaluasi
                           actionTd = `
                             <a href="/daftarlaporanberkalaevaluator/${item.id}" class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-yellow-600 bg-yellow-50 rounded-lg hover:bg-yellow-100 hover:text-yellow-700 transition-colors duration-200">
                               <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -251,13 +248,12 @@
                               Evaluasi
                             </a>
                           `;
-                        } else{
-                          // Status Telah Dievaluasi: Link Lihat
-                         actionTd = `
-  <span class="w-4 h-4 mr-1.5 text-gray-600">-</span>
-`;
-
-                        } 
+                        } else {
+                          // Status Telah Dievaluasi: Tanda strip (sudah selesai)
+                          actionTd = `
+                           _
+                          `;
+                        }
 
                         tbody += `
               <tr class="${rowClass} hover:bg-gray-100 transition">

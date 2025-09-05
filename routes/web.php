@@ -41,9 +41,9 @@ Route::middleware(['auth', 'is_pengguna'])->group(function () {
     Route::get('/pengajuan/{id}/download', [DaftarPengajuanController::class, 'download'])->name('pengajuan.download');
 
 
-    Route::get('daftarpengajuanpengguna', function () {
-        return view('daftarlaporanberkalapengguna');
-    })->name('daftarpengajuanpengguna');
+        Route::get('daftarpengajuanpengguna', function () {
+            return view('daftarlaporanberkalapengguna');
+        })->name('daftarpengajuanpengguna');
 
 
     // Route untuk perbaikan (signed)
@@ -201,6 +201,8 @@ Route::middleware('auth')->group(function () {
         ->name('dokumen.upload-pdf');
     Route::get('/dokumen/pdf/{id}/download', [DocumentController::class, 'downloadUploadedPdf'])
         ->name('dokumen.pdf.download');
+    Route::get('/dokumen/pdf/{id}/preview', [DocumentController::class, 'previewPdf'])
+        ->name('dokumen.pdf.preview');
 });
 
 // Debug route (remove in production)

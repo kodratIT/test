@@ -28,7 +28,7 @@ class PengajuanController extends Controller
         // 🔹 ambil evaluasi yang sudah pernah dikirim (opsional, buat ditampilkan di detail)
         $evaluasi = EvaluasiPengajuan::where('pengajuan_id', $id)->get();
 
-        return view('pengajuan.show', compact('pengajuan', 'evaluators', 'evaluasi'));
+        return view('pengajuan.detail', compact('pengajuan', 'evaluators', 'evaluasi'));
     }
 
     public function edit($id)

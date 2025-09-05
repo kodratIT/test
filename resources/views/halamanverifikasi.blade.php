@@ -316,7 +316,7 @@
                         <option value="" disabled selected hidden>-- Status --</option>
                         <option value="Disetujui">Disetujui</option>
                         <option value="Ditolak">Ditolak</option>
-                        <option value="Perbaikan">Perbaikan</option>
+                       
                       </select>
 
                       <!-- Tombol Simpan 1 -->
@@ -456,7 +456,7 @@
                         <option value="" disabled selected hidden>-- Status --</option>
                         <option value="Disetujui">Disetujui</option>
                         <option value="Ditolak">Ditolak</option>
-                        <option value="Perbaikan">Perbaikan</option>
+                       
                       </select>
                       <!-- Tombol Simpan 3 -->
                       <div class="pt-2 mt-6">
@@ -574,7 +574,7 @@
                         <option value="" disabled selected hidden>-- Status --</option>
                         <option value="Disetujui">Disetujui</option>
                         <option value="Ditolak">Ditolak</option>
-                        <option value="Perbaikan">Perbaikan</option>
+                       
                       </select>
                       <!-- Tombol Simpan 3 -->
                       <div class="pt-2 mt-6">
@@ -728,7 +728,7 @@
                         <option value="" disabled selected hidden>-- Status --</option>
                         <option value="Disetujui">Disetujui</option>
                         <option value="Ditolak">Ditolak</option>
-                        <option value="Perbaikan">Perbaikan</option>
+                       
                       </select>
                       <!-- Tombol Simpan 3 -->
                       <div class="pt-2 mt-6">
@@ -953,7 +953,7 @@
                         <option value="" disabled selected hidden>-- Status --</option>
                         <option value="Disetujui">Disetujui</option>
                         <option value="Ditolak">Ditolak</option>
-                        <option value="Perbaikan">Perbaikan</option>
+                       
                       </select>
                       <!-- Tombol Simpan 5 -->
                       <div class="pt-2 mt-6">
@@ -1105,7 +1105,7 @@
                         <option value="" disabled selected hidden>-- Status --</option>
                         <option value="Disetujui">Disetujui</option>
                         <option value="Ditolak">Ditolak</option>
-                        <option value="Perbaikan">Perbaikan</option>
+                       
                       </select>
                       <!-- Tombol Simpan 1 -->
                       <div class="pt-2">
@@ -1274,7 +1274,7 @@
                         <option value="" disabled selected hidden>-- Status --</option>
                         <option value="Disetujui">Disetujui</option>
                         <option value="Ditolak">Ditolak</option>
-                        <option value="Perbaikan">Perbaikan</option>
+                       
                       </select>
                       <!-- Tombol Simpan 2 -->
                       <div class="pt-2 mt-6">
@@ -1488,7 +1488,7 @@
                         <option value="" disabled selected hidden>-- Status --</option>
                         <option value="Disetujui">Disetujui</option>
                         <option value="Ditolak">Ditolak</option>
-                        <option value="Perbaikan">Perbaikan</option>
+                       
                       </select>
                       <!-- Tombol Simpan 3 -->
                       <div class="pt-2 mt-6">
@@ -1588,7 +1588,7 @@
                     <option value="" disabled selected hidden>-- Status --</option>
                     <option value="Disetujui">Disetujui</option>
                     <option value="Ditolak">Ditolak</option>
-                    <option value="Perbaikan">Perbaikan</option>
+                   
                   </select>
                   <!-- Tombol Simpan 4 -->
                   <div class="pt-2 mt-6">
@@ -1700,7 +1700,7 @@
                     <option value="" disabled selected hidden>-- Status --</option>
                     <option value="Disetujui">Disetujui</option>
                     <option value="Ditolak">Ditolak</option>
-                    <option value="Perbaikan">Perbaikan</option>
+                   
                   </select>
                   <!-- Tombol Simpan 10 -->
                   <div class="pt-2 mt-6">
@@ -1737,28 +1737,58 @@
                 <div class="relative inline-block">
                     @php
                     $status = $pengajuan->status ?? 'unknown';
-                    $canProcess = in_array($status, ['proses evaluasi', 'evaluasi']); // Allow for 'proses evaluasi' and 'evaluasi' (after evaluator ACC)
-                    $isDisabled = in_array($status, ['perbaikan', 'pengesahan', 'validasi']); // Disable for final statuses
+                    $hasEvaluator = $pengajuan->evaluator_id ? true : false;
+                    $hasEvaluation = $currentEvaluation && !empty($currentEvaluation->metadata) ? true : false;
+                    
+                    // Debug info - hapus setelah testing
+                    // dd(['status' => $status, 'hasEvaluator' => $hasEvaluator, 'hasEvaluation' => $hasEvaluation]);
+                    
+                    // Logika tombol berdasarkan workflow:
+                    // 1. Status 'proses evaluasi' dan belum ada evaluator -> Tombol aktif (untuk penugasan pertama)
+                    // 2. Status 'proses evaluasi' dan sudah ditugaskan -> Tombol disabled
+                    // 3. Status 'evaluasi' (sudah dievaluasi) -> Tombol aktif (untuk verifikasi/perbaikan)
+                    // 4. Status 'perbaikan', 'validasi', 'pengesahan' -> Tombol disabled
+                    
+                    $canProcess = false;
+                    $buttonClass = 'bg-gray-400 text-gray-600 cursor-not-allowed';
+                    $statusMessage = '';
+                    
+                    // Periksa status final terlebih dahulu (prioritas tertinggi)
+                    if (in_array($status, ['perbaikan', 'validasi', 'pengesahan', 'disetujui kadis'])) {
+                        // Status final, tidak bisa diproses lagi
+                        $canProcess = false;
+                        $statusMessage = 'Dokumen dalam status ' . $status;
+                    } elseif ($status === 'proses evaluasi' && !$hasEvaluator) {
+                        // Penugasan pertama kali
+                        $canProcess = true;
+                        $buttonClass = 'bg-blue-500 text-white hover:bg-blue-600';
+                    } elseif ($status === 'proses evaluasi' && $hasEvaluator && !$hasEvaluation) {
+                        // Sudah ditugaskan tapi belum dievaluasi
+                        $canProcess = false;
+                        $statusMessage = 'Menunggu evaluasi dari evaluator';
+                    } elseif ($status === 'evaluasi' || ($hasEvaluator && $hasEvaluation && !in_array($status, ['perbaikan', 'validasi', 'pengesahan', 'disetujui kadis']))) {
+                        // Sudah dievaluasi dan bukan status final, bisa diproses (verifikasi/perbaikan)
+                        $canProcess = true;
+                        $buttonClass = 'bg-blue-500 text-white hover:bg-blue-600';
+                    }
                     @endphp
                     
                     @if($canProcess)
-                        <!-- Status: proses evaluasi atau evaluasi (sudah di-ACC evaluator) - Tombol aktif -->
-                        <button onclick="openKirimHasilModal()" class="px-5 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition">
+                        <!-- Tombol aktif -->
+                        <button onclick="openKirimHasilModal()" class="px-5 py-2 {{ $buttonClass }} font-semibold rounded-lg transition">
                             Proses Laporan Berkala
                         </button>
-                    @elseif($isDisabled)
-                        <!-- Status: perbaikan, pengesahan, atau validasi - Tombol disabled -->
-                        <button disabled class="px-5 py-2 bg-gray-400 text-gray-600 font-semibold rounded-lg cursor-not-allowed transition" title="Dokumen dalam status {{ $status }}, tidak dapat diproses">
-                            Proses Laporan Berkala
-                        </button>
-                        <p class="text-xs text-gray-500 mt-1 text-center">Status: {{ ucfirst($status) }}</p>
                     @else
-                        <!-- Status lainnya - Tombol disabled dengan pesan -->
-                        <button disabled class="px-5 py-2 bg-gray-400 text-gray-600 font-semibold rounded-lg cursor-not-allowed transition" title="Status {{ $status }} tidak dapat diproses">
+                        <!-- Tombol disabled -->
+                        <button disabled class="px-5 py-2 {{ $buttonClass }} font-semibold rounded-lg transition" title="{{ $statusMessage }}">
                             Proses Laporan Berkala
                         </button>
-                        <p class="text-xs text-gray-500 mt-1 text-center">Status: {{ ucfirst($status) }}</p>
+                        @if($statusMessage)
+                        <p class="text-xs text-gray-500 mt-1 text-center">{{ $statusMessage }}</p>
+                        @endif
                     @endif
+                    
+                   
                 </div>
               </div>
             </div>
@@ -1783,25 +1813,41 @@
                 <div class="bg-white dark:bg-slate-800 rounded-lg p-6 w-full max-w-sm shadow-lg relative">
                     @php
                     $currentStatus = $pengajuan->status ?? 'unknown';
-                    $showEvaluatorButton = $currentStatus !== 'evaluasi'; // Hide when status is 'evaluasi' (proses verifikasi)
+                    $hasEvaluator = $pengajuan->evaluator_id ? true : false;
+                    $hasEvaluation = $currentEvaluation && !empty($currentEvaluation->metadata) ? true : false;
+                    $hasReviewed = $pengajuan->evaluasiPengajuan()->count() > 0;
+                    
+                    // Kondisi modal berdasarkan workflow:
+                    // 1. Belum ada evaluator -> Hanya tombol "Penugasan Evaluator" (bukan penugasan ulang)
+                    // 2. Sudah ada evaluator tapi belum evaluasi -> Hanya tombol "Penugasan Ulang Evaluator" 
+                    // 3. Sudah dievaluasi -> 3 tombol: "Penugasan Ulang", "Perbaikan", "Verifikasi"
                     @endphp
                     
-                    @if($showEvaluatorButton)
-                    <!-- Tombol Penugasan Evaluator - Hidden saat status 'evaluasi' -->
-                    <button onclick="openEvaluatorModal()" class="w-full text-left px-4 py-2 mb-3 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition">
-                        Penugasan Evaluator
-                    </button>
+                    @if(!$hasEvaluator)
+                        <!-- Kondisi 1: Penugasan pertama kali -->
+                        <h3 class="text-lg font-semibold mb-4 text-gray-800">Pilih Tindakan</h3>
+                        <button onclick="openEvaluatorModal()" class="w-full text-left px-4 py-2 mb-3 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition">
+                            <i class="fas fa-user-plus mr-2"></i>Penugasan Evaluator
+                        </button>
+                    @elseif($hasEvaluator && !$hasEvaluation)
+                        <!-- Kondisi 2: Sudah ditugaskan tapi belum dievaluasi -->
+                        <h3 class="text-lg font-semibold mb-4 text-gray-800">Pilih Tindakan</h3>
+                        <button onclick="openEvaluatorModal()" class="w-full text-left px-4 py-2 mb-3 bg-orange-500 text-white rounded hover:bg-orange-600 transition">
+                            <i class="fas fa-user-edit mr-2"></i>Penugasan Ulang Evaluator
+                        </button>
+                    @elseif($hasEvaluator && $hasEvaluation)
+                        <!-- Kondisi 3: Sudah dievaluasi - tampilkan 3 opsi -->
+                        <h3 class="text-lg font-semibold mb-4 text-gray-800">Proses Verifikasi</h3>
+                        <button onclick="openEvaluatorModal()" class="w-full text-left px-4 py-2 mb-3 bg-orange-500 text-white rounded hover:bg-orange-600 transition">
+                            <i class="fas fa-user-edit mr-2"></i>Penugasan Ulang Evaluator
+                        </button>
+                        <button onclick="openPerbaikanModal()" class="w-full text-left px-4 py-2 mb-3 bg-red-600 text-white rounded hover:bg-red-700 transition">
+                            <i class="fas fa-edit mr-2"></i>Perbaikan
+                        </button>
+                        <button onclick="verifikasiDokumen()" class="w-full text-left px-4 py-2 mb-3 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+                            <i class="fas fa-check-circle mr-2"></i>Verifikasi
+                        </button>
                     @endif
-                    
-                    <!-- Tombol Perbaikan - Selalu tampil -->
-                    <button onclick="openPerbaikanModal()" class="w-full text-left px-4 py-2 mb-3 bg-red-600 text-white rounded hover:bg-red-700 transition">
-                        Perbaikan
-                    </button>
-                    
-                    <!-- Tombol Proses Verifikasi - Selalu tampil -->
-                    <button onclick="verifikasiDokumen()" class="w-full text-left px-4 py-2 mb-3 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
-                        Verifikasi
-                    </button>
                     
                     <button onclick="closeKirimHasilModal()" class="absolute top-0 right-2 font-bold text-xl text-gray-600 hover:text-gray-900 dark:hover:text-white">&times;</button>
                 </div>
@@ -1810,44 +1856,64 @@
             <!-- Modal untuk Penugasan Evaluator -->
             <div id="modal-evaluator" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
                 <div class="bg-white rounded-lg p-6 w-full max-w-md shadow-lg">
-                    <h2 class="text-lg font-bold mb-4">Penugasan Evaluator</h2>
+                    @php
+                    $isFirstAssignment = !$pengajuan->evaluator_id;
+                    $modalTitle = $isFirstAssignment ? 'Penugasan Evaluator' : 'Penugasan Ulang Evaluator';
+                    $submitButtonText = $isFirstAssignment ? 'Tugaskan Evaluator' : 'Tugaskan Ulang';
+                    @endphp
                     
-                    <!-- Info Evaluator Sebelumnya -->
-                    @if($pengajuan->evaluator)
+                    <h2 class="text-lg font-bold mb-4">{{ $modalTitle }}</h2>
+                    
+                    <!-- Info Evaluator Sebelumnya - Hanya tampil untuk penugasan ulang -->
+                    @if(!$isFirstAssignment && $pengajuan->evaluator)
                     <div class="mb-4 p-3 bg-blue-50 rounded border-l-4 border-blue-400">
-                        <p class="text-sm font-medium text-blue-800">Evaluator Sebelumnya:</p>
+                        <p class="text-sm font-medium text-blue-800">Evaluator Saat Ini:</p>
                         <p class="text-sm text-blue-600">{{ $pengajuan->evaluator->name }}</p>
+                        <p class="text-xs text-blue-500 mt-1">Ditugaskan: {{ $pengajuan->assigned_at ? $pengajuan->assigned_at->format('d/m/Y H:i') : 'N/A' }}</p>
                     </div>
                     @endif
                     
                     <div class="mb-4">
-                        <label class="block text-sm font-medium mb-2">Pilih Evaluator Baru:</label>
+                        <label class="block text-sm font-medium mb-2">
+                            {{ $isFirstAssignment ? 'Pilih Evaluator:' : 'Pilih Evaluator Baru:' }}
+                        </label>
                         <select id="evaluator-select" class="w-full border rounded p-2">
                             <option value="">-- Pilih Evaluator --</option>
+                            @if(!$isFirstAssignment && $pengajuan->evaluator)
                             <!-- Evaluator yang sedang menangani saat ini -->
-                            @if($pengajuan->evaluator)
                             <option value="{{ $pengajuan->evaluator->id }}" class="bg-yellow-50">
                                 {{ $pengajuan->evaluator->name }} (Saat ini)
                             </option>
                             @endif
                             <!-- Evaluator lainnya -->
                             @foreach($evaluators ?? [] as $evaluator)
-                            @if($evaluator->id !== $pengajuan->evaluator_id)
+                            @if($isFirstAssignment || $evaluator->id !== $pengajuan->evaluator_id)
                             <option value="{{ $evaluator->id }}">{{ $evaluator->name }}</option>
                             @endif
                             @endforeach
                         </select>
                     </div>
+                    
+                    @if(!$isFirstAssignment)
+                    <!-- Field alasan hanya untuk penugasan ulang -->
                     <div class="mb-4">
                         <label class="block text-sm font-medium mb-2">Alasan Penugasan Ulang:</label>
                         <textarea id="catatan-evaluator" class="w-full border rounded p-2" rows="3" placeholder="Jelaskan alasan penugasan ulang evaluator..."></textarea>
                     </div>
+                    @else
+                    <!-- Field catatan opsional untuk penugasan pertama -->
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">Catatan (Opsional):</label>
+                        <textarea id="catatan-evaluator" class="w-full border rounded p-2" rows="2" placeholder="Catatan tambahan untuk evaluator..."></textarea>
+                    </div>
+                    @endif
+                    
                     <div class="flex justify-end gap-4">
                         <button onclick="closeEvaluatorModal()" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
                             Batal
                         </button>
-                        <button onclick="kirimKeEvaluator()" class="px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700">
-                            Tugaskan Evaluator
+                        <button onclick="kirimKeEvaluator()" class="px-4 py-2 {{ $isFirstAssignment ? 'bg-yellow-600 hover:bg-yellow-700' : 'bg-orange-600 hover:bg-orange-700' }} text-white rounded">
+                            {{ $submitButtonText }}
                         </button>
                     </div>
                 </div>
@@ -2348,6 +2414,11 @@
               const evaluatorId = document.getElementById('evaluator-select').value;
               const catatan = document.getElementById('catatan-evaluator').value;
               
+              @php
+              $hasExistingEvaluator = $pengajuan->evaluator_id ? 'true' : 'false';
+              @endphp
+              const isFirstAssignment = !{{ $hasExistingEvaluator }};
+              
               if (!evaluatorId) {
                   Swal.fire({
                       icon: 'warning',
@@ -2358,9 +2429,21 @@
                   return;
               }
               
+              // Validasi catatan untuk penugasan ulang
+              if (!isFirstAssignment && !catatan.trim()) {
+                  Swal.fire({
+                      icon: 'warning',
+                      title: 'Alasan Diperlukan',
+                      text: 'Silakan isi alasan penugasan ulang evaluator.',
+                      confirmButtonText: 'OK'
+                  });
+                  return;
+              }
+              
               // Show loading
+              const loadingTitle = isFirstAssignment ? 'Menugaskan Evaluator...' : 'Melakukan Penugasan Ulang...';
               Swal.fire({
-                  title: 'Menugaskan Evaluator...',
+                  title: loadingTitle,
                   html: 'Mohon tunggu sebentar',
                   allowOutsideClick: false,
                   didOpen: () => {
@@ -2368,18 +2451,26 @@
                   }
               });
               
-              fetch('/pengajuan/{{ $pengajuan->id }}/reassign-evaluator', {
+              // Pilih endpoint berdasarkan jenis penugasan
+              const endpoint = isFirstAssignment 
+                  ? '/laporan-berkala-kabid/{{ $pengajuan->id }}/kirim-evaluator'
+                  : '/laporan-berkala-kabid/{{ $pengajuan->id }}/reassign-evaluator';
+              
+              const requestBody = {
+                  evaluator_id: evaluatorId,
+                  ...(isFirstAssignment 
+                      ? { catatan_penugasan: catatan }
+                      : { alasan_reassign: catatan })
+              };
+              
+              fetch(endpoint, {
                   method: 'POST',
                   headers: {
                       'Content-Type': 'application/json',
                       'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                       'Accept': 'application/json'
                   },
-                  body: JSON.stringify({
-                      evaluator_id: evaluatorId,
-                      alasan_reassign: catatan,
-                      tipe_penugasan: 'pengiriman_ulang' // Menandakan ini pengiriman ulang
-                  })
+                  body: JSON.stringify(requestBody)
               })
               .then(response => response.json())
               .then(data => {

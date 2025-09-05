@@ -316,7 +316,7 @@
                         <option value="" disabled selected hidden>-- Status --</option>
                         <option value="Disetujui">Disetujui</option>
                         <option value="Ditolak">Ditolak</option>
-                        <option value="Perbaikan">Perbaikan</option>
+
                       </select>
 
                       <!-- Tombol Simpan 1 -->
@@ -456,7 +456,7 @@
                         <option value="" disabled selected hidden>-- Status --</option>
                         <option value="Disetujui">Disetujui</option>
                         <option value="Ditolak">Ditolak</option>
-                        <option value="Perbaikan">Perbaikan</option>
+
                       </select>
                       <!-- Tombol Simpan 3 -->
                       <!-- <div class="pt-2 mt-6">
@@ -574,7 +574,7 @@
                         <option value="" disabled selected hidden>-- Status --</option>
                         <option value="Disetujui">Disetujui</option>
                         <option value="Ditolak">Ditolak</option>
-                        <option value="Perbaikan">Perbaikan</option>
+
                       </select>
                       <!-- Tombol Simpan 3 -->
                       <!-- <div class="pt-2 mt-6">
@@ -728,7 +728,7 @@
                         <option value="" disabled selected hidden>-- Status --</option>
                         <option value="Disetujui">Disetujui</option>
                         <option value="Ditolak">Ditolak</option>
-                        <option value="Perbaikan">Perbaikan</option>
+
                       </select>
                       <!-- Tombol Simpan 3 -->
                       <!-- <div class="pt-2 mt-6">
@@ -953,7 +953,7 @@
                         <option value="" disabled selected hidden>-- Status --</option>
                         <option value="Disetujui">Disetujui</option>
                         <option value="Ditolak">Ditolak</option>
-                        <option value="Perbaikan">Perbaikan</option>
+
                       </select>
                       <!-- Tombol Simpan 5 -->
                       <!-- <div class="pt-2 mt-6">
@@ -1105,7 +1105,7 @@
                         <option value="" disabled selected hidden>-- Status --</option>
                         <option value="Disetujui">Disetujui</option>
                         <option value="Ditolak">Ditolak</option>
-                        <option value="Perbaikan">Perbaikan</option>
+
                       </select>
                       <!-- Tombol Simpan 1 -->
                       <!-- <div class="pt-2">
@@ -1274,7 +1274,7 @@
                         <option value="" disabled selected hidden>-- Status --</option>
                         <option value="Disetujui">Disetujui</option>
                         <option value="Ditolak">Ditolak</option>
-                        <option value="Perbaikan">Perbaikan</option>
+
                       </select>
                       <!-- Tombol Simpan 2 -->
                       <!-- <div class="pt-2 mt-6">
@@ -1488,7 +1488,7 @@
                         <option value="" disabled selected hidden>-- Status --</option>
                         <option value="Disetujui">Disetujui</option>
                         <option value="Ditolak">Ditolak</option>
-                        <option value="Perbaikan">Perbaikan</option>
+
                       </select>
                       <!-- Tombol Simpan 3 -->
                       <!-- <div class="pt-2 mt-6">

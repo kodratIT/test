@@ -119,8 +119,7 @@
                     class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
               <option value="">Semua Status</option>
               <option value="proses evaluasi">Proses Evaluasi</option>
-              <option value="perbaikan">Perlu Perbaikan</option>
-              <option value="ditolak">Ditolak</option>
+              <option value="perbaikan">Perbaikan</option>
               <option value="disetujui">Disetujui</option>
             </select>
           </div>
@@ -261,10 +260,9 @@
         // Status Disetujui: Link Lihat dan Download PDF jika tersedia
         let buttons = `
           <div class="flex flex-col gap-1 items-center">
-            <a href="/pengajuan/${item.id}/detail" class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 hover:text-blue-700 transition-colors duration-200">
+            <a href="/dokumen/pdf/${item.id}/preview" target="_blank" class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 hover:text-blue-700 transition-colors duration-200">
               <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 616 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
               Lihat
             </a>`;
@@ -272,7 +270,7 @@
         // Tambahkan tombol download PDF jika file tersedia
         if (item.lembar_pengesahan_pdf) {
           buttons += `
-            <a href="/download-uploaded-pdf/${item.id}" class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors duration-200">
+            <a href="/dokumen/pdf/${item.id}/download" class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors duration-200">
               <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
@@ -382,32 +380,28 @@
               (createdAt.getMonth() + 1).toString().padStart(2, '0') + "-" +
               createdAt.getFullYear();
 
-            // status badge - 4 status dengan warna yang ditentukan
+            // status badge - 3 status utama dengan warna yang ditentukan
             const statusText = (item.status || '').toLowerCase();
             let badgeClass = '';
             let statusLabel = '';
             
-            // Mapping 4 status utama
-            if (statusText === 'proses evaluasi') {
-              // Proses Evaluasi = Kuning
+            // Mapping 3 status utama
+            if (statusText === 'proses evaluasi' || statusText === 'proses verifikasi' || statusText === 'evaluasi' || statusText === 'menunggu evaluasi' || statusText === 'proses pengesahan' || statusText === 'menunggu persetujuan kadis' || statusText === 'validasi') {
+              // Proses Evaluasi (gabungan dari semua tahap sebelum perbaikan/disetujui) = Kuning
               badgeClass = 'bg-yellow-500';
               statusLabel = 'PROSES EVALUASI';
-            } else if (statusText === 'proses verifikasi' || statusText === 'evaluasi') {
-              // Proses Verifikasi = Biru  
-              badgeClass = 'bg-blue-500';
-              statusLabel = 'PROSES VERIFIKASI';
-            } else if (statusText === 'proses pengesahan' || statusText === 'menunggu persetujuan kadis' || statusText === 'validasi') {
-              // Proses Pengesahan = Hijau
-              badgeClass = 'bg-green-500';
-              statusLabel = 'PROSES PENGESAHAN';
+            } else if (statusText === 'perbaikan' || statusText === 'perlu perbaikan' || statusText === 'ditolak') {
+              // Perbaikan/Ditolak = Merah
+              badgeClass = 'bg-red-500';
+              statusLabel = 'PERBAIKAN';
             } else if (statusText === 'disetujui' || statusText === 'disetujui kadis') {
-              // Disetujui = Hijau Pekat
+              // Disetujui = Hijau
               badgeClass = 'bg-green-600';
               statusLabel = 'DISETUJUI';
             } else {
               // Default case untuk status lain
               badgeClass = 'bg-gray-400';
-              statusLabel = statusText.toUpperCase();
+              statusLabel = 'PROSES EVALUASI'; // Default ke proses evaluasi
             }
 
             const rowClass = index % 2 === 0 ? "bg-white" : "bg-gray-50";
@@ -421,8 +415,9 @@
                   <div class="font-mono text-blue-600">${item.no_pengajuan}</div>
                 </td>
                 <td class="px-4 py-3 text-center text-sm text-gray-600">${tanggal}</td>
-                <td class="px-4 py-3 text-center text-xs text-gray-600 max-w-xs truncate" title="${item.catatan || '-'}">
-                  ${item.catatan || '-'}
+                <td class="px-4 py-3 text-center text-xs text-gray-600 max-w-xs truncate" title="${item.catatan_kabid || '-'}">
+                  ${item.catatan_kabid || '-'}
+                  
                 </td>
                 <td class="px-4 py-3 text-center">
                   <span class="inline-flex items-center justify-center w-40 h-8 text-xs font-semibold text-white rounded-full ${badgeClass}">

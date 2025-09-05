@@ -21,7 +21,7 @@ class LaporanBerkalaKepalaBidangController extends Controller
     public function getList(Request $request)
     {
         try {
-            $query = Pengajuan::with(['pengguna.identitas', 'evaluator'])
+            $query = Pengajuan::with(['pengguna.identitas', 'evaluator', 'evaluasiPengajuan'])
                 ->orderBy('created_at', 'desc');
 
             // Filter berdasarkan status jika ada
@@ -44,15 +44,28 @@ class LaporanBerkalaKepalaBidangController extends Controller
                 $identitas = optional(optional($item->pengguna)->identitas);
                 $evaluator = optional($item->evaluator);
                 
+                // Check if evaluation has been completed by evaluator
+                $hasEvaluation = false;
+                if ($item->evaluasiPengajuan->isNotEmpty()) {
+                    $latestEvaluation = $item->evaluasiPengajuan->sortByDesc('created_at')->first();
+                    // Consider as evaluated if status is 'selesai' or has metadata with sections
+                    $hasEvaluation = $latestEvaluation->status === 'selesai' || 
+                                   (!empty($latestEvaluation->metadata) && 
+                                    is_array(json_decode($latestEvaluation->metadata, true)) && 
+                                    !empty(json_decode($latestEvaluation->metadata, true)['sections'] ?? []));
+                }
+                
                 return [
                     'id' => $item->id ?? 0,
                     'no_pengajuan' => $item->no_pengajuan ?? 'N/A',
                     'created_at' => $item->created_at ? $item->created_at->format('Y-m-d') : date('Y-m-d'),
                     'badan_usaha' => $identitas->namabadanusaha ?? 'Tidak Tersedia',
                     'evaluator' => $evaluator->name ?? 'Belum Ditugaskan',
-                    'catatan' => $item->catatan ?? '-',
+                    'catatan' => $item->catatan_kabid ?? '-',
                     'status' => $item->status ?? 'Unknown',
                     'days_pending' => $item->created_at ? $item->created_at->diffInDays(now()) : 0,
+                    // Evaluation status
+                    'has_evaluation' => $hasEvaluation,
                     // Action untuk view (compatible dengan view lama)
                     'action_text' => $this->getActionText($item->status ?? 'Unknown'),
                     'action_link' => route('pengajuan.show', $item->id ?? 0),

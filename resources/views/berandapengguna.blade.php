@@ -97,12 +97,6 @@
     });
   });
 </script>
-
-
-
-
-
-
     <div class="w-full px-6 py-6 mx-auto">
 
       <!-- Tempatkan dalam halaman Laravel kamu -->
@@ -122,48 +116,59 @@
 
             <!-- STEP PROGRESS -->
             <div class="w-full px-4 py-3">
-              <div class="grid grid-cols-2 lg:grid-cols-5 gap-2 text-center text-xs font-medium text-gray-600">
+              <div class="grid grid-cols-4 gap-4 text-center text-xs font-medium text-gray-600">
 
                 <!-- Step 1 -->
                 <div class="cursor-pointer" onclick="showStep(1)">
-                  <div class="relative mb-2 w-10 h-10 mx-auto {{ $currentStep >= 1 ? 'bg-green-500' : 'bg-gray-300' }} text-white rounded-full flex items-center justify-center">
+                  <div class="relative mb-2 w-10 h-10 mx-auto 
+                    {{ ($currentStep >= 1 && ($stats['menunggu_evaluasi'] ?? 0) > 0) ? 'bg-green-500' : 'bg-gray-300' }} 
+                    text-white rounded-full flex items-center justify-center">
                     {{ $stats['menunggu_evaluasi'] ?? 0 }}
                   </div>
-                  <div class="text-xs {{ $currentStep >= 1 ? 'text-green-600' : 'text-gray-500' }} font-semibold mt-1">Laporan Berkala</div>
+                  <div class="text-xs 
+                    {{ ($currentStep >= 1 && ($stats['menunggu_evaluasi'] ?? 0) > 0) ? 'text-green-600' : 'text-gray-500' }} 
+                    font-semibold mt-1">Laporan Berkala</div>
                 </div>
 
                 <!-- Step 2 -->
                 <div class="cursor-pointer" onclick="showStep(2)">
-                  <div class="relative mb-2 w-10 h-10 mx-auto {{ $currentStep >= 2 ? 'bg-green-500' : 'bg-gray-300' }} text-white rounded-full flex items-center justify-center">
+                  <div class="relative mb-2 w-10 h-10 mx-auto 
+                    {{ ($currentStep >= 2 && ($stats['sedang_evaluasi'] ?? 0) > 0) ? 'bg-green-500' : 'bg-gray-300' }} 
+                    text-white rounded-full flex items-center justify-center">
                     {{ $stats['sedang_evaluasi'] ?? 0 }}
                   </div>
-                  <div class="text-xs {{ $currentStep >= 2 ? 'text-green-600' : 'text-gray-500' }} font-semibold mt-1">Dievaluasi</div>
+                  <div class="text-xs 
+                    {{ ($currentStep >= 2 && ($stats['sedang_evaluasi'] ?? 0) > 0) ? 'text-green-600' : 'text-gray-500' }} 
+                    font-semibold mt-1">Dievaluasi</div>
                 </div>
 
                 <!-- Step 3 -->
                 <div class="cursor-pointer" onclick="showStep(3)">
-                  <div class="relative mb-2 w-10 h-10 mx-auto {{ $currentStep >= 3 ? 'bg-green-500' : 'bg-gray-300' }} text-white rounded-full flex items-center justify-center">
+                  <div class="relative mb-2 w-10 h-10 mx-auto 
+                    {{ ($currentStep >= 3 && ($stats['siap_validasi'] ?? 0) > 0) ? 'bg-green-500' : 'bg-gray-300' }} 
+                    text-white rounded-full flex items-center justify-center">
                     {{ $stats['siap_validasi'] ?? 0 }}
                   </div>
-                  <div class="text-xs {{ $currentStep >= 3 ? 'text-green-600' : 'text-gray-500' }} font-semibold mt-1">Diverifikasi</div>
+                  <div class="text-xs 
+                    {{ ($currentStep >= 3 && ($stats['siap_validasi'] ?? 0) > 0) ? 'text-green-600' : 'text-gray-500' }} 
+                    font-semibold mt-1">Diverifikasi</div>
                 </div>
 
                 <!-- Step 4 -->
                 <div class="cursor-pointer" onclick="showStep(4)">
-                  <div class="relative mb-2 w-10 h-10 mx-auto {{ $currentStep >= 4 ? 'bg-green-500' : 'bg-gray-300' }} text-white rounded-full flex items-center justify-center">
-                    {{ $stats['dalam_pengesahan'] ?? 0 }}
-                  </div>
-                  <div class="text-xs {{ $currentStep >= 4 ? 'text-green-600' : 'text-gray-500' }} font-semibold mt-1">Pengesahan</div>
-                </div>
-
-                <!-- Step 5 -->
-                <div class="cursor-pointer" onclick="showStep(5)">
-                  <div class="relative mb-2 w-10 h-10 mx-auto {{ $currentStep >= 5 ? 'bg-green-600' : 'bg-gray-300' }} text-white rounded-full flex items-center justify-center">
+                  <div class="relative mb-2 w-10 h-10 mx-auto 
+                    {{ ($currentStep >= 4 && ($stats['selesai'] ?? 0) > 0) ? 'bg-green-600' : 'bg-gray-300' }} 
+                    text-white rounded-full flex items-center justify-center">
                     {{ $stats['selesai'] ?? 0 }}
                   </div>
-                  <div class="text-xs {{ $currentStep >= 5 ? 'text-green-600' : 'text-gray-500' }} font-semibold mt-1">Selesai</div>
+                  <div class="text-xs 
+                    {{ ($currentStep >= 4 && ($stats['selesai'] ?? 0) > 0) ? 'text-green-600' : 'text-gray-500' }} 
+                    font-semibold mt-1">Lembar Pengesahan</div>
                 </div>
+
               </div>
+            </div>
+
 
               <!-- Konten Surat -->
               <div id="suratContent" class="mt-6 p-4 bg-gray-100 rounded-xl border border-gray-300 text-sm text-gray-700">
@@ -195,71 +200,8 @@
             </div>
             
             <!-- Dashboard Cards -->
-            <div class="w-full px-6 py-4">
-              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <!-- Total Pengajuan -->
-                <div class="bg-white dark:bg-slate-850 shadow-xl rounded-2xl p-4 border border-gray-200 dark:border-gray-700">
-                  <div class="flex items-center">
-                    <div class="p-3 rounded-full bg-green-100 dark:bg-green-900/20">
-                      <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                      </svg>
-                    </div>
-                    <div class="ml-4">
-                      <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Pengajuan</p>
-                      <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $stats['total_pengajuan'] }}</p>
-                    </div>
-                  </div>
-                </div>
-                
-                <!-- Dalam Proses -->
-                <div class="bg-white dark:bg-slate-850 shadow-xl rounded-2xl p-4 border border-gray-200 dark:border-gray-700">
-                  <div class="flex items-center">
-                    <div class="p-3 rounded-full bg-yellow-100 dark:bg-yellow-900/20">
-                      <svg class="w-6 h-6 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                      </svg>
-                    </div>
-                    <div class="ml-4">
-                      <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Dalam Proses</p>
-                      <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $stats['menunggu_evaluasi'] + $stats['sedang_evaluasi'] + $stats['siap_validasi'] }}</p>
-                    </div>
-                  </div>
-                </div>
-                
-                <!-- Perlu Perbaikan -->
-                <div class="bg-white dark:bg-slate-850 shadow-xl rounded-2xl p-4 border border-gray-200 dark:border-gray-700">
-                  <div class="flex items-center">
-                    <div class="p-3 rounded-full bg-red-100 dark:bg-red-900/20">
-                      <svg class="w-6 h-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
-                      </svg>
-                    </div>
-                    <div class="ml-4">
-                      <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Perlu Perbaikan</p>
-                      <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $stats['perlu_perbaikan'] }}</p>
-                    </div>
-                  </div>
-                </div>
-                
-                <!-- Selesai -->
-                <div class="bg-white dark:bg-slate-850 shadow-xl rounded-2xl p-4 border border-gray-200 dark:border-gray-700">
-                  <div class="flex items-center">
-                    <div class="p-3 rounded-full bg-green-100 dark:bg-green-900/20">
-                      <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                      </svg>
-                    </div>
-                    <div class="ml-4">
-                      <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Selesai</p>
-                      <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $stats['selesai'] }}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Recent Pengajuan -->
+           
+            <!-- Recent Pengajuan
             @if($recentPengajuan && $recentPengajuan->count() > 0)
             <div class="w-full px-6 py-4">
               <div class="bg-white dark:bg-slate-850 shadow-xl rounded-2xl border border-gray-200 dark:border-gray-700">
@@ -316,12 +258,11 @@
                 </div>
               </div>
             </div>
-            @endif
+            @endif -->
 
 
             <script>
               function showStep(step) {
-
                 const content = document.getElementById('suratContent');
 
                 switch (step) {
@@ -335,9 +276,6 @@
                     content.innerHTML = `<strong>Diverifikasi:</strong> Laporan dalam proses verifikasi oleh kepala bidang.`;
                     break;
                   case 4:
-                    content.innerHTML = `<strong>Pengesahan:</strong> Laporan menunggu pengesahan oleh kepala dinas.`;
-                    break;
-                  case 5:
                     content.innerHTML = `<strong>Selesai:</strong> Laporan telah disetujui dan lembar pengesahan siap diunduh.`;
                     break;
                   default:

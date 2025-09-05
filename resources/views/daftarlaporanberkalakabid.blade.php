@@ -201,26 +201,36 @@
                   (createdAt.getMonth() + 1).toString().padStart(2, '0') + "-" +
                   createdAt.getFullYear();
 
-                // status badge - 4 status dengan warna yang ditentukan
+                // status badge - sesuai dengan workflow yang diminta
                 const statusText = (item.status || '').toLowerCase();
                 let badgeClass = '';
                 let statusLabel = '';
                 
-                // Mapping 4 status utama
-                if (statusText === 'proses evaluasi') {
+                // Mapping status sesuai workflow:
+                // 1. Proses Evaluasi (kuning) - dari pengguna ke kabid, kabid ke evaluator, evaluator evaluasi
+                // 2. Proses Verifikasi (biru) - evaluator sudah evaluasi, di kabid jadi proses verifikasi  
+                // 3. Perbaikan (merah) - kabid minta perbaikan
+                // 4. Lembar Pengesahan (hijau) - kabid verifikasi
+                // 5. Disetujui (hijau pekat) - kadis acc
+                
+                if (statusText === 'proses evaluasi' || statusText === 'menunggu evaluasi') {
                   // Proses Evaluasi = Kuning
                   badgeClass = 'bg-yellow-500';
                   statusLabel = 'PROSES EVALUASI';
-                } else if (statusText === 'proses verifikasi' || statusText === 'evaluasi') {
-                  // Proses Verifikasi = Biru  
+                } else if (statusText === 'evaluasi' || statusText === 'selesai') {
+                  // Dari evaluator sudah evaluasi, di kabid jadi Proses Verifikasi = Biru  
                   badgeClass = 'bg-blue-500';
                   statusLabel = 'PROSES VERIFIKASI';
-                } else if (statusText === 'proses pengesahan' || statusText === 'menunggu persetujuan kadis' || statusText === 'validasi') {
-                  // Proses Pengesahan = Hijau
+                } else if (statusText === 'perbaikan' || statusText === 'perlu perbaikan') {
+                  // Kabid minta perbaikan = Merah
+                  badgeClass = 'bg-red-500';
+                  statusLabel = 'PERBAIKAN';
+                } else if (statusText === 'validasi' || statusText === 'menunggu persetujuan kadis') {
+                  // Kabid verifikasi, jadi Lembar Pengesahan = Hijau
                   badgeClass = 'bg-green-500';
-                  statusLabel = 'PROSES PENGESAHAN';
+                  statusLabel = 'LEMBAR PENGESAHAN';
                 } else if (statusText === 'disetujui' || statusText === 'disetujui kadis') {
-                  // Disetujui = Hijau Pekat
+                  // Kadis acc, jadi Disetujui = Hijau Pekat
                   badgeClass = 'bg-green-600';
                   statusLabel = 'DISETUJUI';
                 } else {

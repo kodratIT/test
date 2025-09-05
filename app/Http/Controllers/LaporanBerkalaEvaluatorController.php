@@ -225,7 +225,7 @@ class LaporanBerkalaEvaluatorController extends Controller
             
             // Jika ada section yang ditolak, maka keseluruhan reject
             $overallRecommendation = $rejectedSections > 0 ? 'reject' : 'approve';
-            $newStatus = $overallRecommendation === 'approve' ? 'evaluasi' : 'perbaikan';
+            $newStatus = $overallRecommendation === 'approve' ? 'evaluasi' : 'evaluasi';
             
             // Update pengajuan
             $pengajuan->update([
