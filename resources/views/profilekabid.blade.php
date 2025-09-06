@@ -298,9 +298,10 @@
                       </div>
                       <!-- Tombol Reset & Simpan: sejajar di sebelah kiri -->
                       <div class="mt-6 flex gap-4">
-                        <button type="button"
+                        {{-- Tombol --}}
+                        <button type="button" id="btnGantiSandi"
                           class="px-6 py-3 text-sm font-bold text-white bg-red-400 rounded-lg hover:bg-red-500 transition-all">
-                          Reset Password
+                          Ganti Kata Sandi
                         </button>
                         <button type="submit"
                           class="px-6 py-3 text-sm font-bold text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition-all">
@@ -310,7 +311,136 @@
                     </div>
                   </div>
               </form>
+              {{-- Modal (default hidden) --}}
+              <div id="popupGantiSandi"
+                class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div class="bg-white w-full max-w-md p-6 rounded-lg shadow-lg relative">
+                  {{-- Tombol close (X) --}}
+                  <button id="closePopup" type="button"
+                    class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl font-bold">
+                    &times;
+                  </button>
+
+                  <h2 class="text-xl font-bold mb-5 text-center">Ganti Kata Sandi</h2>
+
+                  <form action="{{ route('password.update') }}" method="POST" class="space-y-4">
+                    @csrf
+
+                    {{-- Sandi Lama --}}
+                    <div>
+                      <label for="old_password" class="block text-sm font-medium">Sandi Lama</label>
+                      <input type="password" name="old_password" id="old_password" required
+                        class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-200">
+                    </div>
+
+                    {{-- Sandi Baru --}}
+                    <div>
+                      <label for="new_password" class="block text-sm font-medium">Sandi Baru</label>
+                      <input type="password" name="new_password" id="new_password" required
+                        class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-200">
+                    </div>
+
+                    {{-- Konfirmasi Sandi Baru --}}
+                    <div>
+                      <label for="new_password_confirmation" class="block text-sm font-medium">Konfirmasi Sandi Baru</label>
+                      <input type="password" name="new_password_confirmation" id="new_password_confirmation" required
+                        class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-200">
+                    </div>
+
+                    {{-- Tombol Simpan --}}
+                    <button type="submit"
+                      class="w-full px-6 py-3 text-sm font-bold text-white bg-green-500 rounded-lg hover:bg-green-600 transition-all">
+                      Simpan Kata Sandi
+                    </button>
+                  </form>
+                </div>
+              </div>
+
 </body>
+
+{{-- Modal Anda tetap sama --}}
+
+<script>
+  const btnOpen = document.getElementById("btnGantiSandi");
+  const popup = document.getElementById("popupGantiSandi");
+  const btnClose = document.getElementById("closePopup");
+
+  btnOpen.addEventListener("click", () => {
+    popup.classList.remove("hidden");
+  });
+
+  btnClose.addEventListener("click", () => {
+    popup.classList.add("hidden");
+  });
+
+  window.addEventListener("click", (e) => {
+    if (e.target === popup) {
+      popup.classList.add("hidden");
+    }
+  });
+
+  // === Toast Notification ===
+  function showToast(message, type = 'success') {
+      const container = document.getElementById("toast-container") || createToastContainer();
+      const toast = document.createElement("div");
+
+      toast.className =
+          "px-4 py-3 rounded-lg shadow-md text-white animate-fade-in-down transition transform " +
+          (type === "success"
+              ? "bg-green-500"
+              : type === "error"
+                  ? "bg-red-500"
+                  : "bg-blue-500");
+
+      toast.innerText = message;
+
+      container.appendChild(toast);
+
+      // Auto hide
+      setTimeout(() => {
+          toast.classList.add("opacity-0", "translate-x-10");
+          setTimeout(() => toast.remove(), 500);
+      }, 3000);
+  }
+
+  function createToastContainer() {
+      const div = document.createElement("div");
+      div.id = "toast-container";
+      div.className = "fixed top-4 right-4 space-y-2 z-50";
+      document.body.appendChild(div);
+      return div;
+  }
+
+  // 🔹 Pesan dari session Laravel
+  @if (session('success'))
+    showToast("{{ session('success') }}", "success");
+  @endif
+
+  @if (session('error'))
+    showToast("{{ session('error') }}", "error");
+  @endif
+
+  @if ($errors->any())
+    let errorMsg = "";
+    @foreach ($errors->all() as $error)
+        errorMsg += "• {{ $error }}\n";
+    @endforeach
+    showToast(errorMsg, "error");
+  @endif
+</script>
+
+<style>
+  @keyframes fade-in-down {
+      0% { opacity: 0; transform: translateY(-20px); }
+      100% { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-in-down {
+      animation: fade-in-down 0.4s ease-out;
+  }
+</style>
+
+
+
 <script>
   function enableReadonlyForm() {
 

@@ -89,6 +89,7 @@
           <h6 class="leading-normal text-lg font-bold text-gray-700 uppercase mb-2 sm:mb-0">
             Daftar Laporan Berkala
           </h6>
+          <!--
           <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
             <button id="refresh-btn" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg transition-colors duration-200 flex items-center">
               <i class="fas fa-sync-alt mr-2" id="refresh-icon"></i>
@@ -99,11 +100,12 @@
               Buat Baru
             </a>
           </div>
+-->
         </div>
         
-        <!-- Search and Filter Controls -->
+        <!-- Search and Filter Controls 
         <div class="flex flex-col md:flex-row gap-3 mb-4">
-          <!-- Search Input -->
+        
           <div class="relative flex-1">
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <i class="fas fa-search text-gray-400"></i>
@@ -112,8 +114,8 @@
                    class="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
                    placeholder="Cari berdasarkan nomor pengajuan...">
           </div>
-          
-          <!-- Status Filter -->
+          -->
+          <!-- Status Filter
           <div class="w-full md:w-48">
             <select id="status-filter" 
                     class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
@@ -123,8 +125,8 @@
               <option value="disetujui">Disetujui</option>
             </select>
           </div>
-          
-          <!-- Date Range Filter -->
+           -->
+          <!-- Date Range Filter 
           <div class="w-full md:w-48">
             <select id="date-filter" 
                     class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
@@ -136,11 +138,12 @@
             </select>
           </div>
         </div>
-        
-        <!-- Results Info -->
+        -->
+        <!-- Results Info 
         <div id="results-info" class="text-sm text-gray-600 mb-2">
           <span id="showing-text">Menampilkan data...</span>
         </div>
+        -->
       </div>
 
       <!-- Table -->
@@ -242,55 +245,48 @@
     }
 
     // Create enhanced action buttons
-    function createActionButtons(item) {
-      const status = (item.status || '').trim().toLowerCase();
-      
-      // Logic berdasarkan status
-      if (status === 'perbaikan' || status === 'perlu perbaikan') {
-        // Status Perbaikan: Link Edit Pengajuan
-        return `
-          <a href="/pengajuan/${item.id}/edit" class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-orange-600 bg-orange-50 rounded-lg hover:bg-orange-100 hover:text-orange-700 transition-colors duration-200">
-            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-            </svg>
-            Edit Pengajuan
-          </a>
-        `;
-      } else if (status === 'disetujui' || status === 'disetujui kadis') {
-        // Status Disetujui: Link Lihat dan Download PDF jika tersedia
-        let buttons = `
-          <div class="flex flex-col gap-1 items-center">
-            <a href="/dokumen/pdf/${item.id}/preview" target="_blank" class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 hover:text-blue-700 transition-colors duration-200">
-              <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              Lihat
-            </a>`;
-        
-        // Tambahkan tombol download PDF jika file tersedia
-        if (item.lembar_pengesahan_pdf) {
-          buttons += `
-            <a href="/dokumen/pdf/${item.id}/download" class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors duration-200">
-              <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              Download PDF
-            </a>`;
-        }
-        
-        buttons += `
-          </div>
-        `;
-        
-        return buttons;
-      } else if (status === 'proses evaluasi') {
-        // Status Proses Evaluasi: Tidak tampilkan apa-apa
-        return `<span class="text-gray-400 text-sm">-</span>`;
-      } else {
-        // Status lainnya: Tidak tampilkan apa-apa
-        return `<span class="text-gray-400 text-sm">-</span>`;
-      }
+   function createActionButtons(item) {
+  const status = (item.status || '').trim().toLowerCase();
+  
+  // Logic berdasarkan status
+  if (status === 'perbaikan' || status === 'perlu perbaikan') {
+    // Status Perbaikan: Link Edit Pengajuan
+    return `
+      <a href="/pengajuan/${item.id}/edit" 
+         class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-orange-600 transition-colors duration-200">
+        Lihat
+      </a>
+    `;
+  } else if (status === 'disetujui' || status === 'disetujui kadis') {
+    // Status Disetujui: Link Lihat dan Download PDF jika tersedia
+    let buttons = `
+      <div class="flex flex-row gap-2 items-center justify-center">
+        <a href="/dokumen/pdf/${item.id}/preview" target="_blank" 
+           class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 transition-colors duration-200">
+          Lihat
+        </a>`;
+    
+    // Tambahkan tombol download PDF jika file tersedia
+    if (item.lembar_pengesahan_pdf) {
+      buttons += `
+        <a href="/dokumen/pdf/${item.id}/download" 
+           class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 transition-colors duration-200">
+          Unduh
+        </a>`;
     }
+    
+    buttons += `</div>`;
+    
+    return buttons;
+  } else if (status === 'proses evaluasi') {
+    // Status Proses Evaluasi: Tidak tampilkan apa-apa
+    return `<span class="text-gray-400 text-sm"></span>`;
+  } else {
+    // Status lainnya: Tidak tampilkan apa-apa
+    return `<span class="text-gray-400 text-sm"></span>`;
+  }
+}
+
 
     // Toggle action menu
     window.toggleActionMenu = function(event, itemId) {
@@ -415,8 +411,8 @@
                   <div class="font-mono text-blue-600">${item.no_pengajuan}</div>
                 </td>
                 <td class="px-4 py-3 text-center text-sm text-gray-600">${tanggal}</td>
-                <td class="px-4 py-3 text-center text-xs text-gray-600 max-w-xs truncate" title="${item.catatan_kabid || '-'}">
-                  ${item.catatan_kabid || '-'}
+                <td class="px-4 py-3 text-center text-xs text-gray-600 max-w-xs truncate" title="${item.catatan_kabid || ''}">
+                  ${item.catatan_kabid || ''}
                   
                 </td>
                 <td class="px-4 py-3 text-center">

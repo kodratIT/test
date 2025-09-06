@@ -17,6 +17,8 @@ use App\Http\Controllers\LaporanBerkalaEvaluatorController;
 use App\Http\Controllers\LaporanBerkalaKadisController;
 use App\Http\Controllers\LampiranController;
 use App\Http\Controllers\DocumentController;
+    use App\Http\Controllers\GantiKataSandi;
+    
 
 //pengguna
 Route::middleware(['auth', 'is_pengguna'])->group(function () {
@@ -90,7 +92,10 @@ Route::middleware(['auth', 'is_kabid'])->group(function () {
     Route::post('/pengajuan/{id}/approve', [LaporanBerkalaKepalaBidangController::class, 'approve'])->name('pengajuan.approve');
     Route::post('/pengajuan/{id}/reject', [LaporanBerkalaKepalaBidangController::class, 'reject'])->name('pengajuan.reject');
     Route::post('/pengajuan/{id}/reassign-evaluator', [LaporanBerkalaKepalaBidangController::class, 'reassignEvaluator'])->name('pengajuan.reassignEvaluator');
-    
+   Route::post('/laporan-berkala-kabid/{id}/kirim-evaluator', [LaporanBerkalaKepalaBidangController::class, 'kirimKeEvaluator'])
+    ->name('laporan-berkala.kirim-evaluator');
+
+
     // Route untuk kabid mengedit/menyimpan data evaluasi per section
     Route::post('/kabid/evaluasi/{id}/save-section', [LaporanBerkalaKepalaBidangController::class, 'saveSection'])
         ->name('laporan.kabid.save_section');
@@ -112,6 +117,12 @@ Route::middleware(['auth', 'is_kabid'])->group(function () {
     Route::get('/kelolabadanusaha', [BadanusahaController::class, 'index'])->name('pengguna.index');
     Route::post('/pengguna/store', [BadanusahaController::class, 'store'])->name('pengguna.store');
     Route::delete('/pengguna/{id}', [BadanusahaController::class, 'destroy'])->name('pengguna.destroy');
+
+
+
+Route::get('/ganti-password', [GantiKataSandi::class, 'form'])->name('password.form');
+Route::post('/ganti-password', [GantiKataSandi::class, 'update'])->name('password.update');
+
 });
 
 //evaluator

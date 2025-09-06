@@ -94,9 +94,9 @@
           <div>
             <p class="text-m font-semibold uppercase text-gray-600">Laporan Masuk</p>
             <h5 class="text-xl font-bold text-gray-900 mb-1">{{ $stats['laporan_masuk'] }}</h5>
-            <p class="text-xs text-gray-500">
+            <!--<p class="text-xs text-gray-500">
               Menunggu: {{ $stats['menunggu_evaluasi'] }} | Dalam Proses: {{ $stats['dalam_evaluasi'] }}
-            </p>
+            </p>-->
            </div>
           <div class="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-tl from-blue-500 to-violet-500">
             <i class="ni ni-money-coins text-white text-lg"></i>
@@ -126,7 +126,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Row 2: Grafik Ringkasan -->
     <div class="grid grid-cols-1 gap-6">
-      <!-- Ringkasan Jumlah Surat Masuk & Selesai -->
+      <!-- Ringkasan Jumlah Surat Masuk & Selesai 
       <div class="w-full px-4 sm:px-6 lg:px-10 mb-2 mx-auto">
         <div class="flex flex-col h-full bg-white dark:bg-slate-850 shadow-xl dark:shadow-dark-xl rounded-2xl">
           <div class="p-6 pb-0">
@@ -139,7 +139,7 @@
         </div>
       </div>
     </div>
-    
+    -->
     <!-- Recent Pengajuan untuk Evaluator -->
     <!-- @if(isset($recentPengajuan) && $recentPengajuan->count() > 0)
     <div class="w-full px-4 sm:px-6 lg:px-10 mb-2 mx-auto">

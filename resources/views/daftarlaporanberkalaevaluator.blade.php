@@ -241,17 +241,14 @@
                         if (statusText === 'menunggu evaluasi' || statusText === 'proses evaluasi' || statusText === 'pending evaluasi') {
                           // Status Menunggu Evaluasi: Tombol Evaluasi
                           actionTd = `
-                            <a href="/daftarlaporanberkalaevaluator/${item.id}" class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-yellow-600 bg-yellow-50 rounded-lg hover:bg-yellow-100 hover:text-yellow-700 transition-colors duration-200">
-                              <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-                              </svg>
-                              Evaluasi
+                            <a href="/daftarlaporanberkalaevaluator/${item.id}" class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 transition-colors duration-200">
+                              Lihat
                             </a>
                           `;
                         } else {
                           // Status Telah Dievaluasi: Tanda strip (sudah selesai)
                           actionTd = `
-                           _
+                           
                           `;
                         }
 

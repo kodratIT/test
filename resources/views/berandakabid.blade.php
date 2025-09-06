@@ -253,7 +253,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Row 2: Grafik Ringkasan -->
     <div class="grid grid-cols-1 gap-6">
-      <!-- Ringkasan Jumlah Surat Masuk & Selesai -->
+      <!-- Ringkasan Jumlah Surat Masuk & Selesai 
       <div class="w-full px-4 sm:px-6 lg:px-10 mb-2 mx-auto">
         <div class="flex flex-col h-full bg-white dark:bg-slate-850 shadow-xl dark:shadow-dark-xl rounded-2xl">
           <div class="p-6 pb-0">
@@ -378,14 +378,14 @@
         }
       });
     </script>
-
+-->
     <div class="w-full px-4 sm:px-6 lg:px-10  mx-auto">
       <!-- Row 2: Grafik Ringkasan dan Daftar Evaluator -->
       <div class="flex flex-wrap mt-6 -mx-3">
 
 
-        <!-- Daftar Evaluator -->
-        <div class="w-full max-w-full px-3 mb-6 "> <!--lg:w-6/12-->
+        <!-- Daftar Evaluator 
+        <div class="w-full max-w-full px-3 mb-6 ">
           <div class="flex flex-col h-full bg-white dark:bg-slate-850 shadow-xl dark:shadow-dark-xl rounded-2xl p-6 overflow-x-auto">
             <h6 class="text-lg font-bold mb-4 text-gray-800 dark:text-white uppercase">Daftar Evaluator</h6>
             <table class="min-w-full text-sm text-left border border-gray-200 dark:border-gray-700">
@@ -415,7 +415,7 @@
                     </tr>
                   @endforeach
                 @else
-                  <!-- Tampilkan data contoh jika belum ada data real -->
+                 
                   <tr class="hover:bg-gray-50 dark:hover:bg-slate-700">
                     <td class="px-4 py-2 text-m border-b dark:border-gray-600 text-center" colspan="4">
                       <span class="text-gray-500">Belum ada data evaluator tersedia</span>
@@ -426,6 +426,7 @@
             </table>
           </div>
         </div>
+        -->
       </div>
     </div>
 

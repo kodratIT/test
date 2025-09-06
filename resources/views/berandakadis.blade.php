@@ -129,7 +129,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Row 2: Grafik Ringkasan -->
     <div class="grid grid-cols-1 gap-6">
-      <!-- Ringkasan Jumlah Surat Masuk & Selesai -->
+      <!-- Ringkasan Jumlah Surat Masuk & Selesai
       <div class="w-full px-4 sm:px-6 lg:px-10 mb-2 mx-auto">
         <div class="flex flex-col h-full bg-white dark:bg-slate-850 shadow-xl dark:shadow-dark-xl rounded-2xl">
           <div class="p-6 pb-0">
@@ -211,7 +211,7 @@
   });
 </script>
 
-
+ -->
 
    
     <!-- Daftar Evaluator

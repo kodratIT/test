@@ -1811,43 +1811,39 @@
             <!-- Modal Popup Pilihan Kirim Hasil -->
             <div id="modal-kirim-hasil" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
                 <div class="bg-white dark:bg-slate-800 rounded-lg p-6 w-full max-w-sm shadow-lg relative">
-                    @php
-                    $currentStatus = $pengajuan->status ?? 'unknown';
-                    $hasEvaluator = $pengajuan->evaluator_id ? true : false;
-                    $hasEvaluation = $currentEvaluation && !empty($currentEvaluation->metadata) ? true : false;
-                    $hasReviewed = $pengajuan->evaluasiPengajuan()->count() > 0;
-                    
-                    // Kondisi modal berdasarkan workflow:
-                    // 1. Belum ada evaluator -> Hanya tombol "Penugasan Evaluator" (bukan penugasan ulang)
-                    // 2. Sudah ada evaluator tapi belum evaluasi -> Hanya tombol "Penugasan Ulang Evaluator" 
-                    // 3. Sudah dievaluasi -> 3 tombol: "Penugasan Ulang", "Perbaikan", "Verifikasi"
-                    @endphp
-                    
-                    @if(!$hasEvaluator)
-                        <!-- Kondisi 1: Penugasan pertama kali -->
-                        <h3 class="text-lg font-semibold mb-4 text-gray-800">Pilih Tindakan</h3>
-                        <button onclick="openEvaluatorModal()" class="w-full text-left px-4 py-2 mb-3 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition">
-                            <i class="fas fa-user-plus mr-2"></i>Penugasan Evaluator
-                        </button>
-                    @elseif($hasEvaluator && !$hasEvaluation)
-                        <!-- Kondisi 2: Sudah ditugaskan tapi belum dievaluasi -->
-                        <h3 class="text-lg font-semibold mb-4 text-gray-800">Pilih Tindakan</h3>
-                        <button onclick="openEvaluatorModal()" class="w-full text-left px-4 py-2 mb-3 bg-orange-500 text-white rounded hover:bg-orange-600 transition">
-                            <i class="fas fa-user-edit mr-2"></i>Penugasan Ulang Evaluator
-                        </button>
-                    @elseif($hasEvaluator && $hasEvaluation)
-                        <!-- Kondisi 3: Sudah dievaluasi - tampilkan 3 opsi -->
-                        <h3 class="text-lg font-semibold mb-4 text-gray-800">Proses Verifikasi</h3>
-                        <button onclick="openEvaluatorModal()" class="w-full text-left px-4 py-2 mb-3 bg-orange-500 text-white rounded hover:bg-orange-600 transition">
-                            <i class="fas fa-user-edit mr-2"></i>Penugasan Ulang Evaluator
-                        </button>
-                        <button onclick="openPerbaikanModal()" class="w-full text-left px-4 py-2 mb-3 bg-red-600 text-white rounded hover:bg-red-700 transition">
-                            <i class="fas fa-edit mr-2"></i>Perbaikan
-                        </button>
-                        <button onclick="verifikasiDokumen()" class="w-full text-left px-4 py-2 mb-3 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
-                            <i class="fas fa-check-circle mr-2"></i>Verifikasi
-                        </button>
-                    @endif
+@php
+    $currentStatus = $pengajuan->status ?? 'unknown';
+    $hasEvaluator = $pengajuan->evaluator_id ? true : false;
+    $hasEvaluation = $currentEvaluation && !empty($currentEvaluation->metadata) ? true : false;
+    $hasReviewed = $pengajuan->evaluasiPengajuan()->count() > 0;
+@endphp
+
+@if(!$hasEvaluator)
+    <!-- Kondisi 1: Belum ada evaluator -->
+    <h3 class="text-lg font-semibold mb-4 text-gray-800">Pilih Tindakan</h3>
+    <button onclick="openEvaluatorModal()" class="w-full text-left px-4 py-2 mb-3 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition">
+        <i class="fas fa-user-plus mr-2"></i>Penugasan Evaluator
+    </button>
+    <button onclick="openPerbaikanModal()" class="w-full text-left px-4 py-2 mb-3 bg-red-600 text-white rounded hover:bg-red-700 transition">
+        <i class="fas fa-edit mr-2"></i>Perbaikan
+    </button>
+    <button onclick="verifikasiDokumen()" class="w-full text-left px-4 py-2 mb-3 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+        <i class="fas fa-check-circle mr-2"></i>Verifikasi
+    </button>
+@elseif($hasEvaluator && $hasEvaluation)
+    <!-- Kondisi 2: Sudah ada evaluator & sudah evaluasi -->
+    <h3 class="text-lg font-semibold mb-4 text-gray-800">Proses Verifikasi</h3>
+    <button onclick="openEvaluatorModal()" class="w-full text-left px-4 py-2 mb-3 bg-orange-500 text-white rounded hover:bg-orange-600 transition">
+        <i class="fas fa-user-edit mr-2"></i>Penugasan Ulang Evaluator
+    </button>
+    <button onclick="openPerbaikanModal()" class="w-full text-left px-4 py-2 mb-3 bg-red-600 text-white rounded hover:bg-red-700 transition">
+        <i class="fas fa-edit mr-2"></i>Perbaikan
+    </button>
+    <button onclick="verifikasiDokumen()" class="w-full text-left px-4 py-2 mb-3 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+        <i class="fas fa-check-circle mr-2"></i>Verifikasi
+    </button>
+@endif
+
                     
                     <button onclick="closeKirimHasilModal()" class="absolute top-0 right-2 font-bold text-xl text-gray-600 hover:text-gray-900 dark:hover:text-white">&times;</button>
                 </div>

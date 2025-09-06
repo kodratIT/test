@@ -23,8 +23,8 @@
 <body class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">
   <div class="absolute w-full dark:hidden min-h-75" style="background-color: #08A04B;"></div>
   @include('components.sidebar')
- <main id="main-content" class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl">
- <!-- Navbar -->
+  <main id="main-content" class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl">
+    <!-- Navbar -->
     <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all ease-in shadow-none duration-250 rounded-2xl lg:flex-nowrap lg:justify-start" navbar-main navbar-scroll="false">
       <div class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit">
         <nav>
@@ -42,7 +42,7 @@
           <div class="flex items-center md:ml-auto md:pr-4">
             <div class="relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease">
               <span class="text-sm ease leading-5.6 absolute z-50 -ml-px flex h-full items-center whitespace-nowrap rounded-lg rounded-tr-none rounded-br-none border border-r-0 border-transparent bg-transparent py-2 px-2.5 text-center font-normal text-slate-500 transition-all">
-                
+
               </span>
             </div>
           </div>
@@ -62,7 +62,7 @@
             <li class="relative flex items-center pr-2">
               <p class="hidden transform-dropdown-show"></p>
               <a href="javascript:;" class="block p-0 text-sm text-white transition-all ease-nav-brand" dropdown-trigger aria-expanded="false">
-               
+
               </a>
 
               <ul dropdown-menu class="text-sm transform-dropdown before:font-awesome before:leading-default before:duration-350 before:ease lg:shadow-3xl duration-250 min-w-44 before:sm:right-8 before:text-5.5 pointer-events-none absolute right-0 top-0 z-50 origin-top list-none rounded-lg border-0 border-solid border-transparent dark:shadow-dark-xl dark:bg-slate-850 bg-white bg-clip-padding px-2 py-4 text-left text-slate-500 opacity-0 transition-all before:absolute before:right-2 before:left-auto before:top-0 before:z-50 before:inline-block before:font-normal before:text-white before:antialiased before:transition-all before:content-['\f0d8'] sm:-mr-6 lg:absolute lg:right-0 lg:left-auto lg:mt-2 lg:block lg:cursor-pointer">
@@ -75,28 +75,28 @@
     </nav>
 
     <!-- end Navbar -->
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const toggleButton = document.querySelector('[sidenav-trigger]');
-    const sidebar = document.getElementById('sidenav-main');
-    const mainContent = document.getElementById('main-content');
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const toggleButton = document.querySelector('[sidenav-trigger]');
+        const sidebar = document.getElementById('sidenav-main');
+        const mainContent = document.getElementById('main-content');
 
-    toggleButton.addEventListener('click', function () {
-      // Toggle sembunyikan sidebar
-      sidebar.classList.toggle('-translate-x-full');
-      sidebar.classList.toggle('translate-x-0');
+        toggleButton.addEventListener('click', function() {
+          // Toggle sembunyikan sidebar
+          sidebar.classList.toggle('-translate-x-full');
+          sidebar.classList.toggle('translate-x-0');
 
-      // Toggle kontainer utama (main-content)
-      if (mainContent.classList.contains('xl:ml-68')) {
-        mainContent.classList.remove('xl:ml-68');
-        mainContent.classList.add('ml-0');
-      } else {
-        mainContent.classList.remove('ml-0');
-        mainContent.classList.add('xl:ml-68');
-      }
-    });
-  });
-</script>
+          // Toggle kontainer utama (main-content)
+          if (mainContent.classList.contains('xl:ml-68')) {
+            mainContent.classList.remove('xl:ml-68');
+            mainContent.classList.add('ml-0');
+          } else {
+            mainContent.classList.remove('ml-0');
+            mainContent.classList.add('xl:ml-68');
+          }
+        });
+      });
+    </script>
     <div class="w-full px-6 py-6 mx-auto">
 
       <!-- Tempatkan dalam halaman Laravel kamu -->
@@ -109,7 +109,7 @@
             <div class="border-black/12.5 mb-0 rounded-t-2xl border-b-0 border-solid p-6 pt-4 pb-0">
               <h1 class="text-lg mb-4 font-bold text-black capitalize dark:text-white">PROGRES PENGAJUAN</h1>
               <p class="mb-0 text-lg leading-normal dark:text dark:opacity-60">
-               
+
                 <!-- <span class="font-semibold">2025</span> -->
               </p>
             </div>
@@ -132,75 +132,72 @@
 
                 <!-- Step 2 -->
                 <div class="cursor-pointer" onclick="showStep(2)">
-                  <div class="relative mb-2 w-10 h-10 mx-auto 
-                    {{ ($currentStep >= 2 && ($stats['sedang_evaluasi'] ?? 0) > 0) ? 'bg-green-500' : 'bg-gray-300' }} 
-                    text-white rounded-full flex items-center justify-center">
+                  <div class="relative mb-2 w-10 h-10 mx-auto bg-green-500 
+    text-white rounded-full flex items-center justify-center">
                     {{ $stats['sedang_evaluasi'] ?? 0 }}
                   </div>
-                  <div class="text-xs 
-                    {{ ($currentStep >= 2 && ($stats['sedang_evaluasi'] ?? 0) > 0) ? 'text-green-600' : 'text-gray-500' }} 
-                    font-semibold mt-1">Dievaluasi</div>
+                  <div class="text-xs text-green-600 font-semibold mt-1">
+                    Dievaluasi
+                  </div>
                 </div>
 
                 <!-- Step 3 -->
                 <div class="cursor-pointer" onclick="showStep(3)">
-                  <div class="relative mb-2 w-10 h-10 mx-auto 
-                    {{ ($currentStep >= 3 && ($stats['siap_validasi'] ?? 0) > 0) ? 'bg-green-500' : 'bg-gray-300' }} 
-                    text-white rounded-full flex items-center justify-center">
+                  <div class="relative mb-2 w-10 h-10 mx-auto bg-green-500 
+    text-white rounded-full flex items-center justify-center">
                     {{ $stats['siap_validasi'] ?? 0 }}
                   </div>
-                  <div class="text-xs 
-                    {{ ($currentStep >= 3 && ($stats['siap_validasi'] ?? 0) > 0) ? 'text-green-600' : 'text-gray-500' }} 
-                    font-semibold mt-1">Diverifikasi</div>
-                </div>
-
-                <!-- Step 4 -->
-                <div class="cursor-pointer" onclick="showStep(4)">
-                  <div class="relative mb-2 w-10 h-10 mx-auto 
-                    {{ ($currentStep >= 4 && ($stats['selesai'] ?? 0) > 0) ? 'bg-green-600' : 'bg-gray-300' }} 
-                    text-white rounded-full flex items-center justify-center">
-                    {{ $stats['selesai'] ?? 0 }}
+                  <div class="text-xs text-green-600 font-semibold mt-1">
+                    Diverifikasi
                   </div>
-                  <div class="text-xs 
-                    {{ ($currentStep >= 4 && ($stats['selesai'] ?? 0) > 0) ? 'text-green-600' : 'text-gray-500' }} 
-                    font-semibold mt-1">Lembar Pengesahan</div>
                 </div>
 
+                  <!-- Step 4 -->
+                  <div class="cursor-pointer" onclick="showStep(4)">
+                    <div class="relative mb-2 w-10 h-10 mx-auto bg-green-500 
+    text-white rounded-full flex items-center justify-center">
+                      {{ $stats['selesai'] ?? 0 }}
+                    </div>
+                    <div class="text-xs text-green-600 font-semibold mt-1">
+                      Lembar Pengesahan
+                    </div>
+                  </div>
+
+                </div>
               </div>
-            </div>
 
 
               <!-- Konten Surat -->
               <div id="suratContent" class="mt-6 p-4 bg-gray-100 rounded-xl border border-gray-300 text-sm text-gray-700">
                 @if($latestPengajuan)
-                  <strong>Status Terbaru:</strong> 
-                  @switch($latestPengajuan->status)
-                    @case('proses evaluasi')
-                      Pengajuan Anda sedang menunggu evaluasi. Diajukan pada {{ $latestPengajuan->created_at->format('d M Y') }}.
-                      @break
-                    @case('evaluasi')
-                      Pengajuan Anda sedang dievaluasi oleh {{ $latestPengajuan->evaluator->name ?? 'evaluator' }}.
-                      @break
-                    @case('validasi')
-                      Pengajuan Anda sedang diverifikasi oleh kepala bidang.
-                      @break
-                    @case('pengesahan')
-                      Pengajuan Anda sedang menunggu pengesahan oleh kepala dinas.
-                      @break
-                    @case('disetujui kadis')
-                      Selamat! Pengajuan Anda telah disetujui oleh kepala dinas dan lembar pengesahan siap diunduh.
-                      @break
-                    @default
-                      Status pengajuan Anda: {{ ucfirst($latestPengajuan->status) }}.
-                  @endswitch
+                <strong>Status Terbaru:</strong>
+                @switch($latestPengajuan->status)
+                @case('proses evaluasi')
+                Pengajuan Anda sedang menunggu evaluasi. Diajukan pada {{ $latestPengajuan->created_at->format('d M Y') }}.
+                @break
+                @case('evaluasi')
+                Pengajuan Anda sedang dievaluasi oleh {{ $latestPengajuan->evaluator->name ?? 'evaluator' }}.
+                @break
+                @case('validasi')
+                Pengajuan Anda sedang diverifikasi oleh kepala bidang.
+                @break
+                @case('pengesahan')
+                Pengajuan Anda sedang menunggu pengesahan oleh kepala dinas.
+                @break
+                @case('disetujui kadis')
+                Selamat! Pengajuan Anda telah disetujui oleh kepala dinas dan lembar pengesahan siap diunduh.
+                @break
+                @default
+                Status pengajuan Anda: {{ ucfirst($latestPengajuan->status) }}.
+                @endswitch
                 @else
-                  Anda belum memiliki pengajuan. Silakan buat pengajuan baru.
+                Anda belum memiliki pengajuan. Silakan buat pengajuan baru.
                 @endif
               </div>
             </div>
-            
+
             <!-- Dashboard Cards -->
-           
+
             <!-- Recent Pengajuan
             @if($recentPengajuan && $recentPengajuan->count() > 0)
             <div class="w-full px-6 py-4">
@@ -300,8 +297,8 @@
           <!-- -right-90 in loc de 0-->
           <div fixed-plugin-card class="z-sticky backdrop-blur-2xl backdrop-saturate-200 dark:bg-slate-850/80 shadow-3xl w-90 ease -right-90 fixed top-0 left-auto flex h-full min-w-0 flex-col break-words rounded-none border-0 bg-white/80 bg-clip-border px-2.5 duration-200">
             <div class="px-6 pt-4 pb-0 mb-0 border-b-0 rounded-t-2xl">
-       
-       
+
+
               <!-- End Toggle Button -->
             </div>
             <hr class="h-px mx-0 my-1 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent" />
