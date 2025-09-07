@@ -111,13 +111,24 @@ class LaporanBerkalaKepalaBidangController extends Controller
         // History evaluasi (untuk keperluan log)
         $evaluasiHistory = $evaluasiPengajuan;
 
-        // Load data evaluasi per section dari metadata (mengikuti struktur yang sama dengan evaluator)
-        $currentEvaluation = EvaluasiPengajuan::where('pengajuan_id', $id)
-            ->where('evaluator_id', $pengajuan->evaluator_id)
-            ->latest()
-            ->first();
-            
+        // Load data evaluasi per section dari metadata - support both scenarios
+        $currentEvaluation = null;
         $evaluasiData = [];
+        
+        if ($pengajuan->evaluator_id) {
+            // Case 1: Normal flow - ada evaluator yang ditugaskan
+            $currentEvaluation = EvaluasiPengajuan::where('pengajuan_id', $id)
+                ->where('evaluator_id', $pengajuan->evaluator_id)
+                ->latest()
+                ->first();
+        } else {
+            // Case 2: Kabid-only evaluation - cari evaluasi yang dibuat oleh Kabid
+            $currentEvaluation = EvaluasiPengajuan::where('pengajuan_id', $id)
+                ->where('evaluator_id', Auth::id()) // Evaluasi yang dibuat Kabid
+                ->latest()
+                ->first();
+        }
+        
         if ($currentEvaluation && $currentEvaluation->metadata) {
             $metadata = is_string($currentEvaluation->metadata) 
                 ? json_decode($currentEvaluation->metadata, true) 
@@ -538,20 +549,50 @@ class LaporanBerkalaKepalaBidangController extends Controller
         try {
             $pengajuan = Pengajuan::findOrFail($id);
             
-            // Get or create evaluation record for this pengajuan
-            $evaluasi = EvaluasiPengajuan::where('pengajuan_id', $id)
-                ->where('evaluator_id', $pengajuan->evaluator_id)
-                ->latest()
-                ->first();
+            \Log::info('Kabid saveSection - Pengajuan details', [
+                'pengajuan_id' => $pengajuan->id,
+                'evaluator_id' => $pengajuan->evaluator_id,
+                'status' => $pengajuan->status
+            ]);
             
-            if (!$evaluasi) {
-                // If no evaluation exists, create one
-                $evaluasi = EvaluasiPengajuan::create([
+            // Get or create evaluation record for this pengajuan
+            // Allow Kabid to evaluate even if no evaluator is assigned
+            if ($pengajuan->evaluator_id) {
+                // Case 1: Normal flow - evaluator sudah ditugaskan
+                $evaluasi = EvaluasiPengajuan::where('pengajuan_id', $id)
+                    ->where('evaluator_id', $pengajuan->evaluator_id)
+                    ->latest()
+                    ->first();
+                
+                if (!$evaluasi) {
+                    $evaluasi = EvaluasiPengajuan::create([
+                        'pengajuan_id' => $id,
+                        'evaluator_id' => $pengajuan->evaluator_id,
+                        'status' => 'draft',
+                        'metadata' => json_encode(['sections' => []])
+                    ]);
+                }
+            } else {
+                // Case 2: Special flow - Kabid mengevaluasi tanpa evaluator yang ditugaskan
+                // Buat evaluasi dengan evaluator_id = Auth::id() (Kabid)
+                \Log::info('Kabid saveSection - Creating evaluation without assigned evaluator', [
                     'pengajuan_id' => $id,
-                    'evaluator_id' => $pengajuan->evaluator_id,
-                    'status' => 'draft',
-                    'metadata' => json_encode(['sections' => []])
+                    'kabid_id' => Auth::id()
                 ]);
+                
+                $evaluasi = EvaluasiPengajuan::where('pengajuan_id', $id)
+                    ->where('evaluator_id', Auth::id()) // Gunakan ID Kabid sebagai evaluator
+                    ->latest()
+                    ->first();
+                
+                if (!$evaluasi) {
+                    $evaluasi = EvaluasiPengajuan::create([
+                        'pengajuan_id' => $id,
+                        'evaluator_id' => Auth::id(), // Kabid bertindak sebagai evaluator
+                        'status' => 'draft_by_kabid',
+                        'metadata' => json_encode(['sections' => [], 'evaluated_by_kabid_only' => true])
+                    ]);
+                }
             }
             
             // Get current metadata
@@ -567,15 +608,27 @@ class LaporanBerkalaKepalaBidangController extends Controller
                 $metadata['sections'] = [];
             }
             
-            // Update the specific section with the same structure as evaluator
-            $metadata['sections'][$request->section] = [
+            // Update the specific section with appropriate metadata based on scenario
+            $sectionData = [
                 'catatan' => $request->catatan,
                 'status' => $request->status,
                 'evaluated_at' => now()->toISOString(),
-                'evaluator_id' => $pengajuan->evaluator_id, // Keep original evaluator
                 'updated_by_kabid' => Auth::id(),
                 'kabid_updated_at' => now()->toISOString()
             ];
+            
+            // Add evaluator_id info based on scenario
+            if ($pengajuan->evaluator_id) {
+                // Case 1: Normal flow - ada evaluator yang ditugaskan
+                $sectionData['evaluator_id'] = $pengajuan->evaluator_id;
+                $sectionData['evaluation_type'] = 'kabid_review'; // Kabid me-review evaluasi evaluator
+            } else {
+                // Case 2: Kabid-only evaluation - tidak ada evaluator ditugaskan
+                $sectionData['evaluator_id'] = Auth::id(); // Kabid bertindak sebagai evaluator
+                $sectionData['evaluation_type'] = 'kabid_direct'; // Kabid langsung mengevaluasi
+            }
+            
+            $metadata['sections'][$request->section] = $sectionData;
             
             $metadata['last_updated_by_kabid'] = Auth::id();
             $metadata['last_updated_at'] = now()->toISOString();
@@ -586,15 +639,33 @@ class LaporanBerkalaKepalaBidangController extends Controller
                 'updated_at' => now()
             ]);
             
-            // Log activity
-            $this->logActivity($pengajuan->id, 'section_updated_by_kabid', 
-                'Section ' . $request->section . ' diupdate oleh Kabid');
+            // Log activity with detailed info
+            $activityDescription = $pengajuan->evaluator_id 
+                ? 'Section ' . $request->section . ' diupdate oleh Kabid (review evaluator)'
+                : 'Section ' . $request->section . ' dievaluasi langsung oleh Kabid (tanpa evaluator)';
+                
+            $this->logActivity($pengajuan->id, 'section_updated_by_kabid', $activityDescription);
+            
+            \Log::info('Kabid saveSection - Successfully saved', [
+                'pengajuan_id' => $id,
+                'section' => $request->section,
+                'status' => $request->status,
+                'evaluation_type' => $pengajuan->evaluator_id ? 'kabid_review' : 'kabid_direct',
+                'evaluasi_record_id' => $evaluasi->id,
+                'catatan_length' => strlen($request->catatan ?? ''),
+                'timestamp' => now()->toISOString()
+            ]);
             
             DB::commit();
             
+            $successMessage = $pengajuan->evaluator_id 
+                ? 'Data evaluasi berhasil disimpan (review)'
+                : 'Data evaluasi berhasil disimpan (evaluasi langsung)';
+            
             return response()->json([
                 'success' => true,
-                'message' => 'Data evaluasi berhasil disimpan'
+                'message' => $successMessage,
+                'evaluation_type' => $pengajuan->evaluator_id ? 'review' : 'direct'
             ]);
             
         } catch (\Exception $e) {

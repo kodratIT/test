@@ -1744,11 +1744,10 @@
                     // dd(['status' => $status, 'hasEvaluator' => $hasEvaluator, 'hasEvaluation' => $hasEvaluation]);
                     
                     // Logika tombol berdasarkan workflow:
-                    // 1. Status 'proses evaluasi' dan belum ada evaluator -> Tombol aktif (untuk penugasan pertama)
-                    // 2. Status 'proses evaluasi' dan sudah ditugaskan -> Tombol disabled (untuk evaluator)
-                    // 3. Status 'evaluasi' (sudah dievaluasi) -> Tombol aktif (untuk Kabid/Kadis verifikasi)
-                    // 4. Status 'validasi' -> Tombol aktif (untuk Kadis)
-                    // 5. Status 'perbaikan', 'pengesahan', 'disetujui kadis' -> Tombol disabled
+                    // 1. Status 'proses evaluasi' -> Tombol SELALU AKTIF (Kabid bisa assign/reassign/evaluasi)
+                    // 2. Status 'evaluasi' (sudah dievaluasi) -> Tombol aktif (untuk Kabid/Kadis verifikasi)
+                    // 3. Status 'validasi' -> Tombol aktif khusus untuk Kadis saja
+                    // 4. Status 'perbaikan', 'pengesahan', 'disetujui kadis' -> Tombol disabled (final)
                     
                     $canProcess = false;
                     $buttonClass = 'bg-gray-400 text-gray-600 cursor-not-allowed';
@@ -1758,15 +1757,35 @@
                     // Debug - bisa dihapus setelah testing
                     // dd(['status' => $status, 'userRole' => $currentUserRole, 'hasEvaluator' => $hasEvaluator, 'hasEvaluation' => $hasEvaluation]);
                     
+                    // DEBUG: Log untuk troubleshooting button disabled
+                    if (app()->environment('local')) {
+                        \Log::info('Button Logic Debug', [
+                            'pengajuan_id' => $pengajuan->id,
+                            'status' => $status,
+                            'userRole' => $currentUserRole,
+                            'hasEvaluator' => $hasEvaluator,
+                            'evaluator_id' => $pengajuan->evaluator_id ?? 'NULL',
+                            'hasEvaluation' => $hasEvaluation,
+                            'currentEvaluation_exists' => $currentEvaluation ? 'YES' : 'NO'
+                        ]);
+                    }
+                    
                     // Periksa status final terlebih dahulu (prioritas tertinggi)
                     if (in_array($status, ['perbaikan', 'pengesahan', 'disetujui kadis'])) {
                         // Status final, tidak bisa diproses lagi
                         $canProcess = false;
                         $statusMessage = 'Dokumen dalam status ' . $status;
                     } elseif ($status === 'proses evaluasi') {
-                        // Status proses evaluasi - tombol selalu aktif
-                        $canProcess = true;
-                        $buttonClass = 'bg-blue-500 text-white hover:bg-blue-600';
+                        // Cek apakah sudah ada evaluator ditugaskan
+                        if ($hasEvaluator) {
+                            // Status proses evaluasi dengan evaluator sudah ditugaskan - disabled
+                            $canProcess = false;
+                            $statusMessage = 'Menunggu evaluasi';
+                        } else {
+                            // Status proses evaluasi tanpa evaluator - aktif untuk penugasan
+                            $canProcess = true;
+                            $buttonClass = 'bg-blue-500 text-white hover:bg-blue-600';
+                        }
                     } elseif ($status === 'evaluasi') {
                         // Sudah dievaluasi - aktif untuk Kabid/Kadis (verifikasi/perbaikan)
                         $canProcess = true;
@@ -1779,6 +1798,22 @@
                         // Status validasi - disabled untuk selain Kadis
                         $canProcess = false;
                         $statusMessage = 'Menunggu proses validasi oleh Kadis';
+                    } else {
+                        // Kondisi tidak terduga - default disabled untuk keamanan
+                        $canProcess = false;
+                        $statusMessage = 'Status tidak dapat diproses: ' . $status;
+                        
+                        // DEBUG: Log kondisi yang tidak tertangani
+                        if (app()->environment('local')) {
+                            \Log::warning('UNHANDLED STATUS - Button DISABLED', [
+                                'pengajuan_id' => $pengajuan->id,
+                                'status' => $status,
+                                'userRole' => $currentUserRole,
+                                'hasEvaluator' => $hasEvaluator,
+                                'hasEvaluation' => $hasEvaluation,
+                                'statusMessage' => $statusMessage
+                            ]);
+                        }
                     }
                     @endphp
                     
@@ -1839,8 +1874,25 @@
     <button onclick="verifikasiDokumen()" class="w-full text-left px-4 py-2 mb-3 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
         <i class="fas fa-check-circle mr-2"></i>Verifikasi
     </button>
+@elseif($hasEvaluator && !$hasEvaluation)
+    <!-- Kondisi 2: Sudah ada evaluator tapi belum evaluasi -->
+    <h3 class="text-lg font-semibold mb-4 text-gray-800">Evaluator Sudah Ditugaskan</h3>
+    <div class="mb-3 p-3 bg-blue-50 rounded border-l-4 border-blue-400">
+        <p class="text-sm font-medium text-blue-800">Evaluator:</p>
+        <p class="text-sm text-blue-600">{{ $pengajuan->evaluator->name ?? 'N/A' }}</p>
+        <p class="text-xs text-blue-500 mt-1">Status: Menunggu evaluasi</p>
+    </div>
+    <button onclick="openEvaluatorModal()" class="w-full text-left px-4 py-2 mb-3 bg-orange-500 text-white rounded hover:bg-orange-600 transition">
+        <i class="fas fa-user-edit mr-2"></i>Penugasan Ulang Evaluator
+    </button>
+    <button onclick="openPerbaikanModal()" class="w-full text-left px-4 py-2 mb-3 bg-red-600 text-white rounded hover:bg-red-700 transition">
+        <i class="fas fa-edit mr-2"></i>Perbaikan
+    </button>
+    <button onclick="verifikasiDokumen()" class="w-full text-left px-4 py-2 mb-3 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+        <i class="fas fa-check-circle mr-2"></i>Verifikasi
+    </button>
 @elseif($hasEvaluator && $hasEvaluation)
-    <!-- Kondisi 2: Sudah ada evaluator & sudah evaluasi -->
+    <!-- Kondisi 3: Sudah ada evaluator & sudah evaluasi -->
     <h3 class="text-lg font-semibold mb-4 text-gray-800">Proses Verifikasi</h3>
     <button onclick="openEvaluatorModal()" class="w-full text-left px-4 py-2 mb-3 bg-orange-500 text-white rounded hover:bg-orange-600 transition">
         <i class="fas fa-user-edit mr-2"></i>Penugasan Ulang Evaluator
