@@ -265,12 +265,13 @@ class LaporanBerkalaKadisController extends Controller
     }
     
     /**
-     * Export data laporan berkala ke Excel khusus untuk Kadis
+     * Export data laporan berkala ke Excel - menggunakan export class yang sama dengan Kabid
      */
     public function exportExcel()
     {
         try {
-            $export = new \App\Exports\LaporanBerkalaKadisExport();
+            // Gunakan export class yang sama dengan Kabid untuk konsistensi data
+            $export = new \App\Exports\LaporanBerkalaKabidExport();
             return $export->download();
         } catch (\Exception $e) {
             \Log::error('Error exporting Excel for Kadis: ' . $e->getMessage());
