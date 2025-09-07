@@ -72,7 +72,10 @@ class LaporanBerkalaKadisExport
                 ->orderBy('updated_at', 'desc')
                 ->orderBy('created_at', 'desc')
                 ->get();
+            
+            \Log::info('Kadis Excel Export: Found ' . $pengajuans->count() . ' records');
         } catch (\Exception $e) {
+            \Log::error('Kadis Excel Export: Database error: ' . $e->getMessage());
             // Fallback to empty collection if database fails
             $pengajuans = collect([]);
         }
@@ -153,35 +156,59 @@ class LaporanBerkalaKadisExport
     public function download()
     {
         try {
+            \Log::info('Kadis Excel Export: Starting export process');
             $spreadsheet = $this->export();
             $filename = 'Laporan_Berkala_Kadis_' . date('Y-m-d_H-i-s') . '.xlsx';
+            \Log::info('Kadis Excel Export: Spreadsheet created, filename: ' . $filename);
 
-            // Create writer
+            // Create temporary file to save Excel
+            $tempFile = tempnam(sys_get_temp_dir(), 'kadis_export_');
+            \Log::info('Kadis Excel Export: Temp file created: ' . $tempFile);
+            
             $writer = new Xlsx($spreadsheet);
+            $writer->save($tempFile);
+            \Log::info('Kadis Excel Export: File written to temp location');
 
-            // Clean any output buffer
-            if (ob_get_level()) {
-                ob_end_clean();
+            // Read file content
+            $fileContent = file_get_contents($tempFile);
+            $fileSize = strlen($fileContent);
+            \Log::info('Kadis Excel Export: File content read, size: ' . $fileSize . ' bytes');
+            
+            // Clean up temporary file
+            unlink($tempFile);
+            
+            // Verify file content is valid
+            if (empty($fileContent)) {
+                throw new \Exception('Generated Excel file is empty');
+            }
+            
+            if ($fileSize < 1000) {
+                \Log::warning('Kadis Excel Export: File seems unusually small: ' . $fileSize . ' bytes');
             }
 
-            // Set headers for download
-            return response()->streamDownload(function() use ($writer) {
-                $writer->save('php://output');
-            }, $filename, [
-                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                'Cache-Control' => 'max-age=0',
-                'Cache-Control' => 'max-age=1', 
-                'Expires' => 'Mon, 26 Jul 1997 05:00:00 GMT',
-                'Last-Modified' => gmdate('D, d M Y H:i:s') . ' GMT',
-                'Cache-Control' => 'cache, must-revalidate',
-                'Pragma' => 'public'
-            ]);
+            // Return proper response
+            return response($fileContent)
+                ->header('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+                ->header('Content-Disposition', 'attachment; filename="' . $filename . '"')
+                ->header('Content-Length', strlen($fileContent))
+                ->header('Cache-Control', 'no-cache, no-store, must-revalidate')
+                ->header('Pragma', 'no-cache')
+                ->header('Expires', '0');
+            
         } catch (\Exception $e) {
             \Log::error('Excel export error for Kadis: ' . $e->getMessage());
-            return response()->json([
-                'success' => false,
-                'message' => 'Error generating Excel file: ' . $e->getMessage()
-            ], 500);
+            \Log::error('Stack trace: ' . $e->getTraceAsString());
+            
+            // Return JSON error for AJAX calls
+            if (request()->wantsJson() || request()->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Error generating Excel file: ' . $e->getMessage()
+                ], 500);
+            }
+            
+            // Return redirect with error for regular requests
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat mengunduh file Excel: ' . $e->getMessage());
         }
     }
 }

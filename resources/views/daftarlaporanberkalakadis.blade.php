@@ -17,12 +17,32 @@
   <!-- Popper -->
   <script src="https://unpkg.com/@popperjs/core@2"></script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!-- Main Styling -->
   <link href="{{ asset('assets/css/argon-dashboard-tailwind.css?v=1.0.1') }}" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   
-  <!-- Custom Styles for SweetAlert2 -->
+  <!-- Custom SweetAlert Styles -->
   <style>
+    .swal-custom-popup {
+      background-color: #ffffff !important;
+      color: #333333 !important;
+    }
+    .swal-custom-title {
+      color: #059669 !important;
+      font-weight: 600 !important;
+    }
+    .swal-custom-content {
+      color: #374151 !important;
+      font-size: 14px !important;
+    }
+    .swal2-popup .swal2-title {
+      color: #059669 !important;
+    }
+    .swal2-popup .swal2-html-container {
+      color: #374151 !important;
+    }
+    
+    /* Existing SweetAlert2 button styles */
     .swal2-confirm-custom {
       background-color: #22c55e !important;
       color: white !important;
@@ -726,7 +746,12 @@ function unduhDataKadis() {
         title: 'Download Dimulai',
         text: 'File Excel sedang diproses...',
         timer: 2000,
-        showConfirmButton: false
+        showConfirmButton: false,
+        customClass: {
+            popup: 'swal-custom-popup',
+            title: 'swal-custom-title',
+            content: 'swal-custom-content'
+        }
     });
     
     try {
@@ -757,7 +782,12 @@ function unduhDataKadis() {
                     title: 'Download Selesai',
                     text: 'File Excel berhasil diunduh!',
                     timer: 3000,
-                    showConfirmButton: false
+                    showConfirmButton: false,
+                    customClass: {
+                        popup: 'swal-custom-popup',
+                        title: 'swal-custom-title',
+                        content: 'swal-custom-content'
+                    }
                 });
             },
             error: function(xhr, status, error) {
@@ -765,7 +795,12 @@ function unduhDataKadis() {
                 Swal.fire({
                     icon: 'error',
                     title: 'Download Gagal',
-                    text: 'Terjadi kesalahan saat mengunduh file Excel: ' + error
+                    text: 'Terjadi kesalahan saat mengunduh file Excel: ' + error,
+                    customClass: {
+                        popup: 'swal-custom-popup',
+                        title: 'text-red-600 font-semibold',
+                        content: 'swal-custom-content'
+                    }
                 });
             },
             complete: function() {
@@ -788,7 +823,12 @@ function unduhDataKadis() {
         Swal.fire({
             icon: 'error',
             title: 'Download Gagal',
-            text: 'Terjadi kesalahan saat mengunduh file Excel'
+            text: 'Terjadi kesalahan saat mengunduh file Excel',
+            customClass: {
+                popup: 'swal-custom-popup',
+                title: 'text-red-600 font-semibold',
+                content: 'swal-custom-content'
+            }
         });
     }
 }
