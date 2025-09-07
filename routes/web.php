@@ -157,6 +157,9 @@ Route::middleware(['auth', 'is_evaluator'])->group(function () {
 });
 
 
+// Temporary: Export route outside middleware untuk testing (MOVE BACK IN PRODUCTION)
+Route::get('/daftarlaporanberkalakadis/export-excel', [LaporanBerkalaKadisController::class, 'exportExcel'])->name('kadis.laporan.export.excel');
+
 //kadis
 Route::middleware(['auth', 'is_kadis'])->group(function () {
     Route::get('/profilevalidator', [IdentitasTimAdminController::class, 'showProfile'])->name('profilevalidator');
@@ -164,7 +167,6 @@ Route::middleware(['auth', 'is_kadis'])->group(function () {
     // Daftar laporan berkala untuk Kadis - hanya yang sudah divalidasi Kabid
     Route::get('/daftarlaporanberkalakadis', [LaporanBerkalaKadisController::class, 'index'])->name('kadis.laporan.index');
     Route::get('/daftarlaporanberkalakadis/{id}', [LaporanBerkalaKadisController::class, 'show'])->name('kadis.laporan.show');
-    Route::get('/daftarlaporanberkalakadis/export-excel', [LaporanBerkalaKadisController::class, 'exportExcel'])->name('kadis.laporan.export.excel');
 
 
     // Aksi approval oleh Kadis

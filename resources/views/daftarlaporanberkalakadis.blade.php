@@ -736,6 +736,11 @@ function unduhDataKadis() {
     const button = document.getElementById('btn-unduh-data-kadis');
     const originalText = button.innerHTML;
     
+    // Debug: Check authentication status
+    console.log('Current user:', @json(auth()->user()));
+    console.log('Is authenticated:', @json(auth()->check()));
+    console.log('User role:', @json(auth()->user()->role_pengguna ?? 'not found'));
+    
     // Show loading state
     button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Mengunduh...';
     button.disabled = true;
