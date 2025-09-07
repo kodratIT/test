@@ -167,42 +167,25 @@ class LaporanBerkalaKabidExport
         try {
             \Log::info('Kabid Excel Export: Starting export process');
             $spreadsheet = $this->export();
-            $filename = 'Laporan_Berkala_Kabid_' . date('Y-m-d_H-i-s') . '.xlsx';
+            $filename = 'Laporan_Berkala_Kadis_' . date('Y-m-d_H-i-s') . '.xlsx'; // Fix filename untuk Kadis
             \Log::info('Kabid Excel Export: Spreadsheet created, filename: ' . $filename);
 
-            // Create temporary file to save Excel
-            $tempFile = tempnam(sys_get_temp_dir(), 'kabid_export_');
-            \Log::info('Kabid Excel Export: Temp file created: ' . $tempFile);
-            
             $writer = new Xlsx($spreadsheet);
-            $writer->save($tempFile);
-            \Log::info('Kabid Excel Export: File written to temp location');
-
-            // Read file content
-            $fileContent = file_get_contents($tempFile);
-            $fileSize = strlen($fileContent);
-            \Log::info('Kabid Excel Export: File content read, size: ' . $fileSize . ' bytes');
+            \Log::info('Kabid Excel Export: Writer created, streaming response');
             
-            // Clean up temporary file
-            unlink($tempFile);
-            
-            // Verify file content is valid
-            if (empty($fileContent)) {
-                throw new \Exception('Generated Excel file is empty');
-            }
-            
-            if ($fileSize < 1000) {
-                \Log::warning('Kabid Excel Export: File seems unusually small: ' . $fileSize . ' bytes');
-            }
-
-            // Return proper response
-            return response($fileContent)
-                ->header('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-                ->header('Content-Disposition', 'attachment; filename="' . $filename . '"')
-                ->header('Content-Length', strlen($fileContent))
-                ->header('Cache-Control', 'no-cache, no-store, must-revalidate')
-                ->header('Pragma', 'no-cache')
-                ->header('Expires', '0');
+            // Use streamDownload for AJAX blob compatibility
+            return response()->streamDownload(function() use ($writer) {
+                // Clean any output buffer
+                while (ob_get_level()) {
+                    ob_end_clean();
+                }
+                $writer->save('php://output');
+            }, $filename, [
+                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'Cache-Control' => 'no-cache, no-store, must-revalidate',
+                'Pragma' => 'no-cache',
+                'Expires' => '0'
+            ]);
             
         } catch (\Exception $e) {
             \Log::error('Excel export error for Kabid: ' . $e->getMessage());
