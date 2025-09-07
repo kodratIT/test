@@ -755,61 +755,71 @@ function unduhDataKadis() {
     });
     
     try {
-        // Use AJAX with jQuery to handle the export
-        $.ajax({
-            url: '/daftarlaporanberkalakadis/export-excel',
-            type: 'GET',
-            xhrFields: {
-                responseType: 'blob'
-            },
-            success: function(data) {
-                // Create blob URL and download
-                const blob = new Blob([data], {
-                    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-                });
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'Laporan_Berkala_Kadis_' + new Date().toISOString().slice(0, 19).replace(/:/g, '-') + '.xlsx';
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
-                document.body.removeChild(a);
-                
-                // Show success message
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Download Selesai',
-                    text: 'File Excel berhasil diunduh!',
-                    timer: 3000,
-                    showConfirmButton: false,
-                    customClass: {
-                        popup: 'swal-custom-popup',
-                        title: 'swal-custom-title',
-                        content: 'swal-custom-content'
-                    }
-                });
-            },
-            error: function(xhr, status, error) {
-                console.error('Download error:', error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Download Gagal',
-                    text: 'Terjadi kesalahan saat mengunduh file Excel: ' + error,
-                    customClass: {
-                        popup: 'swal-custom-popup',
-                        title: 'text-red-600 font-semibold',
-                        content: 'swal-custom-content'
-                    }
-                });
-            },
-            complete: function() {
-                // Reset button
-                setTimeout(() => {
-                    button.innerHTML = originalText;
-                    button.disabled = false;
-                }, 3000);
+        // Use Fetch API for better binary handling
+        fetch('/daftarlaporanberkalakadis/export-excel', {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
             }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.blob();
+        })
+        .then(blob => {
+            // Verify blob is valid
+            if (blob.size === 0) {
+                throw new Error('Downloaded file is empty');
+            }
+            
+            console.log('Downloaded blob size:', blob.size, 'bytes, type:', blob.type);
+            
+            // Create download
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Laporan_Berkala_Kadis_' + new Date().toISOString().slice(0, 19).replace(/:/g, '-') + '.xlsx';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+            
+            // Show success message
+            Swal.fire({
+                icon: 'success',
+                title: 'Download Selesai',
+                text: `File Excel berhasil diunduh! (${(blob.size/1024).toFixed(1)} KB)`,
+                timer: 3000,
+                showConfirmButton: false,
+                customClass: {
+                    popup: 'swal-custom-popup',
+                    title: 'swal-custom-title',
+                    content: 'swal-custom-content'
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Download error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Download Gagal',
+                text: 'Terjadi kesalahan saat mengunduh file Excel: ' + error.message,
+                customClass: {
+                    popup: 'swal-custom-popup',
+                    title: 'text-red-600 font-semibold',
+                    content: 'swal-custom-content'
+                }
+            });
+        })
+        .finally(() => {
+            // Reset button
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.disabled = false;
+            }, 3000);
         });
         
     } catch (error) {
