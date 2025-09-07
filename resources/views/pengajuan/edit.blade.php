@@ -220,7 +220,7 @@
                       @if($pengajuan->lampiran_izin_usaha)
                       <div class="mb-2 text-sm text-gray-600">
                         <i class="fas fa-file-pdf text-red-500 mr-1"></i>
-                        File saat ini: <a href="{{ asset('storage/' . $pengajuan->lampiran_izin_usaha) }}" target="_blank" class="text-blue-600 underline">Lihat file</a>
+                        File saat ini: <a href="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_izin_usaha]) }}" target="_blank" class="text-blue-600 underline">Lihat file</a>
                       </div>
                       @endif
                       <input id="lampiran_izin_usaha" name="lampiran_izin_usaha" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" onchange="previewFile(this)">
@@ -301,7 +301,7 @@
                       @if($pengajuan->lampiran_izin_lingkungan)
                       <div class="mb-2 text-sm text-gray-600">
                         <i class="fas fa-file-pdf text-red-500 mr-1"></i>
-                        File saat ini: <a href="{{ asset('storage/' . $pengajuan->lampiran_izin_lingkungan) }}" target="_blank" class="text-blue-600 underline">Lihat file</a>
+                        File saat ini: <a href="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_izin_lingkungan]) }}" target="_blank" class="text-blue-600 underline">Lihat file</a>
                       </div>
                       @endif
                       <input id="lampiran_izin_lingkungan" name="lampiran_izin_lingkungan" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" onchange="previewFile(this)">
@@ -433,7 +433,7 @@
                       @if($pengajuan->lampiran_slo)
                       <div class="mb-2 text-sm text-gray-600">
                         <i class="fas fa-file-pdf text-red-500 mr-1"></i>
-                        File saat ini: <a href="{{ asset('storage/' . $pengajuan->lampiran_slo) }}" target="_blank" class="text-blue-600 underline">Lihat file</a>
+                        File saat ini: <a href="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_slo]) }}" target="_blank" class="text-blue-600 underline">Lihat file</a>
                       </div>
                       @endif
                       <input id="lampiran_slo" name="lampiran_slo" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" onchange="previewFile(this)">
@@ -771,7 +771,7 @@
                       @if($pengajuan->lampiran_skttk)
                       <div class="mb-2 text-sm text-gray-600">
                         <i class="fas fa-file-pdf text-red-500 mr-1"></i>
-                        File saat ini: <a href="{{ asset('storage/' . $pengajuan->lampiran_skttk) }}" target="_blank" class="text-blue-600 underline">Lihat file</a>
+                        File saat ini: <a href="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_skttk]) }}" target="_blank" class="text-blue-600 underline">Lihat file</a>
                       </div>
                       @endif
                       <input id="lampiran_skttk" name="lampiran_skttk" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" onchange="previewFile(this)">
@@ -1170,7 +1170,7 @@
                       @if($pengajuan->lampiran_nameplate_mesin)
                       <div class="mb-2 text-sm text-gray-600">
                         <i class="fas fa-file-pdf text-red-500 mr-1"></i>
-                        File saat ini: <a href="{{ asset('storage/' . $pengajuan->lampiran_nameplate_mesin) }}" target="_blank" class="text-blue-600 underline">Lihat file</a>
+                        File saat ini: <a href="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_nameplate_mesin]) }}" target="_blank" class="text-blue-600 underline">Lihat file</a>
                       </div>
                       @endif
                       <input id="lampiran_nameplate_mesin" name="lampiran_nameplate_mesin" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" onchange="previewFile(this)">
@@ -1525,7 +1525,7 @@
                       @if($pengajuan->lampiran_nameplate_generator)
                       <div class="mb-2 text-sm text-gray-600">
                         <i class="fas fa-file-pdf text-red-500 mr-1"></i>
-                        File saat ini: <a href="{{ asset('storage/' . $pengajuan->lampiran_nameplate_generator) }}" target="_blank" class="text-blue-600 underline">Lihat file</a>
+                        File saat ini: <a href="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_nameplate_generator]) }}" target="_blank" class="text-blue-600 underline">Lihat file</a>
                       </div>
                       @endif
                       <input id="lampiran_nameplate_generator" name="lampiran_nameplate_generator" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" onchange="previewFile(this)">
@@ -2122,7 +2122,7 @@
                         @if($pengajuan->lampiran_tagihan_listrik)
                         <div class="mb-2 text-sm text-gray-600">
                           <i class="fas fa-file-pdf text-red-500 mr-1"></i>
-                          File saat ini: <a href="{{ asset('storage/' . $pengajuan->lampiran_tagihan_listrik) }}" target="_blank" class="text-blue-600 underline">Lihat file</a>
+                          File saat ini: <a href="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_tagihan_listrik]) }}" target="_blank" class="text-blue-600 underline">Lihat file</a>
                         </div>
                         @endif
                         <input id="lampiran_tagihan_listrik" name="lampiran_tagihan_listrik" type="file" accept=".pdf" class="border border-gray-300 p-2 rounded w-full" onchange="previewFile(this)">

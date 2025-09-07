@@ -188,20 +188,15 @@ Route::get('/pengajuan/{id}', [LaporanBerkalaKepalaBidangController::class, 'sho
 // Route untuk pengguna biasa - melihat detail pengajuan sendiri
 Route::get('/pengajuan/{id}/detail', [PengajuanController::class, 'show'])->name('pengajuan.detail');
 
-Route::get('/lampiran/{filename}', function ($filename) {
-    $path = storage_path('app/private/uploads/' . $filename);
-
-    if (!file_exists($path)) {
-        abort(404, 'File tidak ditemukan: ' . $path);
-    }
-
-    return response()->file($path);
-})->name('lampiran.show');
-
-Route::get('/lampiran/{file}', [LampiranController::class, 'show'])->name('lampiran.show');
 
 // Document routes - untuk download lembar pengesahan
 Route::middleware('auth')->group(function () {
+    // Route untuk mengakses lampiran PDF (harus login untuk akses)
+    // Menggunakan where untuk mengizinkan slash dalam parameter
+    Route::get('/lampiran/{file}', [LampiranController::class, 'show'])
+        ->where('file', '.*')
+        ->name('lampiran.show');
+    
     Route::get('/dokumen/lembar-pengesahan/{id}/download', [DocumentController::class, 'downloadLembarPengesahan'])
         ->name('dokumen.lembar-pengesahan.download');
     Route::get('/dokumen/lembar-pengesahan/{id}/preview', [DocumentController::class, 'previewLembarPengesahan'])
@@ -217,6 +212,33 @@ Route::middleware('auth')->group(function () {
     Route::get('/dokumen/pdf/{id}/preview', [DocumentController::class, 'previewPdf'])
         ->name('dokumen.pdf.preview');
 });
+
+// Test route untuk cek URL yang terbentuk
+Route::get('/test-url', function() {
+    $testPath = 'uploads/Vj5ynOkLgUp3ZQOec5fZzeVO038wxyr5QG3NqiE5.pdf';
+    $url = route('lampiran.show', ['file' => $testPath]);
+    
+    return response()->json([
+        'path' => $testPath,
+        'generated_url' => $url,
+        'file_exists' => file_exists(storage_path('app/private/' . $testPath))
+    ]);
+});
+
+// Debug route untuk test lampiran
+Route::get('/debug/lampiran/{path}', function($path) {
+    $filePath = storage_path('app/private/' . $path);
+    
+    return response()->json([
+        'requested_path' => $path,
+        'full_file_path' => $filePath,
+        'file_exists' => file_exists($filePath),
+        'is_readable' => is_readable($filePath),
+        'storage_private' => storage_path('app/private'),
+        'files_in_uploads' => is_dir(storage_path('app/private/uploads')) ? 
+            array_slice(scandir(storage_path('app/private/uploads')), 2, 5) : 'dir not found'
+    ]);
+})->where('path', '.*')->middleware('auth');
 
 // Debug route (remove in production)
 Route::get('/debug/document/{id}', function($id) {
