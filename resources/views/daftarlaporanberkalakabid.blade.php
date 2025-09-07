@@ -118,8 +118,8 @@
             <!-- Header -->
             <div class="p-4 flex justify-between items-center border-b border-gray-200">
               <h6 class="text-lg font-bold text-gray-700 uppercase tracking-wide">Daftar Laporan Berkala</h6>
-              <button onclick="" class="bg-green-600 text-white px-4 py-2 font-semibold text-sm rounded-lg shadow hover:bg-green-500 transition">
-                Unduh Data
+              <button onclick="unduhData()" id="btn-unduh-data" class="bg-green-600 text-white px-4 py-2 font-semibold text-sm rounded-lg shadow hover:bg-green-500 transition">
+                <i class="fas fa-download mr-2"></i>Unduh Data
               </button>
             </div>
 
@@ -601,6 +601,108 @@
           closeSuccessModal();
         }
       });
+      
+      // Function untuk unduh data Excel
+      function unduhData() {
+        const button = document.getElementById('btn-unduh-data');
+        const originalText = button.innerHTML;
+        
+        // Show loading state
+        button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Mengunduh...';
+        button.disabled = true;
+        
+        // Show starting notification
+        Swal.fire({
+          icon: 'info',
+          title: 'Download Dimulai',
+          text: 'File Excel sedang diproses...',
+          timer: 2000,
+          showConfirmButton: false,
+          customClass: {
+            popup: 'swal-custom-popup',
+            title: 'swal-custom-title',
+            content: 'swal-custom-content'
+          }
+        });
+        
+        try {
+          // Use AJAX to handle the export properly
+          $.ajax({
+            url: '/daftarlaporanberkalakabid/export-excel',
+            type: 'GET',
+            xhrFields: {
+              responseType: 'blob'
+            },
+            success: function(data) {
+              // Create blob URL and download
+              const blob = new Blob([data], {
+                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+              });
+              const url = window.URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = 'Laporan_Berkala_Kabid_' + new Date().toISOString().slice(0, 19).replace(/:/g, '-') + '.xlsx';
+              document.body.appendChild(a);
+              a.click();
+              window.URL.revokeObjectURL(url);
+              document.body.removeChild(a);
+              
+              // Show success message
+              Swal.fire({
+                icon: 'success',
+                title: 'Download Selesai',
+                text: 'File Excel berhasil diunduh!',
+                timer: 3000,
+                showConfirmButton: false,
+                customClass: {
+                  popup: 'swal-custom-popup',
+                  title: 'swal-custom-title',
+                  content: 'swal-custom-content'
+                }
+              });
+            },
+            error: function(xhr, status, error) {
+              console.error('Download error:', error);
+              Swal.fire({
+                icon: 'error',
+                title: 'Download Gagal',
+                text: 'Terjadi kesalahan saat mengunduh file Excel: ' + error,
+                customClass: {
+                  popup: 'swal-custom-popup',
+                  title: 'text-red-600 font-semibold',
+                  content: 'swal-custom-content'
+                }
+              });
+            },
+            complete: function() {
+              // Reset button
+              setTimeout(() => {
+                button.innerHTML = originalText;
+                button.disabled = false;
+              }, 3000);
+            }
+          });
+          
+        } catch (error) {
+          console.error('Download error:', error);
+          
+          // Reset button on error
+          button.innerHTML = originalText;
+          button.disabled = false;
+          
+          // Show error message
+          Swal.fire({
+            icon: 'error',
+            title: 'Download Gagal',
+            text: 'Terjadi kesalahan saat mengunduh file Excel',
+            customClass: {
+              popup: 'swal-custom-popup',
+              title: 'text-red-600 font-semibold',
+              content: 'swal-custom-content'
+            }
+          });
+        }
+      }
     </script>
 
 

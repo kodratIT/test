@@ -85,6 +85,7 @@ Route::middleware(['auth', 'is_kabid'])->group(function () {
         Route::get('/recent-activities', [LaporanBerkalaKepalaBidangController::class, 'getRecentActivities'])->name('laporan.kabid.recentActivities');
         Route::get('/pending-approvals', [LaporanBerkalaKepalaBidangController::class, 'getPendingApprovals'])->name('laporan.kabid.pendingApprovals');
         Route::get('/export', [LaporanBerkalaKepalaBidangController::class, 'export'])->name('laporan.kabid.export');
+        Route::get('/export-excel', [LaporanBerkalaKepalaBidangController::class, 'exportExcel'])->name('laporan.kabid.export.excel');
     });
 
     // Pengajuan management endpoints
@@ -163,6 +164,7 @@ Route::middleware(['auth', 'is_kadis'])->group(function () {
     // Daftar laporan berkala untuk Kadis - hanya yang sudah divalidasi Kabid
     Route::get('/daftarlaporanberkalakadis', [LaporanBerkalaKadisController::class, 'index'])->name('kadis.laporan.index');
     Route::get('/daftarlaporanberkalakadis/{id}', [LaporanBerkalaKadisController::class, 'show'])->name('kadis.laporan.show');
+    Route::get('/daftarlaporanberkalakadis/export-excel', [LaporanBerkalaKadisController::class, 'exportExcel'])->name('kadis.laporan.export.excel');
 
 
     // Aksi approval oleh Kadis

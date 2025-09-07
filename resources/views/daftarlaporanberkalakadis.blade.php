@@ -209,8 +209,8 @@
           <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl">
              <div class="p-4 pb-0 flex justify-between item-center mb-0 border-b border-b-gray-100 rounded-t-2xl">
               <h6 class="leading-normal text-lg font-bold mb-4 text-gray-700 uppercase">Daftar Laporan Berkala</h6>
-              <button onclick="" class="bg-green-600 mb-4 text-right text-white px-4 py-2 font-bold text-sm rounded-lg hover:bg-green-400 transition">
-                Unduh Data
+              <button onclick="unduhDataKadis()" id="btn-unduh-data-kadis" class="bg-green-600 mb-4 text-right text-white px-4 py-2 font-bold text-sm rounded-lg hover:bg-green-400 transition">
+                <i class="fas fa-download mr-2"></i>Unduh Data
               </button>
             </div>
             <!-- Responsive Table -->
@@ -710,6 +710,91 @@ function setujuiSurat(pengajuanId) {
         }
     });
 }
+
+// Function untuk unduh data Excel Kadis
+function unduhDataKadis() {
+    const button = document.getElementById('btn-unduh-data-kadis');
+    const originalText = button.innerHTML;
+    
+    // Show loading state
+    button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Mengunduh...';
+    button.disabled = true;
+    
+    // Show starting notification
+    Swal.fire({
+        icon: 'info',
+        title: 'Download Dimulai',
+        text: 'File Excel sedang diproses...',
+        timer: 2000,
+        showConfirmButton: false
+    });
+    
+    try {
+        // Use AJAX with jQuery to handle the export
+        $.ajax({
+            url: '/daftarlaporanberkalakadis/export-excel',
+            type: 'GET',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function(data) {
+                // Create blob URL and download
+                const blob = new Blob([data], {
+                    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'Laporan_Berkala_Kadis_' + new Date().toISOString().slice(0, 19).replace(/:/g, '-') + '.xlsx';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+                
+                // Show success message
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Download Selesai',
+                    text: 'File Excel berhasil diunduh!',
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error('Download error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Download Gagal',
+                    text: 'Terjadi kesalahan saat mengunduh file Excel: ' + error
+                });
+            },
+            complete: function() {
+                // Reset button
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                }, 3000);
+            }
+        });
+        
+    } catch (error) {
+        console.error('Download error:', error);
+        
+        // Reset button on error
+        button.innerHTML = originalText;
+        button.disabled = false;
+        
+        // Show error message
+        Swal.fire({
+            icon: 'error',
+            title: 'Download Gagal',
+            text: 'Terjadi kesalahan saat mengunduh file Excel'
+        });
+    }
+}
 </script>
+
+<!-- Add jQuery if not already included -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </html>

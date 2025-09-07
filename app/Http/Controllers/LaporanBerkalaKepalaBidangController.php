@@ -763,4 +763,21 @@ class LaporanBerkalaKepalaBidangController extends Controller
         
         return false;
     }
+    
+    /**
+     * Export data laporan berkala ke Excel
+     */
+    public function exportExcel()
+    {
+        try {
+            $export = new \App\Exports\LaporanBerkalaKabidExport();
+            return $export->download();
+        } catch (\Exception $e) {
+            \Log::error('Error exporting Excel: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat mengunduh data: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }
