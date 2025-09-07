@@ -416,14 +416,14 @@
                         <!-- Iframe dengan fitur zoom -->
                         <div class="w-full h-[500px] rounded overflow-hidden border">
                           <iframe
-                            src="{{ route('lampiran.show', basename($pengajuan->lampiran_izin_usaha)) }}"
+                            src="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_izin_usaha]) }}"
                             class="w-full h-full"
                             allowfullscreen>
                           </iframe>
                         </div>
                         <!-- Tombol Lihat di Tab Baru -->
                         <div class="mt-2 text-right">
-                          <a href="{{ route('lampiran.show', basename($pengajuan->lampiran_izin_usaha)) }}"
+                          <a href="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_izin_usaha]) }}"
                             target="_blank"
                             class="inline-block px-4 py-2 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition">
                             Lihat di Tab Baru
@@ -535,14 +535,14 @@
                         <!-- Iframe dengan fitur zoom -->
                         <div class="w-full h-[500px] rounded overflow-hidden border">
                           <iframe
-                            src="{{ route('lampiran.show', basename($pengajuan->lampiran_izin_lingkungan)) }}"
+                            src="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_izin_lingkungan]) }}"
                             class="w-full h-full"
                             allowfullscreen>
                           </iframe>
                         </div>
                         <!-- Tombol Lihat di Tab Baru -->
                         <div class="mt-2 text-right">
-                          <a href="{{ route('lampiran.show', basename($pengajuan->lampiran_izin_lingkungan)) }}"
+                          <a href="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_izin_lingkungan]) }}"
                             target="_blank"
                             class="inline-block px-4 py-2 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition">
                             Lihat di Tab Baru
@@ -688,14 +688,14 @@
                         <!-- Iframe dengan fitur zoom -->
                         <div class="w-full h-[500px] rounded overflow-hidden border">
                           <iframe
-                            src="{{ route('lampiran.show', basename($pengajuan->lampiran_slo)) }}"
+                            src="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_slo]) }}"
                             class="w-full h-full"
                             allowfullscreen>
                           </iframe>
                         </div>
                         <!-- Tombol Lihat di Tab Baru -->
                         <div class="mt-2 text-right">
-                          <a href="{{ route('lampiran.show', basename($pengajuan->lampiran_slo)) }}"
+                          <a href="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_slo]) }}"
                             target="_blank"
                             class="inline-block px-4 py-2 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition">
                             Lihat di Tab Baru
@@ -914,14 +914,14 @@
                         <!-- Iframe dengan fitur zoom -->
                         <div class="w-full h-[500px] rounded overflow-hidden border">
                           <iframe
-                            src="{{ route('lampiran.show', basename($pengajuan->lampiran_skttk)) }}"
+                            src="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_skttk]) }}"
                             class="w-full h-full"
                             allowfullscreen>
                           </iframe>
                         </div>
                         <!-- Tombol Lihat di Tab Baru -->
                         <div class="mt-2 text-right">
-                          <a href="{{ route('lampiran.show', basename($pengajuan->lampiran_skttk)) }}"
+                          <a href="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_skttk]) }}"
                             target="_blank"
                             class="inline-block px-4 py-2 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition">
                             Lihat di Tab Baru
@@ -1066,14 +1066,14 @@
                         <!-- Iframe dengan fitur zoom -->
                         <div class="w-full h-[500px] rounded overflow-hidden border">
                           <iframe
-                            src="{{ route('lampiran.show', basename($pengajuan->lampiran_nameplate_mesin)) }}"
+                            src="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_nameplate_mesin]) }}"
                             class="w-full h-full"
                             allowfullscreen>
                           </iframe>
                         </div>
                         <!-- Tombol Lihat di Tab Baru -->
                         <div class="mt-2 text-right">
-                          <a href="{{ route('lampiran.show', basename($pengajuan->lampiran_nameplate_mesin)) }}"
+                          <a href="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_nameplate_mesin]) }}"
                             target="_blank"
                             class="inline-block px-4 py-2 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition">
                             Lihat di Tab Baru
@@ -1234,14 +1234,14 @@
                         <!-- Iframe dengan fitur zoom -->
                         <div class="w-full h-[500px] rounded overflow-hidden border">
                           <iframe
-                            src="{{ route('lampiran.show', basename($pengajuan->lampiran_nameplate_generator)) }}"
+                            src="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_nameplate_generator]) }}"
                             class="w-full h-full"
                             allowfullscreen>
                           </iframe>
                         </div>
                         <!-- Tombol Lihat di Tab Baru -->
                         <div class="mt-2 text-right">
-                          <a href="{{ route('lampiran.show', basename($pengajuan->lampiran_nameplate_generator)) }}"
+                          <a href="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_nameplate_generator]) }}"
                             target="_blank"
                             class="inline-block px-4 py-2 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition">
                             Lihat di Tab Baru
@@ -1449,14 +1449,14 @@
                         <!-- Iframe dengan fitur zoom -->
                         <div class="w-full h-[500px] rounded overflow-hidden border">
                           <iframe
-                            src="{{ route('lampiran.show', basename($pengajuan->lampiran_tagihan_listrik)) }}"
+                            src="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_tagihan_listrik]) }}"
                             class="w-full h-full"
                             allowfullscreen>
                           </iframe>
                         </div>
                         <!-- Tombol Lihat di Tab Baru -->
                         <div class="mt-2 text-right">
-                          <a href="{{ route('lampiran.show', basename($pengajuan->lampiran_tagihan_listrik)) }}"
+                          <a href="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_tagihan_listrik]) }}"
                             target="_blank"
                             class="inline-block px-4 py-2 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition">
                             Lihat di Tab Baru
@@ -2197,26 +2197,69 @@
 
           // Fungsi untuk simpan evaluasi per bagian dengan AJAX
           function simpanEvaluasiBagian(sectionName, sectionNumber) {
-            console.log('simpanEvaluasiBagian called:', sectionName, sectionNumber);
+            console.log('🔧 [DEBUG] simpanEvaluasiBagian called:', {
+              sectionName, 
+              sectionNumber,
+              timestamp: new Date().toISOString(),
+              userAgent: navigator.userAgent,
+              url: window.location.href
+            });
             
-            // Cek apakah field ada
+            // Cek apakah field ada dengan debug detail
             const catatanField = document.getElementById(`catatan-perbaikan-${sectionNumber}`);
             const statusField = document.getElementById(`status-permohonan-${sectionNumber}`);
             
+            console.log('🔍 [DEBUG] Field check:', {
+              catatanFieldId: `catatan-perbaikan-${sectionNumber}`,
+              statusFieldId: `status-permohonan-${sectionNumber}`,
+              catatanField: catatanField ? 'FOUND' : 'NOT_FOUND',
+              statusField: statusField ? 'FOUND' : 'NOT_FOUND',
+              allInputs: Array.from(document.querySelectorAll('input, select, textarea')).map(el => el.id || el.name).filter(Boolean),
+              availableIds: Array.from(document.querySelectorAll('[id*="catatan-perbaikan"], [id*="status-permohonan"]')).map(el => el.id)
+            });
+            
             if (!catatanField || !statusField) {
-              console.error('Field tidak ditemukan:', {
+              console.error('❌ [ERROR] Field tidak ditemukan:', {
                 catatan: catatanField ? 'ada' : 'tidak ada',
                 status: statusField ? 'ada' : 'tidak ada',
-                sectionNumber: sectionNumber
+                sectionNumber: sectionNumber,
+                domContent: document.body.innerHTML.includes('catatan-perbaikan-' + sectionNumber) ? 'HTML_EXISTS' : 'HTML_NOT_FOUND'
               });
-              alert('Error: Field form tidak ditemukan!');
+              
+              // Enhanced error dengan SweetAlert jika tersedia
+              if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Field Form Tidak Ditemukan!',
+                  html: `Field evaluasi untuk section ${sectionName} tidak ditemukan.<br><br>` +
+                        `<small>Debug info:<br>` +
+                        `Catatan field: ${catatanField ? 'ADA' : 'TIDAK ADA'}<br>` +
+                        `Status field: ${statusField ? 'ADA' : 'TIDAK ADA'}<br>` +
+                        `Section: ${sectionNumber}</small>`,
+                  confirmButtonText: 'OK'
+                });
+              } else {
+                alert(`Error: Field form tidak ditemukan!\nSection: ${sectionName} (${sectionNumber})\nCatatan: ${catatanField ? 'ada' : 'tidak ada'}\nStatus: ${statusField ? 'ada' : 'tidak ada'}`);
+              }
               return;
             }
             
             const catatan = catatanField.value.trim();
             const status = statusField.value;
             
-            console.log('Data yang akan dikirim:', { section: sectionName, catatan, status });
+            console.log('📤 [DEBUG] Data yang akan dikirim:', { 
+              section: sectionName, 
+              catatan, 
+              status,
+              catatanLength: catatan.length,
+              isEmpty: !catatan,
+              formData: {
+                catatanFieldValue: catatanField.value,
+                statusFieldValue: statusField.value,
+                catatanFieldType: catatanField.type || 'textarea',
+                statusFieldType: statusField.type || 'select'
+              }
+            });
             
             // Validasi input
             if (!status) {
@@ -2267,6 +2310,22 @@
             const saveUrl = '/evaluasi/{{ $pengajuan->id }}/save-section';
             @endif
             
+            console.log('🌐 [DEBUG] Sending AJAX request:', {
+              url: saveUrl,
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || 'NOT_FOUND',
+                'Accept': 'application/json'
+              },
+              body: {
+                section: sectionName,
+                catatan: catatan,
+                status: status
+              },
+              timestamp: new Date().toISOString()
+            });
+            
             fetch(saveUrl, {
               method: 'POST',
               headers: {
@@ -2281,14 +2340,27 @@
               })
             })
             .then(response => {
-              console.log('Response status:', response.status);
+              console.log('📥 [DEBUG] Response received:', {
+                status: response.status,
+                statusText: response.statusText,
+                ok: response.ok,
+                headers: Object.fromEntries(response.headers.entries()),
+                url: response.url,
+                timestamp: new Date().toISOString()
+              });
+              
               if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                throw new Error(`HTTP error! status: ${response.status} ${response.statusText}`);
               }
               return response.json();
             })
             .then(data => {
-              console.log('Response data:', data);
+              console.log('✅ [DEBUG] Response data parsed:', {
+                data,
+                success: data.success,
+                message: data.message,
+                timestamp: new Date().toISOString()
+              });
               
               if (typeof Swal !== 'undefined') {
                 Swal.close();
@@ -2349,7 +2421,15 @@
               }
             })
             .catch(error => {
-              console.error('Fetch error:', error);
+              console.error('❌ [DEBUG] Fetch error caught:', {
+                error: error.message,
+                stack: error.stack,
+                name: error.name,
+                timestamp: new Date().toISOString(),
+                requestUrl: saveUrl,
+                sectionName,
+                sectionNumber
+              });
               
               if (typeof Swal !== 'undefined') {
                 Swal.close();
