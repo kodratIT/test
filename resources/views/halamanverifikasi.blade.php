@@ -1745,31 +1745,40 @@
                     
                     // Logika tombol berdasarkan workflow:
                     // 1. Status 'proses evaluasi' dan belum ada evaluator -> Tombol aktif (untuk penugasan pertama)
-                    // 2. Status 'proses evaluasi' dan sudah ditugaskan -> Tombol disabled
-                    // 3. Status 'evaluasi' (sudah dievaluasi) -> Tombol aktif (untuk verifikasi/perbaikan)
-                    // 4. Status 'perbaikan', 'validasi', 'pengesahan' -> Tombol disabled
+                    // 2. Status 'proses evaluasi' dan sudah ditugaskan -> Tombol disabled (untuk evaluator)
+                    // 3. Status 'evaluasi' (sudah dievaluasi) -> Tombol aktif (untuk Kabid/Kadis verifikasi)
+                    // 4. Status 'validasi' -> Tombol aktif (untuk Kadis)
+                    // 5. Status 'perbaikan', 'pengesahan', 'disetujui kadis' -> Tombol disabled
                     
                     $canProcess = false;
                     $buttonClass = 'bg-gray-400 text-gray-600 cursor-not-allowed';
                     $statusMessage = '';
+                    $currentUserRole = auth()->user()->role_pengguna ?? 'unknown';
+                    
+                    // Debug - bisa dihapus setelah testing
+                    // dd(['status' => $status, 'userRole' => $currentUserRole, 'hasEvaluator' => $hasEvaluator, 'hasEvaluation' => $hasEvaluation]);
                     
                     // Periksa status final terlebih dahulu (prioritas tertinggi)
-                    if (in_array($status, ['perbaikan', 'validasi', 'pengesahan', 'disetujui kadis'])) {
+                    if (in_array($status, ['perbaikan', 'pengesahan', 'disetujui kadis'])) {
                         // Status final, tidak bisa diproses lagi
                         $canProcess = false;
                         $statusMessage = 'Dokumen dalam status ' . $status;
-                    } elseif ($status === 'proses evaluasi' && !$hasEvaluator) {
-                        // Penugasan pertama kali
+                    } elseif ($status === 'proses evaluasi') {
+                        // Status proses evaluasi - tombol selalu aktif
                         $canProcess = true;
                         $buttonClass = 'bg-blue-500 text-white hover:bg-blue-600';
-                    } elseif ($status === 'proses evaluasi' && $hasEvaluator && !$hasEvaluation) {
-                        // Sudah ditugaskan tapi belum dievaluasi
+                    } elseif ($status === 'evaluasi') {
+                        // Sudah dievaluasi - aktif untuk Kabid/Kadis (verifikasi/perbaikan)
+                        $canProcess = true;
+                        $buttonClass = 'bg-blue-500 text-white hover:bg-blue-600';
+                    } elseif ($status === 'validasi' && $currentUserRole === 'kadis') {
+                        // Status validasi - khusus aktif untuk Kadis saja
+                        $canProcess = true;
+                        $buttonClass = 'bg-blue-500 text-white hover:bg-blue-600';
+                    } elseif ($status === 'validasi' && $currentUserRole !== 'kadis') {
+                        // Status validasi - disabled untuk selain Kadis
                         $canProcess = false;
-                        $statusMessage = 'Menunggu evaluasi dari evaluator';
-                    } elseif ($status === 'evaluasi' || ($hasEvaluator && $hasEvaluation && !in_array($status, ['perbaikan', 'validasi', 'pengesahan', 'disetujui kadis']))) {
-                        // Sudah dievaluasi dan bukan status final, bisa diproses (verifikasi/perbaikan)
-                        $canProcess = true;
-                        $buttonClass = 'bg-blue-500 text-white hover:bg-blue-600';
+                        $statusMessage = 'Menunggu proses validasi oleh Kadis';
                     }
                     @endphp
                     
