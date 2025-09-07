@@ -765,8 +765,20 @@ function unduhDataKadis() {
         })
         .then(response => {
             if (!response.ok) {
+                if (response.status === 401 || response.status === 403) {
+                    throw new Error('Authentication required. Please login as Kadis.');
+                } else if (response.status === 302) {
+                    throw new Error('Redirect detected - you may not be logged in properly.');
+                }
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
+            
+            // Check if response is HTML (auth redirect) instead of Excel
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('text/html')) {
+                throw new Error('Authentication required - received HTML page instead of Excel file');
+            }
+            
             return response.blob();
         })
         .then(blob => {
