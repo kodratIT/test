@@ -14,38 +14,43 @@ class LampiranController extends Controller
             'storage_app_private' => storage_path('app/private'),
         ]);
         
-        // Karena default disk 'local' memiliki root di storage/app/private
-        // dan file disimpan dengan ->store('uploads'), maka file berada di storage/app/private/uploads/
-        // tapi di database disimpan sebagai 'uploads/filename.pdf'
+        // Array jalur yang mungkin untuk mencari file
+        $possiblePaths = [
+            // Path 1: storage/app/private/[path] (untuk file yang disimpan dengan store())
+            storage_path('app/private/' . $path),
+            
+            // Path 2: storage/app/[path] (untuk file yang disimpan tanpa 'private')
+            storage_path('app/' . $path),
+            
+            // Path 3: storage/app/public/[path] (untuk file publik)
+            storage_path('app/public/' . $path),
+            
+            // Path 4: public/storage/[path] (untuk file yang di-link)
+            public_path('storage/' . $path)
+        ];
         
-        $actualPath = null;
-        
-        // Path di DB: uploads/Vj5ynOkLgUp3ZQOec5fZzeVO038wxyr5QG3NqiE5.pdf
-        // File sebenarnya di: storage/app/private/uploads/Vj5ynOkLgUp3ZQOec5fZzeVO038wxyr5QG3NqiE5.pdf
-        
-        // Langsung build path file berdasarkan struktur yang kita tahu
-        $filePath = storage_path('app/private/' . $path);
-        
-        \Log::info("Checking file path", [
+        \Log::info("Checking multiple file paths", [
             'path_from_db' => $path,
-            'full_file_path' => $filePath,
-            'file_exists' => file_exists($filePath)
+            'possible_paths' => $possiblePaths
         ]);
         
-        // Pastikan file benar-benar ada di sistem file
-        if (file_exists($filePath)) {
-            // Set header yang tepat untuk PDF
-            $mimeType = mime_content_type($filePath) ?: 'application/pdf';
-            
-            \Log::info("File found, serving", [
-                'mime_type' => $mimeType,
-                'file_size' => filesize($filePath)
-            ]);
-            
-            return response()->file($filePath, [
-                'Content-Type' => $mimeType,
-                'Cache-Control' => 'no-cache, no-store, must-revalidate',
-            ]);
+        // Coba setiap jalur yang mungkin
+        foreach ($possiblePaths as $filePath) {
+            if (file_exists($filePath)) {
+                // Set header yang tepat untuk PDF
+                $mimeType = mime_content_type($filePath) ?: 'application/pdf';
+                
+                \Log::info("File found at path", [
+                    'found_path' => $filePath,
+                    'mime_type' => $mimeType,
+                    'file_size' => filesize($filePath)
+                ]);
+                
+                return response()->file($filePath, [
+                    'Content-Type' => $mimeType,
+                    'Cache-Control' => 'no-cache, no-store, must-revalidate',
+                ]);
+            }
         }
 
         // Log untuk debugging
