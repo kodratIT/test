@@ -1776,15 +1776,16 @@
                         $canProcess = false;
                         $statusMessage = 'Dokumen dalam status ' . $status;
                     } elseif ($status === 'proses evaluasi') {
-                        // Cek apakah sudah ada evaluator ditugaskan
+                        // Status 'proses evaluasi' -> Tombol SELALU AKTIF untuk Kabid
+                        // Kabid bisa assign/reassign/evaluasi sendiri, termasuk setelah perbaikan
+                        $canProcess = true;
+                        $buttonClass = 'bg-blue-500 text-white hover:bg-blue-600';
+                        
+                        // Pesan informatif tapi tombol tetap aktif
                         if ($hasEvaluator) {
-                            // Status proses evaluasi dengan evaluator sudah ditugaskan - disabled
-                            $canProcess = false;
-                            $statusMessage = 'Menunggu evaluasi';
+                            $statusMessage = 'Evaluator: ' . ($pengajuan->evaluator->name ?? 'N/A');
                         } else {
-                            // Status proses evaluasi tanpa evaluator - aktif untuk penugasan
-                            $canProcess = true;
-                            $buttonClass = 'bg-blue-500 text-white hover:bg-blue-600';
+                            $statusMessage = 'Siap untuk penugasan evaluator';
                         }
                     } elseif ($status === 'evaluasi') {
                         // Sudah dievaluasi - aktif untuk Kabid/Kadis (verifikasi/perbaikan)
