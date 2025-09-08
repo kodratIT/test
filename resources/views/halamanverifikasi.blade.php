@@ -1445,18 +1445,18 @@
                     <div class="bg-white rounded shadow p-4 space-y-4 border-2 border-gray-300">
                       <h2 class="text-lg text-center font-bold border-b pb-2 mb-2">Lampiran</h2>
                       <div>
-                        @if($pengajuan->lampiran_tagihan_listrik)
+                        @if($pengajuan->lampiran_nameplate_generator)
                         <!-- Iframe dengan fitur zoom -->
                         <div class="w-full h-[500px] rounded overflow-hidden border">
                           <iframe
-                            src="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_tagihan_listrik]) }}"
+                            src="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_nameplate_generator]) }}"
                             class="w-full h-full"
                             allowfullscreen>
                           </iframe>
                         </div>
                         <!-- Tombol Lihat di Tab Baru -->
                         <div class="mt-2 text-right">
-                          <a href="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_tagihan_listrik]) }}"
+                          <a href="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_nameplate_generator]) }}"
                             target="_blank"
                             class="inline-block px-4 py-2 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition">
                             Lihat di Tab Baru
@@ -1465,6 +1465,7 @@
                         @else
                         <p class="text-gray-500 text-center">Tidak ada lampiran</p>
                         @endif
+                       
                       </div>
                     </div>
 
