@@ -415,14 +415,14 @@
                         <!-- Iframe dengan fitur zoom -->
                         <div class="w-full h-[500px] rounded overflow-hidden border">
                           <iframe
-                            src="{{ route('lampiran.show', basename($pengajuan->lampiran_izin_usaha)) }}"
+                            src="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_izin_usaha]) }}"
                             class="w-full h-full"
                             allowfullscreen>
                           </iframe>
                         </div>
                         <!-- Tombol Lihat di Tab Baru -->
                         <div class="mt-2 text-right">
-                          <a href="{{ route('lampiran.show', basename($pengajuan->lampiran_izin_usaha)) }}"
+                          <a href="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_izin_usaha]) }}"
                             target="_blank"
                             class="inline-block px-4 py-2 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition">
                             Lihat di Tab Baru
@@ -533,14 +533,14 @@
                         <!-- Iframe dengan fitur zoom -->
                         <div class="w-full h-[500px] rounded overflow-hidden border">
                           <iframe
-                            src="{{ route('lampiran.show', basename($pengajuan->lampiran_izin_lingkungan)) }}"
+                            src="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_izin_lingkungan]) }}"
                             class="w-full h-full"
                             allowfullscreen>
                           </iframe>
                         </div>
                         <!-- Tombol Lihat di Tab Baru -->
                         <div class="mt-2 text-right">
-                          <a href="{{ route('lampiran.show', basename($pengajuan->lampiran_izin_lingkungan)) }}"
+                          <a href="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_izin_lingkungan]) }}"
                             target="_blank"
                             class="inline-block px-4 py-2 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition">
                             Lihat di Tab Baru
@@ -685,14 +685,14 @@
                         <!-- Iframe dengan fitur zoom -->
                         <div class="w-full h-[500px] rounded overflow-hidden border">
                           <iframe
-                            src="{{ route('lampiran.show', basename($pengajuan->lampiran_slo)) }}"
+                            src="{{ route('lampiran.show', $pengajuan->lampiran_slo) }}"
                             class="w-full h-full"
                             allowfullscreen>
                           </iframe>
                         </div>
                         <!-- Tombol Lihat di Tab Baru -->
                         <div class="mt-2 text-right">
-                          <a href="{{ route('lampiran.show', basename($pengajuan->lampiran_slo)) }}"
+                          <a href="{{ route('lampiran.show', $pengajuan->lampiran_slo) }}"
                             target="_blank"
                             class="inline-block px-4 py-2 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition">
                             Lihat di Tab Baru
@@ -910,14 +910,14 @@
                         <!-- Iframe dengan fitur zoom -->
                         <div class="w-full h-[500px] rounded overflow-hidden border">
                           <iframe
-                            src="{{ route('lampiran.show', basename($pengajuan->lampiran_skttk)) }}"
+                            src="{{ route('lampiran.show', $pengajuan->lampiran_skttk) }}"
                             class="w-full h-full"
                             allowfullscreen>
                           </iframe>
                         </div>
                         <!-- Tombol Lihat di Tab Baru -->
                         <div class="mt-2 text-right">
-                          <a href="{{ route('lampiran.show', basename($pengajuan->lampiran_skttk)) }}"
+                          <a href="{{ route('lampiran.show', $pengajuan->lampiran_skttk) }}"
                             target="_blank"
                             class="inline-block px-4 py-2 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition">
                             Lihat di Tab Baru
@@ -1061,14 +1061,14 @@
                         <!-- Iframe dengan fitur zoom -->
                         <div class="w-full h-[500px] rounded overflow-hidden border">
                           <iframe
-                            src="{{ route('lampiran.show', basename($pengajuan->lampiran_nameplate_mesin)) }}"
+                            src="{{ route('lampiran.show', $pengajuan->lampiran_nameplate_mesin) }}"
                             class="w-full h-full"
                             allowfullscreen>
                           </iframe>
                         </div>
                         <!-- Tombol Lihat di Tab Baru -->
                         <div class="mt-2 text-right">
-                          <a href="{{ route('lampiran.show', basename($pengajuan->lampiran_nameplate_mesin)) }}"
+                          <a href="{{ route('lampiran.show', $pengajuan->lampiran_nameplate_mesin) }}"
                             target="_blank"
                             class="inline-block px-4 py-2 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition">
                             Lihat di Tab Baru
@@ -1228,14 +1228,14 @@
                         <!-- Iframe dengan fitur zoom -->
                         <div class="w-full h-[500px] rounded overflow-hidden border">
                           <iframe
-                            src="{{ route('lampiran.show', basename($pengajuan->lampiran_nameplate_generator)) }}"
+                            src="{{ route('lampiran.show', $pengajuan->lampiran_nameplate_generator) }}"
                             class="w-full h-full"
                             allowfullscreen>
                           </iframe>
                         </div>
                         <!-- Tombol Lihat di Tab Baru -->
                         <div class="mt-2 text-right">
-                          <a href="{{ route('lampiran.show', basename($pengajuan->lampiran_nameplate_generator)) }}"
+                          <a href="{{ route('lampiran.show', $pengajuan->lampiran_nameplate_generator) }}"
                             target="_blank"
                             class="inline-block px-4 py-2 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition">
                             Lihat di Tab Baru
@@ -1442,14 +1442,14 @@
                         <!-- Iframe dengan fitur zoom -->
                         <div class="w-full h-[500px] rounded overflow-hidden border">
                           <iframe
-                            src="{{ route('lampiran.show', basename($pengajuan->lampiran_tagihan_listrik)) }}"
+                            src="{{ route('lampiran.show', $pengajuan->lampiran_tagihan_listrik) }}"
                             class="w-full h-full"
                             allowfullscreen>
                           </iframe>
                         </div>
                         <!-- Tombol Lihat di Tab Baru -->
                         <div class="mt-2 text-right">
-                          <a href="{{ route('lampiran.show', basename($pengajuan->lampiran_tagihan_listrik)) }}"
+                          <a href="{{ route('lampiran.show', $pengajuan->lampiran_tagihan_listrik) }}"
                             target="_blank"
                             class="inline-block px-4 py-2 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition">
                             Lihat di Tab Baru

@@ -126,12 +126,27 @@
 
                 <h2 class="text-xl font-bold mb-6 uppercase text-center text-gray-700 dark:text-white">Perbaikan Laporan Berkala</h2>
 
+                @php
+                  $isApproved = ($pengajuan->status == 'disetujui');
+                  // Global readonly akan digunakan untuk script JavaScript
+                  $globalIsReadonly = $isApproved ? 'readonly' : '';
+                  $globalIsDisabled = $isApproved ? 'disabled' : '';
+                @endphp
+                
                 @if($pengajuan->status == 'perbaikan')
                 <!-- Status Badge -->
                 <div class="mb-6 flex justify-center">
                   <div class="inline-flex items-center px-4 py-2 bg-yellow-100 border border-yellow-300 rounded-lg">
                     <i class="fas fa-edit text-yellow-600 mr-2"></i>
                     <span class="text-sm font-medium text-yellow-800">Status: Perlu Perbaikan</span>
+                  </div>
+                </div>
+                @elseif($pengajuan->status == 'disetujui')
+                <!-- Status Badge untuk Disetujui -->
+                <div class="mb-6 flex justify-center">
+                  <div class="inline-flex items-center px-4 py-2 bg-green-100 border border-green-300 rounded-lg">
+                    <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                    <span class="text-sm font-medium text-green-800">Status: Disetujui</span>
                   </div>
                 </div>
                 @endif
@@ -155,6 +170,8 @@
                       $sectionEval = isset($latestEvaluation) && $latestEvaluation->metadata && isset($latestEvaluation->metadata['sections']['izin_usaha']) 
                         ? $latestEvaluation->metadata['sections']['izin_usaha'] 
                         : ['status' => '-', 'catatan' => '-', 'evaluated_at' => null];
+                      $izinUsahaReadonly = ($sectionEval['status'] ?? '') === 'Disetujui' ? 'readonly' : '';
+                      $izinUsahaDisabled = ($sectionEval['status'] ?? '') === 'Disetujui' ? 'disabled' : '';
                     @endphp
                     <div class="mb-4 p-3 rounded-lg border
                       {{ $sectionEval['status'] == 'Disetujui' ? 'bg-green-50 border-green-200' : ($sectionEval['status'] == '-' ? 'bg-gray-50 border-gray-200' : 'bg-red-50 border-red-200') }}">
@@ -170,17 +187,6 @@
                       <p class="text-sm {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-700' : ($sectionEval['status'] == '-' ? 'text-gray-700' : 'text-red-700') }} mb-2">
                         <span class="font-medium">Komentar Evaluator:</span> {{ $sectionEval['catatan'] }}
                       </p>
-                      @if($sectionEval['evaluated_at'])
-                      <p class="text-xs {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-600' : 'text-red-600' }}">
-                        <i class="fas fa-clock mr-1"></i>
-                        Status: {{ $sectionEval['status'] }} | Dievaluasi: {{ \Carbon\Carbon::parse($sectionEval['evaluated_at'])->format('d F Y H:i') }}
-                      </p>
-                      @else
-                      <p class="text-xs text-gray-500">
-                        <i class="fas fa-clock mr-1"></i>
-                        Status: {{ $sectionEval['status'] }} | Dievaluasi: -
-                      </p>
-                      @endif
                     </div>
                     
                     @if($pengajuan->status == 'perbaikan' && $pengajuan->catatan_perbaikan_izin_usaha)
@@ -199,19 +205,19 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <label>Nomor</label>
-                        <input name="nomor_izin_usaha" id="nomor_izin_usaha" type="text" class="w-full border p-2 rounded-lg" value="{{ old('nomor_izin_usaha', $pengajuan->nomor_izin_usaha) }}" required>
+                        <input name="nomor_izin_usaha" id="nomor_izin_usaha" type="text" class="w-full border p-2 rounded-lg" value="{{ old('nomor_izin_usaha', $pengajuan->nomor_izin_usaha) }}" {{ $izinUsahaReadonly }} {{ $izinUsahaReadonly ? '' : 'required' }}>
                       </div>
                       <div>
                         <label>Tanggal</label>
-                        <input name="tanggal_izin_usaha" id="tanggal_izin_usaha" type="date" class="w-full border p-2 rounded-lg datepicker" value="{{ old('tanggal_izin_usaha', $pengajuan->tanggal_izin_usaha ? $pengajuan->tanggal_izin_usaha->format('Y-m-d') : '') }}" required>
+                        <input name="tanggal_izin_usaha" id="tanggal_izin_usaha" type="date" class="w-full border p-2 rounded-lg datepicker" value="{{ old('tanggal_izin_usaha', $pengajuan->tanggal_izin_usaha ? $pengajuan->tanggal_izin_usaha->format('Y-m-d') : '') }}" {{ $izinUsahaDisabled }} {{ $izinUsahaDisabled ? '' : 'required' }}>
                       </div>
                       <div>
                         <label>Masa Berlaku</label>
-                        <input name="masa_berlaku_izin_usaha" id="masa_berlaku_izin_usaha" type="date" class="w-full border p-2 rounded-lg datepicker" value="{{ old('masa_berlaku_izin_usaha', $pengajuan->masa_berlaku_izin_usaha ? $pengajuan->masa_berlaku_izin_usaha->format('Y-m-d') : '') }}" required>
+                        <input name="masa_berlaku_izin_usaha" id="masa_berlaku_izin_usaha" type="date" class="w-full border p-2 rounded-lg datepicker" value="{{ old('masa_berlaku_izin_usaha', $pengajuan->masa_berlaku_izin_usaha ? $pengajuan->masa_berlaku_izin_usaha->format('Y-m-d') : '') }}" {{ $izinUsahaDisabled }} {{ $izinUsahaDisabled ? '' : 'required' }}>
                       </div>
                       <div>
                         <label>Kelebihan Tenaga Listrik dijual Kepada</label>
-                        <input name="kelebihan_listrik" id="kelebihan_listrik" type="text" class="w-full border p-2 rounded-lg" value="{{ old('kelebihan_listrik', $pengajuan->kelebihan_listrik) }}" required>
+                        <input name="kelebihan_listrik" id="kelebihan_listrik" type="text" class="w-full border p-2 rounded-lg" value="{{ old('kelebihan_listrik', $pengajuan->kelebihan_listrik) }}" {{ $izinUsahaReadonly }} {{ $izinUsahaReadonly ? '' : 'required' }}>
                       </div>
 
                     </div>
@@ -223,8 +229,8 @@
                         File saat ini: <a href="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_izin_usaha]) }}" target="_blank" class="text-blue-600 underline">Lihat file</a>
                       </div>
                       @endif
-                      <input id="lampiran_izin_usaha" name="lampiran_izin_usaha" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" onchange="previewFile(this)">
-                      <small class="text-gray-500">Format PDF Maks 5MB (Kosongkan jika tidak ingin mengubah file)</small>
+                      <input id="lampiran_izin_usaha" name="lampiran_izin_usaha" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" onchange="previewFile(this)" {{ $izinUsahaDisabled }}>
+                      <small class="text-gray-500">Format PDF Maks 5MB {{ $izinUsahaDisabled ? '(File tidak dapat diubah - section disetujui)' : '(Kosongkan jika tidak ingin mengubah file)' }}</small>
                     </div>
                     <div id="preview_lampiran_izin_usaha"></div>
 
@@ -236,6 +242,8 @@
                       $sectionEval = isset($latestEvaluation) && $latestEvaluation->metadata && isset($latestEvaluation->metadata['sections']['izin_lingkungan']) 
                         ? $latestEvaluation->metadata['sections']['izin_lingkungan'] 
                         : ['status' => '-', 'catatan' => '-', 'evaluated_at' => null];
+                      $izinLingkunganReadonly = ($sectionEval['status'] ?? '') === 'Disetujui' ? 'readonly' : '';
+                      $izinLingkunganDisabled = ($sectionEval['status'] ?? '') === 'Disetujui' ? 'disabled' : '';
                     @endphp
                     <div class="mb-4 p-3 rounded-lg border
                       {{ $sectionEval['status'] == 'Disetujui' ? 'bg-green-50 border-green-200' : ($sectionEval['status'] == '-' ? 'bg-gray-50 border-gray-200' : 'bg-red-50 border-red-200') }}">
@@ -251,17 +259,6 @@
                       <p class="text-sm {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-700' : ($sectionEval['status'] == '-' ? 'text-gray-700' : 'text-red-700') }} mb-2">
                         <span class="font-medium">Komentar Evaluator:</span> {{ $sectionEval['catatan'] }}
                       </p>
-                      @if($sectionEval['evaluated_at'])
-                      <p class="text-xs {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-600' : 'text-red-600' }}">
-                        <i class="fas fa-clock mr-1"></i>
-                        Status: {{ $sectionEval['status'] }} | Dievaluasi: {{ \Carbon\Carbon::parse($sectionEval['evaluated_at'])->format('d F Y H:i') }}
-                      </p>
-                      @else
-                      <p class="text-xs text-gray-500">
-                        <i class="fas fa-clock mr-1"></i>
-                        Status: {{ $sectionEval['status'] }} | Dievaluasi: -
-                      </p>
-                      @endif
                     </div>
                     
                     @if($pengajuan->status == 'perbaikan' && $pengajuan->catatan_perbaikan_izin_lingkungan)
@@ -280,19 +277,19 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <label>Jenis Izin</label>
-                        <input name="jenis_izin_lingkungan" id="jenis_izin_lingkungan" type="text" class="w-full border p-2 rounded-lg" value="{{ old('jenis_izin_lingkungan', $pengajuan->jenis_izin_lingkungan) }}" required>
+                        <input name="jenis_izin_lingkungan" id="jenis_izin_lingkungan" type="text" class="w-full border p-2 rounded-lg" value="{{ old('jenis_izin_lingkungan', $pengajuan->jenis_izin_lingkungan) }}" {{ $izinLingkunganReadonly }} {{ $izinLingkunganReadonly ? '' : 'required' }}>
                       </div>
                       <div>
                         <label>Nomor</label>
-                        <input name="nomor_izin_lingkungan" id="nomor_izin_lingkungan" type="text" class="w-full border p-2 rounded-lg" value="{{ old('nomor_izin_lingkungan', $pengajuan->nomor_izin_lingkungan) }}" required>
+                        <input name="nomor_izin_lingkungan" id="nomor_izin_lingkungan" type="text" class="w-full border p-2 rounded-lg" value="{{ old('nomor_izin_lingkungan', $pengajuan->nomor_izin_lingkungan) }}" {{ $izinLingkunganReadonly }} {{ $izinLingkunganReadonly ? '' : 'required' }}>
                       </div>
                       <div>
                         <label>Tanggal</label>
-                        <input name="tanggal_izin_lingkungan" id="tanggal_izin_lingkungan" type="date" class="w-full border p-2 rounded-lg datepicker" value="{{ old('tanggal_izin_lingkungan', $pengajuan->tanggal_izin_lingkungan ? $pengajuan->tanggal_izin_lingkungan->format('Y-m-d') : '') }}" required>
+                        <input name="tanggal_izin_lingkungan" id="tanggal_izin_lingkungan" type="date" class="w-full border p-2 rounded-lg datepicker" value="{{ old('tanggal_izin_lingkungan', $pengajuan->tanggal_izin_lingkungan ? $pengajuan->tanggal_izin_lingkungan->format('Y-m-d') : '') }}" {{ $izinLingkunganDisabled }} {{ $izinLingkunganDisabled ? '' : 'required' }}>
                       </div>
                       <div>
                         <label>Masa Berlaku</label>
-                        <input name="masa_berlaku_izin_lingkungan" id="masa_berlaku_izin_lingkungan" type="date" class="w-full border p-2 rounded-lg datepicker" value="{{ old('masa_berlaku_izin_lingkungan', $pengajuan->masa_berlaku_izin_lingkungan ? $pengajuan->masa_berlaku_izin_lingkungan->format('Y-m-d') : '') }}" required>
+                        <input name="masa_berlaku_izin_lingkungan" id="masa_berlaku_izin_lingkungan" type="date" class="w-full border p-2 rounded-lg datepicker" value="{{ old('masa_berlaku_izin_lingkungan', $pengajuan->masa_berlaku_izin_lingkungan ? $pengajuan->masa_berlaku_izin_lingkungan->format('Y-m-d') : '') }}" {{ $izinLingkunganDisabled }} {{ $izinLingkunganDisabled ? '' : 'required' }}>
                       </div>
                     </div>
 
@@ -304,8 +301,8 @@
                         File saat ini: <a href="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_izin_lingkungan]) }}" target="_blank" class="text-blue-600 underline">Lihat file</a>
                       </div>
                       @endif
-                      <input id="lampiran_izin_lingkungan" name="lampiran_izin_lingkungan" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" onchange="previewFile(this)">
-                      <small class="text-gray-500">Format PDF Maks 5MB (Kosongkan jika tidak ingin mengubah file)</small>
+                      <input id="lampiran_izin_lingkungan" name="lampiran_izin_lingkungan" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" onchange="previewFile(this)" {{ $izinLingkunganDisabled }}>
+                      <small class="text-gray-500">Format PDF Maks 5MB {{ $izinLingkunganDisabled ? '(File tidak dapat diubah - section disetujui)' : '(Kosongkan jika tidak ingin mengubah file)' }}</small>
                     </div>
                     <div id="preview_lampiran_izin_lingkungan"></div>
 
@@ -318,6 +315,9 @@
                       $sectionEval = isset($latestEvaluation) && $latestEvaluation->metadata && isset($latestEvaluation->metadata['sections']['slo']) 
                         ? $latestEvaluation->metadata['sections']['slo'] 
                         : ['status' => '-', 'catatan' => '-', 'evaluated_at' => null];
+                      $sloReadonly = ($sectionEval['status'] ?? '') === 'Disetujui' ? 'readonly' : '';
+                      $sloDisabled = ($sectionEval['status'] ?? '') === 'Disetujui' ? 'disabled' : '';
+                      $sloIsApproved = ($sectionEval['status'] ?? '') === 'Disetujui';
                     @endphp
                     <div class="mb-4 p-3 rounded-lg border
                       {{ $sectionEval['status'] == 'Disetujui' ? 'bg-green-50 border-green-200' : ($sectionEval['status'] == '-' ? 'bg-gray-50 border-gray-200' : 'bg-red-50 border-red-200') }}">
@@ -333,17 +333,6 @@
                       <p class="text-sm {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-700' : ($sectionEval['status'] == '-' ? 'text-gray-700' : 'text-red-700') }} mb-2">
                         <span class="font-medium">Komentar Evaluator:</span> {{ $sectionEval['catatan'] }}
                       </p>
-                      @if($sectionEval['evaluated_at'])
-                      <p class="text-xs {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-600' : 'text-red-600' }}">
-                        <i class="fas fa-clock mr-1"></i>
-                        Status: {{ $sectionEval['status'] }} | Dievaluasi: {{ \Carbon\Carbon::parse($sectionEval['evaluated_at'])->format('d F Y H:i') }}
-                      </p>
-                      @else
-                      <p class="text-xs text-gray-500">
-                        <i class="fas fa-clock mr-1"></i>
-                        Status: {{ $sectionEval['status'] }} | Dievaluasi: -
-                      </p>
-                      @endif
                     </div>
                     
                     @if($pengajuan->status == 'perbaikan' && $pengajuan->catatan_perbaikan_slo)
@@ -359,10 +348,12 @@
                     </div>
                     @endif
 
+                    @if(!$sloIsApproved)
                     <div class="flex justify-end gap-2 mb-4">
                       <button type="button" onclick="addColumn(event)" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Tambah</button>
                       <button type="button" onclick="removeColumn(event)" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">Kurang</button>
                     </div>
+                    @endif
 
 
                     <div class="overflow-x-auto">
@@ -385,7 +376,7 @@
                             @for($i = 0; $i < $sloCount; $i++)
                               <td class="border border-gray-300 p-2">
                                 <input name="nomor_sertifikat_slo[]" id="nomor_sertifikat_{{ $i+1 }}" type="text" class="w-full border p-1 rounded" 
-                                  value="{{ old('nomor_sertifikat_slo.'.$i, $sloData[$i]['nomor_sertifikat_slo'] ?? '') }}" placeholder="">
+                                  value="{{ old('nomor_sertifikat_slo.'.$i, $sloData[$i]['nomor_sertifikat_slo'] ?? '') }}" placeholder="" {{ $sloReadonly }}>
                               </td>
                             @endfor
                           </tr>
@@ -394,7 +385,7 @@
                             @for($i = 0; $i < $sloCount; $i++)
                               <td class="border border-gray-300 p-2">
                                 <input name="nomor_register_slo[]" id="nomor_register_{{ $i+1 }}" type="text" class="w-full border p-1 rounded" 
-                                  value="{{ old('nomor_register_slo.'.$i, $sloData[$i]['nomor_register_slo'] ?? '') }}" placeholder="">
+                                  value="{{ old('nomor_register_slo.'.$i, $sloData[$i]['nomor_register_slo'] ?? '') }}" placeholder="" {{ $sloReadonly }}>
                               </td>
                             @endfor
                           </tr>
@@ -403,7 +394,7 @@
                             @for($i = 0; $i < $sloCount; $i++)
                               <td class="border border-gray-300 p-2">
                                 <input name="tanggal_terbit_slo[]" id="tanggal_terbit_slo_{{ $i+1 }}" type="text" class="w-full border p-1 rounded datepicker" 
-                                  value="{{ old('tanggal_terbit_slo.'.$i, $sloData[$i]['tanggal_terbit_slo'] ?? '') }}" placeholder="DD-MM-YYYY">
+                                  value="{{ old('tanggal_terbit_slo.'.$i, $sloData[$i]['tanggal_terbit_slo'] ?? '') }}" placeholder="DD-MM-YYYY" {{ $sloReadonly }}>
                               </td>
                             @endfor
                           </tr>
@@ -412,7 +403,7 @@
                             @for($i = 0; $i < $sloCount; $i++)
                               <td class="border border-gray-300 p-2">
                                 <input name="tanggal_masa_berlaku_slo[]" id="tanggal_masa_berlaku_slo_{{ $i+1 }}" type="text" class="w-full border p-1 rounded datepicker" 
-                                  value="{{ old('tanggal_masa_berlaku_slo.'.$i, $sloData[$i]['tanggal_masa_berlaku_slo'] ?? '') }}" placeholder="DD-MM-YYYY">
+                                  value="{{ old('tanggal_masa_berlaku_slo.'.$i, $sloData[$i]['tanggal_masa_berlaku_slo'] ?? '') }}" placeholder="DD-MM-YYYY" {{ $sloReadonly }}>
                               </td>
                             @endfor
                           </tr>
@@ -421,7 +412,7 @@
                             @for($i = 0; $i < $sloCount; $i++)
                               <td class="border border-gray-300 p-2">
                                 <input name="lit[]" id="lit_{{ $i+1 }}" type="text" class="w-full border p-1 rounded" 
-                                  value="{{ old('lit.'.$i, $sloData[$i]['lit'] ?? '') }}">
+                                  value="{{ old('lit.'.$i, $sloData[$i]['lit'] ?? '') }}" {{ $sloReadonly }}>
                               </td>
                             @endfor
                           </tr>
@@ -436,8 +427,8 @@
                         File saat ini: <a href="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_slo]) }}" target="_blank" class="text-blue-600 underline">Lihat file</a>
                       </div>
                       @endif
-                      <input id="lampiran_slo" name="lampiran_slo" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" onchange="previewFile(this)">
-                      <small class="text-gray-500">Format PDF Maks 5MB (Kosongkan jika tidak ingin mengubah file)</small>
+                      <input id="lampiran_slo" name="lampiran_slo" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" onchange="previewFile(this)" {{ $sloDisabled }}>
+                      <small class="text-gray-500">Format PDF Maks 5MB {{ $sloDisabled ? '(File tidak dapat diubah - section disetujui)' : '(Kosongkan jika tidak ingin mengubah file)' }}</small>
                     </div>
                     <div id="preview_lampiran_slo"></div>
 
@@ -448,66 +439,72 @@
                     <script>
                       let columnCount = {{ $sloCount }};
 
-                      function addColumn(event) {
-                        columnCount++;
+      function addColumn(event) {
+        if (sectionStatus.slo) return; // Prevent adding columns if SLO section approved
+        
+        columnCount++;
 
-                        const table = document.getElementById("sloTable");
-                        const thead = table.querySelector("thead tr");
-                        const tbodyRows = table.querySelectorAll("tbody tr");
+        const table = document.getElementById("sloTable");
+        const thead = table.querySelector("thead tr");
+        const tbodyRows = table.querySelectorAll("tbody tr");
 
-                        const newHeader = document.createElement("th");
-                        newHeader.className = "border border-gray-300 p-2 min-w-[220px]";
-                        newHeader.innerText = `SLO-${columnCount}`;
-                        thead.appendChild(newHeader);
+        const newHeader = document.createElement("th");
+        newHeader.className = "border border-gray-300 p-2 min-w-[220px]";
+        newHeader.innerText = `SLO-${columnCount}`;
+        thead.appendChild(newHeader);
 
-                        tbodyRows.forEach((row, index) => {
-                          const newCell = document.createElement("td");
-                          newCell.className = "border border-gray-200 p-2";
+        tbodyRows.forEach((row, index) => {
+          const newCell = document.createElement("td");
+          newCell.className = "border border-gray-200 p-2";
 
-                          let inputHTML = '';
-                          switch (index) {
-                            case 0:
-                              inputHTML = `<input name="nomor_sertifikat_slo[]" id="nomor_sertifikat_${columnCount}" type="text" class="w-full border p-1 rounded">`;
-                              break;
-                            case 1:
-                              inputHTML = `<input name="nomor_register_slo[]" id="nomor_register_${columnCount}" type="text" class="w-full border p-1 rounded">`;
-                              break;
-                            case 2:
-                              inputHTML = `<input name="tanggal_terbit_slo[]" id="tanggal_terbit_slo_${columnCount}" type="date" class="w-full border p-1 rounded datepicker" placeholder="DD-MM-YYYY"">`;
-                              break;
-                            case 3:
-                              inputHTML = `<input name="tanggal_masa_berlaku_slo[]" id="tanggal_masa_berlaku_slo_${columnCount}" type="date" class="w-full border p-1 rounded datepicker" placeholder="DD-MM-YYYY"">`;
-                              break;
-                            case 4:
-                              inputHTML = `<input name="lit[]" id="lit_${columnCount}" type="text" class="w-full border p-1 rounded">`;
-                              break;
-                          }
+          let inputHTML = '';
+          const readonlyAttr = sectionStatus.slo ? 'readonly style="background-color: #f9fafb;"' : '';
+          const disabledAttr = sectionStatus.slo ? 'disabled style="background-color: #f9fafb;"' : '';
+          
+          switch (index) {
+            case 0:
+              inputHTML = `<input name="nomor_sertifikat_slo[]" id="nomor_sertifikat_${columnCount}" type="text" class="w-full border p-1 rounded" ${readonlyAttr}>`;
+              break;
+            case 1:
+              inputHTML = `<input name="nomor_register_slo[]" id="nomor_register_${columnCount}" type="text" class="w-full border p-1 rounded" ${readonlyAttr}>`;
+              break;
+            case 2:
+              inputHTML = `<input name="tanggal_terbit_slo[]" id="tanggal_terbit_slo_${columnCount}" type="text" class="w-full border p-1 rounded datepicker" placeholder="DD-MM-YYYY" ${readonlyAttr}>`;
+              break;
+            case 3:
+              inputHTML = `<input name="tanggal_masa_berlaku_slo[]" id="tanggal_masa_berlaku_slo_${columnCount}" type="text" class="w-full border p-1 rounded datepicker" placeholder="DD-MM-YYYY" ${readonlyAttr}>`;
+              break;
+            case 4:
+              inputHTML = `<input name="lit[]" id="lit_${columnCount}" type="text" class="w-full border p-1 rounded" ${readonlyAttr}>`;
+              break;
+          }
 
-                          newCell.innerHTML = inputHTML;
-                          row.appendChild(newCell);
-                        });
+          newCell.innerHTML = inputHTML;
+          row.appendChild(newCell);
+        });
 
-                        flatpickr(".datepicker", {
-                          dateFormat: "d-m-Y",
-                          locale: "id",
-                          allowInput: true
-                        });
-                      }
+        flatpickr(".datepicker", {
+          dateFormat: "d-m-Y",
+          locale: "id",
+          allowInput: true
+        });
+      }
 
-                      function removeColumn(event) {
-                        if (columnCount <= 1) return;
+      function removeColumn(event) {
+        if (sectionStatus.slo) return; // Prevent removing columns if SLO section approved
+        if (columnCount <= 1) return;
 
-                        const table = document.getElementById("sloTable");
-                        const thead = table.querySelector("thead tr");
-                        const tbodyRows = table.querySelectorAll("tbody tr");
+        const table = document.getElementById("sloTable");
+        const thead = table.querySelector("thead tr");
+        const tbodyRows = table.querySelectorAll("tbody tr");
 
-                        thead.removeChild(thead.lastElementChild);
-                        tbodyRows.forEach((row) => {
-                          row.removeChild(row.lastElementChild);
-                        });
+        thead.removeChild(thead.lastElementChild);
+        tbodyRows.forEach((row) => {
+          row.removeChild(row.lastElementChild);
+        });
 
-                        columnCount--;
-                      }
+        columnCount--;
+      }
 
                       function previewFile(input) {
                         const file = input.files[0];
@@ -593,6 +590,9 @@
                       $sectionEval = isset($latestEvaluation) && $latestEvaluation->metadata && isset($latestEvaluation->metadata['sections']['skttk']) 
                         ? $latestEvaluation->metadata['sections']['skttk'] 
                         : ['status' => '-', 'catatan' => '-', 'evaluated_at' => null];
+                      $skttkReadonly = ($sectionEval['status'] ?? '') === 'Disetujui' ? 'readonly' : '';
+                      $skttkDisabled = ($sectionEval['status'] ?? '') === 'Disetujui' ? 'disabled' : '';
+                      $skttkIsApproved = ($sectionEval['status'] ?? '') === 'Disetujui';
                     @endphp
                     <div class="mb-4 p-3 rounded-lg border
                       {{ $sectionEval['status'] == 'Disetujui' ? 'bg-green-50 border-green-200' : ($sectionEval['status'] == '-' ? 'bg-gray-50 border-gray-200' : 'bg-red-50 border-red-200') }}">
@@ -608,17 +608,6 @@
                       <p class="text-sm {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-700' : ($sectionEval['status'] == '-' ? 'text-gray-700' : 'text-red-700') }} mb-2">
                         <span class="font-medium">Komentar Evaluator:</span> {{ $sectionEval['catatan'] }}
                       </p>
-                      @if($sectionEval['evaluated_at'])
-                      <p class="text-xs {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-600' : 'text-red-600' }}">
-                        <i class="fas fa-clock mr-1"></i>
-                        Status: {{ $sectionEval['status'] }} | Dievaluasi: {{ \Carbon\Carbon::parse($sectionEval['evaluated_at'])->format('d F Y H:i') }}
-                      </p>
-                      @else
-                      <p class="text-xs text-gray-500">
-                        <i class="fas fa-clock mr-1"></i>
-                        Status: {{ $sectionEval['status'] }} | Dievaluasi: -
-                      </p>
-                      @endif
                     </div>
                     
                     @if($pengajuan->status == 'perbaikan' && $pengajuan->catatan_perbaikan_skttk)
@@ -634,10 +623,12 @@
                     </div>
                     @endif
 
+                    @if(!$skttkIsApproved)
                     <div class="flex justify-end gap-2 mb-4">
                       <button type="button" onclick="addSKTTKColumn()" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Tambah</button>
                       <button type="button" onclick="removeSKTTKColumn()" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">Kurang</button>
                     </div>
+                    @endif
 
 
                     <div class="overflow-x-auto">
@@ -774,8 +765,8 @@
                         File saat ini: <a href="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_skttk]) }}" target="_blank" class="text-blue-600 underline">Lihat file</a>
                       </div>
                       @endif
-                      <input id="lampiran_skttk" name="lampiran_skttk" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" onchange="previewFile(this)">
-                      <small class="text-gray-500">Format PDF Maks 5MB (Kosongkan jika tidak ingin mengubah file)</small>
+                      <input id="lampiran_skttk" name="lampiran_skttk" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" onchange="previewFile(this)" {{ $skttkDisabled }}>
+                      <small class="text-gray-500">Format PDF Maks 5MB {{ $skttkDisabled ? '(File tidak dapat diubah - section disetujui)' : '(Kosongkan jika tidak ingin mengubah file)' }}</small>
                     </div>
                     <div id="preview_lampiran_skttk"></div>
 
@@ -808,8 +799,9 @@
                         });
                       }
 
-                      function addSKTTKColumn() {
-                        skttkColumnCount++;
+      function addSKTTKColumn() {
+        if (sectionStatus.skttk) return; // Prevent adding columns if SKTTK section approved
+        skttkColumnCount++;
                         const table = document.getElementById("skttkTable");
                         const thead = table.querySelector("thead tr");
                         const tbodyRows = table.querySelectorAll("tbody tr");
@@ -825,21 +817,23 @@
                           const newCell = document.createElement("td");
                           newCell.className = "border border-gray-300 p-2";
 
-                          const name = fieldIds[index];
-                          if (name) {
-                            const type = name.includes("tanggal") ? "date" : "text";
-                            const placeholder = (name === "nomor_sertifikat_skttk") ? "1234.0.12.A123.12.2025" :
-                              (name === "nomor_register_skttk") ? "12345.1.2025" :
-                              (name === "kode_kualifikasi_skttk") ? "A.12.123.12.KUALIFIKASI.1.ABCDEF" :
-                              (name === "tanggal_terbit_skttk") ? "DD-MM-YYYY" :
-                              (name === "tanggal_masa_berlaku_skttk") ? "DD-MM-YYYY" :
-                              "";
+            const name = fieldIds[index];
+            if (name) {
+              const type = name.includes("tanggal") ? "text" : "text"; // Use text for all SKTTK fields including dates
+              const placeholder = (name === "nomor_sertifikat_skttk") ? "1234.0.12.A123.12.2025" :
+                (name === "nomor_register_skttk") ? "12345.1.2025" :
+                (name === "kode_kualifikasi_skttk") ? "A.12.123.12.KUALIFIKASI.1.ABCDEF" :
+                (name === "tanggal_terbit_skttk") ? "DD-MM-YYYY" :
+                (name === "tanggal_masa_berlaku_skttk") ? "DD-MM-YYYY" :
+                "";
 
-                            const id = `${name}_${skttkColumnCount}`;
-                            newCell.innerHTML = `<input name="${name}[]" id="${id}" type="${type}" class="w-full border p-1 rounded" ${placeholder ? `placeholder="${placeholder}"` : ''}>`;
-                          } else {
-                            newCell.innerHTML = `<input type="text" class="w-full border p-1 rounded">`;
-                          }
+              const id = `${name}_${skttkColumnCount}`;
+              const isDatePicker = name.includes("tanggal") ? 'datepicker' : '';
+              const attrToUse = (sectionStatus.skttk && name.includes("tanggal")) ? 'disabled style="background-color: #f9fafb;"' : (sectionStatus.skttk ? 'readonly style="background-color: #f9fafb;"' : '');
+              newCell.innerHTML = `<input name="${name}[]" id="${id}" type="${type}" class="w-full border p-1 rounded ${isDatePicker}" ${placeholder ? `placeholder="${placeholder}"` : ''} ${attrToUse}>`;
+            } else {
+              newCell.innerHTML = `<input type="text" class="w-full border p-1 rounded">`;
+            }
 
                           row.appendChild(newCell);
                         });
@@ -848,8 +842,9 @@
                         initializeDatepickers();
                       }
 
-                      function removeSKTTKColumn() {
-                        if (skttkColumnCount <= 1) return;
+      function removeSKTTKColumn() {
+        if (sectionStatus.skttk) return; // Prevent removing columns if SKTTK section approved
+        if (skttkColumnCount <= 1) return;
 
                         const table = document.getElementById("skttkTable");
                         const thead = table.querySelector("thead tr");
@@ -1030,6 +1025,9 @@
                       $sectionEval = isset($latestEvaluation) && $latestEvaluation->metadata && isset($latestEvaluation->metadata['sections']['data_mesin']) 
                         ? $latestEvaluation->metadata['sections']['data_mesin'] 
                         : ['status' => '-', 'catatan' => '-', 'evaluated_at' => null];
+                      $dataMesinReadonly = ($sectionEval['status'] ?? '') === 'Disetujui' ? 'readonly' : '';
+                      $dataMesinDisabled = ($sectionEval['status'] ?? '') === 'Disetujui' ? 'disabled' : '';
+                      $dataMesinIsApproved = ($sectionEval['status'] ?? '') === 'Disetujui';
                     @endphp
                     <div class="mb-4 p-3 rounded-lg border
                       {{ $sectionEval['status'] == 'Disetujui' ? 'bg-green-50 border-green-200' : ($sectionEval['status'] == '-' ? 'bg-gray-50 border-gray-200' : 'bg-red-50 border-red-200') }}">
@@ -1045,17 +1043,6 @@
                       <p class="text-sm {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-700' : ($sectionEval['status'] == '-' ? 'text-gray-700' : 'text-red-700') }} mb-2">
                         <span class="font-medium">Komentar Evaluator:</span> {{ $sectionEval['catatan'] }}
                       </p>
-                      @if($sectionEval['evaluated_at'])
-                      <p class="text-xs {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-600' : 'text-red-600' }}">
-                        <i class="fas fa-clock mr-1"></i>
-                        Status: {{ $sectionEval['status'] }} | Dievaluasi: {{ \Carbon\Carbon::parse($sectionEval['evaluated_at'])->format('d F Y H:i') }}
-                      </p>
-                      @else
-                      <p class="text-xs text-gray-500">
-                        <i class="fas fa-clock mr-1"></i>
-                        Status: {{ $sectionEval['status'] }} | Dievaluasi: -
-                      </p>
-                      @endif
                     </div>
                     
                     @if($pengajuan->status == 'perbaikan' && $pengajuan->catatan_perbaikan_data_mesin)
@@ -1071,10 +1058,12 @@
                     </div>
                     @endif
 
+                    @if(!$dataMesinIsApproved)
                     <div class="flex justify-end gap-2 mb-4">
                       <button type="button" onclick="addMesinColumn()" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Tambah</button>
                       <button type="button" onclick="removeMesinColumn()" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">Kurang</button>
                     </div>
+                    @endif
 
                     <div class="overflow-x-auto">
                       <table id="mesinTable" class="min-w-full border border-gray-300 text-sm">
@@ -1173,8 +1162,8 @@
                         File saat ini: <a href="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_nameplate_mesin]) }}" target="_blank" class="text-blue-600 underline">Lihat file</a>
                       </div>
                       @endif
-                      <input id="lampiran_nameplate_mesin" name="lampiran_nameplate_mesin" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" onchange="previewFile(this)">
-                      <small class="text-gray-500">Format PDF Maks 5MB (Kosongkan jika tidak ingin mengubah file)</small>
+                      <input id="lampiran_nameplate_mesin" name="lampiran_nameplate_mesin" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" onchange="previewFile(this)" {{ $dataMesinDisabled }}>
+                      <small class="text-gray-500">Format PDF Maks 5MB {{ $dataMesinDisabled ? '(File tidak dapat diubah - section disetujui)' : '(Kosongkan jika tidak ingin mengubah file)' }}</small>
                     </div>
                     <div id="preview_lampiran_nameplate_mesin"></div>
 
@@ -1192,8 +1181,9 @@
                         "mesin_putaran"
                       ];
 
-                      function addMesinColumn() {
-                        mesinUnitCount++;
+      function addMesinColumn() {
+        if (sectionStatus.data_mesin) return; // Prevent adding columns if Data Mesin section approved
+        mesinUnitCount++;
                         const table = document.getElementById("mesinTable");
                         const thead = table.querySelector("thead tr");
                         const tbodyRows = table.querySelectorAll("tbody tr");
@@ -1239,8 +1229,9 @@
                         });
                       }
 
-                      function removeMesinColumn() {
-                        if (mesinUnitCount <= 1) return;
+      function removeMesinColumn() {
+        if (sectionStatus.data_mesin) return; // Prevent removing columns if Data Mesin section approved
+        if (mesinUnitCount <= 1) return;
 
                         const table = document.getElementById("mesinTable");
                         const thead = table.querySelector("thead tr");
@@ -1339,6 +1330,9 @@
                       $sectionEval = isset($latestEvaluation) && $latestEvaluation->metadata && isset($latestEvaluation->metadata['sections']['data_generator']) 
                         ? $latestEvaluation->metadata['sections']['data_generator'] 
                         : ['status' => '-', 'catatan' => '-', 'evaluated_at' => null];
+                      $dataGeneratorReadonly = ($sectionEval['status'] ?? '') === 'Disetujui' ? 'readonly' : '';
+                      $dataGeneratorDisabled = ($sectionEval['status'] ?? '') === 'Disetujui' ? 'disabled' : '';
+                      $dataGeneratorIsApproved = ($sectionEval['status'] ?? '') === 'Disetujui';
                     @endphp
                     <div class="mb-4 p-3 rounded-lg border
                       {{ $sectionEval['status'] == 'Disetujui' ? 'bg-green-50 border-green-200' : ($sectionEval['status'] == '-' ? 'bg-gray-50 border-gray-200' : 'bg-red-50 border-red-200') }}">
@@ -1354,17 +1348,6 @@
                       <p class="text-sm {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-700' : ($sectionEval['status'] == '-' ? 'text-gray-700' : 'text-red-700') }} mb-2">
                         <span class="font-medium">Komentar Evaluator:</span> {{ $sectionEval['catatan'] }}
                       </p>
-                      @if($sectionEval['evaluated_at'])
-                      <p class="text-xs {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-600' : 'text-red-600' }}">
-                        <i class="fas fa-clock mr-1"></i>
-                        Status: {{ $sectionEval['status'] }} | Dievaluasi: {{ \Carbon\Carbon::parse($sectionEval['evaluated_at'])->format('d F Y H:i') }}
-                      </p>
-                      @else
-                      <p class="text-xs text-gray-500">
-                        <i class="fas fa-clock mr-1"></i>
-                        Status: {{ $sectionEval['status'] }} | Dievaluasi: -
-                      </p>
-                      @endif
                     </div>
                     
                     @if($pengajuan->status == 'perbaikan' && $pengajuan->catatan_perbaikan_data_generator)
@@ -1380,10 +1363,12 @@
                     </div>
                     @endif
 
+                    @if(!$dataGeneratorIsApproved)
                     <div class="flex justify-end gap-2 mb-4">
                       <button type="button" onclick="addGeneratorColumn()" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Tambah</button>
                       <button type="button" onclick="removeGeneratorColumn()" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">Kurang</button>
                     </div>
+                    @endif
 
                     <div class="overflow-x-auto">
                       <table id="generatorTable" class="min-w-full border border-gray-300 text-sm">
@@ -1528,8 +1513,8 @@
                         File saat ini: <a href="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_nameplate_generator]) }}" target="_blank" class="text-blue-600 underline">Lihat file</a>
                       </div>
                       @endif
-                      <input id="lampiran_nameplate_generator" name="lampiran_nameplate_generator" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" onchange="previewFile(this)">
-                      <small class="text-gray-500">Format PDF Maks 5MB (Kosongkan jika tidak ingin mengubah file)</small>
+                      <input id="lampiran_nameplate_generator" name="lampiran_nameplate_generator" type="file" accept=".pdf" class="w-full border p-2 rounded-lg" onchange="previewFile(this)" {{ $dataGeneratorDisabled }}>
+                      <small class="text-gray-500">Format PDF Maks 5MB {{ $dataGeneratorDisabled ? '(File tidak dapat diubah - section disetujui)' : '(Kosongkan jika tidak ingin mengubah file)' }}</small>
                     </div>
                     <div id="preview_lampiran_nameplate_generator"></div>
 
@@ -1551,8 +1536,9 @@
                         // ⛔️ latitude dan longitude dihapus dari sini karena ditangani terpisah
                       ];
 
-                      function addGeneratorColumn() {
-                        generatorUnitCount++;
+      function addGeneratorColumn() {
+        if (sectionStatus.data_generator) return; // Prevent adding columns if Data Generator section approved
+        generatorUnitCount++;
                         const table = document.getElementById("generatorTable");
                         const thead = table.querySelector("thead tr");
                         const tbodyRows = table.querySelectorAll("tbody tr");
@@ -1610,8 +1596,9 @@
                         });
                       }
 
-                      function removeGeneratorColumn() {
-                        if (generatorUnitCount <= 1) return;
+      function removeGeneratorColumn() {
+        if (sectionStatus.data_generator) return; // Prevent removing columns if Data Generator section approved
+        if (generatorUnitCount <= 1) return;
 
                         const table = document.getElementById("generatorTable");
                         const thead = table.querySelector("thead tr");
@@ -1719,11 +1706,24 @@
                     </script>
 
                     <!-- Tabel Sambungan Listrik-->
+                    @php
+                      $jaringanDistribusi = $pengajuan->jaringanDistribusi ?? [];
+                      $distribusiCount = max(1, count($jaringanDistribusi));
+                      $selectedSambungan = old('sambunganListrik', $pengajuan->sambunganListrik ?? '');
+                      
+                      // Define variables that will be used in dropdown and Transformator section
+                      $sectionEvalSambungan = isset($latestEvaluation) && $latestEvaluation->metadata && isset($latestEvaluation->metadata['sections']['sambungan_listrik']) 
+                        ? $latestEvaluation->metadata['sections']['sambungan_listrik'] 
+                        : ['status' => '-', 'catatan' => '-', 'evaluated_at' => null];
+                      $sambunganListrikReadonly = ($sectionEvalSambungan['status'] ?? '') === 'Disetujui' ? 'readonly' : '';
+                      $sambunganListrikDisabled = ($sectionEvalSambungan['status'] ?? '') === 'Disetujui' ? 'disabled' : '';
+                      $sambunganListrikIsApproved = ($sectionEvalSambungan['status'] ?? '') === 'Disetujui';
+                    @endphp
+                    
                     <!-- Dropdown Sambungan Listrik -->
                     <div class="mt-6">
                       <label for="sambunganListrik" class="block text-sm font-medium text-gray-700">Apakah ada sambungan listrik dari pihak lain?</label>
-                      <select id="sambunganListrik" name="sambunganListrik" class="mt-1 block w-full p-2 border rounded-md" onchange="toggleSambunganListrikTable()" required>
-                        @php $selectedSambungan = old('sambunganListrik', $pengajuan->sambunganListrik ?? ''); @endphp
+                      <select id="sambunganListrik" name="sambunganListrik" class="mt-1 block w-full p-2 border rounded-md" onchange="toggleSambunganListrikTable()" {{ $sambunganListrikReadonly ? '' : 'required' }} {{ $sambunganListrikDisabled }}>
                         <option value="" disabled {{ !$selectedSambungan ? 'selected' : '' }} hidden>Pilih</option>
                         <option value="ada" {{ $selectedSambungan == 'ada' ? 'selected' : '' }}>Ada</option>
                         <option value="tidak" {{ $selectedSambungan == 'tidak' ? 'selected' : '' }}>Tidak</option>
@@ -1731,11 +1731,6 @@
                     </div>
 
                     <!-- Container Sambungan Listrik -->
-                    @php
-                      $jaringanDistribusi = $pengajuan->jaringanDistribusi ?? [];
-                      $distribusiCount = max(1, count($jaringanDistribusi));
-                      $selectedSambungan = old('sambunganListrik', $pengajuan->sambunganListrik ?? '');
-                    @endphp
                     <div id="sambunganListrikTable" class="mt-6 {{ $selectedSambungan == 'ada' ? '' : 'hidden' }}">
 
                       <h3 class="text-lg font-bold uppercase mt-6 pb-2 text-gray-700 dark:text-white">Jaringan / Saluran Distribusi</h3>
@@ -1747,36 +1742,27 @@
                         : ['status' => '-', 'catatan' => '-', 'evaluated_at' => null];
                       @endphp
                       <div class="mb-4 p-3 rounded-lg border
-                        {{ $sectionEval['status'] == 'Disetujui' ? 'bg-green-50 border-green-200' : ($sectionEval['status'] == '-' ? 'bg-gray-50 border-gray-200' : 'bg-red-50 border-red-200') }}">
+                        {{ $sectionEvalSambungan['status'] == 'Disetujui' ? 'bg-green-50 border-green-200' : ($sectionEvalSambungan['status'] == '-' ? 'bg-gray-50 border-gray-200' : 'bg-red-50 border-red-200') }}">
                         <div class="flex items-start justify-between mb-2">
-                          <h4 class="font-semibold {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-800' : ($sectionEval['status'] == '-' ? 'text-gray-800' : 'text-red-800') }}">
+                          <h4 class="font-semibold {{ $sectionEvalSambungan['status'] == 'Disetujui' ? 'text-green-800' : ($sectionEvalSambungan['status'] == '-' ? 'text-gray-800' : 'text-red-800') }}">
                             Hasil Evaluasi - Jaringan / Saluran Distribusi
                           </h4>
                           <span class="px-2 py-1 rounded-full text-xs font-medium
-                            {{ $sectionEval['status'] == 'Disetujui' ? 'bg-green-100 text-green-800' : ($sectionEval['status'] == '-' ? 'bg-gray-100 text-gray-800' : 'bg-red-100 text-red-800') }}">
-                            {{ $sectionEval['status'] }}
+                            {{ $sectionEvalSambungan['status'] == 'Disetujui' ? 'bg-green-100 text-green-800' : ($sectionEvalSambungan['status'] == '-' ? 'bg-gray-100 text-gray-800' : 'bg-red-100 text-red-800') }}">
+                            {{ $sectionEvalSambungan['status'] }}
                           </span>
                         </div>
-                        <p class="text-sm {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-700' : ($sectionEval['status'] == '-' ? 'text-gray-700' : 'text-red-700') }} mb-2">
-                          <span class="font-medium">Komentar Evaluator:</span> {{ $sectionEval['catatan'] }}
+                        <p class="text-sm {{ $sectionEvalSambungan['status'] == 'Disetujui' ? 'text-green-700' : ($sectionEvalSambungan['status'] == '-' ? 'text-gray-700' : 'text-red-700') }} mb-2">
+                          <span class="font-medium">Komentar Evaluator:</span> {{ $sectionEvalSambungan['catatan'] }}
                         </p>
-                        @if($sectionEval['evaluated_at'])
-                        <p class="text-xs {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-600' : 'text-red-600' }}">
-                          <i class="fas fa-clock mr-1"></i>
-                          Status: {{ $sectionEval['status'] }} | Dievaluasi: {{ \Carbon\Carbon::parse($sectionEval['evaluated_at'])->format('d F Y H:i') }}
-                        </p>
-                        @else
-                        <p class="text-xs text-gray-500">
-                          <i class="fas fa-clock mr-1"></i>
-                          Status: {{ $sectionEval['status'] }} | Dievaluasi: -
-                        </p>
-                        @endif
                       </div>
 
+                      @if(!$sambunganListrikIsApproved)
                       <div class="flex justify-end gap-2 mb-4">
                         <button type="button" onclick="addDistribusiColumn(event)" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Tambah</button>
                         <button type="button" onclick="removeDistribusiColumn(event)" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">Kurang</button>
                       </div>
+                      @endif
 
                       <div class="overflow-x-auto">
                         <table class="min-w-full border border-gray-300" id="distribusiTable">
@@ -1869,8 +1855,9 @@
                           "tahun_operasi_distribusi"
                         ];
 
-                        function addDistribusiColumn() {
-                          const table = document.getElementById("distribusiTable");
+        function addDistribusiColumn() {
+          if (sectionStatus.sambungan_listrik) return; // Prevent adding columns if Sambungan Listrik section approved
+          const table = document.getElementById("distribusiTable");
                           const headerRow = table.querySelector("thead tr");
 
                           // Tambah header kolom
@@ -1889,8 +1876,9 @@
                           distribusiCount++;
                         }
 
-                        function removeDistribusiColumn() {
-                          if (distribusiCount <= 1) return;
+        function removeDistribusiColumn() {
+          if (sectionStatus.sambungan_listrik) return; // Prevent removing columns if Sambungan Listrik section approved
+          if (distribusiCount <= 1) return;
 
                           const table = document.getElementById("distribusiTable");
                           const headerRow = table.querySelector("thead tr");
@@ -2005,36 +1993,20 @@
                       <h3 class="text-lg font-bold uppercase mt-6 pb-2 text-gray-700 dark:text-white">Transformator</h3>
                       
                       <!-- Section Evaluation Status -->
-                      @php 
-                      $sectionEval = isset($latestEvaluation) && $latestEvaluation->metadata && isset($latestEvaluation->metadata['sections']['sambungan_listrik']) 
-                        ? $latestEvaluation->metadata['sections']['sambungan_listrik'] 
-                        : ['status' => '-', 'catatan' => '-', 'evaluated_at' => null];
-                      @endphp
                       <div class="mb-4 p-3 rounded-lg border
-                        {{ $sectionEval['status'] == 'Disetujui' ? 'bg-green-50 border-green-200' : ($sectionEval['status'] == '-' ? 'bg-gray-50 border-gray-200' : 'bg-red-50 border-red-200') }}">
+                        {{ $sectionEvalSambungan['status'] == 'Disetujui' ? 'bg-green-50 border-green-200' : ($sectionEvalSambungan['status'] == '-' ? 'bg-gray-50 border-gray-200' : 'bg-red-50 border-red-200') }}">
                         <div class="flex items-start justify-between mb-2">
-                        <h4 class="font-semibold {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-800' : ($sectionEval['status'] == '-' ? 'text-gray-800' : 'text-red-800') }}">
+                        <h4 class="font-semibold {{ $sectionEvalSambungan['status'] == 'Disetujui' ? 'text-green-800' : ($sectionEvalSambungan['status'] == '-' ? 'text-gray-800' : 'text-red-800') }}">
                           Hasil Evaluasi - Sambungan Listrik
                         </h4>
                           <span class="px-2 py-1 rounded-full text-xs font-medium
-                            {{ $sectionEval['status'] == 'Disetujui' ? 'bg-green-100 text-green-800' : ($sectionEval['status'] == '-' ? 'bg-gray-100 text-gray-800' : 'bg-red-100 text-red-800') }}">
-                            {{ $sectionEval['status'] }}
+                            {{ $sectionEvalSambungan['status'] == 'Disetujui' ? 'bg-green-100 text-green-800' : ($sectionEvalSambungan['status'] == '-' ? 'bg-gray-100 text-gray-800' : 'bg-red-100 text-red-800') }}">
+                            {{ $sectionEvalSambungan['status'] }}
                           </span>
                         </div>
-                        <p class="text-sm {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-700' : ($sectionEval['status'] == '-' ? 'text-gray-700' : 'text-red-700') }} mb-2">
-                          <span class="font-medium">Komentar Evaluator:</span> {{ $sectionEval['catatan'] }}
+                        <p class="text-sm {{ $sectionEvalSambungan['status'] == 'Disetujui' ? 'text-green-700' : ($sectionEvalSambungan['status'] == '-' ? 'text-gray-700' : 'text-red-700') }} mb-2">
+                          <span class="font-medium">Komentar Evaluator:</span> {{ $sectionEvalSambungan['catatan'] }}
                         </p>
-                        @if($sectionEval['evaluated_at'])
-                        <p class="text-xs {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-600' : 'text-red-600' }}">
-                          <i class="fas fa-clock mr-1"></i>
-                          Status: {{ $sectionEval['status'] }} | Dievaluasi: {{ \Carbon\Carbon::parse($sectionEval['evaluated_at'])->format('d F Y H:i') }}
-                        </p>
-                        @else
-                        <p class="text-xs text-gray-500">
-                          <i class="fas fa-clock mr-1"></i>
-                          Status: {{ $sectionEval['status'] }} | Dievaluasi: -
-                        </p>
-                        @endif
                       </div>
 
                       <div class="overflow-x-auto">
@@ -2050,32 +2022,32 @@
                             <tr>
                               <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Pemilik</td>
                               <td class="border p-2">
-                                <input id="pemilik_trafo" name="pemilik_trafo" type="text" class="w-full border p-1 rounded" value="{{ old('pemilik_trafo', $trafoData['pemilik_trafo'] ?? '') }}">
+                        <input id="pemilik_trafo" name="pemilik_trafo" type="text" class="w-full border p-1 rounded" value="{{ old('pemilik_trafo', $trafoData['pemilik_trafo'] ?? '') }}" {{ $sambunganListrikReadonly }}>
                               </td>
                             </tr>
                             <tr>
                               <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Tegangan Primer (V)</td>
                               <td class="border p-2">
-                                <input id="tegangan_primer_trafo" name="tegangan_primer_trafo" type="text" class="w-full border p-1 rounded" value="{{ old('tegangan_primer_trafo', $trafoData['tegangan_primer_trafo'] ?? '') }}">
+                                <input id="tegangan_primer_trafo" name="tegangan_primer_trafo" type="text" class="w-full border p-1 rounded" value="{{ old('tegangan_primer_trafo', $trafoData['tegangan_primer_trafo'] ?? '') }}" {{ $sambunganListrikReadonly }}>
                               </td>
                             </tr>
                             <tr>
                               <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Tegangan Sekunder (V)</td>
                               <td class="border p-2">
-                                <input id="tegangan_sekunder_trafo" name="tegangan_sekunder_trafo" type="text" class="w-full border p-1 rounded" value="{{ old('tegangan_sekunder_trafo', $trafoData['tegangan_sekunder_trafo'] ?? '') }}">
+                                <input id="tegangan_sekunder_trafo" name="tegangan_sekunder_trafo" type="text" class="w-full border p-1 rounded" value="{{ old('tegangan_sekunder_trafo', $trafoData['tegangan_sekunder_trafo'] ?? '') }}" {{ $sambunganListrikReadonly }}>
                               </td>
                             </tr>
                             <tr>
                               <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Kapasitas Daya (kVA)</td>
                               <td class="border p-2">
-                                <input id="kapasitas_daya_trafo" name="kapasitas_daya_trafo" type="text" class="w-full border p-1 rounded" value="{{ old('kapasitas_daya_trafo', $trafoData['kapasitas_daya_trafo'] ?? '') }}">
+                                <input id="kapasitas_daya_trafo" name="kapasitas_daya_trafo" type="text" class="w-full border p-1 rounded" value="{{ old('kapasitas_daya_trafo', $trafoData['kapasitas_daya_trafo'] ?? '') }}" {{ $sambunganListrikReadonly }}>
                               </td>
                             </tr>
                             <tr>
                               <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Kabupaten/Kota</td>
                               <td class="border p-2">
                                 @php $selectedKabupatenTrafo = old('kabupaten_kota_trafo', $trafoData['kabupaten_kota_trafo'] ?? ''); @endphp
-                                <select id="kabupaten_kota_trafo" name="kabupaten_kota_trafo" class="w-full border p-1 rounded">
+                                <select id="kabupaten_kota_trafo" name="kabupaten_kota_trafo" class="w-full border p-1 rounded" {{ $sambunganListrikDisabled }}>
                                   <option disabled {{ !$selectedKabupatenTrafo ? 'selected' : '' }}>Pilih Kabupaten/Kota</option>
                                   <option value="Batanghari" {{ $selectedKabupatenTrafo == 'Batanghari' ? 'selected' : '' }}>Batanghari</option>
                                   <option value="Bungo" {{ $selectedKabupatenTrafo == 'Bungo' ? 'selected' : '' }}>Bungo</option>
@@ -2094,20 +2066,20 @@
                             <tr>
                               <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Provinsi</td>
                               <td class="border p-2">
-                                <input id="provinsi_trafo" type="text" name="provinsi_trafo" value="{{ old('provinsi_trafo', $trafoData['provinsi_trafo'] ?? 'Jambi') }}" readonly class="w-full border p-1 rounded bg-gray-100">
+                                <input id="provinsi_trafo" type="text" name="provinsi_trafo" value="{{ old('provinsi_trafo', $trafoData['provinsi_trafo'] ?? 'Jambi') }}" readonly class="w-full border p-1 rounded bg-gray-100" {{ $sambunganListrikReadonly }}>
                               </td>
                             </tr>
                             <tr>
                               <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Koordinat</td>
                               <td class="border p-2">
-                                <input id="latitude_trafo" name="latitude_trafo" type="number" step="any" placeholder="Latitude (cth: -1.234567)" class="w-full border p-1 rounded mb-1" value="{{ old('latitude_trafo', $trafoData['latitude_trafo'] ?? '') }}">
-                                <input id="longitude_trafo" name="longitude_trafo" type="number" step="any" placeholder="Longitude (cth: 103.456789)" class="w-full border p-1 rounded" value="{{ old('longitude_trafo', $trafoData['longitude_trafo'] ?? '') }}">
+                                <input id="latitude_trafo" name="latitude_trafo" type="number" step="any" placeholder="Latitude (cth: -1.234567)" class="w-full border p-1 rounded mb-1" value="{{ old('latitude_trafo', $trafoData['latitude_trafo'] ?? '') }}" {{ $sambunganListrikDisabled }}>
+                                <input id="longitude_trafo" name="longitude_trafo" type="number" step="any" placeholder="Longitude (cth: 103.456789)" class="w-full border p-1 rounded" value="{{ old('longitude_trafo', $trafoData['longitude_trafo'] ?? '') }}" {{ $sambunganListrikDisabled }}>
                               </td>
                             </tr>
                             <tr>
                               <td class="border p-2 font-semibold bg-gray-50 sticky left-0">Tahun Operasi</td>
                               <td class="border p-2">
-                                <input id="tahun_operasi_trafo" name="tahun_operasi_trafo" type="text" class="w-full border p-1 rounded" value="{{ old('tahun_operasi_trafo', $trafoData['tahun_operasi_trafo'] ?? '') }}">
+                                <input id="tahun_operasi_trafo" name="tahun_operasi_trafo" type="text" class="w-full border p-1 rounded" value="{{ old('tahun_operasi_trafo', $trafoData['tahun_operasi_trafo'] ?? '') }}" {{ $sambunganListrikReadonly }}>
                               </td>
                             </tr>
                           </tbody>
@@ -2125,8 +2097,8 @@
                           File saat ini: <a href="{{ route('lampiran.show', ['file' => $pengajuan->lampiran_tagihan_listrik]) }}" target="_blank" class="text-blue-600 underline">Lihat file</a>
                         </div>
                         @endif
-                        <input id="lampiran_tagihan_listrik" name="lampiran_tagihan_listrik" type="file" accept=".pdf" class="border border-gray-300 p-2 rounded w-full" onchange="previewFile(this)">
-                        <small class="text-gray-500">Format PDF Maks 5MB (Kosongkan jika tidak ingin mengubah file)</small>
+                        <input id="lampiran_tagihan_listrik" name="lampiran_tagihan_listrik" type="file" accept=".pdf" class="border border-gray-300 p-2 rounded w-full" onchange="previewFile(this)" {{ $sambunganListrikDisabled }}>
+                        <small class="text-gray-500">Format PDF Maks 5MB {{ $sambunganListrikDisabled ? '(File tidak dapat diubah - section disetujui)' : '(Kosongkan jika tidak ingin mengubah file)' }}</small>
                       </div>
                       <div id="preview_lampiran_tagihan_listrik"></div>
                     </div>
@@ -2171,6 +2143,9 @@
                       $sectionEval = isset($latestEvaluation) && $latestEvaluation->metadata && isset($latestEvaluation->metadata['sections']['kapasitas_produksi']) 
                         ? $latestEvaluation->metadata['sections']['kapasitas_produksi'] 
                         : ['status' => '-', 'catatan' => '-', 'evaluated_at' => null];
+                      $kapasitasProduksiReadonly = ($sectionEval['status'] ?? '') === 'Disetujui' ? 'readonly' : '';
+                      $kapasitasProduksiDisabled = ($sectionEval['status'] ?? '') === 'Disetujui' ? 'disabled' : '';
+                      $kapasitasProduksiIsApproved = ($sectionEval['status'] ?? '') === 'Disetujui';
                     @endphp
                     <div class="mb-4 p-3 rounded-lg border
                       {{ $sectionEval['status'] == 'Disetujui' ? 'bg-green-50 border-green-200' : ($sectionEval['status'] == '-' ? 'bg-gray-50 border-gray-200' : 'bg-red-50 border-red-200') }}">
@@ -2186,17 +2161,6 @@
                       <p class="text-sm {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-700' : ($sectionEval['status'] == '-' ? 'text-gray-700' : 'text-red-700') }} mb-2">
                         <span class="font-medium">Komentar Evaluator:</span> {{ $sectionEval['catatan'] }}
                       </p>
-                      @if($sectionEval['evaluated_at'])
-                      <p class="text-xs {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-600' : 'text-red-600' }}">
-                        <i class="fas fa-clock mr-1"></i>
-                        Status: {{ $sectionEval['status'] }} | Dievaluasi: {{ \Carbon\Carbon::parse($sectionEval['evaluated_at'])->format('d F Y H:i') }}
-                      </p>
-                      @else
-                      <p class="text-xs text-gray-500">
-                        <i class="fas fa-clock mr-1"></i>
-                        Status: {{ $sectionEval['status'] }} | Dievaluasi: -
-                      </p>
-                      @endif
                     </div>
 
                     <!-- Container Tabel Kapasitas -->
@@ -2324,19 +2288,28 @@
 
 
 
+                    @php 
+                      $penjualanListrik = $pengajuan->penjualan_listrik ?? null;
+                      $selectedPenjualan = '';
+                      if ($penjualanListrik && isset($penjualanListrik['status'])) {
+                        $selectedPenjualan = $penjualanListrik['status'];
+                      } else {
+                        $selectedPenjualan = old('penjualan_listrik', '');
+                      }
+                      
+                      // Define excess power variables
+                      $sectionEvalExcessPower = isset($latestEvaluation) && $latestEvaluation->metadata && isset($latestEvaluation->metadata['sections']['excess_power']) 
+                        ? $latestEvaluation->metadata['sections']['excess_power'] 
+                        : ['status' => '-', 'catatan' => '-', 'evaluated_at' => null];
+                      $excessPowerReadonly = ($sectionEvalExcessPower['status'] ?? '') === 'Disetujui' ? 'readonly' : '';
+                      $excessPowerDisabled = ($sectionEvalExcessPower['status'] ?? '') === 'Disetujui' ? 'disabled' : '';
+                      $excessPowerIsApproved = ($sectionEvalExcessPower['status'] ?? '') === 'Disetujui';
+                    @endphp
+                    
                     <div class="mt-6">
                       <label for="excessPowerDropdown" class="block text-sm font-medium text-gray-700">
                         Apakah ada penjualan kelebihan tenaga listrik?
                       </label>
-                      @php 
-                        $penjualanListrik = $pengajuan->penjualan_listrik ?? null;
-                        $selectedPenjualan = '';
-                        if ($penjualanListrik && isset($penjualanListrik['status'])) {
-                          $selectedPenjualan = $penjualanListrik['status'];
-                        } else {
-                          $selectedPenjualan = old('penjualan_listrik', '');
-                        }
-                      @endphp
                       <select name="penjualan_listrik" id="excessPowerDropdown" class="mt-1 block w-full p-2 border rounded-md" onchange="toggleExcessPowerTable()" required>
                         <option value="" disabled {{ !$selectedPenjualan ? 'selected' : '' }} hidden>Pilih</option>
                         <option value="yes" {{ $selectedPenjualan == 'yes' ? 'selected' : '' }}>Ada</option>
@@ -2351,36 +2324,20 @@
                       </h3>
                       
                       <!-- Section Evaluation Status -->
-                      @php 
-                      $sectionEval = isset($latestEvaluation) && $latestEvaluation->metadata && isset($latestEvaluation->metadata['sections']['excess_power']) 
-                        ? $latestEvaluation->metadata['sections']['excess_power'] 
-                        : ['status' => '-', 'catatan' => '-', 'evaluated_at' => null];
-                      @endphp
                       <div class="mb-4 p-3 rounded-lg border
-                        {{ $sectionEval['status'] == 'Disetujui' ? 'bg-green-50 border-green-200' : ($sectionEval['status'] == '-' ? 'bg-gray-50 border-gray-200' : 'bg-red-50 border-red-200') }}">
+                        {{ $sectionEvalExcessPower['status'] == 'Disetujui' ? 'bg-green-50 border-green-200' : ($sectionEvalExcessPower['status'] == '-' ? 'bg-gray-50 border-gray-200' : 'bg-red-50 border-red-200') }}">
                         <div class="flex items-start justify-between mb-2">
-                          <h4 class="font-semibold {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-800' : ($sectionEval['status'] == '-' ? 'text-gray-800' : 'text-red-800') }}">
+                          <h4 class="font-semibold {{ $sectionEvalExcessPower['status'] == 'Disetujui' ? 'text-green-800' : ($sectionEvalExcessPower['status'] == '-' ? 'text-gray-800' : 'text-red-800') }}">
                             Hasil Evaluasi - Penjualan Kelebihan Tenaga Listrik (Excess Power)
                           </h4>
                           <span class="px-2 py-1 rounded-full text-xs font-medium
-                            {{ $sectionEval['status'] == 'Disetujui' ? 'bg-green-100 text-green-800' : ($sectionEval['status'] == '-' ? 'bg-gray-100 text-gray-800' : 'bg-red-100 text-red-800') }}">
-                            {{ $sectionEval['status'] }}
+                            {{ $sectionEvalExcessPower['status'] == 'Disetujui' ? 'bg-green-100 text-green-800' : ($sectionEvalExcessPower['status'] == '-' ? 'bg-gray-100 text-gray-800' : 'bg-red-100 text-red-800') }}">
+                            {{ $sectionEvalExcessPower['status'] }}
                           </span>
                         </div>
-                        <p class="text-sm {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-700' : ($sectionEval['status'] == '-' ? 'text-gray-700' : 'text-red-700') }} mb-2">
-                          <span class="font-medium">Komentar Evaluator:</span> {{ $sectionEval['catatan'] }}
+                        <p class="text-sm {{ $sectionEvalExcessPower['status'] == 'Disetujui' ? 'text-green-700' : ($sectionEvalExcessPower['status'] == '-' ? 'text-gray-700' : 'text-red-700') }} mb-2">
+                          <span class="font-medium">Komentar Evaluator:</span> {{ $sectionEvalExcessPower['catatan'] }}
                         </p>
-                        @if($sectionEval['evaluated_at'])
-                        <p class="text-xs {{ $sectionEval['status'] == 'Disetujui' ? 'text-green-600' : 'text-red-600' }}">
-                          <i class="fas fa-clock mr-1"></i>
-                          Dievaluasi: {{ \Carbon\Carbon::parse($sectionEval['evaluated_at'])->format('d F Y H:i') }}
-                        </p>
-                        @else
-                        <p class="text-xs text-gray-500">
-                          <i class="fas fa-clock mr-1"></i>
-                          Dievaluasi: -
-                        </p>
-                        @endif
                       </div>
                       <div class="overflow-x-auto">
                         <table id="excessPowerTable" name="data_penjualan" class="min-w-full border border-gray-300 text-sm">
@@ -2413,6 +2370,15 @@
                         if (dropdown.value === "yes") {
                           toggleExcessPowerTable();
                         }
+                        
+                        // Ensure existing inputs are readonly if section is approved
+                        const isExcessPowerApproved = @json($excessPowerIsApproved);
+                        if (isExcessPowerApproved) {
+                          document.querySelectorAll('#excessPowerTableBody input').forEach(function(input) {
+                            input.setAttribute('readonly', true);
+                            input.style.backgroundColor = '#f9fafb';
+                          });
+                        }
                       });
                       
                       function toggleExcessPowerTable() {
@@ -2422,6 +2388,9 @@
 
                         // Get existing excess power data
                         const existingExcessPower = {!! json_encode(isset($penjualanListrik['excess_power']) ? $penjualanListrik['excess_power'] : []) !!};
+                        
+                        // Check if section is approved dari PHP
+                        const isExcessPowerApproved = @json($excessPowerIsApproved);
 
                         if (dropdown.value === "yes") {
                           tableSection.classList.remove("hidden");
@@ -2439,20 +2408,38 @@
                             // Get existing data for this month
                             const existingData = existingExcessPower[index] || {};
                             
+                            // Determine readonly state based on section approval
+                            const inputAttr = isExcessPowerApproved ? 'readonly style="background-color: #f9fafb;"' : '';
+                            
                             row.innerHTML = `
           <td class="border p-1">${month}</td>
-          <td class="border p-1"><input type="text" name="excess_power[${index}][dmn_ndc]" class="w-full border rounded px-1 py-0.5" value="${existingData.dmn_ndc || ''}"/></td>
-          <td class="border p-1"><input type="text" name="excess_power[${index}][beban_tertinggi]" class="w-full border rounded px-1 py-0.5" value="${existingData.beban_tertinggi || ''}"/></td>
-          <td class="border p-1"><input type="text" name="excess_power[${index}][capacity_factor]" class="w-full border rounded px-1 py-0.5" value="${existingData.capacity_factor || ''}"/></td>
-          <td class="border p-1"><input type="text" name="excess_power[${index}][afpm]" class="w-full border rounded px-1 py-0.5" value="${existingData.afpm || ''}"/></td>
-          <td class="border p-1"><input type="text" name="excess_power[${index}][afa]" class="w-full border rounded px-1 py-0.5" value="${existingData.afa || ''}"/></td>
-          <td class="border p-1"><input type="text" name="excess_power[${index}][pembelian]" class="w-full border rounded px-1 py-0.5" value="${existingData.pembelian || ''}"/></td>
-          <td class="border p-1"><input type="text" name="excess_power[${index}][produksi_bruto]" class="w-full border rounded px-1 py-0.5" value="${existingData.produksi_bruto || ''}"/></td>
-          <td class="border p-1"><input type="text" name="excess_power[${index}][pemakaian_sendiri]" class="w-full border rounded px-1 py-0.5" value="${existingData.pemakaian_sendiri || ''}"/></td>
-          <td class="border p-1"><input type="text" name="excess_power[${index}][produksi_netto]" class="w-full border rounded px-1 py-0.5" value="${existingData.produksi_netto || ''}"/></td>
+          <td class="border p-1"><input type="text" name="excess_power[${index}][dmn_ndc]" class="w-full border rounded px-1 py-0.5" value="${existingData.dmn_ndc || ''}" ${inputAttr}/></td>
+          <td class="border p-1"><input type="text" name="excess_power[${index}][beban_tertinggi]" class="w-full border rounded px-1 py-0.5" value="${existingData.beban_tertinggi || ''}" ${inputAttr}/></td>
+          <td class="border p-1"><input type="text" name="excess_power[${index}][capacity_factor]" class="w-full border rounded px-1 py-0.5" value="${existingData.capacity_factor || ''}" ${inputAttr}/></td>
+          <td class="border p-1"><input type="text" name="excess_power[${index}][afpm]" class="w-full border rounded px-1 py-0.5" value="${existingData.afpm || ''}" ${inputAttr}/></td>
+          <td class="border p-1"><input type="text" name="excess_power[${index}][afa]" class="w-full border rounded px-1 py-0.5" value="${existingData.afa || ''}" ${inputAttr}/></td>
+          <td class="border p-1"><input type="text" name="excess_power[${index}][pembelian]" class="w-full border rounded px-1 py-0.5" value="${existingData.pembelian || ''}" ${inputAttr}/></td>
+          <td class="border p-1"><input type="text" name="excess_power[${index}][produksi_bruto]" class="w-full border rounded px-1 py-0.5" value="${existingData.produksi_bruto || ''}" ${inputAttr}/></td>
+          <td class="border p-1"><input type="text" name="excess_power[${index}][pemakaian_sendiri]" class="w-full border rounded px-1 py-0.5" value="${existingData.pemakaian_sendiri || ''}" ${inputAttr}/></td>
+          <td class="border p-1"><input type="text" name="excess_power[${index}][produksi_netto]" class="w-full border rounded px-1 py-0.5" value="${existingData.produksi_netto || ''}" ${inputAttr}/></td>
         `;
                             tableBody.appendChild(row);
                           });
+                          
+                          // Apply styles setelah tabel dibuat dengan sedikit delay
+                          setTimeout(() => {
+                            if (typeof applyReadonlyStyles === 'function') {
+                              applyReadonlyStyles();
+                            }
+                            
+                            // Double check - apply readonly langsung jika section approved
+                            if (isExcessPowerApproved) {
+                              document.querySelectorAll('#excessPowerTableBody input').forEach(function(input) {
+                                input.setAttribute('readonly', true);
+                                input.style.backgroundColor = '#f9fafb';
+                              });
+                            }
+                          }, 100);
 
                         } else {
                           tableSection.classList.add("hidden");
@@ -2533,8 +2520,121 @@
 
 
   <script>
+    // Variable untuk status pengajuan (per section)
+    const isApproved = @json($isApproved);
+    const sectionStatus = {
+      izin_usaha: @json(isset($latestEvaluation) && isset($latestEvaluation->metadata) && isset($latestEvaluation->metadata['sections']) && isset($latestEvaluation->metadata['sections']['izin_usaha']) && ($latestEvaluation->metadata['sections']['izin_usaha']['status'] ?? '-') === 'Disetujui'),
+      izin_lingkungan: @json(isset($latestEvaluation) && isset($latestEvaluation->metadata) && isset($latestEvaluation->metadata['sections']) && isset($latestEvaluation->metadata['sections']['izin_lingkungan']) && ($latestEvaluation->metadata['sections']['izin_lingkungan']['status'] ?? '-') === 'Disetujui'),
+      slo: @json(isset($latestEvaluation) && isset($latestEvaluation->metadata) && isset($latestEvaluation->metadata['sections']) && isset($latestEvaluation->metadata['sections']['slo']) && ($latestEvaluation->metadata['sections']['slo']['status'] ?? '-') === 'Disetujui'),
+      skttk: @json(isset($latestEvaluation) && isset($latestEvaluation->metadata) && isset($latestEvaluation->metadata['sections']) && isset($latestEvaluation->metadata['sections']['skttk']) && ($latestEvaluation->metadata['sections']['skttk']['status'] ?? '-') === 'Disetujui'),
+      data_mesin: @json(isset($latestEvaluation) && isset($latestEvaluation->metadata) && isset($latestEvaluation->metadata['sections']) && isset($latestEvaluation->metadata['sections']['data_mesin']) && ($latestEvaluation->metadata['sections']['data_mesin']['status'] ?? '-') === 'Disetujui'),
+      data_generator: @json(isset($latestEvaluation) && isset($latestEvaluation->metadata) && isset($latestEvaluation->metadata['sections']) && isset($latestEvaluation->metadata['sections']['data_generator']) && ($latestEvaluation->metadata['sections']['data_generator']['status'] ?? '-') === 'Disetujui'),
+      sambungan_listrik: @json(isset($latestEvaluation) && isset($latestEvaluation->metadata) && isset($latestEvaluation->metadata['sections']) && isset($latestEvaluation->metadata['sections']['sambungan_listrik']) && ($latestEvaluation->metadata['sections']['sambungan_listrik']['status'] ?? '-') === 'Disetujui'),
+      kapasitas_produksi: @json(isset($latestEvaluation) && isset($latestEvaluation->metadata) && isset($latestEvaluation->metadata['sections']) && isset($latestEvaluation->metadata['sections']['kapasitas_produksi']) && ($latestEvaluation->metadata['sections']['kapasitas_produksi']['status'] ?? '-') === 'Disetujui'),
+      excess_power: @json(isset($latestEvaluation) && isset($latestEvaluation->metadata) && isset($latestEvaluation->metadata['sections']) && isset($latestEvaluation->metadata['sections']['excess_power']) && ($latestEvaluation->metadata['sections']['excess_power']['status'] ?? '-') === 'Disetujui')
+    };
+    
+    // Function untuk add readonly style pada approved sections
+    function applyReadonlyStyles() {
+      // Apply background color untuk readonly inputs dan disabled inputs
+      document.querySelectorAll('input[readonly], input[disabled], select[disabled]').forEach(function(element) {
+        element.style.backgroundColor = '#f9fafb';
+      });
+      
+      // Apply readonly untuk tabel SKTTK jika section disetujui
+      if (sectionStatus.skttk) {
+        document.querySelectorAll('#skttkTable input').forEach(function(input) {
+          if (input.type === 'date' || input.type === 'text' && input.classList.contains('datepicker')) {
+            input.setAttribute('disabled', true);
+          } else {
+            input.setAttribute('readonly', true);
+          }
+          input.style.backgroundColor = '#f9fafb';
+        });
+      }
+      
+      // Apply readonly untuk tabel SLO jika section disetujui (untuk yang belum ter-handle)
+      if (sectionStatus.slo) {
+        document.querySelectorAll('#sloTable input').forEach(function(input) {
+          if (!input.hasAttribute('readonly') && !input.hasAttribute('disabled')) {
+            if (input.type === 'date' || input.type === 'text' && input.classList.contains('datepicker')) {
+              input.setAttribute('disabled', true);
+            } else {
+              input.setAttribute('readonly', true);
+            }
+            input.style.backgroundColor = '#f9fafb';
+          }
+        });
+      }
+      
+      // Apply readonly untuk tabel Mesin jika section disetujui
+      if (sectionStatus.data_mesin) {
+        document.querySelectorAll('#mesinTable input, #mesinTable select').forEach(function(input) {
+          if (input.tagName === 'SELECT' || input.type === 'date') {
+            input.setAttribute('disabled', true);
+          } else {
+            input.setAttribute('readonly', true);
+          }
+          input.style.backgroundColor = '#f9fafb';
+        });
+      }
+      
+      // Apply readonly untuk tabel Generator jika section disetujui
+      if (sectionStatus.data_generator) {
+        document.querySelectorAll('#generatorTable input, #generatorTable select').forEach(function(input) {
+          if (input.tagName === 'SELECT' || input.type === 'date' || input.type === 'number') {
+            input.setAttribute('disabled', true);
+          } else {
+            input.setAttribute('readonly', true);
+          }
+          input.style.backgroundColor = '#f9fafb';
+        });
+      }
+      
+      // Apply readonly untuk tabel Distribusi jika section disetujui
+      if (sectionStatus.sambungan_listrik) {
+        document.querySelectorAll('#distribusiTable input, #distribusiTable select').forEach(function(input) {
+          if (input.tagName === 'SELECT' || input.type === 'date' || input.type === 'number') {
+            input.setAttribute('disabled', true);
+          } else {
+            input.setAttribute('readonly', true);
+          }
+          input.style.backgroundColor = '#f9fafb';
+        });
+      }
+      
+      // Apply readonly untuk Kapasitas Produksi jika section disetujui
+      if (sectionStatus.kapasitas_produksi) {
+        document.querySelectorAll('#kapasitasContainer input').forEach(function(input) {
+          input.setAttribute('readonly', true);
+          input.style.backgroundColor = '#f9fafb';
+        });
+      }
+      
+      // Apply readonly untuk Excess Power jika section disetujui (tapi dropdown tetap bisa diubah)
+      if (sectionStatus.excess_power) {
+        // Dropdown excessPowerDropdown tetap bisa digunakan, hanya tabel yang readonly
+        document.querySelectorAll('#excessPowerTableBody input').forEach(function(input) {
+          if (!input.hasAttribute('readonly')) {
+            input.setAttribute('readonly', true);
+            input.style.backgroundColor = '#f9fafb';
+          }
+        });
+        
+        // Also apply to any excess power inputs in general
+        document.querySelectorAll('input[name*="excess_power"]').forEach(function(input) {
+          if (!input.hasAttribute('readonly')) {
+            input.setAttribute('readonly', true);
+            input.style.backgroundColor = '#f9fafb';
+          }
+        });
+      }
+    }
+    
     // Handle form submission with AJAX
     document.addEventListener("DOMContentLoaded", function() {
+      // Apply readonly styles on page load
+      applyReadonlyStyles();
       const form = document.querySelector('form[action*="pengajuan"]');
       if (form) {
         form.addEventListener('submit', function(e) {

@@ -70,7 +70,7 @@ class UserSeeder extends Seeder
         // 7. Pengguna (Badan Usaha) 3
         User::create([
             'name' => 'CV Solar Power Indonesia',
-            'email' => '    ',
+            'email' => 'admin@solarpowerid.co.id',
             'password' => Hash::make('password123'),
             'role_pengguna' => 'pengguna',
             'pangkat' => null
